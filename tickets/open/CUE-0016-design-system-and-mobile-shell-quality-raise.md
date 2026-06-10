@@ -1,15 +1,15 @@
 ---
 id: CUE-0016
 title: Design system and mobile shell quality raise
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: design
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T20:47:10Z
+claim_ref: refs/palari/claims/CUE-0016
+claim_heartbeat_at: 2026-06-10T20:47:10Z
+claim_expires_at: 2026-06-10T20:52:10Z
 allowed_paths:
   - App.tsx
   - src/theme/**
