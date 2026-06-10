@@ -121,3 +121,12 @@ without provisioning signing credentials or Play upload secrets.
 Rationale: The repo can be very close to internal testing while avoiding secrets,
 paid services, and production deployment decisions. A real AAB requires human
 account and signing setup.
+
+### Use Deterministic Vector-Derived Store Assets
+
+Decision: Create icon, splash, and feature graphic assets from repo-local SVG
+sources rendered to PNG.
+
+Rationale: Release assets need consistency and repeatability. A simple balance
+mark matches the app's fairness metaphor and avoids relying on one-off generated
+bitmap art for a core brand asset.

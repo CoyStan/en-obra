@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1242" height="2436" viewBox="0 0 1242 2436">
+  <rect width="1242" height="2436" fill="#F7F3EA"/>
+  <circle cx="621" cy="1050" r="210" fill="#0F7B63"/>
+  <path d="M621 898v272" stroke="#F7F3EA" stroke-width="38" stroke-linecap="round"/>
+  <path d="M508 970h226" stroke="#F7F3EA" stroke-width="34" stroke-linecap="round"/>
+  <path d="M621 970l-92 156h184L621 970z" fill="none" stroke="#F7F3EA" stroke-width="28" stroke-linejoin="round"/>
+  <path d="M526 1126c18 40 50 64 95 64s77-24 95-64" fill="none" stroke="#C58B2C" stroke-width="26" stroke-linecap="round"/>
+  <circle cx="621" cy="970" r="28" fill="#F7F3EA"/>
+  <text x="621" y="1360" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif" font-size="84" font-weight="800" fill="#17211F">Cuentas Claras</text>
+  <text x="621" y="1438" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif" font-size="34" font-weight="700" fill="#2F5D8C">Gastos compartidos en MXN</text>
+</svg>

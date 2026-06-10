@@ -3,6 +3,7 @@
     "name": "Cuentas Claras",
     "slug": "cuentas-claras",
     "version": "0.1.0",
+    "icon": "./assets/icon.png",
     "runtimeVersion": {
       "policy": "appVersion"
     },
@@ -10,6 +11,11 @@
     "scheme": "cuentasclaras",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F7F3EA"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -21,11 +27,13 @@
       "versionCode": 1,
       "permissions": [],
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F7B63"
       }
     },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
     }
   }
 }
