@@ -1,15 +1,15 @@
 ---
 id: CUE-0012
 title: Privacy and terms draft
-status: open
+status: claimed
 risk: R3
 priority: P0
 stream: policy
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T19:36:38Z
+claim_ref: refs/palari/claims/CUE-0012
+claim_heartbeat_at: 2026-06-10T19:36:38Z
+claim_expires_at: 2026-06-10T19:41:38Z
 allowed_paths:
   - docs/legal/**
   - docs/production/privacy-terms-readiness.md
