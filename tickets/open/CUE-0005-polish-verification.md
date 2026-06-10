@@ -1,15 +1,15 @@
 ---
 id: CUE-0005
 title: Polish and verify local MVP
-status: open
+status: claimed
 risk: R2
 priority: P1
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T18:10:39Z
+claim_ref: refs/palari/claims/CUE-0005
+claim_heartbeat_at: 2026-06-10T18:10:39Z
+claim_expires_at: 2026-06-10T20:10:39Z
 allowed_paths:
   - App.tsx
   - src/**
