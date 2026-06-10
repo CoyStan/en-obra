@@ -1,15 +1,15 @@
 ---
 id: CUE-0011
 title: App icon splash and store assets
-status: open
+status: claimed
 risk: R2
 priority: P1
 stream: design
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T18:32:41Z
+claim_ref: refs/palari/claims/CUE-0011
+claim_heartbeat_at: 2026-06-10T18:32:41Z
+claim_expires_at: 2026-06-10T20:32:41Z
 allowed_paths:
   - assets/**
   - app.json
