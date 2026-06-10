@@ -7,7 +7,7 @@ Compact specialist outcome ledger for future agents and reviewers.
 - Ticket: CUE-0001
 - Role: specialist
 - Branch: ticket/CUE-0001
-- Commit: pending
+- Commit: 8c194ca
 - Result: in-review
 
 ## Files Changed
@@ -39,16 +39,18 @@ reports/CUE-0001-technical-report.md
 
 ## Verification
 
-- Passed: pending command run.
+- Passed: `./bin/palari lint CUE-0001`
+- Passed: `./bin/palari scope-check CUE-0001 --base main`
+- Passed: `./bin/palari ci CUE-0001 --base main`
 - Failed: none.
 - Not run: reviewer/human acceptance.
 
 ## CI Evidence
 
-- CI run: pending.
-- Evidence bundle: pending.
-- JUnit: pending.
-- SARIF: pending.
+- CI run: `./bin/palari ci CUE-0001 --base main`
+- Evidence bundle: `reports/evidence/CUE-0001`
+- JUnit: `reports/evidence/CUE-0001/junit.xml`
+- SARIF: `reports/evidence/CUE-0001/palari.sarif`
 - Attestation: forge gate disabled in `palari.config.yaml`.
 
 ## Review Status
