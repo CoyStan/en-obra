@@ -48,15 +48,15 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 - Passed: `npm run typecheck`
 - Passed: `npm test`
 - Passed: `npx expo config --type public`
-- Blocked: screenshot/viewport verification; Expo/Metro bundled parent repo
-  source from nested `.palari/worktrees` path, so stale screenshots were removed.
+- Passed: isolated temp-run mobile screenshot at 390x844 after replacing the
+  temp run copy's `node_modules` symlink with local hardlinks.
 - Passed: `./bin/palari scope-check CUE-0015`
 - Passed: `./bin/palari lint CUE-0015`
 - Passed: `./bin/palari ci CUE-0015`
 - Failed: `claude -p --model opus`, auth 401.
 - Passed: `claude -p` follow-up theme review after auth recovered.
-- Failed: final screenshot capture from this nested worktree, stale parent-source
-  bundle.
+- Resolved: earlier nested-worktree screenshot capture produced stale
+  parent-source bundles; accepted evidence now uses the isolated temp run copy.
 - Not run: Play upload, signed Android build, real payment/backend flows.
 
 ## CI Evidence
@@ -77,6 +77,7 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 - Claude auth status: `reports/evidence/CUE-0015/design-review/claude-auth-status.txt`
 - Summary: `reports/evidence/CUE-0015/design-review/summary.md`
 - Visual note: `reports/evidence/CUE-0015/visual-verification.md`
+- Theme screenshot: `reports/evidence/CUE-0015/theme-preview.png`
 
 ## Review Status
 
@@ -87,7 +88,7 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 
 - CUE-0015 is based on main, which does not include unmerged CUE-0011 asset
   config because `merge-main` authority is refused under Palari `team-safe`.
-- Run screenshot verification on 360x740 and 412x915 mobile viewports after this
-  branch is merged or checked out outside the parent repo nesting.
+- Run final multi-viewport screenshot verification on 360x740 and 412x915 after
+  this branch is merged or checked out outside the parent repo nesting.
 - A future ticket should expose the CUE-0013 local deletion helper in Perfil
   once the security/data deletion branch is merged.

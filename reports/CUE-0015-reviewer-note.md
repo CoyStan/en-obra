@@ -21,8 +21,8 @@ verification note. Do not self-accept.
   real hosted account.
 - A follow-up Claude Code `-p` theme review succeeded after the earlier auth
   failure and informed the calmer Telegram-like palette, density, and icon pass.
-- Screenshot capture was attempted but blocked by nested-worktree Expo/Metro
-  source resolution; stale screenshots were removed.
+- Screenshot capture initially hit nested-worktree Expo/Metro source resolution,
+  but the accepted theme screenshot was captured from an isolated temp run copy.
 
 ## Verification Reviewed
 
@@ -32,11 +32,12 @@ verification note. Do not self-accept.
 - Reviewed: design evidence under `reports/evidence/CUE-0015/design-review`
 - Reviewed: `reports/evidence/CUE-0015/design-review/claude-p-theme-review.md`
 - Reviewed: `reports/evidence/CUE-0015/visual-verification.md`
+- Reviewed: `reports/evidence/CUE-0015/theme-preview.png`
 
 ## Required Changes
 
-- Capture and review mobile viewport screenshots before final acceptance if the
-  reviewer requires visual evidence from this branch.
+- Capture additional 360x740 and 412x915 mobile screenshots before final
+  acceptance if the reviewer requires multi-viewport evidence from this branch.
 
 ## Recommendation
 
