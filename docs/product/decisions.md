@@ -121,3 +121,13 @@ without provisioning signing credentials or Play upload secrets.
 Rationale: The repo can be very close to internal testing while avoiding secrets,
 paid services, and production deployment decisions. A real AAB requires human
 account and signing setup.
+
+### Define Local Data Deletion Before Backend
+
+Decision: Add a local deletion helper and security/data deletion model that
+clears app data, mock sync state, and local mock account state before any real
+backend exists.
+
+Rationale: Internal testing needs a concrete deletion story for local data, but
+remote account deletion, retention, and support processes require human
+privacy/security decisions before production sync ships.

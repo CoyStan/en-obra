@@ -8,8 +8,8 @@ stream: security
 claimed_by: codex
 claimed_at: 2026-06-10T19:41:01Z
 claim_ref: refs/palari/claims/CUE-0013
-claim_heartbeat_at: 2026-06-10T19:41:01Z
-claim_expires_at: 2026-06-10T19:46:01Z
+claim_heartbeat_at: 2026-06-10T19:42:48Z
+claim_expires_at: 2026-06-10T20:12:48Z
 allowed_paths:
   - src/security/**
   - src/state/**
