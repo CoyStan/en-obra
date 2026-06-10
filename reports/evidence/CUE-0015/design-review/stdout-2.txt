@@ -1,0 +1,251 @@
+Let me check for additional files referenced in the prompt and explore the broader structure.
+Now I have full context. Here is the design review.
+
+---
+
+# CUE-0015 Design Review: Cuentas Claras UI Critique & Redesign Plan
+
+## 1. Top UI/Product Problems Ranked by Severity
+
+### Critical
+
+**P1 — No "who owes whom" at a glance on the group list.** The group cards show `Gastado`, `Abierto`, and `Integrantes` (MainScreen.tsx:87-99) but zero per-member balance information. The user must tap into a group, then switch to the Balance tab, then scroll to `Quien le debe a quien`. This is a 3-step path for the single most important question in the app. On Android, where the user may check quickly between errands, every extra tap is abandonment risk.
+
+**P2 — The header block is dead space after group selection.** The evergreen header ("Cuentas Claras / Gastos compartidos, sin vueltas") persists above the summary band (lines 550-557) and occupies ~80 px of vertical space that could show balances, next actions, or the active group name. Once a group is selected, the header is redundant branding in the most valuable viewport real estate. On a typical 5.8"–6.1" Android device, this costs the user one visible card row.
+
+**P3 — Balance tab is one long scroll with forms inline.** The Balance tab packs expense form, member form, settlement list, and member balances into a single vertical scroll (lines 310-463). Forms open inline, pushing settlement cards and member rows below the fold. On Android where keyboards take significant space, this creates layout jumps and makes it hard to correlate who owes whom while entering an expense. Forms should be sheets or modals, not inline push-downs.
+
+**P4 — "Marcar pagado" has no confirmation step.** Tapping the settlement button immediately records the payment (line 423). The "Sin pagos reales" text (line 418) is 12 px micro text that users will miss. This combination risks user confusion — they may think a real payment happened despite the fine print. A confirmation dialog with prominent demo-only labeling is needed.
+
+### High
+
+**P5 — Amount readability is fragile.** The `Amount` component uses `fontSize: 24` for emphasis (ui.tsx:142) and the default body weight of 800. On Android, MXN amounts like `$6,200.00` can truncate in narrow card layouts. The emphasis amount lacks a monospace or tabular-nums quality, so columns of amounts don't align vertically.
+
+**P6 — Bottom navigation lacks active-group badge/context.** When the user is on the Activity or Account tab, there's no persistent indicator of which group is active (lines 615-634). The summary band appears only at the top of the scroll content (line 581), and scrolling down hides it. The user can forget which group they're viewing activity for.
+
+**P7 — No visual distinction between "En paz" and no-balance states.** The member balance row shows `En paz` with a neutral pill (line 449), but a fully settled group shows identical empty settlement and zero-balance rows. The user can't distinguish "this group has always been even" from "all debts are paid" at a glance.
+
+**P8 — Expense form payer selection is `ScrollView horizontal` with chips that don't wrap.** On narrow screens (line 368-381), payer chips scroll horizontally but there's no visible scroll indicator hint. Users may not realize there are more payers to the right.
+
+### Medium
+
+**P9 — No visual grouping for the Activity tab when multiple groups have activity.** Activity is filtered to the selected group only (line 201). There's no cross-group activity view, which makes the Activity tab feel underbuilt — it shows nothing when no group is selected.
+
+**P10 — Account tab wastes space on long explanatory text.** The "Esta cuenta no sincroniza ni sube datos todavia" paragraph (lines 511-513) is a wall of blue text that no user will read. It should be a one-line status chip with an expandable detail.
+
+**P11 — The green brand mark next to the header is decorative only.** The scale-balance icon in a green square (lines 555-557) looks like a tappable profile or settings button but does nothing. It creates false affordance.
+
+---
+
+## 2. Redesign Plan
+
+### Visual Hierarchy
+
+- **Three-tier information density**: summary band (sticky), primary content (scrollable), bottom nav (fixed).
+- **Amount-first**: Every card that contains money should lead with the amount, not the label. The eye should scan amounts in a column, then read context.
+- **Z-pattern for cards**: amount top-right, person/description left, action bottom-right. Consistent across group cards, settlement cards, and activity rows.
+
+### Spacing
+
+- Increase `spacing.md` from 12 to 14 and `spacing.lg` from 16 to 18 for Android density comfort.
+- Add 8 px horizontal inset on scroll content so it doesn't touch screen edges on devices without safe-area padding.
+- Settlement cards need more vertical breathing room between the "from → to" row and the footer action — current `gap: spacing.md` (12 px) is tight on Android.
+
+### Typography
+
+- Add `fontVariant: ["tabular-nums"]` to all amount text (Amount component, stat values, balance rows). This makes `$6,200.00` and `$148.05` align in columns.
+- Reduce `typography.title` from 28 to 26 to avoid wrapping on narrow Spanish labels.
+- Increase `typography.micro` from 12 to 13 — 12 px is below the 44 px touch target's readable companion size on Android at normal density.
+- The `demoOnly` label (line 762) at 12 px with weight 800 is functionally invisible. Bump to 13 px with a colored background chip.
+
+### Color
+
+- The palette itself is strong and should be kept. Issues are in usage:
+  - `successWash` (`#E5F4EE`) used for the secondary button background (ui.tsx:254) looks almost identical to `surfaceStrong` (`#EEF5F1`) at a glance. The secondary button should have a more distinct border or use `financeBlue` as a tint.
+  - `due` (`#D95F43`) text on white background passes AA contrast (4.54:1) but the `dueWash` background with `due` text has lower contrast on some Android OLED panels. Add a subtle left border accent instead of full-width background for due rows.
+  - The `goldPill` background (`#FFF5D9`) is too close to white canvas. Use `#F5E6B8` for better distinction on warm canvas backgrounds.
+
+### Cards
+
+- **Group cards**: Add a mini-balance row showing the top creditor and top debtor (e.g., "Ana recibe $1,240 · Luis debe $890") instead of only aggregate stats. This answers "which group needs attention?" in the card itself.
+- **Settlement cards**: Add a status timeline indicator — show open settlements with a due-colored left border, paid settlements with a green left border and strikethrough amount.
+- **Activity rows**: Add a group name label for cross-group activity views.
+
+### Tabs/Navigation
+
+- Keep 4-tab bottom nav but rename "Cuenta" to "Perfil" — "Cuenta" in Spanish finance contexts implies a bank account. "Perfil" is clearer for a local identity.
+- Add a subtle active-group indicator on the balance/activity tabs when a group is selected — a small colored dot or the group name in the tab bar.
+- Consider a 5th tab or a floating action button for quick expense entry from any screen. Current flow requires: select group tab → tap group → auto-navigate to balance → tap "Agregar gasto". A FAB on the group dashboard would reduce this to one tap.
+
+### Forms
+
+- **All forms should be bottom sheets**, not inline push-downs. When "Agregar gasto" is pressed, slide up a half-sheet with the expense form. This keeps the balance/settlement view visible underneath and prevents layout jumps.
+- **Payer selection**: Replace horizontal `ScrollView` with a vertical radio-button list inside the sheet. On Android, horizontal scroll without indicator is a discoverability failure.
+- **Amount input**: Pre-format as the user types (e.g., typing "850" shows "$8.50" then "$85.00" then "$850.00"). Current raw text input with placeholder "850.00" feels unpolished.
+- **Member add**: Should be a simple inline field + button, not its own form panel. The current full-width form is overbuilt for a single text field.
+
+### Empty/Error/Loading States
+
+- **Loading**: Current horizontal band with clock icon is 52 px (line 876). Should be a full-screen skeleton shimmer for first load, then compact for subsequent loads. The "Cargando datos locales..." text is redundant — async storage loads in <100 ms, so the spinner flashes and disappears, creating a flicker rather than a trust signal.
+- **Empty groups**: The `EmptyState` component is good (ui.tsx:57-69) but the icon + text + button layout is left-aligned in a full-width card. Center it vertically and horizontally for the first-launch empty state.
+- **Error**: The error banner (lines 560-572) dismisses on tap. This is good. Add swipe-to-dismiss as well for Android-native feel.
+- **Zero-balance group**: Show a celebratory empty state with different iconography (green check, not neutral scale) to distinguish "all settled" from "no activity yet."
+
+### Balance Clarity
+
+- Add a **net-balance summary bar** at the top of the Balance tab: "Tu balance: +$1,240.00 MXN" or "Tu balance: −$890.00 MXN" depending on the signed-in member's position.
+- Show **simplified debt direction** with arrows and amounts in a compact visual graph rather than a flat list. Even a simple "Luis → Ana $280.00" with a right arrow is more scannable than the current full-card layout.
+- **Currency label consistency**: The `formatMoney` function produces `MXN 6,200.00` (Intl "code" display). But the `Amount` component doesn't add currency context for small amounts. Always show currency on the first amount in a card, then omit for subsequent amounts in the same card.
+
+---
+
+## 3. Screen-by-Screen Recommendations
+
+### Groups Tab
+
+| Problem | Recommendation |
+|---------|---------------|
+| Cards show only aggregate stats | Add per-group top debtor/creditor preview |
+| No quick-create for first launch | Keep the empty state but add a "Cargar datos demo" button next to "Crear" |
+| Group cards are uniform height | Vary card emphasis — selected group gets a subtle green top border accent |
+| "Activo" pill is the only selection signal | Add a check icon + bolder border; the green 2px border alone is easy to miss |
+
+### Balance Tab
+
+| Problem | Recommendation |
+|---------|---------------|
+| Forms push content below fold | Convert expense/member forms to bottom sheets |
+| Settlement list and member list compete for attention | Split into two collapsible sections: "Arreglos pendientes" (collapsed when empty) and "Balances" (always visible) |
+| "Quien le debe a quien" section header is vague | Change to "Arreglos sugeridos" with a subtitle "Marca como pagado cuando arreglen por fuera" |
+| "Sin pagos reales" is too small | Wrap it in a `goldPill` with icon, not 12 px text |
+| No way to see expense breakdown per member | Add a "Ver detalle" expandable under each member showing what they paid and what they owe |
+
+### Activity Tab
+
+| Problem | Recommendation |
+|---------|---------------|
+| Only shows selected group activity | Add a "Todos los grupos" toggle at top when multiple groups exist |
+| Expense rows don't show participants | Add participant avatars (small, 24 px) next to the payer |
+| Settlement rows say "Arreglo marcado como pagado" generically | Show the names: "Sofia pagó a Luis $280.00" |
+| No date headers | Group activity by date with sticky headers ("Hoy", "Ayer", "8 jun") |
+| Demo reset button is always visible | Move to Account/Perfil tab — it's a data management action, not a history action |
+
+### Account/Perfil Tab
+
+| Problem | Recommendation |
+|---------|---------------|
+| Tab is called "Cuenta" | Rename to "Perfil" |
+| Long explanatory text | Replace with a compact status card: "Modo demo · Datos locales · Sin sincronización" with icons |
+| No data deletion UI | Add "Eliminar datos locales" with confirmation (required for Play policy) |
+| No privacy/terms links | Add placeholder links for future privacy policy and terms (required for Play store listing) |
+| "Cerrar sesion local" is misleading | Rename to "Salir del perfil demo" — "sesion" implies a server session |
+
+---
+
+## 4. Spanish Copy Improvements for Mexico/LATAM
+
+### Current → Recommended
+
+| Current | Recommended | Reason |
+|---------|-------------|--------|
+| "Gastos compartidos, sin vueltas" | "Gastos compartidos, cuentas claras" | Reinforces brand name; "sin vueltas" is Argentine-coded |
+| "Tus grupos" | "Mis grupos" | "Tus" is second-person instructional; "Mis" feels owned |
+| "Sin grupos todavia" | "Aún no tienes grupos" | "todavia" needs accent (todavía); "Aún no tienes" is more natural |
+| "Crea un grupo para empezar" | "Crea tu primer grupo" | More direct, less instructional |
+| "Elige un grupo" | "Selecciona un grupo para ver balances" | Tells user what will happen |
+| "Quien le debe a quien" | "¿Quién debe a quién?" | Proper accents, question format matches mental model |
+| "Sin arreglos pendientes" | "Todo en paz por ahora" | Warmer, matches "En paz" pill language |
+| "Aun no hay integrantes" | "Agrega integrantes para comenzar" | "Aún" needs accent; action-oriented |
+| "Sin actividad todavia" | "Aún no hay actividad" | Accent fix; simpler |
+| "Marcar pagado" | "Marcar como pagado" | More natural, matches "Mark as paid" intent |
+| "Cerrar sesion local" | "Salir del perfil" | "sesión" needs accent; "local" is confusing |
+| "Modo invitado local" | "Perfil de demostración" | "invitado" implies guest access to a real system |
+| "Crear cuenta demo" | "Crear perfil de prueba" | "demo" is English; "prueba" is understood |
+| "Demo sin pagos reales" | "Demostración · Sin pagos reales" | More formal, better for trust |
+| "Cargando datos locales..." | (Remove, use skeleton) | Loading text with ellipsis feels like a slow web app |
+| "Grupo activo" | (Keep) | Good |
+| "Gastado" / "Abierto" | (Keep) | Good; concise |
+
+### General rules
+
+- Use "MXN" suffix on all amounts where space allows, not just in formatMoney output.
+- Avoid Spanglish: "sync", "demo", "login" should become "sincronización", "demostración", "inicio".
+- Use informal "tú" consistently (currently mixed — "Crea" is tú imperative, good). Avoid "usted" which reads as a bank app.
+- Accents: the codebase currently drops them. All Spanish copy should use proper accents (todavía, sesión, inglés, quién, aún).
+
+---
+
+## 5. Implementation Guidance
+
+### What to change in React Native files
+
+**`src/components/ui.tsx`**
+- Add `fontVariant: ["tabular-nums"]` to `styles.amount` and `styles.amountEmphasis`.
+- Increase `typography.micro` minimum size in the theme; update `pill` fontSize accordingly.
+- Add a `ConfirmationSheet` component (modal + "Cancelar" / "Confirmar" buttons) for settlement marking.
+- Add a `BottomSheet` wrapper component using React Native's `Modal` + `Animated` for form sheets.
+- Add a `SkeletonBlock` component with `Animated` opacity pulse for loading states.
+- Add a `StatusChip` component for the account/perfil sync state (replaces the wall of text).
+
+**`src/screens/MainScreen.tsx`**
+- Convert inline forms (expense, member, group) to bottom sheet modals triggered by action buttons.
+- Add a sticky summary band using `stickyHeaderIndices` on `ScrollView` or a separate absolutely-positioned view.
+- Collapse the header when a group is selected: show only the summary band, hide the evergreen branding.
+- Add confirmation dialog in `markSettlementPaid` callback.
+- Add cross-group activity view with a toggle.
+- Group activity by date with sticky date headers.
+- Add payer pre-selection hint in the expense form (e.g., "¿Quién pagó?" as the section label).
+- Add top debtor/creditor preview to `GroupCard`.
+
+**`src/theme/theme.ts`**
+- Update `spacing.md` to 14 and `spacing.lg` to 18.
+- Bump `typography.micro` to 13.
+- Add `surfaceTinted: "#F0EDE4"` for alternating row backgrounds in long lists.
+- Add `tabularNums` font config export for reuse.
+
+**`src/domain/money.ts`**
+- No changes needed. Logic is clean.
+
+**`src/domain/balances.ts`**
+- Add a `getTopDebtorAndCreditor(groupId)` helper that returns the top two balances for group card preview.
+- Add `buildActivity` support for cross-group queries.
+
+**`App.tsx`**
+- No changes needed. Thin and correct.
+
+### What to avoid
+
+- **Do not add React Navigation or a routing library.** The current tab-based single-screen pattern is correct for the MVP scope. Navigation libraries add bundle size, complexity, and break the Palari local-first model.
+- **Do not add `react-native-paper` or Material UI libraries.** The custom `ui.tsx` components are lightweight and sufficient. Adding a UI kit creates dependency risk and visual inconsistency with the warm-canvas design direction.
+- **Do not add animations beyond simple opacity/scale.** The app should feel fast and responsive, not playful. `Animated` for skeleton loading and sheet transitions is the upper bound.
+- **Do not change the color palette values.** The palette itself is well-chosen. Only change how colors are applied (see Section 2).
+- **Do not add multi-currency, real payments, cloud sync, or production backends.** These are out of scope per PRD.
+- **Do not add `@react-native-community/` packages** unless strictly necessary. Each native dependency complicates the Expo managed workflow and Play Store submission.
+- **Do not restructure the file tree** beyond adding new component files under `src/components/` (e.g., `BottomSheet.tsx`, `ConfirmationSheet.tsx`, `SkeletonBlock.tsx`, `StatusChip.tsx`).
+
+---
+
+## 6. Verification Suggestions
+
+### Manual verification (screenshots / viewport checks)
+
+1. **Android device/simulator at 360×640 dp (mdpi)**: Verify group cards don't truncate, summary band doesn't overlap content, and bottom nav items remain tappable at 48+ px.
+2. **Android device/simulator at 412×915 dp (xxhdpi, Pixel-like)**: Verify amount columns align, settlement arrows render clearly, and form sheets don't overflow.
+3. **Keyboard open with expense form**: Verify that the focused input remains visible, settlement/member rows below don't jump, and the submit button is reachable.
+4. **Empty states**: Capture each empty state (no groups, no expenses, no settlements, no activity) and verify they occupy >50% of the viewport and include a clear next action.
+5. **Dark text on `canvas` background**: Run through a contrast checker (e.g., Stark plugin or WebAIM) for all text/background pairs. The `mutedInk` (#60716C) on `canvas` (#F7F3EA) has a contrast ratio of ~3.7:1 — below AA for normal text. This needs attention.
+6. **Spanish copy audit**: Screenshot every string and verify no missing accents, no Spanglish, no inconsistent tú/usted usage.
+7. **Settlement flow**: Capture the "Marcar pagado" confirmation dialog, verify "Sin pagos reales" is prominent (>13 px, in a colored chip), and verify that marking paid updates the balance immediately.
+8. **Demo data reset**: Verify that resetting demo data returns all groups, expenses, and settlements to their original state without leaving orphan data.
+
+### Automated verification (future)
+
+- Snapshot tests with `react-native-testing-library` for Amount, Pill, EmptyState, and ActionButton components at multiple font scales.
+- Accessibility lint via ESLint plugin `eslint-plugin-react-native-a11y` for minimum touch target size and label requirements.
+- TypeScript strict mode to catch missing tone/style variants.
+
+---
+
+**Changed paths (informational only — no edits made):** This is a critique and plan document. No source files were modified.
+
+**Next action:** Present this critique to the founder/human. Upon acceptance, create implementation tickets scoped to specific sections (e.g., "CUE-0015-forms: Convert inline forms to bottom sheets", "CUE-0015-copy: Fix Spanish accents and Spanglish", "CUE-0015-cards: Add debtor/creditor preview to group cards").

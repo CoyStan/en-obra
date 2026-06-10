@@ -1,0 +1,8 @@
+First attempt:
+OPENCODE_DISABLE_AUTOUPDATE=1 OPENCODE_DISABLE_PRUNE=1 opencode run --model deepseek/deepseek-v4-pro --dir /home/quetza/projects/cuentas-claras/.palari/worktrees/CUE-0015 --file reports/evidence/CUE-0015/design-review/prompt.md --format default --title CUE-0015-design-review
+
+Second attempt:
+OPENCODE_DISABLE_AUTOUPDATE=1 OPENCODE_DISABLE_PRUNE=1 opencode run "Use the attached CUE-0015 design review prompt. Produce the requested critique and redesign plan only; do not edit files." --model deepseek/deepseek-v4-pro --dir /home/quetza/projects/cuentas-claras/.palari/worktrees/CUE-0015 --file reports/evidence/CUE-0015/design-review/prompt.md --format default --title CUE-0015-design-review
+
+Claude Code authoritative run:
+claude -p --model opus --tools Read,Grep,Glob,LS --output-format text < reports/evidence/CUE-0015/design-review/prompt.md

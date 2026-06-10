@@ -153,6 +153,14 @@ export function calculateGroupSummary(data: AppData, groupId: string) {
   };
 }
 
+export function getBalancePreview(data: AppData, groupId: string) {
+  const balances = calculateGroupBalances(data, groupId);
+  const creditor = balances.find((balance) => balance.netCents > 0) ?? null;
+  const debtor = [...balances].reverse().find((balance) => balance.netCents < 0) ?? null;
+
+  return { creditor, debtor };
+}
+
 export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
   const members = new Map(data.members.map((member) => [member.id, member]));
   const expenses: ActivityItem[] = data.expenses
@@ -162,7 +170,7 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
       groupId,
       type: "expense",
       title: expense.title,
-      subtitle: `Pago ${memberName(members, expense.payerId)}`,
+      subtitle: `Pagó ${memberName(members, expense.payerId)}`,
       amountCents: expense.amountCents,
       currency: expense.currency,
       createdAt: expense.createdAt,
@@ -172,11 +180,11 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
     id: settlement.id,
     groupId,
     type: "settlement",
-    title: "Arreglo marcado como pagado",
-    subtitle: `${memberName(members, settlement.fromMemberId)} pago a ${memberName(
+    title: `${memberName(members, settlement.fromMemberId)} pagó a ${memberName(
       members,
       settlement.toMemberId,
-    )} · Sin pagos reales`,
+    )}`,
+    subtitle: "Demostración · Sin pagos reales",
     amountCents: settlement.amountCents,
     currency: settlement.currency,
     createdAt: settlement.createdAt,

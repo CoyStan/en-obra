@@ -1,15 +1,15 @@
 ---
 id: CUE-0015
 title: Professional Android UI redesign and product-quality pass
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: design
 claimed_by: codex
 claimed_at: 2026-06-10T19:47:24Z
 claim_ref: refs/palari/claims/CUE-0015
-claim_heartbeat_at: 2026-06-10T19:47:24Z
-claim_expires_at: 2026-06-10T19:52:24Z
+claim_heartbeat_at: 2026-06-10T20:06:22Z
+claim_expires_at: 2026-06-10T20:36:22Z
 allowed_paths:
   - src/**
   - App.tsx

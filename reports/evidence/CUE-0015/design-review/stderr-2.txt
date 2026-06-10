@@ -1,0 +1,20 @@
+[0m
+> build · deepseek-v4-pro
+[0m
+[0m→ [0mRead docs/product/brief.md
+[0m→ [0mRead docs/product/prd.md
+[0m→ [0mRead docs/product/design-system.md
+[0m→ [0mRead docs/product/design-research.md
+[0m→ [0mRead docs/production/play-readiness.md
+[0m→ [0mRead docs/production/android-release-readiness.md
+[0m→ [0mRead App.tsx
+[0m→ [0mRead src/screens/MainScreen.tsx
+[0m→ [0mRead src/components/ui.tsx
+[0m→ [0mRead src/theme/theme.ts
+[0m→ [0mRead src/data/demoData.ts
+[0m✱ [0mGlob "docs/product/play-readiness.md"[90m 0 matches[0m
+[0m✱ [0mGlob "src/domain/**/*.ts"[90m 3 matches[0m
+[0m✱ [0mGlob "src/domain/**/*.tsx"[90m 0 matches[0m
+[0m→ [0mRead src/domain/types.ts
+[0m→ [0mRead src/domain/balances.ts
+[0m→ [0mRead src/domain/money.ts

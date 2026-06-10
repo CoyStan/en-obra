@@ -54,16 +54,24 @@ Suggested palette:
 ## Components
 
 - Balance summary band: group name, total spent, open amount, and trust note.
+- Group cards: show aggregate stats plus the top debtor/creditor preview when a
+  group has an open balance.
 - Member balance rows: avatar swatch, name, net amount, status label.
-- Settlement row: from -> to, amount, "Marcar pagado" action, demo-only note.
+- Settlement row: from -> to, amount, "Marcar como pagado" action, prominent
+  "Sin pagos reales" chip, and a confirmation dialog before local state changes.
 - Activity row: icon, title, subtitle, amount, timestamp.
 - Forms: compact labels, helper/error text, native-friendly inputs, clear save
-  and cancel actions.
+  and cancel actions. Expense/member forms should use bottom sheets instead of
+  pushing balances and settlements down the main scroll.
+- Perfil state: show demo/local/sync status as short chips, not long paragraphs.
 
 ## Copy Rules
 
 - Use "gasto", "grupo", "integrante", "balance", "arreglo", "pagado".
 - Use "Sin pagos reales" near settlement actions.
+- Use "Perfil" for local identity; avoid "Cuenta" when no real account provider
+  exists.
+- Use proper Spanish accents in visible copy.
 - Avoid long onboarding text in the app UI.
 - Empty states should be short and action-oriented.
 
@@ -74,3 +82,4 @@ Suggested palette:
 - Focus: press states must be visible.
 - State: color plus text labels for due/receive/even states.
 - Amounts: include currency text, not only symbols.
+- Amounts should use tabular numerals for easier scanning.

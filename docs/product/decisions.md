@@ -121,3 +121,13 @@ without provisioning signing credentials or Play upload secrets.
 Rationale: The repo can be very close to internal testing while avoiding secrets,
 paid services, and production deployment decisions. A real AAB requires human
 account and signing setup.
+
+### Use A Professional Android-First Finance UI Pass
+
+Decision: Improve the MVP UI with balance-first group previews, bottom-sheet
+forms, clearer settlement confirmation, stronger "Sin pagos reales" treatment,
+tabular amount rendering, Spanish copy polish, and compact local Perfil status.
+
+Rationale: The app must feel like a trustworthy consumer finance utility before
+internal testing. The pass keeps local-first behavior and avoids new libraries,
+payments, backend services, and secrets.

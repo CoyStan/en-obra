@@ -134,12 +134,13 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: typography.small,
     fontWeight: "800",
+    fontVariant: ["tabular-nums"],
   },
   amountDue: {
     color: colors.due,
   },
   amountEmphasis: {
-    fontSize: 24,
+    fontSize: 23,
   },
   amountSuccess: {
     color: colors.primary,
@@ -212,7 +213,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
-    padding: spacing.md,
+    minHeight: 104,
+    padding: spacing.lg,
   },
   emptyTitle: {
     color: colors.ink,
@@ -223,8 +225,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   goldPill: {
-    backgroundColor: "#FFF5D9",
-    color: colors.gold,
+    backgroundColor: colors.goldWash,
+    color: colors.ink,
   },
   neutralPill: {
     backgroundColor: colors.surfaceStrong,
@@ -267,7 +269,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: colors.ink,
     fontSize: typography.heading,
-    fontWeight: "800",
+    fontWeight: "900",
   },
   successPill: {
     backgroundColor: colors.successWash,
