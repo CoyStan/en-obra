@@ -1,7 +1,7 @@
 ---
 id: CUE-0005
 title: Polish and verify local MVP
-status: claimed
+status: in-review
 risk: R2
 priority: P1
 stream: app
