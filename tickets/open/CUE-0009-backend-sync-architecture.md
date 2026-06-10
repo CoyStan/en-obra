@@ -1,15 +1,15 @@
 ---
 id: CUE-0009
 title: Backend sync architecture
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T18:28:29Z
+claim_ref: refs/palari/claims/CUE-0009
+claim_heartbeat_at: 2026-06-10T18:28:29Z
+claim_expires_at: 2026-06-10T20:28:29Z
 allowed_paths:
   - src/sync/**
   - src/state/**
