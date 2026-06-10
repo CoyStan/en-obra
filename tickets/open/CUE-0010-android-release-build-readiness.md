@@ -1,7 +1,7 @@
 ---
 id: CUE-0010
 title: Android release build readiness
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: app
