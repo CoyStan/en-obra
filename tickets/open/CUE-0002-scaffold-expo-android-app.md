@@ -1,15 +1,15 @@
 ---
 id: CUE-0002
 title: Scaffold Expo Android app
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T17:57:41Z
+claim_ref: refs/palari/claims/CUE-0002
+claim_heartbeat_at: 2026-06-10T17:57:41Z
+claim_expires_at: 2026-06-10T19:57:41Z
 allowed_paths:
   - package.json
   - package-lock.json
