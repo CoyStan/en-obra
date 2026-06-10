@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Cuentas Claras",
+    "slug": "cuentas-claras",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "cuentasclaras",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "com.cuentasclaras.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0F7B63"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

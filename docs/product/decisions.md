@@ -65,3 +65,12 @@ asada with realistic member names and expense categories.
 
 Rationale: Localized examples make the app feel credible and keep verification
 fast.
+
+### Pin To Current Expo 56 Line
+
+Decision: Use Expo `56.0.9`, React `19.2.7`, and React Native `0.86.0` for the
+initial scaffold.
+
+Rationale: npm registry checks on 2026-06-10 showed these as the current package
+line. Staying on the current Expo line improves compatibility for Android,
+React Native Web verification, and Expo Go-style local demos.
