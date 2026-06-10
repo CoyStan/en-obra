@@ -1,7 +1,7 @@
 ---
 id: CUE-0002
 title: Scaffold Expo Android app
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: app
