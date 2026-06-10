@@ -1,7 +1,7 @@
 ---
 id: CUE-0001
 title: Plan Cuentas Claras MVP
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: product
