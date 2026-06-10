@@ -1,15 +1,15 @@
 ---
 id: CUE-0003
 title: Implement domain logic and local state
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T18:01:54Z
+claim_ref: refs/palari/claims/CUE-0003
+claim_heartbeat_at: 2026-06-10T18:01:54Z
+claim_expires_at: 2026-06-10T20:01:54Z
 allowed_paths:
   - src/domain/**
   - src/data/**
