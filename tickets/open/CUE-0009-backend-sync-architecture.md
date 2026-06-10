@@ -1,7 +1,7 @@
 ---
 id: CUE-0009
 title: Backend sync architecture
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: app
