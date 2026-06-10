@@ -112,3 +112,12 @@ connecting a production backend.
 Rationale: Backend sync changes privacy, infrastructure, security, deletion, and
 operating-cost responsibilities. A mock adapter gives the app a replaceable
 boundary and queue model without secrets or deployment.
+
+### Prepare EAS Internal Build Config Without Credentials
+
+Decision: Add `eas.json`, Android version metadata, and release-check scripts
+without provisioning signing credentials or Play upload secrets.
+
+Rationale: The repo can be very close to internal testing while avoiding secrets,
+paid services, and production deployment decisions. A real AAB requires human
+account and signing setup.

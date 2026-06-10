@@ -3,6 +3,9 @@
     "name": "Cuentas Claras",
     "slug": "cuentas-claras",
     "version": "0.1.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "orientation": "portrait",
     "scheme": "cuentasclaras",
     "userInterfaceStyle": "light",
@@ -15,6 +18,8 @@
     },
     "android": {
       "package": "com.cuentasclaras.app",
+      "versionCode": 1,
+      "permissions": [],
       "adaptiveIcon": {
         "backgroundColor": "#0F7B63"
       }

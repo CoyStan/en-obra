@@ -7,6 +7,9 @@
     "start": "expo start --host 0.0.0.0",
     "android": "expo start --android",
     "web": "expo start --web",
+    "export:web": "expo export --platform web --output-dir dist",
+    "release:android:check": "npm run typecheck && npm test && npx expo config --type public",
+    "build:android:internal": "eas build --platform android --profile internal",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "lint:palari": "./bin/palari lint"
