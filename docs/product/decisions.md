@@ -121,3 +121,13 @@ without provisioning signing credentials or Play upload secrets.
 Rationale: The repo can be very close to internal testing while avoiding secrets,
 paid services, and production deployment decisions. A real AAB requires human
 account and signing setup.
+
+### Separate Local Readiness From Play Upload Authority
+
+Decision: Track internal-testing readiness with a repo checklist that separates
+local verification from Play Console upload, signing, legal, and tester-list
+actions.
+
+Rationale: Agents can prepare and verify the app locally, but a signed AAB,
+store listing, Data Safety submission, privacy URL, tester distribution, and
+upload approval require human-owned accounts and credentials.
