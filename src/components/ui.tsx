@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: radius.md,
     flexDirection: "row",
+    flexShrink: 1,
     gap: spacing.sm,
     justifyContent: "center",
     minHeight: 46,
@@ -168,8 +169,10 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     color: colors.primaryDark,
+    flexShrink: 1,
     fontSize: typography.small,
     fontWeight: "800",
+    textAlign: "center",
   },
   dangerButton: {
     backgroundColor: colors.dueWash,

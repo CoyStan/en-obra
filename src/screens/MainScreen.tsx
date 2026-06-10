@@ -555,6 +555,7 @@ export function MainScreen() {
 
 const styles = StyleSheet.create({
   actionGrid: {
+    flexWrap: "wrap",
     flexDirection: "row",
     gap: spacing.sm,
   },
@@ -705,6 +706,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   groupStats: {
+    flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "space-between",
     gap: spacing.md,
@@ -845,6 +847,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderTopColor: colors.border,
     borderTopWidth: 1,
+    flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "space-between",
     gap: spacing.md,
@@ -894,6 +897,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   summaryStats: {
+    flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "space-between",
     gap: spacing.md,

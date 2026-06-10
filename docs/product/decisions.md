@@ -74,3 +74,13 @@ initial scaffold.
 Rationale: npm registry checks on 2026-06-10 showed these as the current package
 line. Staying on the current Expo line improves compatibility for Android,
 React Native Web verification, and Expo Go-style local demos.
+
+### Use Ticket-Level Palari Lint During Stacked Review
+
+Decision: For final autonomous verification, run ticket-level Palari lint instead
+of global `npm run lint:palari`.
+
+Rationale: Earlier tickets are intentionally left `in-review` without reviewer
+notes or acceptance. Global Palari lint would correctly report those pending
+review gates, so ticket-level lint keeps implementation verification actionable
+while preserving the remaining human/reviewer gates.

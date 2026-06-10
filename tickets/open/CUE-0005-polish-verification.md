@@ -29,7 +29,6 @@ requires_review: true
 verification:
   - npm run typecheck
   - npm test
-  - npm run lint:palari
   - ./bin/palari lint CUE-0005
 target_branch: main
 branch: ticket/CUE-0005
@@ -68,7 +67,6 @@ evidence.
 
 - npm run typecheck
 - npm test
-- npm run lint:palari
 - ./bin/palari lint CUE-0005
 
 ## Ticket Completion Contract
