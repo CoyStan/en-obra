@@ -4,14 +4,14 @@
   "manifest_file": "manifest.json",
   "ticket": "CUE-0015",
   "base_ref": "local working tree",
-  "head_sha": "5df6cc37e39237e5f446ea34e0b02397cf38a4f5",
-  "created_at": "2026-06-10T20:07:29Z",
+  "head_sha": "2a628ba92fffaa37a1a2c0423cace78ec561a60a",
+  "created_at": "2026-06-10T20:27:40Z",
   "status": "passed",
   "tests": 6,
   "failures": 0,
   "skipped": 0,
   "artifacts": [
-    {"name":"verification.log","sha256":"7f3ef0e8d4fd0ba34273d802d81e3b4b22ce8604b69abd3a5639e63e2f4f0f0c"},
+    {"name":"verification.log","sha256":"f8df1b2a16f43df39cba9ec85dd08f125e6b3c6f5ba5ab0a949a4df743713acf"},
     {"name":"junit.xml","sha256":"0e6b07e4e606af32797b718e04b8349fa59e5e725e870605b76b1d489bc19c96"},
     {"name":"palari.sarif","sha256":"21d36aa94fb0c0d9abc9760986cc6c8abafd763d6e2f69eba9a0dc27ea8acb62"}
   ]

@@ -29,7 +29,7 @@ import type {
   SettlementSuggestion,
 } from "../domain/types";
 import { useAppData } from "../state/useAppData";
-import { colors, radius, shadow, spacing, typography } from "../theme/theme";
+import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
 
 type TabId = "groups" | "balance" | "activity" | "account";
@@ -101,7 +101,7 @@ function GroupCard({
         {isSelected ? <Pill label="Activo" tone="success" /> : null}
       </View>
       <View style={styles.groupPreview}>
-        <MaterialCommunityIcons color={summary.openBalanceCents ? colors.due : colors.primary} name="swap-horizontal" size={18} />
+        <MaterialCommunityIcons color={summary.openBalanceCents ? colors.due : colors.primary} name="swap-horizontal" size={16} />
         <Text style={styles.groupPreviewText}>{previewCopy}</Text>
       </View>
       <View style={styles.groupStats}>
@@ -156,9 +156,9 @@ function ActivityRow({ item }: { item: ActivityItem }) {
     <View style={styles.activityRow}>
       <View style={[styles.activityIcon, isSettlement ? styles.activitySettlement : styles.activityExpense]}>
         <MaterialCommunityIcons
-          color={isSettlement ? colors.primary : colors.financeBlue}
+          color={isSettlement ? colors.primary : colors.mutedInk}
           name={isSettlement ? "check-circle-outline" : "receipt-text"}
-          size={20}
+          size={18}
         />
       </View>
       <View style={styles.activityCopy}>
@@ -386,7 +386,7 @@ export function MainScreen() {
                         <Avatar color={from?.avatarColor ?? colors.due} label={from?.name ?? "?"} />
                         <Text style={styles.personName}>{from?.name ?? "Integrante"}</Text>
                       </View>
-                      <MaterialCommunityIcons color={colors.mutedInk} name="arrow-right" size={22} />
+                      <MaterialCommunityIcons color={colors.mutedInk} name="arrow-right" size={18} />
                       <View style={styles.person}>
                         <Avatar color={to?.avatarColor ?? colors.primary} label={to?.name ?? "?"} />
                         <Text style={styles.personName}>{to?.name ?? "Integrante"}</Text>
@@ -396,7 +396,7 @@ export function MainScreen() {
                       <View>
                         <Amount cents={settlement.amountCents} emphasis tone="due" />
                         <View style={styles.demoChip}>
-                          <MaterialCommunityIcons color={colors.gold} name="shield-alert-outline" size={15} />
+                          <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
                           <Text style={styles.demoOnly}>Sin pagos reales</Text>
                         </View>
                       </View>
@@ -475,7 +475,7 @@ export function MainScreen() {
       <Section title="Perfil">
         {isAccountLoading ? (
           <View style={styles.loadingBand}>
-            <MaterialCommunityIcons color={colors.primary} name="progress-clock" size={22} />
+            <MaterialCommunityIcons color={colors.primary} name="progress-clock" size={18} />
             <Text style={styles.loadingText}>Cargando cuenta local...</Text>
           </View>
         ) : account.profile && account.mode === "signed-in" ? (
@@ -494,7 +494,7 @@ export function MainScreen() {
               <Pill label="Sin pagos reales" tone="gold" />
             </View>
             <View style={styles.accountNotice}>
-              <MaterialCommunityIcons color={colors.financeBlue} name="cloud-off-outline" size={20} />
+              <MaterialCommunityIcons color={colors.mutedInk} name="cloud-off-outline" size={18} />
               <Text style={styles.accountNoticeText}>
                 Este perfil no sube datos. Un proveedor real requiere decisión de privacidad e infraestructura.
               </Text>
@@ -605,7 +605,7 @@ export function MainScreen() {
                 <Avatar color={member.avatarColor} label={member.name} />
                 <Text style={styles.payerName}>{member.name}</Text>
                 {payerId === member.id ? (
-                  <MaterialCommunityIcons color={colors.primary} name="check-circle" size={22} />
+                  <MaterialCommunityIcons color={colors.primary} name="check-circle" size={18} />
                 ) : null}
               </Pressable>
             ))}
@@ -635,7 +635,7 @@ export function MainScreen() {
         <View style={styles.confirmOverlay}>
           <View style={styles.confirmCard}>
             <View style={styles.confirmIcon}>
-              <MaterialCommunityIcons color={colors.gold} name="shield-alert-outline" size={24} />
+              <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={18} />
             </View>
             <Text style={styles.confirmTitle}>Confirmar arreglo local</Text>
             <Text style={styles.confirmBody}>
@@ -650,7 +650,7 @@ export function MainScreen() {
               </View>
             ) : null}
             <View style={styles.demoChipStrong}>
-              <MaterialCommunityIcons color={colors.gold} name="alert-decagram" size={16} />
+              <MaterialCommunityIcons color={colors.mutedInk} name="alert-decagram" size={14} />
               <Text style={styles.demoOnlyStrong}>Sin pagos reales</Text>
             </View>
             <View style={styles.sheetActions}>
@@ -676,7 +676,7 @@ export function MainScreen() {
               <Text style={styles.title}>Gastos compartidos, cuentas claras</Text>
             </View>
             <View style={styles.brandMark}>
-              <MaterialCommunityIcons color={colors.surface} name="scale-balance" size={26} />
+              <MaterialCommunityIcons color={colors.surface} name="scale-balance" size={20} />
             </View>
           </View>
 
@@ -688,15 +688,15 @@ export function MainScreen() {
               }}
               style={styles.errorBanner}
             >
-              <MaterialCommunityIcons color={colors.due} name="alert-circle" size={20} />
+              <MaterialCommunityIcons color={colors.due} name="alert-circle" size={18} />
               <Text style={styles.errorText}>{error ?? accountError}</Text>
-              <MaterialCommunityIcons color={colors.due} name="close" size={18} />
+              <MaterialCommunityIcons color={colors.due} name="close" size={16} />
             </Pressable>
           ) : null}
 
           {isLoading ? (
             <View style={styles.loadingBand}>
-              <MaterialCommunityIcons color={colors.primary} name="progress-clock" size={22} />
+              <MaterialCommunityIcons color={colors.primary} name="progress-clock" size={18} />
               <Text style={styles.loadingText}>Cargando datos locales...</Text>
             </View>
           ) : null}
@@ -729,7 +729,7 @@ export function MainScreen() {
                 <MaterialCommunityIcons
                   color={primarySettlement ? colors.due : colors.primary}
                   name={primarySettlement ? "arrow-decision" : "check-decagram"}
-                  size={20}
+                  size={18}
                 />
                 <Text style={styles.summaryInsightText}>
                   {primarySettlement
@@ -762,7 +762,7 @@ export function MainScreen() {
                 <MaterialCommunityIcons
                   color={active ? colors.surface : colors.primaryDark}
                   name={tab.icon}
-                  size={21}
+                  size={20}
                 />
                 <Text style={[styles.navLabel, active && styles.navLabelActive]}>{tab.label}</Text>
               </Pressable>
@@ -785,12 +785,12 @@ const styles = StyleSheet.create({
   accountEmail: {
     color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "700",
+    fontWeight: "400",
   },
   accountName: {
     color: colors.ink,
     fontSize: typography.body,
-    fontWeight: "900",
+    fontWeight: "700",
   },
   accountNotice: {
     alignItems: "flex-start",
@@ -803,10 +803,10 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   accountNoticeText: {
-    color: colors.financeBlue,
+    color: colors.mutedInk,
     flex: 1,
     fontSize: typography.small,
-    fontWeight: "700",
+    fontWeight: "400",
     lineHeight: 19,
   },
   accountPanel: {
@@ -843,17 +843,17 @@ const styles = StyleSheet.create({
   activityDate: {
     color: colors.mutedInk,
     fontSize: typography.micro,
-    fontWeight: "700",
+    fontWeight: "400",
   },
   activityExpense: {
-    backgroundColor: "#E7EEF6",
+    backgroundColor: colors.surfaceStrong,
   },
   activityIcon: {
     alignItems: "center",
-    borderRadius: radius.sm,
-    height: 42,
+    borderRadius: 16,
+    height: 32,
     justifyContent: "center",
-    width: 42,
+    width: 32,
   },
   activityRow: {
     alignItems: "center",
@@ -863,22 +863,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
-    minHeight: 76,
+    minHeight: 64,
     padding: spacing.md,
   },
   activitySettlement: {
-    backgroundColor: colors.successWash,
+    backgroundColor: colors.surfaceTinted,
   },
   activitySubtitle: {
     color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "600",
+    fontWeight: "400",
     lineHeight: 18,
   },
   activityTitle: {
     color: colors.ink,
     fontSize: typography.body,
-    fontWeight: "800",
+    fontWeight: "600",
   },
   bottomNav: {
     backgroundColor: colors.surface,
@@ -893,25 +893,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.primary,
     borderRadius: radius.md,
-    height: 52,
+    height: 40,
     justifyContent: "center",
-    width: 52,
-    ...shadow,
+    width: 40,
   },
   content: {
-    gap: spacing.lg,
-    padding: spacing.lg,
+    gap: spacing.md,
+    padding: spacing.md,
     paddingBottom: spacing.xxl,
   },
   demoOnly: {
-    color: colors.ink,
+    color: colors.mutedInk,
     fontSize: typography.micro,
-    fontWeight: "800",
+    fontWeight: "500",
   },
   demoChip: {
     alignItems: "center",
     alignSelf: "flex-start",
-    backgroundColor: colors.goldWash,
+    backgroundColor: colors.surfaceStrong,
     borderRadius: radius.sm,
     flexDirection: "row",
     gap: spacing.xs,
@@ -922,8 +921,8 @@ const styles = StyleSheet.create({
   demoChipStrong: {
     alignItems: "center",
     alignSelf: "stretch",
-    backgroundColor: colors.goldWash,
-    borderColor: colors.gold,
+    backgroundColor: colors.surfaceStrong,
+    borderColor: colors.border,
     borderRadius: radius.md,
     borderWidth: 1,
     flexDirection: "row",
@@ -933,9 +932,9 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
   },
   demoOnlyStrong: {
-    color: colors.ink,
+    color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   errorBanner: {
     alignItems: "center",
@@ -952,13 +951,12 @@ const styles = StyleSheet.create({
     color: colors.due,
     flex: 1,
     fontSize: typography.small,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   eyebrow: {
-    color: colors.primary,
+    color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "800",
-    textTransform: "uppercase",
+    fontWeight: "600",
   },
   field: {
     gap: spacing.xs,
@@ -966,7 +964,7 @@ const styles = StyleSheet.create({
   fieldLabel: {
     color: colors.ink,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "600",
   },
   formPanel: {
     backgroundColor: colors.surface,
@@ -982,7 +980,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     borderWidth: 1,
     gap: spacing.md,
-    minHeight: 126,
+    minHeight: 108,
     padding: spacing.md,
   },
   groupCardSelected: {
@@ -998,13 +996,13 @@ const styles = StyleSheet.create({
   groupDescription: {
     color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "600",
+    fontWeight: "400",
     lineHeight: 18,
   },
   groupName: {
     color: colors.ink,
     fontSize: typography.heading,
-    fontWeight: "800",
+    fontWeight: "700",
   },
   groupStats: {
     flexWrap: "wrap",
@@ -1018,7 +1016,7 @@ const styles = StyleSheet.create({
   },
   groupPreview: {
     alignItems: "center",
-    backgroundColor: colors.surfaceTinted,
+    backgroundColor: colors.surfaceStrong,
     borderRadius: radius.sm,
     flexDirection: "row",
     gap: spacing.sm,
@@ -1030,13 +1028,13 @@ const styles = StyleSheet.create({
     color: colors.ink,
     flex: 1,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "500",
     lineHeight: 18,
   },
   header: {
     alignItems: "center",
     flexDirection: "row",
-    gap: spacing.lg,
+    gap: spacing.md,
     justifyContent: "space-between",
   },
   headerCopy: {
@@ -1044,14 +1042,14 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   input: {
-    backgroundColor: colors.canvas,
+    backgroundColor: colors.surfaceStrong,
     borderColor: colors.border,
     borderRadius: radius.md,
     borderWidth: 1,
     color: colors.ink,
     fontSize: typography.body,
-    fontWeight: "700",
-    minHeight: 48,
+    fontWeight: "400",
+    minHeight: 44,
     paddingHorizontal: spacing.md,
   },
   keyboard: {
@@ -1063,13 +1061,13 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     flexDirection: "row",
     gap: spacing.sm,
-    minHeight: 52,
+    minHeight: 44,
     padding: spacing.md,
   },
   loadingText: {
     color: colors.primaryDark,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "500",
   },
   memberCopy: {
     flex: 1,
@@ -1078,7 +1076,7 @@ const styles = StyleSheet.create({
   memberName: {
     color: colors.ink,
     fontSize: typography.body,
-    fontWeight: "800",
+    fontWeight: "600",
   },
   memberRow: {
     alignItems: "center",
@@ -1088,7 +1086,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
-    minHeight: 72,
+    minHeight: 60,
     padding: spacing.md,
   },
   navItem: {
@@ -1097,7 +1095,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: spacing.xs,
     justifyContent: "center",
-    minHeight: 54,
+    minHeight: 48,
     paddingVertical: spacing.sm,
   },
   navItemActive: {
@@ -1106,7 +1104,7 @@ const styles = StyleSheet.create({
   navLabel: {
     color: colors.primaryDark,
     fontSize: typography.micro,
-    fontWeight: "800",
+    fontWeight: "500",
   },
   navLabelActive: {
     color: colors.surface,
@@ -1119,17 +1117,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     gap: spacing.sm,
-    minHeight: 52,
+    minHeight: 46,
     padding: spacing.sm,
   },
   payerChipActive: {
-    backgroundColor: colors.successWash,
+    backgroundColor: colors.surfaceTinted,
     borderColor: colors.primary,
   },
   payerName: {
     color: colors.ink,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "500",
   },
   payerRow: {
     flexDirection: "row",
@@ -1144,7 +1142,7 @@ const styles = StyleSheet.create({
   personName: {
     color: colors.ink,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "500",
   },
   pressed: {
     opacity: 0.86,
@@ -1152,7 +1150,7 @@ const styles = StyleSheet.create({
   confirmBody: {
     color: colors.mutedInk,
     fontSize: typography.body,
-    fontWeight: "700",
+    fontWeight: "400",
     lineHeight: 22,
     textAlign: "center",
   },
@@ -1161,18 +1159,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRadius: radius.md,
     gap: spacing.md,
-    margin: spacing.lg,
+    margin: spacing.md,
     maxWidth: 460,
-    padding: spacing.lg,
+    padding: spacing.md,
     width: "92%",
   },
   confirmIcon: {
     alignItems: "center",
-    backgroundColor: colors.goldWash,
-    borderRadius: radius.md,
-    height: 48,
+    backgroundColor: colors.surfaceStrong,
+    borderRadius: 16,
+    height: 32,
     justifyContent: "center",
-    width: 48,
+    width: 32,
   },
   confirmOverlay: {
     alignItems: "center",
@@ -1183,7 +1181,7 @@ const styles = StyleSheet.create({
   confirmPerson: {
     color: colors.ink,
     fontSize: typography.small,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   confirmRoute: {
     alignItems: "center",
@@ -1198,7 +1196,7 @@ const styles = StyleSheet.create({
   confirmTitle: {
     color: colors.ink,
     fontSize: typography.heading,
-    fontWeight: "900",
+    fontWeight: "700",
     textAlign: "center",
   },
   safeArea: {
@@ -1231,13 +1229,13 @@ const styles = StyleSheet.create({
   statLabel: {
     color: colors.mutedInk,
     fontSize: typography.micro,
-    fontWeight: "800",
+    fontWeight: "500",
     marginBottom: spacing.xs,
   },
   statValue: {
     color: colors.ink,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "600",
   },
   summaryBand: {
     backgroundColor: colors.surface,
@@ -1245,25 +1243,23 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     borderWidth: 1,
     gap: spacing.md,
-    padding: spacing.lg,
-    ...shadow,
+    padding: spacing.md,
   },
   summaryDescription: {
     color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "600",
+    fontWeight: "400",
     lineHeight: 19,
   },
   summaryLabel: {
-    color: colors.primary,
+    color: colors.mutedInk,
     fontSize: typography.micro,
-    fontWeight: "900",
-    textTransform: "uppercase",
+    fontWeight: "500",
   },
   summaryMetricLabel: {
     color: colors.mutedInk,
     fontSize: typography.micro,
-    fontWeight: "800",
+    fontWeight: "500",
     marginBottom: spacing.xs,
   },
   summaryStats: {
@@ -1275,7 +1271,7 @@ const styles = StyleSheet.create({
   summaryTitle: {
     color: colors.ink,
     fontSize: typography.heading,
-    fontWeight: "900",
+    fontWeight: "700",
     marginTop: spacing.xs,
   },
   summaryTop: {
@@ -1285,7 +1281,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   tabContent: {
-    gap: spacing.lg,
+    gap: spacing.md,
   },
   summaryInsight: {
     alignItems: "center",
@@ -1293,14 +1289,14 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     flexDirection: "row",
     gap: spacing.sm,
-    minHeight: 48,
+    minHeight: 44,
     padding: spacing.md,
   },
   summaryInsightText: {
     color: colors.ink,
     flex: 1,
     fontSize: typography.small,
-    fontWeight: "900",
+    fontWeight: "500",
     lineHeight: 18,
   },
   modalOverlay: {
@@ -1316,11 +1312,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     gap: spacing.sm,
-    minHeight: 54,
+    minHeight: 48,
     padding: spacing.sm,
   },
   payerOptionActive: {
-    backgroundColor: colors.successWash,
+    backgroundColor: colors.surfaceTinted,
     borderColor: colors.primary,
     borderWidth: 2,
   },
@@ -1333,7 +1329,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: radius.md,
     gap: spacing.md,
     maxHeight: "88%",
-    padding: spacing.lg,
+    padding: spacing.md,
   },
   sheetActions: {
     flexDirection: "row",
@@ -1357,23 +1353,23 @@ const styles = StyleSheet.create({
   sheetSubtitle: {
     color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "700",
+    fontWeight: "400",
     lineHeight: 18,
   },
   sheetTitle: {
     color: colors.ink,
     fontSize: typography.heading,
-    fontWeight: "900",
+    fontWeight: "700",
   },
   title: {
     color: colors.ink,
     fontSize: typography.title,
-    fontWeight: "900",
-    lineHeight: 34,
+    fontWeight: "700",
+    lineHeight: 30,
   },
   trustNote: {
-    color: colors.financeBlue,
+    color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "400",
   },
 });

@@ -11,32 +11,35 @@
 
 ## Visual Direction
 
-- Background: warm off-white surfaces for readability.
-- Primary: deep green for trustworthy actions and positive balances.
-- Secondary: clear blue for navigation and neutral finance labels.
-- Accent: coral for payment due states and gold for highlights.
-- Avoid single-hue screens. Use color sparingly around information hierarchy.
+- Background: cool neutral canvas with white cards and hairline borders.
+- Primary: Telegram-like blue for navigation, selected states, and primary
+  actions.
+- Debt/error: restrained red only for negative balances and validation errors.
+- Demo/legal disclaimers: neutral gray chips, not highlight colors.
+- Avoid decorative accent rotation. Color should clarify state, not decorate.
 
 Suggested palette:
 
-- Ink: `#17211F`
-- Muted ink: `#60716C`
-- Canvas: `#F7F3EA`
+- Ink: `#1F2933`
+- Muted ink: `#5A6775`
+- Canvas: `#F2F4F7`
 - Surface: `#FFFFFF`
-- Primary green: `#0F7B63`
-- Primary dark: `#075443`
-- Finance blue: `#2F5D8C`
-- Due coral: `#D95F43`
-- Gold: `#C58B2C`
-- Border: `#DED8CB`
+- Surface strong: `#F6F8FA`
+- Surface tinted: `#EAF6FC`
+- Primary blue: `#229ED9`
+- Primary dark: `#168AC0`
+- Due red: `#D94B4B`
+- Border: `#DEE3EA`
 
 ## Typography
 
 - Use system fonts for Android reliability.
-- Screen titles: 26-30 px, semibold/bold.
+- Screen titles: 24 px, bold only where needed.
 - Section headings: 16-18 px, semibold.
 - Body: 14-16 px.
 - Metadata: 12-13 px with sufficient contrast.
+- Prefer 400-600 weights for normal copy; reserve 700 for screen titles,
+  section headings, and emphasized amounts.
 - No negative letter spacing.
 - Do not scale font size directly with viewport width.
 
@@ -44,6 +47,8 @@ Suggested palette:
 
 - Bottom navigation on mobile with three main tabs.
 - Fixed-height touch controls, minimum 44 px.
+- Keep icon buttons and avatar affordances compact; most icons should be 16-20
+  px with 32-40 px containers.
 - Cards only for repeated items or framed tools; avoid cards inside cards.
 - Dashboard sections use full-width surfaces and tight hierarchy rather than
   decorative hero sections.
@@ -64,6 +69,8 @@ Suggested palette:
   and cancel actions. Expense/member forms should use bottom sheets instead of
   pushing balances and settlements down the main scroll.
 - Perfil state: show demo/local/sync status as short chips, not long paragraphs.
+- Member avatars use a compact blue/slate palette to support recognition
+  without turning the screen into a multicolor dashboard.
 
 ## Copy Rules
 

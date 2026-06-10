@@ -19,8 +19,8 @@ verification note. Do not self-accept.
   reales".
 - The account area now reads as a local Perfil/demo state rather than a bank or
   real hosted account.
-- Claude Code `-p` evidence failed with auth 401; fallback model use is
-  documented and should be reviewed.
+- A follow-up Claude Code `-p` theme review succeeded after the earlier auth
+  failure and informed the calmer Telegram-like palette, density, and icon pass.
 - Screenshot capture was attempted but blocked by nested-worktree Expo/Metro
   source resolution; stale screenshots were removed.
 
@@ -30,6 +30,7 @@ verification note. Do not self-accept.
 - Reviewed: `npm test`
 - Reviewed: `npx expo config --type public`
 - Reviewed: design evidence under `reports/evidence/CUE-0015/design-review`
+- Reviewed: `reports/evidence/CUE-0015/design-review/claude-p-theme-review.md`
 - Reviewed: `reports/evidence/CUE-0015/visual-verification.md`
 
 ## Required Changes

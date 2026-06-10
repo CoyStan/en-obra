@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import type { ComponentProps, ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { formatMoney } from "../domain/money";
-import { colors, radius, shadow, spacing, typography } from "../theme/theme";
+import { colors, radius, spacing, typography } from "../theme/theme";
 
 type IconName = ComponentProps<typeof MaterialCommunityIcons>["name"];
 
@@ -37,7 +37,7 @@ export function ActionButton({
         <MaterialCommunityIcons
           color={tone === "primary" ? colors.surface : colors.primaryDark}
           name={icon}
-          size={18}
+          size={16}
         />
       ) : null}
       <Text style={[styles.buttonLabel, tone === "primary" && styles.primaryButtonLabel]}>
@@ -58,7 +58,7 @@ export function EmptyState({ action, body, icon, title }: EmptyStateProps) {
   return (
     <View style={styles.emptyState}>
       <View style={styles.emptyIcon}>
-        <MaterialCommunityIcons color={colors.primary} name={icon} size={24} />
+        <MaterialCommunityIcons color={colors.primary} name={icon} size={18} />
       </View>
       <View style={styles.emptyCopy}>
         <Text style={styles.emptyTitle}>{title}</Text>
@@ -133,29 +133,29 @@ const styles = StyleSheet.create({
   amount: {
     color: colors.ink,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "700",
     fontVariant: ["tabular-nums"],
   },
   amountDue: {
     color: colors.due,
   },
   amountEmphasis: {
-    fontSize: 23,
+    fontSize: 21,
   },
   amountSuccess: {
     color: colors.primary,
   },
   avatar: {
     alignItems: "center",
-    borderRadius: radius.sm,
-    height: 42,
+    borderRadius: 18,
+    height: 36,
     justifyContent: "center",
-    width: 42,
+    width: 36,
   },
   avatarLabel: {
     color: colors.surface,
-    fontSize: typography.body,
-    fontWeight: "800",
+    fontSize: typography.small,
+    fontWeight: "700",
   },
   button: {
     alignItems: "center",
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     gap: spacing.sm,
     justifyContent: "center",
-    minHeight: 46,
+    minHeight: 42,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     color: colors.primaryDark,
     flexShrink: 1,
     fontSize: typography.small,
-    fontWeight: "800",
+    fontWeight: "600",
     textAlign: "center",
   },
   dangerButton: {
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   emptyBody: {
     color: colors.mutedInk,
     fontSize: typography.small,
-    fontWeight: "600",
+    fontWeight: "400",
     lineHeight: 19,
   },
   emptyCopy: {
@@ -199,11 +199,11 @@ const styles = StyleSheet.create({
   },
   emptyIcon: {
     alignItems: "center",
-    backgroundColor: colors.successWash,
-    borderRadius: radius.sm,
-    height: 46,
+    backgroundColor: colors.surfaceStrong,
+    borderRadius: 16,
+    height: 32,
     justifyContent: "center",
-    width: 46,
+    width: 32,
   },
   emptyState: {
     alignItems: "center",
@@ -213,30 +213,30 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
-    minHeight: 104,
-    padding: spacing.lg,
+    minHeight: 86,
+    padding: spacing.md,
   },
   emptyTitle: {
     color: colors.ink,
     fontSize: typography.body,
-    fontWeight: "800",
+    fontWeight: "700",
   },
   ghostButton: {
     backgroundColor: "transparent",
   },
   goldPill: {
-    backgroundColor: colors.goldWash,
-    color: colors.ink,
+    backgroundColor: colors.surfaceStrong,
+    color: colors.mutedInk,
   },
   neutralPill: {
     backgroundColor: colors.surfaceStrong,
-    color: colors.financeBlue,
+    color: colors.mutedInk,
   },
   pill: {
     alignSelf: "flex-start",
     borderRadius: radius.sm,
     fontSize: typography.micro,
-    fontWeight: "800",
+    fontWeight: "600",
     overflow: "hidden",
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
@@ -247,18 +247,17 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: colors.primary,
-    ...shadow,
   },
   primaryButtonLabel: {
     color: colors.surface,
   },
   secondaryButton: {
-    backgroundColor: colors.successWash,
+    backgroundColor: colors.surfaceTinted,
     borderColor: colors.primary,
     borderWidth: 1,
   },
   section: {
-    gap: spacing.md,
+    gap: spacing.sm,
   },
   sectionHeader: {
     alignItems: "center",
@@ -269,7 +268,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: colors.ink,
     fontSize: typography.heading,
-    fontWeight: "900",
+    fontWeight: "700",
   },
   successPill: {
     backgroundColor: colors.successWash,

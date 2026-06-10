@@ -31,11 +31,15 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 - What changed: Added a design-review evidence bundle, balance-first group card
   previews, bottom-sheet member/expense forms, settlement confirmation modal,
   stronger "Sin pagos reales" treatment, compact Perfil status, activity copy
-  polish, tabular amount styling, spacing/typography tuning, and design docs.
+  polish, tabular amount styling, spacing/typography tuning, design docs, and a
+  restrained Telegram-like visual theme pass with a cool neutral canvas, blue
+  accent states, flatter cards, smaller icons, and compact avatar colors.
 - What did not change: No real payments, backend, production auth provider,
   analytics, paid APIs, secrets, package additions, or Play upload.
-- Blockers: Claude Code `-p` returned 401 despite stored Max auth, so
-  `deepseek/deepseek-v4-pro` opencode output was used as fallback design input.
+- Blockers: Earlier Claude Code `-p` attempts returned 401 despite stored Max
+  auth, so `deepseek/deepseek-v4-pro` opencode output was used as fallback
+  design input. Later `claude -p` succeeded and was used for the follow-up
+  professional theme review.
 - Next action: Review UI quality on mobile screenshots and merge only through an
   authority-approved path.
 
@@ -50,6 +54,7 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 - Passed: `./bin/palari lint CUE-0015`
 - Passed: `./bin/palari ci CUE-0015`
 - Failed: `claude -p --model opus`, auth 401.
+- Passed: `claude -p` follow-up theme review after auth recovered.
 - Failed: final screenshot capture from this nested worktree, stale parent-source
   bundle.
 - Not run: Play upload, signed Android build, real payment/backend flows.
@@ -68,6 +73,7 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 - Command log: `reports/evidence/CUE-0015/design-review/command.txt`
 - Fallback stdout: `reports/evidence/CUE-0015/design-review/stdout-2.txt`
 - Fallback stderr: `reports/evidence/CUE-0015/design-review/stderr-2.txt`
+- Claude follow-up: `reports/evidence/CUE-0015/design-review/claude-p-theme-review.md`
 - Claude auth status: `reports/evidence/CUE-0015/design-review/claude-auth-status.txt`
 - Summary: `reports/evidence/CUE-0015/design-review/summary.md`
 - Visual note: `reports/evidence/CUE-0015/visual-verification.md`

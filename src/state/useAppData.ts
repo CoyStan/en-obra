@@ -5,7 +5,7 @@ import type { AppData, Expense, Group, SettlementSuggestion } from "../domain/ty
 import { createId } from "../utils/id";
 import { cloneDemoData, loadPersistedData, persistData } from "./storage";
 
-const avatarColors = ["#0F7B63", "#2F5D8C", "#D95F43", "#C58B2C", "#7357A4", "#357C8A"];
+const avatarColors = ["#229ED9", "#168AC0", "#4F9BC7", "#6B7C93", "#3B82B8", "#7C8DA1"];
 
 type AddExpenseInput = {
   title: string;

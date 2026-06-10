@@ -4,14 +4,14 @@ export const demoData: AppData = {
   version: 1,
   selectedGroupId: "group-oaxaca",
   members: [
-    { id: "member-ana", name: "Ana", avatarColor: "#0F7B63", joinedAt: "2026-05-28T14:00:00Z" },
-    { id: "member-luis", name: "Luis", avatarColor: "#2F5D8C", joinedAt: "2026-05-28T14:00:00Z" },
-    { id: "member-maru", name: "Maru", avatarColor: "#D95F43", joinedAt: "2026-05-28T14:00:00Z" },
-    { id: "member-diego", name: "Diego", avatarColor: "#C58B2C", joinedAt: "2026-05-28T14:00:00Z" },
-    { id: "member-sofia", name: "Sofía", avatarColor: "#7357A4", joinedAt: "2026-05-28T14:00:00Z" },
-    { id: "member-fer", name: "Fer", avatarColor: "#357C8A", joinedAt: "2026-06-01T12:00:00Z" },
-    { id: "member-paola", name: "Paola", avatarColor: "#B25E4A", joinedAt: "2026-06-01T12:00:00Z" },
-    { id: "member-rene", name: "René", avatarColor: "#486A47", joinedAt: "2026-06-02T12:00:00Z" },
+    { id: "member-ana", name: "Ana", avatarColor: "#229ED9", joinedAt: "2026-05-28T14:00:00Z" },
+    { id: "member-luis", name: "Luis", avatarColor: "#168AC0", joinedAt: "2026-05-28T14:00:00Z" },
+    { id: "member-maru", name: "Maru", avatarColor: "#4F9BC7", joinedAt: "2026-05-28T14:00:00Z" },
+    { id: "member-diego", name: "Diego", avatarColor: "#6B7C93", joinedAt: "2026-05-28T14:00:00Z" },
+    { id: "member-sofia", name: "Sofía", avatarColor: "#3B82B8", joinedAt: "2026-05-28T14:00:00Z" },
+    { id: "member-fer", name: "Fer", avatarColor: "#7C8DA1", joinedAt: "2026-06-01T12:00:00Z" },
+    { id: "member-paola", name: "Paola", avatarColor: "#5B8FAE", joinedAt: "2026-06-01T12:00:00Z" },
+    { id: "member-rene", name: "René", avatarColor: "#536D83", joinedAt: "2026-06-02T12:00:00Z" },
   ],
   groups: [
     {

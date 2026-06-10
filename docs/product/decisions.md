@@ -131,3 +131,14 @@ tabular amount rendering, Spanish copy polish, and compact local Perfil status.
 Rationale: The app must feel like a trustworthy consumer finance utility before
 internal testing. The pass keeps local-first behavior and avoids new libraries,
 payments, backend services, and secrets.
+
+### Use A Restrained Telegram-Like Visual System
+
+Decision: Consolidate the UI around a cool neutral canvas, white surfaces,
+hairline borders, Telegram-like blue accent states, smaller 16-20 px icons, and
+a compact blue/slate avatar palette.
+
+Rationale: The earlier green/blue/gold/coral mix and large icon tiles made the
+app feel more decorative than professional. A calmer system improves scanning,
+reduces perceived randomness, and keeps warning color reserved for debt or
+errors.
