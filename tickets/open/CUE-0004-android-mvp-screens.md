@@ -1,15 +1,15 @@
 ---
 id: CUE-0004
 title: Build Android MVP screens
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T18:05:40Z
+claim_ref: refs/palari/claims/CUE-0004
+claim_heartbeat_at: 2026-06-10T18:05:40Z
+claim_expires_at: 2026-06-10T20:05:40Z
 allowed_paths:
   - App.tsx
   - src/components/**
