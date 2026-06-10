@@ -1,7 +1,7 @@
 ---
 id: CUE-0008
 title: Auth and account model
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: app
