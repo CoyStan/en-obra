@@ -1,15 +1,15 @@
 ---
 id: CUE-0001
 title: Plan Cuentas Claras MVP
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: product
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T17:52:00Z
+claim_ref: refs/palari/claims/CUE-0001
+claim_heartbeat_at: 2026-06-10T17:52:00Z
+claim_expires_at: 2026-06-10T17:57:00Z
 allowed_paths:
   - docs/product/**
   - tickets/open/**

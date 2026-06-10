@@ -1,4 +1,5 @@
 .palari/cache/
+.palari/locks/
 .palari/worktrees/
 .palari/gate/keys/
 .expo/
