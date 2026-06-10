@@ -1,7 +1,7 @@
 ---
 id: CUE-0006
 title: Constrain app test discovery
-status: claimed
+status: in-review
 risk: R1
 priority: P1
 stream: app
