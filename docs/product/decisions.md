@@ -1,0 +1,67 @@
+# Cuentas Claras Decision Log
+
+## 2026-06-10
+
+### Use Expo React Native TypeScript
+
+Decision: Build the MVP with Expo, React Native, and TypeScript.
+
+Rationale: The product is Android-first, but Expo gives the fastest practical
+path to a local mobile app, Android device testing, and browser-based mobile
+viewport verification without requiring native Android tooling in this
+environment.
+
+### Local-First Demo, No Accounts
+
+Decision: Store all data locally with seeded demo data and no authentication.
+
+Rationale: The MVP needs to prove the expense-sharing experience, not cloud
+collaboration. This avoids secrets, paid services, production infrastructure,
+and privacy decisions that require human approval.
+
+### MXN Only In MVP
+
+Decision: Use MXN as the only currency.
+
+Rationale: The target market is Mexico/LATAM and the user explicitly requested
+MXN default currency. Multi-currency exchange would require product and risk
+decisions outside the MVP.
+
+### No Real Payments
+
+Decision: Settlement actions only record local "paid" state. The UI must say
+"Sin pagos reales" near settlement actions.
+
+Rationale: Payment rails, SPEI wording, compliance, and financial integrations
+are hard blockers without human/legal/payment decisions.
+
+### Equal Splits Only
+
+Decision: Split MVP expenses equally among all current group members.
+
+Rationale: Equal split is the required core behavior and keeps the balance model
+auditable. Unequal splits can be a follow-up after the baseline is polished.
+
+### System Typography
+
+Decision: Use Android/system fonts instead of bundling custom fonts.
+
+Rationale: System fonts keep the local app reliable, avoid asset dependency
+work, and still support a polished finance UI through spacing, weight, and
+hierarchy.
+
+### State-Based Navigation For MVP
+
+Decision: Use a lightweight state-based shell with bottom tabs instead of adding
+a full navigation framework.
+
+Rationale: The MVP has a small surface area. Avoiding an extra framework reduces
+setup risk while preserving mobile UX expectations.
+
+### Demo Data Uses Mexico/LATAM Contexts
+
+Decision: Seed groups such as a Oaxaca trip, CDMX apartment, and Monterrey
+asada with realistic member names and expense categories.
+
+Rationale: Localized examples make the app feel credible and keep verification
+fast.
