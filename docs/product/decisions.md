@@ -84,3 +84,12 @@ Rationale: Earlier tickets are intentionally left `in-review` without reviewer
 notes or acceptance. Global Palari lint would correctly report those pending
 review gates, so ticket-level lint keeps implementation verification actionable
 while preserving the remaining human/reviewer gates.
+
+### Exclude Palari Worktrees From App Test Discovery
+
+Decision: Configure Vitest to include only app tests under `src/**` and exclude
+`.palari/**`.
+
+Rationale: Palari ticket worktrees live inside this repo to honor the "all app
+work inside the app repo" constraint. Without an explicit test config, root
+Vitest scans duplicate tests inside those worktrees and inflates results.

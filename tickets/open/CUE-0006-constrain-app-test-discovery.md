@@ -41,16 +41,20 @@ updated: 2026-06-10
 
 ## Goal
 
-State the result this ticket should produce.
+Ensure root app test runs only discover the canonical app tests, not duplicate
+tests inside Palari ticket worktrees.
 
 ## Scope
 
-List what may change.
+- Add Vitest configuration for include/exclude patterns.
+- Record the verification hygiene decision.
+- Write a technical report and evidence for this ticket.
 
 ## Acceptance
 
-- The scoped result exists.
-- Path and risk rules are respected.
+- `npm test` from the canonical app root reports one app test file, not duplicate
+  tests from `.palari/worktrees`.
+- Palari ticket lint passes for `CUE-0006`.
 
 ## Verification
 
