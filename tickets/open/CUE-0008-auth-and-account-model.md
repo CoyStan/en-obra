@@ -18,6 +18,7 @@ allowed_paths:
   - src/state/**
   - src/domain/**
   - src/data/**
+  - src/__tests__/**
   - docs/production/auth-account-model.md
   - docs/product/decisions.md
   - reports/**

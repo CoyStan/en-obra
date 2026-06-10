@@ -1,0 +1,18 @@
+{
+  "schema_version": "1",
+  "generator": "palari-ci",
+  "manifest_file": "manifest.json",
+  "ticket": "CUE-0008",
+  "base_ref": "local working tree",
+  "head_sha": "2b64a8d0891f468dfabce122b62f72d4caef43c6",
+  "created_at": "2026-06-10T18:27:48Z",
+  "status": "passed",
+  "tests": 5,
+  "failures": 0,
+  "skipped": 0,
+  "artifacts": [
+    {"name":"verification.log","sha256":"4ea58278db3fb0a884fecab446f1fc3c1f66e2be7a7aae6591eeec9ecf553662"},
+    {"name":"junit.xml","sha256":"205262d268e9e6ce5090c4816394e33c08c1e07c3152e35271fb9220f8eb5a6a"},
+    {"name":"palari.sarif","sha256":"6fe2d12a69fec368c16a9ad653e0a2aaca13981abf0193649fb076b077784004"}
+  ]
+}

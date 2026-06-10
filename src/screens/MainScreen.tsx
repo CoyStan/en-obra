@@ -16,18 +16,20 @@ import {
   calculateGroupSummary,
   getGroupMembers,
 } from "../domain/balances";
+import { useAccount } from "../auth/useAccount";
 import { formatMoney } from "../domain/money";
 import type { ActivityItem, AppData, Group, Member, MemberBalance } from "../domain/types";
 import { useAppData } from "../state/useAppData";
 import { colors, radius, shadow, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
 
-type TabId = "groups" | "balance" | "activity";
+type TabId = "groups" | "balance" | "activity" | "account";
 
 const tabs: { id: TabId; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap }[] = [
   { id: "groups", label: "Grupos", icon: "account-group" },
   { id: "balance", label: "Balance", icon: "scale-balance" },
   { id: "activity", label: "Actividad", icon: "history" },
+  { id: "account", label: "Cuenta", icon: "account-circle" },
 ];
 
 const dateFormatter = new Intl.DateTimeFormat("es-MX", {
@@ -153,6 +155,15 @@ function ActivityRow({ item }: { item: ActivityItem }) {
 
 export function MainScreen() {
   const {
+    account,
+    accountError,
+    clearAccountError,
+    createAccount,
+    isAccountLoading,
+    signOut,
+  } = useAccount();
+
+  const {
     addExpense,
     addMember,
     clearError,
@@ -178,6 +189,8 @@ export function MainScreen() {
   const [expenseAmount, setExpenseAmount] = useState("");
   const [expenseNote, setExpenseNote] = useState("");
   const [payerId, setPayerId] = useState("");
+  const [accountName, setAccountName] = useState("Ana Martinez");
+  const [accountEmail, setAccountEmail] = useState("ana@example.com");
 
   const selectedMembers = useMemo(
     () => (selectedGroup ? getGroupMembers(data, selectedGroup.id) : []),
@@ -225,6 +238,17 @@ export function MainScreen() {
     setExpenseAmount("");
     setExpenseNote("");
     setShowExpenseForm(false);
+  };
+
+  const submitAccount = async () => {
+    const ok = await createAccount({
+      displayName: accountName,
+      email: accountEmail,
+    });
+    if (ok) {
+      setAccountName("");
+      setAccountEmail("");
+    }
   };
 
   const renderGroups = () => (
@@ -463,6 +487,59 @@ export function MainScreen() {
     </View>
   );
 
+  const renderAccount = () => (
+    <View style={styles.tabContent}>
+      <Section title="Cuenta">
+        {isAccountLoading ? (
+          <View style={styles.loadingBand}>
+            <MaterialCommunityIcons color={colors.primary} name="progress-clock" size={22} />
+            <Text style={styles.loadingText}>Cargando cuenta local...</Text>
+          </View>
+        ) : account.profile && account.mode === "signed-in" ? (
+          <View style={styles.accountPanel}>
+            <View style={styles.accountTop}>
+              <Avatar color={colors.primary} label={account.profile.displayName} />
+              <View style={styles.accountCopy}>
+                <Text style={styles.accountName}>{account.profile.displayName}</Text>
+                <Text style={styles.accountEmail}>{account.profile.email}</Text>
+              </View>
+              <Pill label="Demo local" tone="gold" />
+            </View>
+            <View style={styles.accountNotice}>
+              <MaterialCommunityIcons color={colors.financeBlue} name="cloud-off-outline" size={20} />
+              <Text style={styles.accountNoticeText}>
+                Esta cuenta no sincroniza ni sube datos todavia. El proveedor real se conectara
+                despues de una decision de privacidad e infraestructura.
+              </Text>
+            </View>
+            <ActionButton icon="logout" label="Cerrar sesion local" onPress={signOut} tone="secondary" />
+          </View>
+        ) : (
+          <View style={styles.formPanel}>
+            <EmptyState
+              body="Crea una cuenta demo para probar el futuro flujo de perfil, sync y eliminacion."
+              icon="account-circle"
+              title="Modo invitado local"
+            />
+            <Field
+              label="Nombre"
+              onChangeText={setAccountName}
+              placeholder="Tu nombre"
+              value={accountName}
+            />
+            <Field
+              label="Correo"
+              onChangeText={setAccountEmail}
+              placeholder="nombre@correo.com"
+              value={accountEmail}
+            />
+            <ActionButton icon="account-plus" label="Crear cuenta demo" onPress={submitAccount} />
+          </View>
+        )}
+      </Section>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -480,10 +557,16 @@ export function MainScreen() {
             </View>
           </View>
 
-          {error ? (
-            <Pressable onPress={clearError} style={styles.errorBanner}>
+          {error || accountError ? (
+            <Pressable
+              onPress={() => {
+                clearError();
+                clearAccountError();
+              }}
+              style={styles.errorBanner}
+            >
               <MaterialCommunityIcons color={colors.due} name="alert-circle" size={20} />
-              <Text style={styles.errorText}>{error}</Text>
+              <Text style={styles.errorText}>{error ?? accountError}</Text>
               <MaterialCommunityIcons color={colors.due} name="close" size={18} />
             </Pressable>
           ) : null}
@@ -526,6 +609,7 @@ export function MainScreen() {
           {activeTab === "groups" ? renderGroups() : null}
           {activeTab === "balance" ? renderBalance() : null}
           {activeTab === "activity" ? renderActivity() : null}
+          {activeTab === "account" ? renderAccount() : null}
         </ScrollView>
 
         <View style={styles.bottomNav}>
@@ -554,6 +638,50 @@ export function MainScreen() {
 }
 
 const styles = StyleSheet.create({
+  accountCopy: {
+    flex: 1,
+    gap: spacing.xs,
+  },
+  accountEmail: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "700",
+  },
+  accountName: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+  },
+  accountNotice: {
+    alignItems: "flex-start",
+    backgroundColor: colors.surfaceStrong,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  accountNoticeText: {
+    color: colors.financeBlue,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "700",
+    lineHeight: 19,
+  },
+  accountPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  accountTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.md,
+  },
   actionGrid: {
     flexWrap: "wrap",
     flexDirection: "row",

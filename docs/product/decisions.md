@@ -93,3 +93,13 @@ Decision: Configure Vitest to include only app tests under `src/**` and exclude
 Rationale: Palari ticket worktrees live inside this repo to honor the "all app
 work inside the app repo" constraint. Without an explicit test config, root
 Vitest scans duplicate tests inside those worktrees and inflates results.
+
+### Use Local Mock Account Adapter Before Real Auth
+
+Decision: Add account UX through a local `local-mock` adapter instead of
+integrating a real identity provider.
+
+Rationale: Account state is needed for production-readiness planning, but real
+auth requires provider, privacy, deletion, and infrastructure decisions. A
+replaceable local adapter lets the UI and model mature without secrets or paid
+services.
