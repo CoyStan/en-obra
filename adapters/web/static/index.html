@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Palari Operator Console</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/app-shell.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to operator workspace</a>
+    <div class="shell">
+      <aside class="rail" aria-label="Palari Console status">
+        <div class="brand">
+          <span class="mark" aria-hidden="true"></span>
+          <div>
+            <span>Palari</span>
+            <strong>Operator Console</strong>
+          </div>
+        </div>
+
+        <div class="workspace-title">
+          <span>Workspace</span>
+          <strong id="railProject">Orchestration</strong>
+        </div>
+
+        <section class="root-plaque" aria-label="Repository root key">
+          <p class="section-label">Root Key</p>
+          <code id="rootFingerprint">not initialized</code>
+          <span id="rootPlaqueDetail">Signed acceptance is off.</span>
+        </section>
+
+        <section class="metrics" aria-label="Operational counts">
+          <p class="section-label">Operations</p>
+          <article>
+            <span>Attention</span>
+            <strong id="countAttention">0</strong>
+          </article>
+          <article>
+            <span>Active</span>
+            <strong id="countActive">0</strong>
+          </article>
+          <article>
+            <span>Review</span>
+            <strong id="countReview">0</strong>
+          </article>
+          <article>
+            <span>Accepted</span>
+            <strong id="countAccepted">0</strong>
+          </article>
+        </section>
+
+        <div class="rail-guide" aria-label="Console flow and keys">
+          <p class="section-label">Console Flow</p>
+          <ol>
+            <li><span>1</span> Pick a ticket</li>
+            <li><span>2</span> Read the custody chain</li>
+            <li><span>3</span> Copy the safe command</li>
+          </ol>
+          <p class="section-label">Keys</p>
+          <dl class="keymap">
+            <div><dt>/</dt><dd>search</dd></div>
+            <div><dt>j k</dt><dd>move</dd></div>
+            <div><dt>1 2 3</dt><dd>surface</dd></div>
+            <div><dt>t</dt><dd>theme</dd></div>
+          </dl>
+        </div>
+
+        <div class="rail-status">
+          <span class="pulse" aria-hidden="true"></span>
+          <div>
+            <strong id="railState">Loading</strong>
+            <span id="railDetail">Reading repository</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="workspace" id="main-content" tabindex="-1">
+        <header class="topbar">
+          <div class="view-title" aria-label="Current console view">
+            <span>Command center</span>
+            <strong>Queue + Custody</strong>
+          </div>
+          <div class="top-actions">
+            <span class="authority-chip" id="authorityChip">authority</span>
+            <span class="gate-chip" id="gateChip">gate</span>
+            <button class="ghost" id="themeButton" type="button" aria-pressed="false">Theme</button>
+            <button class="ghost" id="autoButton" type="button" aria-pressed="true">Auto 15s</button>
+            <button class="ghost" id="refreshButton" type="button">Refresh</button>
+            <span class="timestamp" id="timestamp">--</span>
+          </div>
+        </header>
+
+        <section class="canvas" id="overview" aria-label="Palari orchestration workspace">
+          <div class="canvas-head">
+            <div>
+              <p class="eyebrow">Local adapter · repository authority</p>
+              <h1 id="projectName">Palari Orchestrator</h1>
+              <p>Repository-governed agent work</p>
+            </div>
+            <div class="health-tile" aria-label="Current orchestration health">
+              <span class="state-dot" aria-hidden="true"></span>
+              <div>
+                <strong id="healthGrade">--</strong>
+                <span id="healthSummary">Loading health model</span>
+              </div>
+            </div>
+          </div>
+
+          <section class="operator-strip" aria-label="Operator summary">
+            <article>
+              <span>Next Action</span>
+              <strong id="operatorNext">Loading</strong>
+              <small id="operatorDetail">Reading repository state.</small>
+            </article>
+            <article>
+              <span>Human Gate</span>
+              <strong id="humanGate">--</strong>
+              <small id="humanGateDetail">No human gate loaded yet.</small>
+            </article>
+            <article>
+              <span>Signed Acceptance</span>
+              <strong id="gatePosture">--</strong>
+              <small id="gatePostureDetail">Checking gate posture.</small>
+            </article>
+            <article>
+              <span>Role System</span>
+              <strong id="roleSystem">--</strong>
+              <small id="roleSystemDetail">Checking active roles.</small>
+            </article>
+          </section>
+
+          <section class="workbench" aria-label="Ticket surfaces and selected ticket custody">
+            <div class="queue-column">
+              <div class="surface-tabs" role="tablist" aria-label="Ticket surfaces">
+                <button type="button" role="tab" id="tabQueue" aria-selected="true" data-surface="queue">Queue</button>
+                <button type="button" role="tab" id="tabBoard" aria-selected="false" data-surface="board">Board</button>
+                <button type="button" role="tab" id="tabLedger" aria-selected="false" data-surface="ledger">Ledger</button>
+              </div>
+
+              <section class="panel queue-panel" id="queue" role="tabpanel" aria-labelledby="tabQueue">
+                <div class="section-head">
+                  <div>
+                    <p class="eyebrow">Operator Queue</p>
+                    <h2>Pick What Needs Attention</h2>
+                  </div>
+                </div>
+                <div class="queue-controls">
+                  <input id="ticketSearch" type="search" autocomplete="off" placeholder="Search tickets, owners, roles, paths  ( / )" aria-label="Search tickets, owners, roles, and paths">
+                  <select id="queueFilter" aria-label="Filter tickets by action queue">
+                    <option value="attention">Needs attention</option>
+                    <option value="active">Active work</option>
+                    <option value="review">Review</option>
+                    <option value="done">Accepted</option>
+                    <option value="all">All tickets</option>
+                  </select>
+                </div>
+                <div class="result-line" id="queueResultLine">Loading tickets</div>
+                <div class="queue-list" id="queueList"></div>
+              </section>
+
+              <section class="panel board-panel" id="board" role="tabpanel" aria-labelledby="tabBoard" hidden>
+                <div class="section-head">
+                  <div>
+                    <p class="eyebrow">Pipeline Board</p>
+                    <h2>Lifecycle Lanes</h2>
+                  </div>
+                  <span class="pill" id="boardPill">0 tickets</span>
+                </div>
+                <div class="board-lanes" id="boardLanes"></div>
+              </section>
+
+              <section class="panel ticket-surface" id="ledger" role="tabpanel" aria-labelledby="tabLedger" hidden>
+                <div class="section-head">
+                  <div>
+                    <p class="eyebrow">Ticket Ledger</p>
+                    <h2>All Tickets</h2>
+                  </div>
+                  <span class="pill" id="ticketPill">0 tickets</span>
+                </div>
+                <div class="table-wrap">
+                  <table class="ticket-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Ticket</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Risk</th>
+                        <th scope="col">Stage</th>
+                        <th scope="col">Seal</th>
+                        <th scope="col">Next</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ticketRows"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            <div class="review-column">
+              <section class="panel focus-panel" id="review">
+                <div class="section-head">
+                  <div>
+                    <p class="eyebrow">Ticket Dossier</p>
+                    <h2>Selected Ticket</h2>
+                  </div>
+                  <span class="pill" id="focusPill">ticket</span>
+                </div>
+                <div class="ticket-focus" id="ticketFocus"></div>
+                <div class="custody" id="custody" aria-label="Chain of custody for the selected ticket"></div>
+              </section>
+
+              <section class="command-dock" id="commands" aria-label="Next CLI actions">
+                <div class="dock-head">
+                  <span>Safe Commands</span>
+                  <span class="pill">copy only</span>
+                </div>
+                <div class="command-list" id="commandList"></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="support-grid" aria-label="Supporting proof panels">
+            <section class="health-actions" aria-labelledby="healthActionsTitle">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Attention</p>
+                  <h2 id="healthActionsTitle">System Warnings</h2>
+                </div>
+                <span class="pill" id="warningPill">0 warnings</span>
+              </div>
+              <div class="health-action-list" id="healthActionsList"></div>
+            </section>
+
+            <section class="panel" id="roles">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Roles</p>
+                  <h2>Authority Map</h2>
+                </div>
+                <span class="pill" id="rolesPill">0 active</span>
+              </div>
+              <div class="role-list" id="roleList"></div>
+            </section>
+
+            <section class="panel" id="scope">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Scope</p>
+                  <h2>Path Partitions</h2>
+                </div>
+                <span class="pill" id="scopePill">clean</span>
+              </div>
+              <div id="scopeMap" class="scope-map"></div>
+            </section>
+
+            <section class="panel human-panel">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Human Summary</p>
+                  <h2>Decision Surface</h2>
+                </div>
+                <span class="pill" id="humanPill">ready</span>
+              </div>
+              <div class="human-summary" id="humanSummary"></div>
+            </section>
+
+            <section class="panel mono-panel">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Repository</p>
+                  <h2>Status</h2>
+                </div>
+                <span class="pill" id="branchPill">branch</span>
+              </div>
+              <pre id="statusOutput">Loading...</pre>
+            </section>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <template id="emptyTemplate">
+      <div class="empty">
+        <strong>No records yet</strong>
+        <span>The console will populate as tickets, reports, and evidence appear.</span>
+      </div>
+    </template>
+
+    <div class="sr-status" id="dashboardStatus" role="status" aria-live="polite"></div>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

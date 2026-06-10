@@ -1,0 +1,100 @@
+# Example Palari Orchestration config.
+# See schemas/palari.config.schema.json for a machine-readable schema.
+
+project_name: Cuentas Claras
+default_branch: main
+
+tickets_open_dir: tickets/open
+tickets_proposed_dir: tickets/proposed
+tickets_closed_dir: tickets/closed
+reports_dir: reports
+human_reports_dir: reports/human
+planning_reports_dir: reports/planning
+handoffs_dir: handoffs
+agent_skills_dir: agent-skills
+state_dir: .palari
+evidence_dir: reports/evidence
+roles_active_dir: roles/active
+roles_proposed_dir: roles/proposed
+roles_revoked_dir: roles/revoked
+
+memory_dir: memory
+memory_index_backend: sqlite # sqlite | json | none
+memory_cache_dir: .palari/cache
+memory_packet_limit: 5
+memory_related_limit: 2
+memory_active_only_default: true
+
+# Relative paths are resolved from the repository root.
+worktree_base: .palari/worktrees
+
+claim_lease_seconds: 300
+scope_overlap_policy: block
+concurrency_ignored_overlap_paths:
+  - tickets/**
+  - reports/**
+  - reports/human/**
+  - handoffs/**
+  - .palari/**
+
+# Agent authority profiles describe what an autonomous executor may do without
+# turning a human instruction into an implicit merge or acceptance permission.
+# Public/default posture is conservative: agents may prepare work, but humans
+# keep main-branch merge and ticket acceptance authority.
+authority_profile: team-safe
+authority_profiles:
+  solo-founder:
+    agent_can_commit: true
+    agent_can_push_branch: true
+    agent_can_open_pr: true
+    agent_can_merge_main: true
+    agent_can_accept: user-explicit
+  team-safe:
+    agent_can_commit: true
+    agent_can_push_branch: true
+    agent_can_open_pr: true
+    agent_can_merge_main: false
+    agent_can_accept: false
+  strict:
+    agent_can_commit: false
+    agent_can_push_branch: false
+    agent_can_open_pr: false
+    agent_can_merge_main: false
+    agent_can_accept: false
+
+default_forbidden_paths:
+  - .env
+  - .env.*
+  - "**/secrets/**"
+  - "**/*secret*"
+  - "**/*token*"
+  - infra/prod/**
+  - prod/**
+
+# Optional repo-wide custom report gates. Tickets can also declare
+# `required_reports` directly in frontmatter. Report names are repository
+# choices; the core only checks that a matching custom report exists.
+required_reports: []
+
+acceptance:
+  implementation_self_acceptance: forbidden
+
+# Forge-proof accept gate (vendored forgegate kernel in gate/).
+# When enabled, `palari accept` additionally requires a cryptographic
+# verdict: signed implement, test, and review attestations whose delegation
+# token chains verify to the repository root key, with byte-for-byte hash
+# flow between steps, dual control by distinct keys, commit binding, and a
+# freshness window. Acceptance fails closed if the kernel is unavailable.
+# Requires python3 with the 'cryptography' package. Quick start:
+#   ./bin/palari gate init
+#   ./bin/palari gate setup-ticket TICKET-ID
+# See contracts/signed-acceptance.md and gate/README.md.
+gate:
+  enabled: false
+  layout: layouts/palari-change.yml
+  keys_dir: .palari/gate/keys # private keys; gitignored, never commit
+  root_pub_file: .palari/gate/root.pub
+  token_validity_days: 365 # orchestrator token lifetime
+  ticket_token_days: 30 # per-ticket step token lifetime
+  max_age_seconds: 86400 # refuse evidence older than this at verify time
+  ci_key: ci # key identity that signs the test step

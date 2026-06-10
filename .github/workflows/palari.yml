@@ -1,0 +1,63 @@
+name: Palari Governance
+
+on:
+  pull_request:
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  palari:
+    name: palari
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      attestations: write
+      id-token: write
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Palari gates
+        shell: bash
+        env:
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+          GITHUB_BASE_REF: ${{ github.base_ref || 'main' }}
+          PALARI_TICKET_ID: ${{ vars.PALARI_TICKET_ID }}
+        run: |
+          set -euo pipefail
+          git fetch origin "${GITHUB_BASE_REF}:${GITHUB_BASE_REF}" || true
+          ./bin/palari github ci --base "$GITHUB_BASE_REF"
+
+      - name: Package Palari evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reports/evidence
+          tar -czf palari-evidence.tgz reports/evidence
+
+      - name: Upload Palari evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: palari-evidence
+          path: palari-evidence.tgz
+          if-no-files-found: ignore
+
+      - name: Attest Palari evidence
+        if: ${{ always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4
+        with:
+          subject-path: palari-evidence.tgz
+
+      - name: Upload Palari SARIF
+        if: ${{ always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4
+        with:
+          sarif_file: reports/evidence
+          category: palari

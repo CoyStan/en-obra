@@ -1,0 +1,11 @@
+.palari/cache/
+.palari/worktrees/
+.palari/gate/keys/
+.expo/
+.expo-shared/
+node_modules/
+dist/
+coverage/
+*.log
+.env
+.env.*

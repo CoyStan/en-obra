@@ -1,0 +1,298 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="${PALARI_ROOT:-}"
+if [[ -z "$ROOT" ]]; then
+	if git_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+		ROOT="$git_root"
+	else
+		ROOT="$(pwd)"
+	fi
+fi
+ROOT="$(cd "$ROOT" && pwd)"
+CONFIG="$ROOT/palari.config.yaml"
+
+PALARI_LIB_DIR="${PALARI_LIB_DIR:-$ROOT/lib/palari}"
+
+palari_require_module() {
+	local module_path="$1"
+	if [[ ! -f "$module_path" ]]; then
+		printf 'error: missing Palari module: %s\n' "$module_path" >&2
+		exit 2
+	fi
+}
+
+palari_require_module "$PALARI_LIB_DIR/core.bash"
+# shellcheck source=lib/palari/core.bash
+source "$PALARI_LIB_DIR/core.bash"
+palari_require_module "$PALARI_LIB_DIR/authority_lifecycle.bash"
+# shellcheck source=lib/palari/authority_lifecycle.bash
+source "$PALARI_LIB_DIR/authority_lifecycle.bash"
+palari_require_module "$PALARI_LIB_DIR/roles.bash"
+# shellcheck source=lib/palari/roles.bash
+source "$PALARI_LIB_DIR/roles.bash"
+palari_require_module "$PALARI_LIB_DIR/init_adopt.bash"
+# shellcheck source=lib/palari/init_adopt.bash
+source "$PALARI_LIB_DIR/init_adopt.bash"
+palari_require_module "$PALARI_LIB_DIR/proposals.bash"
+# shellcheck source=lib/palari/proposals.bash
+source "$PALARI_LIB_DIR/proposals.bash"
+palari_require_module "$PALARI_LIB_DIR/tickets_workspace.bash"
+# shellcheck source=lib/palari/tickets_workspace.bash
+source "$PALARI_LIB_DIR/tickets_workspace.bash"
+palari_require_module "$PALARI_LIB_DIR/demo.bash"
+# shellcheck source=lib/palari/demo.bash
+source "$PALARI_LIB_DIR/demo.bash"
+palari_require_module "$PALARI_LIB_DIR/agents_review_scope.bash"
+# shellcheck source=lib/palari/agents_review_scope.bash
+source "$PALARI_LIB_DIR/agents_review_scope.bash"
+palari_require_module "$PALARI_LIB_DIR/ci_accept.bash"
+# shellcheck source=lib/palari/ci_accept.bash
+source "$PALARI_LIB_DIR/ci_accept.bash"
+palari_require_module "$PALARI_LIB_DIR/dashboard_snapshot.bash"
+# shellcheck source=lib/palari/dashboard_snapshot.bash
+source "$PALARI_LIB_DIR/dashboard_snapshot.bash"
+palari_require_module "$PALARI_LIB_DIR/adapters_snapshot.bash"
+# shellcheck source=lib/palari/adapters_snapshot.bash
+source "$PALARI_LIB_DIR/adapters_snapshot.bash"
+palari_require_module "$PALARI_LIB_DIR/gate.bash"
+# shellcheck source=lib/palari/gate.bash
+source "$PALARI_LIB_DIR/gate.bash"
+unset -f palari_require_module
+
+usage() {
+	cat <<'USAGE'
+usage: palari COMMAND [ARGS]
+
+commands:
+  init [--ci] [--hooks]        Create configured directories and optional adapters.
+  adopt TARGET [--ci] [--hooks] Copy Palari into an existing git repository.
+  doctor [lifecycle]           Check install health or active ticket lifecycle.
+  status [--next]              Show compact orchestration status.
+  snapshot --json              Print the repo-native JSON state model.
+  authority [show|check]       Show or check the active agent authority profile.
+  role list|show|lint|graph    Inspect optional repo-native authority roles.
+  role packet|propose|adopt    Create role packets and governed role proposals.
+  propose create ID TITLE ...  Create a lead/planner proposal.
+  propose list|show|packet     Inspect proposed work before adoption.
+  propose adopt ID --ticket T  Adopt a proposal into an executable ticket.
+  lead [propose] ...           Alias for propose.
+  demo [--force]               Create local sample tickets, reports, and evidence.
+  ticket create ID TITLE ...   Create a scoped ticket.
+  ticket claim ID [BY]         Claim an open/reopened ticket.
+  ticket audit                 Explain active ticket next actions.
+  ticket heartbeat ID [TTL]    Renew a claimed ticket lease.
+  ticket ready ID              Move claimed/reopened ticket to in-review.
+  ticket block ID              Move ticket to blocked.
+  ticket needs-human ID        Move ticket to needs-human.
+  ticket reopen ID             Move in-review ticket to reopened.
+  worktree ID                  Prepare and verify ticket branch/worktree.
+  packet ID ROLE               Print specialist/reviewer/acceptor or custom-profile packet.
+  sandbox create ID            Create a disposable local repo sandbox.
+  agent run ID --executor opencode  Run an executor from a Palari packet.
+  memory ...                   Manage optional repo-native memory.
+  skill create NAME --description TEXT  Scaffold feature-contract Agent Skills.
+  ci ID [--base REF]           Run ticket gates and write evidence artifacts.
+  ci --repo-only               Run non-merge-gate repository lint evidence.
+  gate SUBCOMMAND [ARGS]       Forge-proof accept gate; run `palari gate help`.
+  lint [ID]                    Lint ticket fields and report gates.
+  report-lint [ID]             Lint report presence and headings.
+  scope-check [ID] [--base REF]
+                               Check local or PR-diff paths against ticket scope.
+  scope-overlaps [ID]          Detect overlapping active ticket write scopes.
+  github ci [--base REF]       Discover PR tickets and run merge-gate Palari CI.
+  github ruleset-command       Print the gh api command that activates required checks.
+  github install-ruleset       Install the GitHub ruleset with gh api.
+  mcp manifest                 Print optional MCP tool metadata.
+  web [--host HOST] [--port PORT]  Run the optional local web dashboard.
+  accept ID --by NAME          Human/authorized-reviewer acceptance gate.
+
+init options:
+  --ci                         Generate GitHub workflow and ruleset templates.
+  --hooks                      Generate local lefthook config.
+  --all                        Generate all optional adapters.
+  --force                      Overwrite generated adapter files.
+
+adopt options:
+  --ci                         Also generate GitHub workflow and ruleset templates.
+  --hooks                      Also generate local lefthook config.
+  --all                        Generate all optional adapters.
+  --force                      Overwrite existing copied Palari files.
+  --dry-run                    Print planned writes without copying files.
+
+authority options:
+  check ACTION                 ACTION is commit, push-branch, open-pr, merge-main, or accept.
+  --user-explicit              Allow user-explicit actions such as solo-founder accept.
+
+role options:
+  propose ROLE TITLE --by-role PARENT
+  adopt ROLE --by ACTOR
+  revoke ROLE --by ACTOR
+
+github options:
+  ci --base REF                 Diff changed ticket files against REF...HEAD.
+  ci --repo-only                Explicit non-merge-gate repository check.
+  --repo OWNER/REPO             Repository for ruleset installation.
+  --file PATH                   Ruleset JSON path; default .github/palari-required-checks.ruleset.json.
+
+ci options:
+  --base REF                    Diff ticket scope against REF...HEAD.
+  --repo-only                   Explicitly skip ticket scope enforcement.
+
+propose create options:
+  --intent TEXT                 Founder intent to seed the proposal body.
+  --planner NAME                Planner identity; default human.
+  --model NAME                  Planner model, e.g. deepseek/deepseek-v4-flash.
+  --source TEXT                 Source note, thread, issue, or request id.
+
+propose adopt options:
+  --ticket ID --title TEXT      Ticket id and optional ticket title override.
+  plus ticket create options below.
+
+ticket create options:
+  --stream NAME --risk R1 --priority P2 --allowed GLOB --forbidden GLOB
+  --verify CHECK --review --human --contract --required-report NAME
+  --target-branch main --by-role ROLE-ID --delegate-to-role ROLE-ID
+
+demo options:
+  --force                      Replace existing DEM-0001/DEM-0002 demo fixtures.
+
+ticket claim options:
+  --ttl SECONDS                Lease duration; default from claim_lease_seconds.
+  --allow-overlap              Acknowledge overlapping allowed_paths.
+
+agent run options:
+  --executor opencode          Executor adapter to run.
+  --model PROVIDER/MODEL       Optional opencode model id.
+  --prompt TEXT                Optional executor instruction.
+  --dry-run                    Prepare packet/evidence plan without invoking opencode.
+  --no-gates                   Skip automatic scope-check and ci after executor run.
+
+sandbox create options:
+  --path PATH                  Optional sandbox repo path.
+  --force                      Recreate an existing sandbox path.
+
+skill create options:
+  --description TEXT           Required Agent Skills frontmatter description.
+  --dir DIR                    Optional output dir; default agent-skills.
+USAGE
+}
+
+case "${1:-}" in
+init)
+	shift
+	cmd_init "$@"
+	;;
+adopt)
+	shift
+	cmd_adopt "$@"
+	;;
+doctor)
+	shift
+	cmd_doctor "$@"
+	;;
+status)
+	shift
+	cmd_status "$@"
+	;;
+snapshot)
+	shift
+	cmd_snapshot "${1:-"--json"}"
+	;;
+authority)
+	shift
+	cmd_authority "$@"
+	;;
+role)
+	shift
+	cmd_role "$@"
+	;;
+propose | proposal)
+	shift
+	cmd_propose "$@"
+	;;
+lead)
+	shift
+	if [[ "${1:-}" == "propose" || "${1:-}" == "proposal" ]]; then
+		shift
+	fi
+	cmd_propose "$@"
+	;;
+demo)
+	shift
+	cmd_demo "$@"
+	;;
+ticket)
+	shift
+	cmd_ticket "$@"
+	;;
+worktree)
+	shift
+	cmd_worktree "${1:-}"
+	;;
+packet | agent-packet)
+	shift
+	cmd_packet "${1:-}" "${2:-}"
+	;;
+sandbox)
+	shift
+	cmd_sandbox "$@"
+	;;
+agent)
+	shift
+	cmd_agent "$@"
+	;;
+memory)
+	shift
+	cmd_memory "$@"
+	;;
+skill)
+	shift
+	cmd_skill "$@"
+	;;
+ci)
+	shift
+	cmd_ci "$@"
+	;;
+gate)
+	shift
+	cmd_gate "$@"
+	;;
+lint)
+	shift
+	cmd_lint "${1:-}"
+	;;
+report-lint)
+	shift
+	cmd_report_lint "${1:-}"
+	;;
+scope-check)
+	shift
+	cmd_scope_check "$@"
+	;;
+scope-overlaps)
+	shift
+	cmd_scope_overlaps "${1:-}"
+	;;
+github)
+	shift
+	cmd_github "$@"
+	;;
+mcp)
+	shift
+	cmd_mcp "${1:-manifest}"
+	;;
+web)
+	shift
+	cmd_web "$@"
+	;;
+accept)
+	shift
+	cmd_accept "${1:-}" "${@:2}"
+	;;
+-h | --help | help | "") usage ;;
+*)
+	usage >&2
+	die "unknown command: $1"
+	;;
+esac
