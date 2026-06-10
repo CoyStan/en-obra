@@ -1,15 +1,15 @@
 ---
 id: CUE-0021
 title: Competitor feature map and local expense wins
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: product
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T21:05:49Z
+claim_ref: refs/palari/claims/CUE-0021
+claim_heartbeat_at: 2026-06-10T21:05:49Z
+claim_expires_at: 2026-06-10T21:10:49Z
 allowed_paths:
   - src/**
   - docs/product/**
