@@ -1,15 +1,15 @@
 ---
 id: CUE-0013
 title: Security and data deletion model
-status: open
+status: claimed
 risk: R3
 priority: P0
 stream: security
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T19:41:01Z
+claim_ref: refs/palari/claims/CUE-0013
+claim_heartbeat_at: 2026-06-10T19:41:01Z
+claim_expires_at: 2026-06-10T19:46:01Z
 allowed_paths:
   - src/security/**
   - src/state/**
