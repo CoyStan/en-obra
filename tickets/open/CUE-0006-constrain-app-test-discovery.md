@@ -1,15 +1,15 @@
 ---
 id: CUE-0006
 title: Constrain app test discovery
-status: open
+status: claimed
 risk: R1
 priority: P1
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-10T18:17:56Z
+claim_ref: refs/palari/claims/CUE-0006
+claim_heartbeat_at: 2026-06-10T18:17:56Z
+claim_expires_at: 2026-06-10T20:17:56Z
 allowed_paths:
   - vitest.config.ts
   - docs/product/decisions.md
