@@ -1,7 +1,7 @@
 ---
 id: CUE-0003
 title: Implement domain logic and local state
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: app
