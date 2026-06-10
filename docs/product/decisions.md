@@ -103,3 +103,12 @@ Rationale: Account state is needed for production-readiness planning, but real
 auth requires provider, privacy, deletion, and infrastructure decisions. A
 replaceable local adapter lets the UI and model mature without secrets or paid
 services.
+
+### Use Local Mock Sync Adapter Before Backend
+
+Decision: Add a `SyncAdapter` contract and local mock implementation instead of
+connecting a production backend.
+
+Rationale: Backend sync changes privacy, infrastructure, security, deletion, and
+operating-cost responsibilities. A mock adapter gives the app a replaceable
+boundary and queue model without secrets or deployment.
