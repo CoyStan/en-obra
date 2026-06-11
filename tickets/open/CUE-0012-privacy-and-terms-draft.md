@@ -1,7 +1,7 @@
 ---
 id: CUE-0012
 title: Privacy and terms draft
-status: claimed
+status: in-review
 risk: R3
 priority: P0
 stream: policy
