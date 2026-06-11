@@ -1,15 +1,15 @@
 ---
 id: CUE-0026
 title: Hybrid Style 1 Warm Material visual direction
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: design
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-11T06:31:28Z
+claim_ref: refs/palari/claims/CUE-0026
+claim_heartbeat_at: 2026-06-11T06:31:28Z
+claim_expires_at: 2026-06-11T08:31:28Z
 allowed_paths:
   - docs/product/**
   - reports/**
