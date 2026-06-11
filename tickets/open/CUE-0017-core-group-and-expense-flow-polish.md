@@ -1,15 +1,15 @@
 ---
 id: CUE-0017
 title: Core group and expense flow polish
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-11T05:46:49Z
+claim_ref: refs/palari/claims/CUE-0017
+claim_heartbeat_at: 2026-06-11T05:46:49Z
+claim_expires_at: 2026-06-11T07:46:49Z
 allowed_paths:
   - src/domain/**
   - src/state/**
@@ -40,7 +40,7 @@ worktree: /home/quetza/projects/cuentas-claras/.palari/worktrees/CUE-0017
 accepted_by:
 accepted_at:
 created: 2026-06-10
-updated: 2026-06-10
+updated: 2026-06-11
 ---
 
 # CUE-0017 Core group and expense flow polish
