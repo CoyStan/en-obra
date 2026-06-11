@@ -23,8 +23,11 @@ export function ActionButton({
 }: ActionButtonProps) {
   return (
     <Pressable
+      accessibilityLabel={label}
       accessibilityRole="button"
+      accessibilityState={{ disabled }}
       disabled={disabled}
+      hitSlop={4}
       onPress={onPress}
       style={({ pressed }) => [
         styles.button,
@@ -164,7 +167,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     gap: spacing.sm,
     justifyContent: "center",
-    minHeight: 42,
+    minHeight: 44,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },

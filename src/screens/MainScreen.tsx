@@ -88,7 +88,13 @@ function GroupCard({
 
   return (
     <Pressable
+      accessibilityHint="Selecciona este grupo y abre su balance."
+      accessibilityLabel={`${group.name}. Gastado ${formatMoney(
+        summary.totalSpentCents,
+      )}. Balance abierto ${formatMoney(summary.openBalanceCents)}. ${members.length} integrantes.`}
       accessibilityRole="button"
+      accessibilityState={{ selected: isSelected }}
+      hitSlop={4}
       onPress={onPress}
       style={({ pressed }) => [styles.groupCard, isSelected && styles.groupCardSelected, pressed && styles.pressed]}
     >
@@ -140,6 +146,7 @@ function Field({
     <View style={styles.field}>
       <Text style={styles.fieldLabel}>{label}</Text>
       <TextInput
+        accessibilityLabel={label}
         keyboardType={keyboardType}
         onChangeText={onChangeText}
         placeholder={placeholder}
@@ -625,8 +632,11 @@ export function MainScreen() {
           <View style={styles.payerOptions}>
             {selectedMembers.map((member) => (
               <Pressable
+                accessibilityHint="Selecciona quién pagó este gasto."
+                accessibilityLabel={`Pagó ${member.name}`}
                 accessibilityRole="radio"
                 accessibilityState={{ checked: payerId === member.id }}
+                hitSlop={4}
                 key={member.id}
                 onPress={() => setPayerId(member.id)}
                 style={[styles.payerOption, payerId === member.id && styles.payerOptionActive]}
@@ -716,6 +726,9 @@ export function MainScreen() {
 
           {error || accountError ? (
             <Pressable
+              accessibilityHint="Toca para cerrar el mensaje de error."
+              accessibilityLabel={`Error: ${error ?? accountError}`}
+              accessibilityRole="button"
               onPress={() => {
                 clearError();
                 clearAccountError();
@@ -788,7 +801,10 @@ export function MainScreen() {
             const active = activeTab === tab.id;
             return (
               <Pressable
+                accessibilityLabel={tab.label}
                 accessibilityRole="tab"
+                accessibilityState={{ selected: active }}
+                hitSlop={4}
                 key={tab.id}
                 onPress={() => setActiveTab(tab.id)}
                 style={[styles.navItem, active && styles.navItemActive]}

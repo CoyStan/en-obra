@@ -200,3 +200,13 @@ show who paid, how expenses were split, and that settlements are local records.
 Rationale: A finance app must make debt state auditable in one scan. Textual
 explanations reduce ambiguity for color-blind users and reinforce that Cuentas
 Claras does not move money.
+
+### Add Accessibility Metadata Without New Frameworks
+
+Decision: Improve core pressables and inputs with accessibility labels, selected
+and disabled states, hints, hit slop, and 44 px button targets using React Native
+primitives already in the app.
+
+Rationale: The MVP can become materially more usable for screen reader and
+motor-access users without adding dependencies or changing navigation
+architecture.
