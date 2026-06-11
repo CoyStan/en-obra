@@ -1,5 +1,12 @@
 # Security And Data Deletion Model
 
+Official references checked on 2026-06-11:
+
+- Google Play account deletion policy explanation:
+  https://android-developers.googleblog.com/2024/03/designing-your-account-deletion-experience-google-play.html
+- Google Play Data Safety guidance:
+  https://support.google.com/googleplay/android-developer/answer/10787469?hl=en
+
 ## Current Security Posture
 
 Cuentas Claras is currently a local-first Expo app:

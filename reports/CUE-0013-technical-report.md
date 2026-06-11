@@ -7,7 +7,7 @@ Compact specialist outcome ledger for future agents and reviewers.
 - Ticket: CUE-0013
 - Role: specialist
 - Branch: ticket/CUE-0013
-- Commit: pending
+- Commit: branch commit containing this report
 - Result: local deletion model implemented; human security/privacy decisions
   required before production backend
 
@@ -38,13 +38,20 @@ tickets/open/CUE-0013-security-and-data-deletion-model.md
 - Next action: Review the local deletion helper and decide whether a future UI
   ticket should expose a high-friction local data deletion action.
 
+## References Checked
+
+- Google Play account deletion policy explanation:
+  https://android-developers.googleblog.com/2024/03/designing-your-account-deletion-experience-google-play.html
+- Google Play Data Safety guidance:
+  https://support.google.com/googleplay/android-developer/answer/10787469?hl=en
+
 ## Verification
 
 - Passed: `npm run typecheck`
 - Passed: `npm test`
 - Passed: `./bin/palari lint CUE-0013`
-- Passed: `./bin/palari scope-check CUE-0013`
-- Passed: `./bin/palari ci CUE-0013`
+- Passed: `./bin/palari scope-check CUE-0013 --base main`
+- Passed: `./bin/palari ci CUE-0013 --base main`
 - Failed: none.
 - Not run: production backend deletion, legal/security approval, hosted deletion
   URL.
@@ -59,9 +66,9 @@ tickets/open/CUE-0013-security-and-data-deletion-model.md
 
 ## Review Status
 
-- Review status: not ready for acceptance.
+- Review status: needs-human.
 - Reviewer note: not created because production deletion promises require human
-  security/privacy confirmation.
+  security/privacy confirmation before review/acceptance can be meaningful.
 - Human gate: required by ticket frontmatter.
 
 ## Risks / Follow-Ups
