@@ -1,15 +1,15 @@
 ---
 id: CUE-0020
 title: Play Store internal testing QA readiness
-status: open
+status: claimed
 risk: R2
 priority: P1
 stream: release
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-11T06:03:19Z
+claim_ref: refs/palari/claims/CUE-0020
+claim_heartbeat_at: 2026-06-11T06:03:19Z
+claim_expires_at: 2026-06-11T08:03:19Z
 allowed_paths:
   - app.json
   - eas.json
@@ -41,7 +41,7 @@ worktree: /home/quetza/projects/cuentas-claras/.palari/worktrees/CUE-0020
 accepted_by:
 accepted_at:
 created: 2026-06-10
-updated: 2026-06-10
+updated: 2026-06-11
 ---
 
 # CUE-0020 Play Store internal testing QA readiness
