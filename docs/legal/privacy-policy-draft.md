@@ -2,12 +2,12 @@
 
 Producto: Cuentas Claras
 Estado: borrador para revision legal y aprobacion humana.
-Fecha del borrador: 2026-06-10
+Fecha del borrador: 2026-06-11
 
 Este documento es un borrador operativo para preparar pruebas internas en
-Android. No debe publicarse como politica final hasta que una persona autorizada
-confirme el responsable legal, datos de contacto, jurisdiccion, URL publica y
-respuestas de Google Play Data Safety.
+Android. No es asesoria legal y no debe publicarse como politica final hasta que
+una persona autorizada confirme el responsable legal, datos de contacto,
+jurisdiccion, URL publica y respuestas de Google Play Data Safety.
 
 ## Responsable
 

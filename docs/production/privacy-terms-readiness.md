@@ -11,6 +11,15 @@ testing preparation:
 They are not final legal documents and should not be published until reviewed
 and approved by a human with authority for legal/compliance decisions.
 
+Official references checked on 2026-06-11:
+
+- Google Play review/privacy policy guidance:
+  https://support.google.com/googleplay/android-developer/answer/9859455?hl=en
+- Google Play Data Safety guidance:
+  https://support.google.com/googleplay/android-developer/answer/10787469?hl=en
+- Google Play account deletion policy explanation:
+  https://android-developers.googleblog.com/2024/03/designing-your-account-deletion-experience-google-play.html
+
 ## Current Data Posture
 
 The app is currently local-first:
@@ -41,8 +50,8 @@ This needs human confirmation before submission:
 - Data encrypted in transit: not applicable to app-owned user data until a
   backend exists.
 - Data deletion request: local uninstall/clear-data covers local storage, but a
-  public deletion URL is required if production account creation or server-side
-  data is added.
+  public deletion URL and in-app deletion path are required if production
+  account creation or server-side data is added.
 - Financial information: user-entered expense amounts exist locally; Data Safety
   answers must follow Google Play definitions for collected/transmitted data.
 

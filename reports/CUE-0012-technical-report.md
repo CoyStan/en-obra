@@ -7,7 +7,7 @@ Compact specialist outcome ledger for future agents and reviewers.
 - Ticket: CUE-0012
 - Role: specialist
 - Branch: ticket/CUE-0012
-- Commit: pending
+- Commit: branch commit containing this report
 - Result: drafted; human legal approval required
 
 ## Files Changed
@@ -24,7 +24,8 @@ tickets/open/CUE-0012-privacy-and-terms-draft.md
 ## Outcome
 
 - What changed: Added Spanish-first draft privacy policy, draft terms, privacy
-  and Play Data Safety readiness notes, and a decision log entry.
+  and Play Data Safety readiness notes, official reference links, and a decision
+  log entry.
 - What did not change: No legal approval, privacy URL hosting, Play Console
   submission, backend, analytics, ads, payments, account deletion
   implementation, or third-party service integration.
@@ -33,6 +34,15 @@ tickets/open/CUE-0012-privacy-and-terms-draft.md
   require a human.
 - Next action: Human or authorized reviewer should review legal drafts and
   decide whether to revise, approve for hosting, or hold for counsel.
+
+## References Checked
+
+- Google Play review/privacy policy guidance:
+  https://support.google.com/googleplay/android-developer/answer/9859455?hl=en
+- Google Play Data Safety guidance:
+  https://support.google.com/googleplay/android-developer/answer/10787469?hl=en
+- Google Play account deletion policy explanation:
+  https://android-developers.googleblog.com/2024/03/designing-your-account-deletion-experience-google-play.html
 
 ## Verification
 

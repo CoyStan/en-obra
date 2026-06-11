@@ -2,12 +2,12 @@
 
 Producto: Cuentas Claras
 Estado: borrador para revision legal y aprobacion humana.
-Fecha del borrador: 2026-06-10
+Fecha del borrador: 2026-06-11
 
 Este documento es un borrador operativo para preparar pruebas internas en
-Android. No debe publicarse como terminos finales hasta que una persona
-autorizada confirme el responsable legal, jurisdiccion, datos de contacto,
-limitaciones aplicables y version publica.
+Android. No es asesoria legal y no debe publicarse como terminos finales hasta
+que una persona autorizada confirme el responsable legal, jurisdiccion, datos de
+contacto, limitaciones aplicables y version publica.
 
 ## Uso Del Producto
 
