@@ -4,9 +4,8 @@ Fresh-context review of the Android UI redesign and product-quality pass.
 
 ## Review Result
 
-Decision: reopen if screenshot evidence is mandatory before review; otherwise
-accept recommendation after an authorized reviewer inspects the code and visual
-verification note. Do not self-accept.
+Decision: accept recommendation after an authorized reviewer inspects the code
+and screenshot evidence. Do not self-accept.
 
 ## Findings
 
@@ -36,9 +35,9 @@ verification note. Do not self-accept.
 
 ## Required Changes
 
-- Capture additional 360x740 and 412x915 mobile screenshots before final
-  acceptance if the reviewer requires multi-viewport evidence from this branch.
+- None.
 
 ## Recommendation
 
-Recommend moving to review after Palari gates and screenshot evidence pass.
+Recommend acceptance by an authorized reviewer after inspecting the fresh
+360x740 and 412x915 screenshot evidence.

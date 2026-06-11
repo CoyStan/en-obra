@@ -3,7 +3,7 @@
 ## Result
 
 Screenshot capture now has accepted theme evidence from an isolated temp
-worktree run.
+worktree run, plus fresh multi-viewport Android-sized captures.
 
 ## What Worked
 
@@ -13,6 +13,8 @@ worktree run.
   symlink to the parent repo, preventing Metro from resolving stale parent
   source.
 - Headless Chromium captured a nonblank mobile viewport PNG at 390x844.
+- Headless Chromium captured nonblank mobile viewport PNGs at 360x740 and
+  412x915 after the branch was synced with current main.
 - The screenshot shows the expected professional theme: cool gray canvas,
   Telegram-like blue accent, smaller brand mark, "cuentas claras" title copy,
   and "Perfil" bottom tab.
@@ -20,6 +22,18 @@ worktree run.
 ## Current Evidence
 
 - `reports/evidence/CUE-0015/theme-preview.png`
+- `reports/evidence/CUE-0015/screenshots/mobile-360x740.png`
+- `reports/evidence/CUE-0015/screenshots/mobile-412x915.png`
+
+## Final Capture Notes
+
+- Source was copied to `/tmp/cuentas-claras-cue0015-run` outside the nested
+  Palari worktree.
+- Full installed dependencies were hardlinked from the canonical repo.
+- `npm run export:web` succeeded from the temp copy.
+- A static server served `dist` on `127.0.0.1:19015`.
+- Chromium captured both screenshots with DBus warnings only; image dimensions
+  were verified with ImageMagick `identify`.
 
 ## Earlier Stale Capture Issue
 
@@ -43,14 +57,7 @@ accepted screenshot was captured only after replacing the temp run copy's
 - `chromium --headless --screenshot=... --window-size=412,915`
 - `chromium --headless --no-sandbox --disable-dev-shm-usage --window-size=390,844 --virtual-time-budget=10000 --screenshot=reports/evidence/CUE-0015/theme-preview.png http://localhost:8083`
 
-## Recommended Follow-Up
+## Remaining Follow-Up
 
-For final acceptance, rerun multi-viewport capture from a non-nested checkout or
-an isolated temp run copy:
-
-```bash
-npm run export:web
-python3 -m http.server 19015 --bind 127.0.0.1 --directory dist
-chromium --headless --disable-gpu --no-sandbox --screenshot=reports/evidence/CUE-0015/screenshots/mobile-360x740.png --window-size=360,740 http://127.0.0.1:19015
-chromium --headless --disable-gpu --no-sandbox --screenshot=reports/evidence/CUE-0015/screenshots/mobile-412x915.png --window-size=412,915 http://127.0.0.1:19015
-```
+For final acceptance, a reviewer should inspect the screenshots directly. No
+additional screenshot blocker is known for CUE-0015.

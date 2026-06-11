@@ -44,15 +44,24 @@ updated: 2026-06-10
 
 ## Goal
 
-State the result this ticket should produce.
+Raise the MVP UI to a professional Android-first consumer-finance standard with
+clear balances, trustworthy settlement messaging, compact Spanish-first flows,
+and mobile screenshot evidence.
 
 ## Scope
 
-List what may change.
+- App UI, theme, demo data copy, balance preview helpers, and product design
+  docs.
+- CUE-0015 reports, evidence, reviewer note, and ticket metadata.
 
 ## Acceptance
 
-- The scoped result exists.
+- Group, balance, settlement, activity, and profile surfaces feel polished and
+  finance-appropriate on Android-sized screens.
+- "Sin pagos reales" is prominent near settlement actions and confirmation.
+- Forms use focused modal/bottom-sheet patterns without cluttering the main
+  balance view.
+- Multi-viewport mobile screenshots exist and are nonblank/readable.
 - Path and risk rules are respected.
 
 ## Verification
@@ -66,19 +75,27 @@ List what may change.
 
 ### Non-Goals
 
-- Nearby work this ticket must not absorb.
+- No real payments, backend, production auth provider, analytics, paid APIs,
+  secrets, Play upload, or new package dependencies.
 
 ### Definition Of Done
 
-- Concrete done condition.
+- UI polish, design docs, reports, reviewer note, Palari evidence, and mobile
+  screenshots are complete; app checks and Palari gates pass.
 
 ### Evidence Required
 
-- Report, command, review, screenshot, or manual check to inspect.
+- `reports/CUE-0015-technical-report.md`
+- `reports/CUE-0015-reviewer-note.md`
+- `reports/evidence/CUE-0015/visual-verification.md`
+- `reports/evidence/CUE-0015/screenshots/mobile-360x740.png`
+- `reports/evidence/CUE-0015/screenshots/mobile-412x915.png`
+- Typecheck, tests, Expo config, Palari lint/scope/ci output.
 
 ### Expansion Rules
 
-- Stop if scope, risk, or authority changes.
+- Stop if changes require payment semantics, backend sync, real auth,
+  production deletion promises, legal approval, or Play upload authority.
 
 ### Final Review Gate
 

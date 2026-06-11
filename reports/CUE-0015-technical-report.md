@@ -7,7 +7,7 @@ Compact specialist outcome ledger for future agents and reviewers.
 - Ticket: CUE-0015
 - Role: specialist
 - Branch: ticket/CUE-0015
-- Commit: pending
+- Commit: branch commit containing this report
 - Result: in-review
 
 ## Files Changed
@@ -50,9 +50,12 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 - Passed: `npx expo config --type public`
 - Passed: isolated temp-run mobile screenshot at 390x844 after replacing the
   temp run copy's `node_modules` symlink with local hardlinks.
-- Passed: `./bin/palari scope-check CUE-0015`
+- Passed: isolated temp-run mobile screenshots at 360x740 and 412x915 after
+  syncing with current main.
+- Passed: screenshot dimensions verified with `identify`.
+- Passed: `./bin/palari scope-check CUE-0015 --base main`
 - Passed: `./bin/palari lint CUE-0015`
-- Passed: `./bin/palari ci CUE-0015`
+- Passed: `./bin/palari ci CUE-0015 --base main`
 - Failed: `claude -p --model opus`, auth 401.
 - Passed: `claude -p` follow-up theme review after auth recovered.
 - Resolved: earlier nested-worktree screenshot capture produced stale
@@ -78,6 +81,8 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 - Summary: `reports/evidence/CUE-0015/design-review/summary.md`
 - Visual note: `reports/evidence/CUE-0015/visual-verification.md`
 - Theme screenshot: `reports/evidence/CUE-0015/theme-preview.png`
+- Mobile screenshot: `reports/evidence/CUE-0015/screenshots/mobile-360x740.png`
+- Mobile screenshot: `reports/evidence/CUE-0015/screenshots/mobile-412x915.png`
 
 ## Review Status
 
@@ -86,9 +91,9 @@ tickets/open/CUE-0015-professional-android-ui-redesign-and-product-quality-pass.
 
 ## Risks / Follow-Ups
 
-- CUE-0015 is based on main, which does not include unmerged CUE-0011 asset
-  config because `merge-main` authority is refused under Palari `team-safe`.
-- Run final multi-viewport screenshot verification on 360x740 and 412x915 after
-  this branch is merged or checked out outside the parent repo nesting.
-- A future ticket should expose the CUE-0013 local deletion helper in Perfil
-  once the security/data deletion branch is merged.
+- CUE-0015 has been synced with current main, including CUE-0011 through
+  CUE-0014.
+- A reviewer should inspect the 360x740 and 412x915 screenshot evidence before
+  acceptance.
+- A future UI ticket should expose the CUE-0013 local deletion helper in Perfil
+  behind a deliberate confirmation flow.
