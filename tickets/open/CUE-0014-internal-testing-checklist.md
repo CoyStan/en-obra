@@ -41,15 +41,23 @@ updated: 2026-06-10
 
 ## Goal
 
-State the result this ticket should produce.
+Create a Google Play internal-testing checklist that separates local repository
+readiness from human-owned Play Console, signing, legal/privacy, tester, and
+upload authority.
 
 ## Scope
 
-List what may change.
+- Internal testing checklist documentation.
+- Decision log entry for local readiness versus upload authority.
+- Technical report, reviewer note, evidence, and ticket metadata.
 
 ## Acceptance
 
-- The scoped result exists.
+- `docs/production/internal-testing-checklist.md` exists.
+- Checklist covers local verification, assets, Play prerequisites, build path,
+  smoke testing, tester feedback, demo-only boundaries, exit criteria, and
+  upload blockers.
+- Checklist reflects current CUE-0012/CUE-0013 human gates.
 - Path and risk rules are respected.
 
 ## Verification
@@ -61,19 +69,27 @@ List what may change.
 
 ### Non-Goals
 
-- Nearby work this ticket must not absorb.
+- No Play Console upload, tester invite, signing key, EAS login, legal approval,
+  privacy URL hosting, Data Safety submission, or production deployment.
 
 ### Definition Of Done
 
-- Concrete done condition.
+- Checklist, decision entry, technical report, reviewer note, and CI evidence
+  are present; Palari lint/scope/ci pass; upload blockers remain explicit.
 
 ### Evidence Required
 
-- Report, command, review, screenshot, or manual check to inspect.
+- `docs/production/internal-testing-checklist.md`
+- `reports/CUE-0014-technical-report.md`
+- `reports/CUE-0014-reviewer-note.md`
+- `reports/evidence/CUE-0014/`
+- Palari lint, scope-check, and CI output.
 
 ### Expansion Rules
 
-- Stop if scope, risk, or authority changes.
+- Stop and request human input if Play Console upload, signing credentials,
+  privacy URL, Data Safety answers, tester distribution, or production rollout
+  are required.
 
 ### Final Review Gate
 

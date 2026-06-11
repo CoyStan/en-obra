@@ -7,6 +7,29 @@ repo can upload an AAB from this environment. This checklist separates what is
 ready locally from what still requires human-owned accounts, credentials, legal
 approval, or Play Console access.
 
+Official references checked on 2026-06-11:
+
+- Google Play target API level requirements:
+  https://developer.android.com/google/play/requirements/target-sdk
+- Google Play store listing preview asset requirements:
+  https://support.google.com/googleplay/android-developer/answer/9866151?hl=en
+- Google Play privacy policy review guidance:
+  https://support.google.com/googleplay/android-developer/answer/9859455?hl=en
+- Google Play Data Safety guidance:
+  https://support.google.com/googleplay/android-developer/answer/10787469?hl=en
+- Expo app config:
+  https://docs.expo.dev/versions/latest/config/app/
+- Expo icon and splash assets:
+  https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/
+
+## Current Palari Gates
+
+- CUE-0011 app icon/splash/store assets: merged and in review.
+- CUE-0012 privacy and terms draft: merged and `needs-human`.
+- CUE-0013 security and data deletion model: merged and `needs-human`.
+- CUE-0014 internal testing checklist: ready for fresh review; do not
+  self-accept.
+
 ## Local Verification Before Build
 
 Run from the app repo:
@@ -152,7 +175,10 @@ Human/operator criteria:
 ## Do Not Upload Until
 
 - The UI has passed a fresh product-quality review.
-- Legal/privacy text has human approval.
+- Legal/privacy text has human approval and CUE-0012 is no longer
+  `needs-human`.
+- Security/data deletion posture has human approval and CUE-0013 is no longer
+  `needs-human`.
 - Data Safety answers match the exact build.
 - Account deletion requirements are satisfied if real account creation is
   included.
