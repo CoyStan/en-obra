@@ -1,7 +1,7 @@
 ---
 id: CUE-0011
 title: App icon splash and store assets
-status: claimed
+status: in-review
 risk: R2
 priority: P1
 stream: design
