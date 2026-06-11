@@ -130,3 +130,13 @@ sources rendered to PNG.
 Rationale: Release assets need consistency and repeatability. A simple balance
 mark matches the app's fairness metaphor and avoids relying on one-off generated
 bitmap art for a core brand asset.
+
+### Draft Privacy And Terms Before Legal Approval
+
+Decision: Keep privacy and terms copy as Spanish draft documents until a human
+approves legal owner, contact details, Play Data Safety answers, deletion
+process, and publication URLs.
+
+Rationale: The current app is local-first and avoids backend, payments,
+analytics, ads, and secrets, but legal text still requires accountable human
+approval before Play Store publication.
