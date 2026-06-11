@@ -1,7 +1,7 @@
 ---
 id: CUE-0028
 title: Visual QA and final hybrid polish
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: design
