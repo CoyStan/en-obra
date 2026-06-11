@@ -64,9 +64,9 @@ tickets/open/CUE-0012-privacy-and-terms-draft.md
 
 ## Review Status
 
-- Review status: not ready for acceptance.
+- Review status: needs-human.
 - Reviewer note: not created because final policy approval requires human legal
-  confirmation.
+  confirmation before review/acceptance can be meaningful.
 - Human gate: required by ticket frontmatter.
 
 ## Risks / Follow-Ups
