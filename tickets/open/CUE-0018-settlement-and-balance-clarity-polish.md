@@ -1,15 +1,15 @@
 ---
 id: CUE-0018
 title: Settlement and balance clarity polish
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-11T05:52:53Z
+claim_ref: refs/palari/claims/CUE-0018
+claim_heartbeat_at: 2026-06-11T05:52:53Z
+claim_expires_at: 2026-06-11T07:52:53Z
 allowed_paths:
   - src/domain/**
   - src/components/**
@@ -39,7 +39,7 @@ worktree: /home/quetza/projects/cuentas-claras/.palari/worktrees/CUE-0018
 accepted_by:
 accepted_at:
 created: 2026-06-10
-updated: 2026-06-10
+updated: 2026-06-11
 ---
 
 # CUE-0018 Settlement and balance clarity polish
