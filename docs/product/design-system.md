@@ -11,25 +11,38 @@
 
 ## Visual Direction
 
-- Background: cool neutral canvas with white cards and hairline borders.
-- Primary: Telegram-like blue for navigation, selected states, and primary
+- Direction: Style 1 trustworthy fintech minimal as the base, warmed by Style 2
+  Mexico/LATAM accents, and structured through Style 3 Android-native Material
+  patterns.
+- Background: cool near-white neutral canvas with white cards and hairline
+  borders.
+- Primary: agave/teal for brand, navigation, receive states, and primary
   actions.
+- Secondary interaction: restrained Android blue for selected controls and
+  small affordances.
+- Warmth: terracotta and marigold appear only in small context accents, chips,
+  icons, or debt-related scan points. They should never turn the app into a
+  beige/brown or folk-art theme.
 - Debt/error: restrained red only for negative balances and validation errors.
 - Demo/legal disclaimers: neutral gray chips, not highlight colors.
-- Avoid decorative accent rotation. Color should clarify state, not decorate.
+- Avoid decorative accent rotation. Color should clarify state, trust, or
+  localized context.
 
 Suggested palette:
 
-- Ink: `#1F2933`
-- Muted ink: `#5A6775`
-- Canvas: `#F2F4F7`
+- Ink: `#102A2F`
+- Muted ink: `#62717C`
+- Canvas: `#F4F7F6`
 - Surface: `#FFFFFF`
-- Surface strong: `#F6F8FA`
-- Surface tinted: `#EAF6FC`
-- Primary blue: `#229ED9`
-- Primary dark: `#168AC0`
-- Due red: `#D94B4B`
-- Border: `#DEE3EA`
+- Surface strong: `#F8FAF9`
+- Surface tinted: `#EAF7F3`
+- Primary agave: `#0F766E`
+- Primary deep: `#0B4F4A`
+- Android blue accent: `#1D5FD6`
+- Warm terracotta: `#C9552D`
+- Warm marigold: `#E4A11B`
+- Due red: `#C83A3A`
+- Border: `#DCE6E3`
 
 ## Typography
 
@@ -52,13 +65,22 @@ Suggested palette:
 - Cards only for repeated items or framed tools; avoid cards inside cards.
 - Dashboard sections use full-width surfaces and tight hierarchy rather than
   decorative hero sections.
+- First viewport should expose active group identity, receive/pay balance,
+  quick actions, and settlement suggestion before activity begins.
 - Primary action should be reachable in the first viewport.
+- Use Material-style segmented controls, chips, and action rails for group-level
+  controls instead of large explanatory panels.
 - Use stable dimensions for balance chips, tab buttons, and amount rows to avoid
   layout jumps.
 
 ## Components
 
-- Balance summary band: group name, total spent, open amount, and trust note.
+- Active group module: group name, description, member count, member chips, MXN
+  local chip, and compact utility actions.
+- Balance summary card: two-column "Te deben" / "Debes" scan, tabular amounts,
+  MXN labels, and positive/negative text labels.
+- Quick action rail: primary `Agregar gasto`, secondary `Integrante`, and local
+  settlement affordance with nearby `Sin pagos reales`.
 - Group cards: show aggregate stats plus the top debtor/creditor preview when a
   group has an open balance.
 - Member balance rows: avatar swatch, name, net amount, status label.
@@ -69,8 +91,8 @@ Suggested palette:
   and cancel actions. Expense/member forms should use bottom sheets instead of
   pushing balances and settlements down the main scroll.
 - Perfil state: show demo/local/sync status as short chips, not long paragraphs.
-- Member avatars use a compact blue/slate palette to support recognition
-  without turning the screen into a multicolor dashboard.
+- Member avatars use agave, slate, blue, and restrained warm accents to support
+  recognition without turning the screen into a multicolor dashboard.
 
 ## Copy Rules
 
@@ -78,6 +100,7 @@ Suggested palette:
 - Use "Sin pagos reales" near settlement actions.
 - Use "Perfil" for local identity; avoid "Cuenta" when no real account provider
   exists.
+- Prefer "Integrante" over generic "Miembro" in creation actions.
 - Use proper Spanish accents in visible copy.
 - Avoid long onboarding text in the app UI.
 - Empty states should be short and action-oriented.

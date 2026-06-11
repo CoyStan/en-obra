@@ -220,3 +220,14 @@ approval as explicit human-owned gates.
 Rationale: Local automation can validate config, tests, assets, and docs, but
 Play upload requires credentials, account authority, and final policy decisions
 that should not be simulated by agents.
+
+### Adopt Style 1 Plus Style 2 Warmth And Style 3 Android Structure
+
+Decision: Use the generated Style 1 trustworthy fintech minimal concept as the
+base visual direction, add restrained Mexico/LATAM warmth from Style 2, and
+organize the app with Android-native Material-style structure from Style 3.
+
+Rationale: The combination best matches the founder preference and the product
+need: a real finance utility should feel calm and trustworthy first, locally
+familiar second, and obviously Android-native in navigation, chips, action
+placement, and touch behavior.

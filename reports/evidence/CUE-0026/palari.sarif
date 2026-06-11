@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {"driver": {"name": "palari-ci", "informationUri": "https://github.com/CoyStan/palari-orchestrator"}},
+      "automationDetails": {"id": "palari/CUE-0026"},
+      "results": [
+        {"ruleId":"lint","level":"error","message":{"text":"report-lint: reports/CUE-0026-technical-report.md: missing required heading \"## Files Changed\"; add this heading to the technical report\nreport-lint: reports/CUE-0026-technical-report.md: missing required heading "## CI Evidence"; add this heading to the technical report\nreport-lint: reports/CUE-0026-technical-report.md: missing required heading "## Risks / Follow-Ups"; add this heading to the technical report\nreport-lint: failed with 1 issue(s)"},"locations":[{"physicalLocation":{"artifactLocation":{"uri":"tickets/open/CUE-0026-hybrid-style-1-warm-material-visual-direction.md"},"region":{"startLine":1}}}]},
+        {"ruleId":"verification 4","level":"error","message":{"text":"report-lint: reports/CUE-0026-technical-report.md: missing required heading \"## Files Changed\"; add this heading to the technical report\nreport-lint: reports/CUE-0026-technical-report.md: missing required heading "## CI Evidence"; add this heading to the technical report\nreport-lint: reports/CUE-0026-technical-report.md: missing required heading "## Risks / Follow-Ups"; add this heading to the technical report\nreport-lint: failed with 1 issue(s)"},"locations":[{"physicalLocation":{"artifactLocation":{"uri":"tickets/open/CUE-0026-hybrid-style-1-warm-material-visual-direction.md"},"region":{"startLine":1}}}]}
+      ]
+    }
+  ]
+}
