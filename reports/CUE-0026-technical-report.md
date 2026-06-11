@@ -15,9 +15,6 @@ Passed:
 - `npx expo config --type public`
 - `./bin/palari scope-check CUE-0026 --base main`
 - `./bin/palari lint CUE-0026`
-
-Pending:
-
 - `./bin/palari ci CUE-0026 --base main`
 
 ## Files Changed

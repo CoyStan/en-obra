@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="palari" tests="6" failures="2" skipped="0">
+<testsuite name="palari" tests="6" failures="0" skipped="0">
     <testcase classname="palari" name="scope-check"/>
-    <testcase classname="palari" name="lint"><failure message="failed"><![CDATA[report-lint: reports/CUE-0026-technical-report.md: missing required heading "## Files Changed"; add this heading to the technical report
-report-lint: reports/CUE-0026-technical-report.md: missing required heading "## CI Evidence"; add this heading to the technical report
-report-lint: reports/CUE-0026-technical-report.md: missing required heading "## Risks / Follow-Ups"; add this heading to the technical report
-report-lint: failed with 1 issue(s)]]></failure></testcase>
+    <testcase classname="palari" name="lint"/>
     <testcase classname="palari" name="verification 1"/>
     <testcase classname="palari" name="verification 2"/>
     <testcase classname="palari" name="verification 3"/>
-    <testcase classname="palari" name="verification 4"><failure message="failed"><![CDATA[report-lint: reports/CUE-0026-technical-report.md: missing required heading "## Files Changed"; add this heading to the technical report
-report-lint: reports/CUE-0026-technical-report.md: missing required heading "## CI Evidence"; add this heading to the technical report
-report-lint: reports/CUE-0026-technical-report.md: missing required heading "## Risks / Follow-Ups"; add this heading to the technical report
-report-lint: failed with 1 issue(s)]]></failure></testcase>
+    <testcase classname="palari" name="verification 4"/>
 </testsuite>
