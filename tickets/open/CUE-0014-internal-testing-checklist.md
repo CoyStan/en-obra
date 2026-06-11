@@ -1,15 +1,15 @@
 ---
 id: CUE-0014
 title: Internal testing checklist
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: release
 claimed_by: codex
 claimed_at: 2026-06-10T19:44:00Z
 claim_ref: refs/palari/claims/CUE-0014
-claim_heartbeat_at: 2026-06-10T19:44:00Z
-claim_expires_at: 2026-06-10T19:49:00Z
+claim_heartbeat_at: 2026-06-10T19:44:31Z
+claim_expires_at: 2026-06-10T20:14:31Z
 allowed_paths:
   - docs/production/internal-testing-checklist.md
   - docs/product/decisions.md
@@ -41,15 +41,23 @@ updated: 2026-06-10
 
 ## Goal
 
-State the result this ticket should produce.
+Create a Google Play internal-testing checklist that separates local repository
+readiness from human-owned Play Console, signing, legal/privacy, tester, and
+upload authority.
 
 ## Scope
 
-List what may change.
+- Internal testing checklist documentation.
+- Decision log entry for local readiness versus upload authority.
+- Technical report, reviewer note, evidence, and ticket metadata.
 
 ## Acceptance
 
-- The scoped result exists.
+- `docs/production/internal-testing-checklist.md` exists.
+- Checklist covers local verification, assets, Play prerequisites, build path,
+  smoke testing, tester feedback, demo-only boundaries, exit criteria, and
+  upload blockers.
+- Checklist reflects current CUE-0012/CUE-0013 human gates.
 - Path and risk rules are respected.
 
 ## Verification
@@ -61,19 +69,27 @@ List what may change.
 
 ### Non-Goals
 
-- Nearby work this ticket must not absorb.
+- No Play Console upload, tester invite, signing key, EAS login, legal approval,
+  privacy URL hosting, Data Safety submission, or production deployment.
 
 ### Definition Of Done
 
-- Concrete done condition.
+- Checklist, decision entry, technical report, reviewer note, and CI evidence
+  are present; Palari lint/scope/ci pass; upload blockers remain explicit.
 
 ### Evidence Required
 
-- Report, command, review, screenshot, or manual check to inspect.
+- `docs/production/internal-testing-checklist.md`
+- `reports/CUE-0014-technical-report.md`
+- `reports/CUE-0014-reviewer-note.md`
+- `reports/evidence/CUE-0014/`
+- Palari lint, scope-check, and CI output.
 
 ### Expansion Rules
 
-- Stop if scope, risk, or authority changes.
+- Stop and request human input if Play Console upload, signing credentials,
+  privacy URL, Data Safety answers, tester distribution, or production rollout
+  are required.
 
 ### Final Review Gate
 

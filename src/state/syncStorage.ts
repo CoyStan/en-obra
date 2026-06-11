@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { initialSyncState } from "../sync/localSyncAdapter";
 import type { SyncState } from "../sync/types";
 
-const SYNC_STORAGE_KEY = "cuentas-claras:sync:v1";
+export const SYNC_STORAGE_KEY = "cuentas-claras:sync:v1";
 
 function isSyncState(value: unknown): value is SyncState {
   if (!value || typeof value !== "object") {

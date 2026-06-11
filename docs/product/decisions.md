@@ -122,6 +122,45 @@ Rationale: The repo can be very close to internal testing while avoiding secrets
 paid services, and production deployment decisions. A real AAB requires human
 account and signing setup.
 
+### Use Deterministic Vector-Derived Store Assets
+
+Decision: Create icon, splash, and feature graphic assets from repo-local SVG
+sources rendered to PNG.
+
+Rationale: Release assets need consistency and repeatability. A simple balance
+mark matches the app's fairness metaphor and avoids relying on one-off generated
+bitmap art for a core brand asset.
+
+### Draft Privacy And Terms Before Legal Approval
+
+Decision: Keep privacy and terms copy as Spanish draft documents until a human
+approves legal owner, contact details, Play Data Safety answers, deletion
+process, and publication URLs.
+
+Rationale: The current app is local-first and avoids backend, payments,
+analytics, ads, and secrets, but legal text still requires accountable human
+approval before Play Store publication.
+
+### Define Local Data Deletion Before Backend
+
+Decision: Add a local deletion helper and security/data deletion model that
+clears app data, mock sync state, and local mock account state before any real
+backend exists.
+
+Rationale: Internal testing needs a concrete deletion story for local data, but
+remote account deletion, retention, and support processes require human
+privacy/security decisions before production sync ships.
+
+### Separate Local Readiness From Play Upload Authority
+
+Decision: Track internal-testing readiness with a repo checklist that separates
+local verification from Play Console upload, signing, legal, and tester-list
+actions.
+
+Rationale: Agents can prepare and verify the app locally, but a signed AAB,
+store listing, Data Safety submission, privacy URL, tester distribution, and
+upload approval require human-owned accounts and credentials.
+
 ### Use A Professional Android-First Finance UI Pass
 
 Decision: Improve the MVP UI with balance-first group previews, bottom-sheet

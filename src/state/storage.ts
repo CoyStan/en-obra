@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { demoData } from "../data/demoData";
 import type { AppData } from "../domain/types";
 
-const STORAGE_KEY = "cuentas-claras:v1";
+export const APP_DATA_STORAGE_KEY = "cuentas-claras:v1";
 
 function isAppData(value: unknown): value is AppData {
   if (!value || typeof value !== "object") {
@@ -24,7 +24,7 @@ export function cloneDemoData(): AppData {
 }
 
 export async function loadPersistedData(): Promise<AppData> {
-  const raw = await AsyncStorage.getItem(STORAGE_KEY);
+  const raw = await AsyncStorage.getItem(APP_DATA_STORAGE_KEY);
   if (!raw) {
     return cloneDemoData();
   }
@@ -34,9 +34,9 @@ export async function loadPersistedData(): Promise<AppData> {
 }
 
 export async function persistData(data: AppData) {
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  await AsyncStorage.setItem(APP_DATA_STORAGE_KEY, JSON.stringify(data));
 }
 
 export async function clearPersistedData() {
-  await AsyncStorage.removeItem(STORAGE_KEY);
+  await AsyncStorage.removeItem(APP_DATA_STORAGE_KEY);
 }
