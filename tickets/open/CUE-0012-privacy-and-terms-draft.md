@@ -1,20 +1,21 @@
 ---
 id: CUE-0012
 title: Privacy and terms draft
-status: claimed
+status: needs-human
 risk: R3
 priority: P0
 stream: policy
-claimed_by: codex
-claimed_at: 2026-06-10T19:36:38Z
-claim_ref: refs/palari/claims/CUE-0012
-claim_heartbeat_at: 2026-06-10T19:36:38Z
-claim_expires_at: 2026-06-10T19:41:38Z
+claimed_by:
+claimed_at:
+claim_ref:
+claim_heartbeat_at:
+claim_expires_at:
 allowed_paths:
   - docs/legal/**
   - docs/production/privacy-terms-readiness.md
   - docs/product/decisions.md
   - reports/**
+  - handoffs/**
   - tickets/open/CUE-0012-*
 forbidden_paths:
   - .env
@@ -36,22 +37,33 @@ worktree: /home/quetza/projects/cuentas-claras/.palari/worktrees/CUE-0012
 accepted_by:
 accepted_at:
 created: 2026-06-10
-updated: 2026-06-10
+updated: 2026-06-11
 ---
 
 # CUE-0012 Privacy and terms draft
 
 ## Goal
 
-State the result this ticket should produce.
+Prepare Spanish-first privacy and terms drafts for Android internal testing,
+plus a readiness note that identifies the human legal, Play Console, and data
+deletion decisions still required before publication.
 
 ## Scope
 
-List what may change.
+- Draft legal copy under `docs/legal/**`.
+- Privacy, terms, and Play Data Safety readiness documentation.
+- Decision log entry for draft-only legal posture.
+- Technical report and ticket metadata only.
 
 ## Acceptance
 
-- The scoped result exists.
+- `docs/legal/privacy-policy-draft.md` exists and clearly describes current
+  local-only data handling.
+- `docs/legal/terms-draft.md` exists and clearly states that settlements are not
+  real payments.
+- `docs/production/privacy-terms-readiness.md` records Play/Data Safety,
+  deletion, and human approval needs.
+- Human legal/compliance approval remains explicit and unresolved.
 - Path and risk rules are respected.
 
 ## Verification
@@ -64,19 +76,28 @@ List what may change.
 
 ### Non-Goals
 
-- Nearby work this ticket must not absorb.
+- No final legal approval.
+- No privacy URL hosting.
+- No Play Console submission.
+- No backend, real auth, analytics, ads, payment, or deletion implementation.
 
 ### Definition Of Done
 
-- Concrete done condition.
+- Draft documents, readiness note, decision entry, and technical report are in
+  place; Palari lint/scope/ci pass; ticket is ready for non-self review while
+  preserving the human legal gate.
 
 ### Evidence Required
 
-- Report, command, review, screenshot, or manual check to inspect.
+- `reports/CUE-0012-technical-report.md`
+- `reports/evidence/CUE-0012/`
+- Palari lint, scope-check, and CI output.
 
 ### Expansion Rules
 
-- Stop if scope, risk, or authority changes.
+- Stop and request human input if publication, legal approval, support contact,
+  data safety answers, deletion URL, monetization, production backend, or real
+  payments are required.
 
 ### Final Review Gate
 
