@@ -1,7 +1,7 @@
 ---
 id: CUE-0019
 title: Empty loading error and accessibility polish
-status: claimed
+status: in-review
 risk: R2
 priority: P1
 stream: app
