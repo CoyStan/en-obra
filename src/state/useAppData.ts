@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { calculateGroupSummary } from "../domain/balances";
-import { parseMoneyInput } from "../domain/money";
 import type { AppData, Expense, Group, SettlementSuggestion } from "../domain/types";
 import { createId } from "../utils/id";
+import { validateExpenseInput, validateGroupInput, validateMemberInput } from "./flowValidation";
 import { cloneDemoData, loadPersistedData, persistData } from "./storage";
 
 const avatarColors = ["#229ED9", "#168AC0", "#4F9BC7", "#6B7C93", "#3B82B8", "#7C8DA1"];
@@ -78,17 +78,17 @@ export function useAppData() {
   const createGroup = useCallback((name: string, description = "") => {
     const createdAt = now();
     const groupId = createId("group");
-    const cleanName = name.trim();
-    if (!cleanName) {
-      setError("Ponle nombre al grupo.");
-      return;
+    const validation = validateGroupInput(name, description);
+    if (!validation.ok) {
+      setError(validation.error);
+      return false;
     }
 
     updateData((current) => {
       const group: Group = {
         id: groupId,
-        name: cleanName,
-        description: description.trim(),
+        name: validation.value.name,
+        description: validation.value.description,
         createdAt,
         updatedAt: createdAt,
         memberIds: [],
@@ -99,20 +99,22 @@ export function useAppData() {
         selectedGroupId: groupId,
       };
     });
+    setError(null);
+    return true;
   }, [updateData]);
 
   const addMember = useCallback((groupId: string, name: string) => {
-    const cleanName = name.trim();
-    if (!cleanName) {
-      setError("Escribe el nombre del integrante.");
-      return;
+    const validation = validateMemberInput(name);
+    if (!validation.ok) {
+      setError(validation.error);
+      return false;
     }
 
     updateData((current) => {
       const memberId = createId("member");
       const member = {
         id: memberId,
-        name: cleanName,
+        name: validation.value.name,
         avatarColor: pickAvatarColor(current.members.length),
         joinedAt: now(),
       };
@@ -127,38 +129,40 @@ export function useAppData() {
         ),
       };
     });
+    setError(null);
+    return true;
   }, [updateData]);
 
   const addExpense = useCallback((groupId: string, input: AddExpenseInput) => {
-    const amountCents = parseMoneyInput(input.amount);
-    const title = input.title.trim();
-    if (!title) {
-      setError("Agrega un concepto para el gasto.");
-      return;
-    }
-    if (!amountCents) {
-      setError("Ingresa un monto valido mayor a cero.");
-      return;
+    const group = data.groups.find((item) => item.id === groupId);
+    const validation = validateExpenseInput({
+      amount: input.amount,
+      memberIds: group?.memberIds ?? [],
+      note: input.note,
+      payerId: input.payerId,
+      title: input.title,
+    });
+
+    if (!validation.ok) {
+      setError(validation.error);
+      return false;
     }
 
     updateData((current) => {
-      const group = current.groups.find((item) => item.id === groupId);
-      if (!group || group.memberIds.length === 0) {
-        setError("Agrega integrantes antes de registrar gastos.");
+      const currentGroup = current.groups.find((item) => item.id === groupId);
+      if (!currentGroup) {
         return current;
       }
-
-      const payerId = input.payerId || group.memberIds[0];
       const createdAt = now();
       const expense: Expense = {
         id: createId("expense"),
         groupId,
-        title,
-        amountCents,
+        title: validation.value.title,
+        amountCents: validation.value.amountCents,
         currency: "MXN",
-        payerId,
-        participantIds: group.memberIds,
-        note: input.note?.trim() || undefined,
+        payerId: validation.value.payerId,
+        participantIds: currentGroup.memberIds,
+        note: validation.value.note,
         createdAt,
       };
 
@@ -170,7 +174,9 @@ export function useAppData() {
         ),
       };
     });
-  }, [updateData]);
+    setError(null);
+    return true;
+  }, [data.groups, updateData]);
 
   const markSettlementPaid = useCallback((groupId: string, suggestion: SettlementSuggestion) => {
     updateData((current) => {

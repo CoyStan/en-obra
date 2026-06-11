@@ -181,3 +181,13 @@ Rationale: The earlier green/blue/gold/coral mix and large icon tiles made the
 app feel more decorative than professional. A calmer system improves scanning,
 reduces perceived randomness, and keeps warning color reserved for debt or
 errors.
+
+### Keep Core Flow Sheets Open On Validation Errors
+
+Decision: Return explicit success/failure from group, member, and expense
+actions so invalid submissions keep the current form open and show Spanish error
+copy in context.
+
+Rationale: Closing a sheet after a rejected local action feels unreliable and
+forces the user to repeat work. Internal testing should prove a forgiving first
+expense path before adding advanced split features.

@@ -238,7 +238,10 @@ export function MainScreen() {
   }, [payerId, selectedMembers]);
 
   const submitGroup = () => {
-    createGroup(groupName, groupDescription);
+    const created = createGroup(groupName, groupDescription);
+    if (!created) {
+      return;
+    }
     setGroupName("");
     setGroupDescription("");
     setShowGroupForm(false);
@@ -248,7 +251,10 @@ export function MainScreen() {
     if (!selectedGroup) {
       return;
     }
-    addMember(selectedGroup.id, memberName);
+    const added = addMember(selectedGroup.id, memberName);
+    if (!added) {
+      return;
+    }
     setMemberName("");
     setShowMemberForm(false);
   };
@@ -257,12 +263,15 @@ export function MainScreen() {
     if (!selectedGroup) {
       return;
     }
-    addExpense(selectedGroup.id, {
+    const added = addExpense(selectedGroup.id, {
       amount: expenseAmount,
       note: expenseNote,
       payerId,
       title: expenseTitle,
     });
+    if (!added) {
+      return;
+    }
     setExpenseTitle("");
     setExpenseAmount("");
     setExpenseNote("");
@@ -315,7 +324,12 @@ export function MainScreen() {
               placeholder="Comidas, rides y hospedaje"
               value={groupDescription}
             />
-            <ActionButton icon="check" label="Crear grupo" onPress={submitGroup} />
+            <ActionButton
+              disabled={!groupName.trim()}
+              icon="check"
+              label="Crear grupo"
+              onPress={submitGroup}
+            />
           </View>
         ) : null}
 
@@ -544,13 +558,19 @@ export function MainScreen() {
             </View>
             <ActionButton icon="close" label="Cerrar" onPress={() => setShowMemberForm(false)} tone="ghost" />
           </View>
+          {error ? <Text style={styles.formError}>{error}</Text> : null}
           <Field
             label="Nombre"
             onChangeText={setMemberName}
             placeholder="Ej. Valeria"
             value={memberName}
           />
-          <ActionButton icon="account-check" label="Agregar integrante" onPress={submitMember} />
+          <ActionButton
+            disabled={!memberName.trim()}
+            icon="account-check"
+            label="Agregar integrante"
+            onPress={submitMember}
+          />
         </View>
       </View>
     </Modal>
@@ -573,6 +593,7 @@ export function MainScreen() {
             </View>
             <ActionButton icon="close" label="Cerrar" onPress={() => setShowExpenseForm(false)} tone="ghost" />
           </View>
+          {error ? <Text style={styles.formError}>{error}</Text> : null}
           <Field
             label="Concepto"
             onChangeText={setExpenseTitle}
@@ -611,7 +632,12 @@ export function MainScreen() {
             ))}
           </View>
           <ActionButton
-            disabled={selectedMembers.length === 0}
+            disabled={
+              selectedMembers.length === 0 ||
+              !expenseTitle.trim() ||
+              !expenseAmount.trim() ||
+              !payerId
+            }
             icon="receipt-text-plus"
             label="Guardar gasto"
             onPress={submitExpense}
@@ -973,6 +999,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     gap: spacing.md,
     padding: spacing.md,
+  },
+  formError: {
+    backgroundColor: colors.dueWash,
+    borderColor: colors.due,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    color: colors.due,
+    fontSize: typography.small,
+    fontWeight: "700",
+    lineHeight: 19,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   groupCard: {
     backgroundColor: colors.surface,
