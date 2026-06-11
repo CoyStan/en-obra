@@ -1,15 +1,15 @@
 ---
 id: CUE-0028
 title: Visual QA and final hybrid polish
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: design
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-11T06:54:45Z
+claim_ref: refs/palari/claims/CUE-0028
+claim_heartbeat_at: 2026-06-11T06:54:45Z
+claim_expires_at: 2026-06-11T08:54:45Z
 allowed_paths:
   - src/theme/**
   - src/components/**
