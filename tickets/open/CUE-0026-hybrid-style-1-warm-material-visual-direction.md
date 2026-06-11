@@ -1,7 +1,7 @@
 ---
 id: CUE-0026
 title: Hybrid Style 1 Warm Material visual direction
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: design
