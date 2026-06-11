@@ -38,7 +38,7 @@ export function ActionButton({
     >
       {icon ? (
         <MaterialCommunityIcons
-          color={tone === "primary" ? colors.surface : colors.primaryDark}
+          color={tone === "primary" ? colors.surface : tone === "danger" ? colors.due : colors.primaryDark}
           name={icon}
           size={16}
         />
@@ -228,8 +228,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   goldPill: {
-    backgroundColor: colors.surfaceStrong,
-    color: colors.mutedInk,
+    backgroundColor: colors.warmWash,
+    color: colors.primaryDark,
   },
   neutralPill: {
     backgroundColor: colors.surfaceStrong,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     backgroundColor: colors.surfaceTinted,
-    borderColor: colors.primary,
+    borderColor: colors.border,
     borderWidth: 1,
   },
   section: {

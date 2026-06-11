@@ -47,12 +47,40 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
   month: "short",
 });
 
+const shortMoneyFormatter = new Intl.NumberFormat("es-MX", {
+  currency: "MXN",
+  style: "currency",
+});
+
 function findMember(members: Member[], id: string) {
   return members.find((member) => member.id === id);
 }
 
 function formatDate(value: string) {
   return dateFormatter.format(new Date(value));
+}
+
+function formatShortMoney(cents: number) {
+  return shortMoneyFormatter.format(cents / 100);
+}
+
+function activityIconForTitle(title: string): keyof typeof MaterialCommunityIcons.glyphMap {
+  const normalized = title.toLowerCase();
+
+  if (normalized.includes("hospedaje") || normalized.includes("hotel")) {
+    return "bed-king-outline";
+  }
+  if (normalized.includes("taxi") || normalized.includes("uber") || normalized.includes("gasolina")) {
+    return "car-outline";
+  }
+  if (normalized.includes("super") || normalized.includes("súper")) {
+    return "cart-outline";
+  }
+  if (normalized.includes("tlayuda") || normalized.includes("cena") || normalized.includes("taco")) {
+    return "food-outline";
+  }
+
+  return "receipt-text";
 }
 
 function balanceLabel(balance: MemberBalance) {
@@ -165,7 +193,7 @@ function ActivityRow({ item }: { item: ActivityItem }) {
       <View style={[styles.activityIcon, isSettlement ? styles.activitySettlement : styles.activityExpense]}>
         <MaterialCommunityIcons
           color={isSettlement ? colors.primary : colors.mutedInk}
-          name={isSettlement ? "check-circle-outline" : "receipt-text"}
+          name={isSettlement ? "check-circle-outline" : activityIconForTitle(item.title)}
           size={18}
         />
       </View>
@@ -178,6 +206,53 @@ function ActivityRow({ item }: { item: ActivityItem }) {
         <Amount cents={item.amountCents} tone={isSettlement ? "success" : "neutral"} />
       </View>
     </View>
+  );
+}
+
+function QuickActionTile({
+  disabled = false,
+  detail,
+  icon,
+  label,
+  onPress,
+  primary = false,
+}: {
+  disabled?: boolean;
+  detail?: string;
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
+  label: string;
+  onPress: () => void;
+  primary?: boolean;
+}) {
+  return (
+    <Pressable
+      accessibilityLabel={detail ? `${label}. ${detail}` : label}
+      accessibilityRole="button"
+      accessibilityState={{ disabled }}
+      disabled={disabled}
+      hitSlop={4}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.quickAction,
+        primary && styles.quickActionPrimary,
+        disabled && styles.quickActionDisabled,
+        pressed && !disabled && styles.pressed,
+      ]}
+    >
+      <View style={[styles.quickActionIcon, primary && styles.quickActionIconPrimary]}>
+        <MaterialCommunityIcons
+          color={primary ? colors.surface : colors.primaryDark}
+          name={icon}
+          size={19}
+        />
+      </View>
+      <View style={styles.quickActionCopy}>
+        <Text style={[styles.quickActionLabel, primary && styles.quickActionLabelPrimary]}>
+          {label}
+        </Text>
+        {detail ? <Text style={styles.quickActionDetail}>{detail}</Text> : null}
+      </View>
+    </Pressable>
   );
 }
 
@@ -206,7 +281,7 @@ export function MainScreen() {
     selectedSummary,
   } = useAppData();
 
-  const [activeTab, setActiveTab] = useState<TabId>("groups");
+  const [activeTab, setActiveTab] = useState<TabId>("balance");
   const [showGroupForm, setShowGroupForm] = useState(false);
   const [showMemberForm, setShowMemberForm] = useState(false);
   const [showExpenseForm, setShowExpenseForm] = useState(false);
@@ -231,6 +306,11 @@ export function MainScreen() {
     [data, selectedGroup],
   );
 
+  const selectedPreview = useMemo(
+    () => (selectedGroup ? getBalancePreview(data, selectedGroup.id) : { creditor: null, debtor: null }),
+    [data, selectedGroup],
+  );
+
   const primarySettlement = selectedSummary?.settlements[0] ?? null;
   const primarySettlementFrom = primarySettlement
     ? findMember(data.members, primarySettlement.fromMemberId)
@@ -238,6 +318,8 @@ export function MainScreen() {
   const primarySettlementTo = primarySettlement
     ? findMember(data.members, primarySettlement.toMemberId)
     : null;
+  const highlightedMembers = selectedMembers.slice(0, 5);
+  const extraMembers = Math.max(selectedMembers.length - highlightedMembers.length, 0);
 
   useEffect(() => {
     if (!selectedMembers.some((member) => member.id === payerId)) {
@@ -366,6 +448,44 @@ export function MainScreen() {
     </View>
   );
 
+  const renderSettlementCard = (settlement: SettlementSuggestion) => {
+    const from = findMember(data.members, settlement.fromMemberId);
+    const to = findMember(data.members, settlement.toMemberId);
+
+    return (
+      <View key={`${settlement.fromMemberId}-${settlement.toMemberId}`} style={styles.settlementCard}>
+        <View style={styles.settlementCompactTop}>
+          <View style={styles.settlementRouteIcon}>
+            <MaterialCommunityIcons color={colors.primaryDark} name="arrow-decision-outline" size={18} />
+          </View>
+          <View style={styles.settlementCompactCopy}>
+            <Text style={styles.settlementTitle}>
+              {from?.name ?? "Integrante"} le debe a {to?.name ?? "integrante"}
+            </Text>
+            <Text style={styles.settlementInstruction}>
+              Registra un pago externo cuando lo hayan liquidado.
+            </Text>
+            <View style={styles.demoChip}>
+              <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
+              <Text style={styles.demoOnly}>Sin pagos reales</Text>
+            </View>
+          </View>
+          <Text style={styles.settlementAmountText}>
+            {formatMoney(settlement.amountCents)}
+          </Text>
+        </View>
+        <View style={styles.settlementActions}>
+          <ActionButton
+            icon="check"
+            label="Marcar pagado"
+            onPress={() => setPendingSettlement(settlement)}
+            tone="secondary"
+          />
+        </View>
+      </View>
+    );
+  };
+
   const renderBalance = () => (
     <View style={styles.tabContent}>
       {!selectedGroup || !selectedSummary ? (
@@ -376,21 +496,39 @@ export function MainScreen() {
         />
       ) : (
         <>
-          <View style={styles.actionGrid}>
-            <ActionButton
-              icon="plus-circle"
+          <View style={styles.quickActionRail}>
+            <QuickActionTile
+              icon="plus"
               label="Agregar gasto"
               onPress={() => setShowExpenseForm(true)}
+              primary
             />
-            <ActionButton
-              icon="account-plus"
+            <QuickActionTile
+              icon="account-plus-outline"
               label="Integrante"
               onPress={() => setShowMemberForm(true)}
-              tone="secondary"
+            />
+            <QuickActionTile
+              detail="Sin pagos reales"
+              disabled={!primarySettlement}
+              icon="swap-horizontal"
+              label="Liquidar"
+              onPress={() => {
+                if (primarySettlement) {
+                  setPendingSettlement(primarySettlement);
+                }
+              }}
             />
           </View>
 
-          <Section title="Arreglos sugeridos">
+          <Section
+            action={
+              selectedSummary.settlements.length > 1 ? (
+                <Pill label={`+${selectedSummary.settlements.length - 1} más`} tone="neutral" />
+              ) : undefined
+            }
+            title="Quién le debe a quién"
+          >
             {selectedSummary.settlements.length === 0 ? (
               <EmptyState
                 body="No hay pagos pendientes para este grupo."
@@ -398,46 +536,30 @@ export function MainScreen() {
                 title="Todo en paz por ahora"
               />
             ) : (
-              selectedSummary.settlements.map((settlement) => {
-                const from = findMember(data.members, settlement.fromMemberId);
-                const to = findMember(data.members, settlement.toMemberId);
-                return (
-                  <View key={`${settlement.fromMemberId}-${settlement.toMemberId}`} style={styles.settlementCard}>
-                    <View style={styles.settlementPeople}>
-                      <View style={styles.person}>
-                        <Avatar color={from?.avatarColor ?? colors.due} label={from?.name ?? "?"} />
-                        <Text style={styles.personName}>{from?.name ?? "Integrante"}</Text>
-                      </View>
-                      <MaterialCommunityIcons color={colors.mutedInk} name="arrow-right" size={18} />
-                      <View style={styles.person}>
-                        <Avatar color={to?.avatarColor ?? colors.primary} label={to?.name ?? "?"} />
-                        <Text style={styles.personName}>{to?.name ?? "Integrante"}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.settlementFooter}>
-                      <View>
-                        <Amount cents={settlement.amountCents} emphasis tone="due" />
-                        <Text style={styles.settlementInstruction}>
-                          {from?.name ?? "Integrante"} registra un pago externo a{" "}
-                          {to?.name ?? "integrante"}.
-                        </Text>
-                        <View style={styles.demoChip}>
-                          <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
-                          <Text style={styles.demoOnly}>Sin pagos reales</Text>
-                        </View>
-                      </View>
-                      <ActionButton
-                        icon="check"
-                        label="Marcar como pagado"
-                        onPress={() => setPendingSettlement(settlement)}
-                        tone="secondary"
-                      />
-                    </View>
-                  </View>
-                );
-              })
+              selectedSummary.settlements.slice(0, 1).map(renderSettlementCard)
             )}
           </Section>
+
+          <Section
+            action={<ActionButton icon="history" label="Ver todo" onPress={() => setActiveTab("activity")} tone="ghost" />}
+            title="Actividad reciente"
+          >
+            {activity.length === 0 ? (
+              <EmptyState
+                body="Los gastos y arreglos aparecerán aquí."
+                icon="receipt-text-plus"
+                title="Sin movimientos"
+              />
+            ) : (
+              activity.slice(0, 3).map((item) => <ActivityRow item={item} key={item.id} />)
+            )}
+          </Section>
+
+          {selectedSummary.settlements.length > 1 ? (
+            <Section title="Otros arreglos">
+              {selectedSummary.settlements.slice(1).map(renderSettlementCard)}
+            </Section>
+          ) : null}
 
           <Section title="Balances por integrante">
             {selectedMembers.length === 0 ? (
@@ -714,13 +836,27 @@ export function MainScreen() {
         style={styles.keyboard}
       >
         <ScrollView contentContainerStyle={styles.content}>
-          <View style={styles.header}>
-            <View style={styles.headerCopy}>
-              <Text style={styles.eyebrow}>Cuentas Claras</Text>
-              <Text style={styles.title}>Gastos compartidos, cuentas claras</Text>
-            </View>
-            <View style={styles.brandMark}>
-              <MaterialCommunityIcons color={colors.surface} name="scale-balance" size={20} />
+          <View style={styles.appBar}>
+            <Text style={styles.appTitle}>Cuentas Claras</Text>
+            <View style={styles.appActions}>
+              <Pressable
+                accessibilityLabel="Ver actividad"
+                accessibilityRole="button"
+                hitSlop={4}
+                onPress={() => setActiveTab("activity")}
+                style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
+              >
+                <MaterialCommunityIcons color={colors.primaryDark} name="bell-outline" size={22} />
+              </Pressable>
+              <Pressable
+                accessibilityLabel="Abrir perfil"
+                accessibilityRole="button"
+                hitSlop={4}
+                onPress={() => setActiveTab("account")}
+                style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
+              >
+                <MaterialCommunityIcons color={colors.primaryDark} name="dots-vertical" size={22} />
+              </Pressable>
             </View>
           </View>
 
@@ -749,44 +885,72 @@ export function MainScreen() {
           ) : null}
 
           {selectedGroup && selectedSummary ? (
-            <View style={styles.summaryBand}>
-              <View style={styles.summaryTop}>
-                <View>
-                  <Text style={styles.summaryLabel}>Grupo activo</Text>
+            <View style={styles.activeGroupCard}>
+              <View style={styles.warmAccentLine} />
+              <View style={styles.activeGroupTop}>
+                <View style={styles.groupBadge}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="home-city-outline" size={24} />
+                </View>
+                <View style={styles.activeGroupCopy}>
                   <Text style={styles.summaryTitle}>{selectedGroup.name}</Text>
+                  <Text style={styles.summaryDescription}>
+                    {selectedMembers.length} integrantes · {selectedGroup.description}
+                  </Text>
                 </View>
                 <Pill label="MXN local" tone="gold" />
               </View>
-              <Text style={styles.summaryDescription}>{selectedGroup.description}</Text>
-              <View style={styles.summaryStats}>
-                <View>
-                  <Text style={styles.summaryMetricLabel}>Gastado</Text>
-                  <Amount cents={selectedSummary.totalSpentCents} emphasis />
+
+              <View style={styles.memberStrip}>
+                {highlightedMembers.map((member) => (
+                  <Avatar color={member.avatarColor} key={member.id} label={member.name} />
+                ))}
+                {extraMembers > 0 ? (
+                  <View style={styles.extraMembersBadge}>
+                    <Text style={styles.extraMembersText}>+{extraMembers}</Text>
+                  </View>
+                ) : null}
+              </View>
+
+              <View style={styles.balancePanel}>
+                <View style={styles.balanceColumn}>
+                  <View style={styles.balanceIconSuccess}>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="arrow-down" size={18} />
+                  </View>
+                  <Text style={styles.balanceKicker}>Recibe</Text>
+                  <Text style={styles.balancePerson}>
+                    {selectedPreview.creditor?.member.name ?? "Grupo"}
+                  </Text>
+                  <Text style={[styles.balanceAmount, styles.balanceAmountSuccess]}>
+                    {formatShortMoney(selectedPreview.creditor?.netCents ?? 0)}
+                  </Text>
+                  <Text style={styles.balanceCaption}>MXN por cobrar</Text>
                 </View>
-                <View>
-                  <Text style={styles.summaryMetricLabel}>Abierto</Text>
-                  <Amount
-                    cents={selectedSummary.openBalanceCents}
-                    emphasis
-                    tone={selectedSummary.openBalanceCents ? "due" : "success"}
-                  />
+                <View style={styles.balanceDivider} />
+                <View style={styles.balanceColumn}>
+                  <View style={styles.balanceIconDue}>
+                    <MaterialCommunityIcons color={colors.terracotta} name="arrow-up" size={18} />
+                  </View>
+                  <Text style={styles.balanceKicker}>Debe</Text>
+                  <Text style={styles.balancePerson}>
+                    {selectedPreview.debtor?.member.name ?? "Nadie"}
+                  </Text>
+                  <Text style={[styles.balanceAmount, selectedPreview.debtor ? styles.balanceAmountDue : styles.balanceAmountSuccess]}>
+                    {formatShortMoney(Math.abs(selectedPreview.debtor?.netCents ?? 0))}
+                  </Text>
+                  <Text style={styles.balanceCaption}>MXN por pagar</Text>
                 </View>
               </View>
+
               <View style={styles.summaryInsight}>
-                <MaterialCommunityIcons
-                  color={primarySettlement ? colors.due : colors.primary}
-                  name={primarySettlement ? "arrow-decision" : "check-decagram"}
-                  size={18}
-                />
+                <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={18} />
                 <Text style={styles.summaryInsightText}>
                   {primarySettlement
-                    ? `${primarySettlementFrom?.name ?? "Alguien"} debe pagar a ${
+                    ? `${primarySettlementFrom?.name ?? "Alguien"} le debe a ${
                         primarySettlementTo?.name ?? "alguien"
-                      } ${formatMoney(primarySettlement.amountCents)}`
-                    : "Todo en paz: no hay arreglos pendientes."}
+                      } ${formatMoney(primarySettlement.amountCents)} · Sin pagos reales`
+                    : "Todo en paz · Datos guardados en este dispositivo"}
                 </Text>
               </View>
-              <Text style={styles.trustNote}>Demo sin pagos reales · Datos guardados en este dispositivo</Text>
             </View>
           ) : null}
 
@@ -810,7 +974,7 @@ export function MainScreen() {
                 style={[styles.navItem, active && styles.navItemActive]}
               >
                 <MaterialCommunityIcons
-                  color={active ? colors.surface : colors.primaryDark}
+                  color={colors.primaryDark}
                   name={tab.icon}
                   size={20}
                 />
@@ -828,6 +992,24 @@ export function MainScreen() {
 }
 
 const styles = StyleSheet.create({
+  activeGroupCard: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.md,
+    overflow: "hidden",
+    padding: spacing.md,
+  },
+  activeGroupCopy: {
+    flex: 1,
+    gap: spacing.xs,
+  },
+  activeGroupTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.md,
+  },
   accountCopy: {
     flex: 1,
     gap: spacing.xs,
@@ -877,10 +1059,57 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.md,
   },
+  appActions: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.xs,
+  },
+  appBar: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    minHeight: 48,
+  },
+  appTitle: {
+    color: colors.primaryDark,
+    fontSize: typography.title,
+    fontWeight: "700",
+    lineHeight: 31,
+  },
   actionGrid: {
     flexWrap: "wrap",
     flexDirection: "row",
     gap: spacing.sm,
+  },
+  balanceCaption: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "600",
+  },
+  balanceAmount: {
+    fontSize: 20,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "800",
+    lineHeight: 24,
+    textAlign: "center",
+  },
+  balanceAmountDue: {
+    color: colors.due,
+  },
+  balanceAmountSuccess: {
+    color: colors.primary,
+  },
+  balanceColumn: {
+    alignItems: "center",
+    flex: 1,
+    gap: spacing.xs,
+    justifyContent: "center",
+    minWidth: 0,
+  },
+  balanceDivider: {
+    alignSelf: "stretch",
+    backgroundColor: colors.border,
+    width: 1,
   },
   balanceExplanation: {
     color: colors.mutedInk,
@@ -888,6 +1117,42 @@ const styles = StyleSheet.create({
     fontSize: typography.micro,
     fontWeight: "500",
     lineHeight: 16,
+  },
+  balanceIconDue: {
+    alignItems: "center",
+    backgroundColor: colors.dueWash,
+    borderRadius: 18,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  balanceIconSuccess: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceTinted,
+    borderRadius: 18,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  balanceKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "600",
+  },
+  balancePanel: {
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.md,
+    minHeight: 142,
+    padding: spacing.md,
+  },
+  balancePerson: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "700",
+    textAlign: "center",
   },
   balanceStatusLine: {
     gap: spacing.xs,
@@ -906,7 +1171,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   activityExpense: {
-    backgroundColor: colors.surfaceStrong,
+    backgroundColor: colors.warmWash,
   },
   activityIcon: {
     alignItems: "center",
@@ -923,8 +1188,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
-    minHeight: 64,
-    padding: spacing.md,
+    minHeight: 60,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   activitySettlement: {
     backgroundColor: colors.surfaceTinted,
@@ -958,7 +1224,7 @@ const styles = StyleSheet.create({
     width: 40,
   },
   content: {
-    gap: spacing.md,
+    gap: spacing.sm,
     padding: spacing.md,
     paddingBottom: spacing.xxl,
   },
@@ -1088,7 +1354,7 @@ const styles = StyleSheet.create({
   },
   groupPreview: {
     alignItems: "center",
-    backgroundColor: colors.surfaceStrong,
+    backgroundColor: colors.surfaceTinted,
     borderRadius: radius.sm,
     flexDirection: "row",
     gap: spacing.sm,
@@ -1141,6 +1407,39 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontWeight: "500",
   },
+  extraMembersBadge: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceTinted,
+    borderRadius: 18,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  extraMembersText: {
+    color: colors.primaryDark,
+    fontSize: typography.small,
+    fontWeight: "800",
+  },
+  groupBadge: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceTinted,
+    borderRadius: radius.md,
+    height: 48,
+    justifyContent: "center",
+    width: 48,
+  },
+  iconButton: {
+    alignItems: "center",
+    borderRadius: radius.md,
+    height: 44,
+    justifyContent: "center",
+    width: 44,
+  },
+  memberStrip: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
   memberCopy: {
     flex: 1,
     gap: spacing.xs,
@@ -1171,7 +1470,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   navItemActive: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.surfaceTinted,
   },
   navLabel: {
     color: colors.primaryDark,
@@ -1179,7 +1478,8 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   navLabelActive: {
-    color: colors.surface,
+    color: colors.primaryDark,
+    fontWeight: "700",
   },
   payerChip: {
     alignItems: "center",
@@ -1218,6 +1518,65 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.86,
+  },
+  quickAction: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "column",
+    gap: spacing.sm,
+    justifyContent: "center",
+    minHeight: 78,
+    minWidth: 0,
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.sm,
+  },
+  quickActionCopy: {
+    alignItems: "center",
+    gap: 2,
+    minWidth: 0,
+  },
+  quickActionDetail: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "500",
+    lineHeight: 14,
+    textAlign: "center",
+  },
+  quickActionDisabled: {
+    opacity: 0.52,
+  },
+  quickActionIcon: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceTinted,
+    borderRadius: 17,
+    height: 34,
+    justifyContent: "center",
+    width: 34,
+  },
+  quickActionIconPrimary: {
+    backgroundColor: "rgba(255, 255, 255, 0.18)",
+  },
+  quickActionLabel: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "700",
+    lineHeight: 16,
+    textAlign: "center",
+  },
+  quickActionLabelPrimary: {
+    color: colors.surface,
+  },
+  quickActionPrimary: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  quickActionRail: {
+    flexDirection: "row",
+    gap: spacing.sm,
   },
   confirmBody: {
     color: colors.mutedInk,
@@ -1280,8 +1639,28 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: radius.md,
     borderWidth: 1,
-    gap: spacing.md,
+    gap: spacing.sm,
     padding: spacing.md,
+  },
+  settlementActions: {
+    alignItems: "flex-start",
+  },
+  settlementAmountText: {
+    color: colors.due,
+    fontSize: typography.heading,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "800",
+    textAlign: "right",
+  },
+  settlementCompactCopy: {
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
+  },
+  settlementCompactTop: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: spacing.sm,
   },
   settlementFooter: {
     alignItems: "center",
@@ -1298,13 +1677,25 @@ const styles = StyleSheet.create({
     fontSize: typography.micro,
     fontWeight: "500",
     lineHeight: 16,
-    marginTop: spacing.xs,
-    maxWidth: 190,
   },
   settlementPeople: {
     alignItems: "center",
     flexDirection: "row",
     gap: spacing.md,
+  },
+  settlementRouteIcon: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceTinted,
+    borderRadius: 17,
+    height: 34,
+    justifyContent: "center",
+    width: 34,
+  },
+  settlementTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "700",
+    lineHeight: 19,
   },
   statLabel: {
     color: colors.mutedInk,
@@ -1365,12 +1756,13 @@ const styles = StyleSheet.create({
   },
   summaryInsight: {
     alignItems: "center",
-    backgroundColor: colors.surfaceStrong,
+    backgroundColor: colors.surfaceTinted,
     borderRadius: radius.md,
     flexDirection: "row",
     gap: spacing.sm,
     minHeight: 44,
-    padding: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   summaryInsightText: {
     color: colors.ink,
@@ -1451,5 +1843,13 @@ const styles = StyleSheet.create({
     color: colors.mutedInk,
     fontSize: typography.small,
     fontWeight: "400",
+  },
+  warmAccentLine: {
+    backgroundColor: colors.marigold,
+    height: 3,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0,
   },
 });

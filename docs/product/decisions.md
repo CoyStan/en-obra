@@ -231,3 +231,13 @@ Rationale: The combination best matches the founder preference and the product
 need: a real finance utility should feel calm and trustworthy first, locally
 familiar second, and obviously Android-native in navigation, chips, action
 placement, and touch behavior.
+
+### Default To Balance-First Android Home
+
+Decision: Open the MVP on the active group balance screen instead of the group
+list, with one primary settlement suggestion, quick actions, and activity
+preview in the first viewport.
+
+Rationale: The selected visual direction is balance-first. Internal testers
+should immediately see who receives, who pays, the next local action, and the
+audit trail without first navigating away from a generic list.
