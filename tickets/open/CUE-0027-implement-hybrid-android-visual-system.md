@@ -1,15 +1,15 @@
 ---
 id: CUE-0027
 title: Implement hybrid Android visual system
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: design
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-11T06:38:26Z
+claim_ref: refs/palari/claims/CUE-0027
+claim_heartbeat_at: 2026-06-11T06:38:26Z
+claim_expires_at: 2026-06-11T08:38:26Z
 allowed_paths:
   - src/theme/**
   - src/components/**
