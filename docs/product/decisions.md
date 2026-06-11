@@ -191,3 +191,12 @@ copy in context.
 Rationale: Closing a sheet after a rejected local action feels unreliable and
 forces the user to repeat work. Internal testing should prove a forgiving first
 expense path before adding advanced split features.
+
+### Explain Balances With Text, Not Color Alone
+
+Decision: Add plain-language balance explanations and activity subtitles that
+show who paid, how expenses were split, and that settlements are local records.
+
+Rationale: A finance app must make debt state auditable in one scan. Textual
+explanations reduce ambiguity for color-blind users and reinforce that Cuentas
+Claras does not move money.

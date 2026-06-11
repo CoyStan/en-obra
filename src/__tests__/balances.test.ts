@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateGroupBalances, simplifySettlements } from "../domain/balances";
+import { buildActivity, calculateGroupBalances, describeBalance, simplifySettlements } from "../domain/balances";
 import { formatMoney, parseMoneyInput, splitEqual } from "../domain/money";
 import type { AppData } from "../domain/types";
 
@@ -60,10 +60,12 @@ describe("group balances", () => {
   it("calculates who should pay whom after an equal split", () => {
     const balances = calculateGroupBalances(simpleData, "group");
     const suggestions = simplifySettlements(balances);
+    const anaBalance = balances.find((balance) => balance.member.id === "ana");
 
-    expect(balances.find((balance) => balance.member.id === "ana")?.netCents).toBe(60000);
+    expect(anaBalance?.netCents).toBe(60000);
     expect(balances.find((balance) => balance.member.id === "luis")?.netCents).toBe(-30000);
     expect(balances.find((balance) => balance.member.id === "maru")?.netCents).toBe(-30000);
+    expect(anaBalance ? describeBalance(anaBalance) : "").toMatch(/Le tocaba MXN\s300\.00/);
     expect(suggestions).toEqual([
       { fromMemberId: "luis", toMemberId: "ana", amountCents: 30000, currency: "MXN" },
       { fromMemberId: "maru", toMemberId: "ana", amountCents: 30000, currency: "MXN" },
@@ -95,5 +97,31 @@ describe("group balances", () => {
     expect(suggestions).toEqual([
       { fromMemberId: "maru", toMemberId: "ana", amountCents: 30000, currency: "MXN" },
     ]);
+  });
+
+  it("explains activity and paid settlements without payment-rail language", () => {
+    const settledData: AppData = {
+      ...simpleData,
+      settlements: [
+        {
+          id: "settlement",
+          groupId: "group",
+          fromMemberId: "luis",
+          toMemberId: "ana",
+          amountCents: 30000,
+          currency: "MXN",
+          status: "paid",
+          createdAt: "2026-06-10T02:00:00Z",
+        },
+      ],
+    };
+
+    const activity = buildActivity(settledData, "group");
+
+    expect(activity[0]).toMatchObject({
+      title: "Luis pagó a Ana",
+      subtitle: "Marcado pagado localmente · Sin pagos reales",
+    });
+    expect(activity[1].subtitle).toBe("Pagó Ana · Dividido entre 3 integrantes");
   });
 });

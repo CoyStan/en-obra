@@ -1,4 +1,4 @@
-import { splitEqual } from "./money";
+import { formatMoney, splitEqual } from "./money";
 import type {
   ActivityItem,
   AppData,
@@ -161,6 +161,22 @@ export function getBalancePreview(data: AppData, groupId: string) {
   return { creditor, debtor };
 }
 
+export function describeBalance(balance: MemberBalance) {
+  const base = `Pagó ${formatMoney(balance.paidCents)} · Le tocaba ${formatMoney(
+    balance.owedCents,
+  )}`;
+
+  if (balance.settledCents > 0) {
+    return `${base} · Ya pagó ${formatMoney(balance.settledCents)}`;
+  }
+
+  if (balance.settledCents < 0) {
+    return `${base} · Ya recibió ${formatMoney(Math.abs(balance.settledCents))}`;
+  }
+
+  return base;
+}
+
 export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
   const members = new Map(data.members.map((member) => [member.id, member]));
   const expenses: ActivityItem[] = data.expenses
@@ -170,7 +186,9 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
       groupId,
       type: "expense",
       title: expense.title,
-      subtitle: `Pagó ${memberName(members, expense.payerId)}`,
+      subtitle: `Pagó ${memberName(members, expense.payerId)} · Dividido entre ${
+        expense.participantIds.length
+      } integrantes`,
       amountCents: expense.amountCents,
       currency: expense.currency,
       createdAt: expense.createdAt,
@@ -184,7 +202,7 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
       members,
       settlement.toMemberId,
     )}`,
-    subtitle: "Demostración · Sin pagos reales",
+    subtitle: "Marcado pagado localmente · Sin pagos reales",
     amountCents: settlement.amountCents,
     currency: settlement.currency,
     createdAt: settlement.createdAt,

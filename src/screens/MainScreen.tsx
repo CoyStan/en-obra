@@ -15,6 +15,7 @@ import {
 import {
   buildActivity,
   calculateGroupSummary,
+  describeBalance,
   getBalancePreview,
   getGroupMembers,
 } from "../domain/balances";
@@ -409,6 +410,10 @@ export function MainScreen() {
                     <View style={styles.settlementFooter}>
                       <View>
                         <Amount cents={settlement.amountCents} emphasis tone="due" />
+                        <Text style={styles.settlementInstruction}>
+                          {from?.name ?? "Integrante"} registra un pago externo a{" "}
+                          {to?.name ?? "integrante"}.
+                        </Text>
                         <View style={styles.demoChip}>
                           <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
                           <Text style={styles.demoOnly}>Sin pagos reales</Text>
@@ -443,7 +448,10 @@ export function MainScreen() {
                     <Avatar color={balance.member.avatarColor} label={balance.member.name} />
                     <View style={styles.memberCopy}>
                       <Text style={styles.memberName}>{balance.member.name}</Text>
-                      <Pill label={status.label} tone={status.tone} />
+                      <View style={styles.balanceStatusLine}>
+                        <Pill label={status.label} tone={status.tone} />
+                        <Text style={styles.balanceExplanation}>{describeBalance(balance)}</Text>
+                      </View>
                     </View>
                     <Amount
                       cents={Math.abs(balance.netCents)}
@@ -858,6 +866,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.sm,
   },
+  balanceExplanation: {
+    color: colors.mutedInk,
+    flexShrink: 1,
+    fontSize: typography.micro,
+    fontWeight: "500",
+    lineHeight: 16,
+  },
+  balanceStatusLine: {
+    gap: spacing.xs,
+  },
   activityAmount: {
     alignItems: "flex-end",
     gap: spacing.xs,
@@ -1258,6 +1276,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: spacing.md,
     paddingTop: spacing.md,
+  },
+  settlementInstruction: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "500",
+    lineHeight: 16,
+    marginTop: spacing.xs,
+    maxWidth: 190,
   },
   settlementPeople: {
     alignItems: "center",
