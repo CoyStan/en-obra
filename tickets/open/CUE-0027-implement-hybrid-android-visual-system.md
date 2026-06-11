@@ -1,7 +1,7 @@
 ---
 id: CUE-0027
 title: Implement hybrid Android visual system
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: design
