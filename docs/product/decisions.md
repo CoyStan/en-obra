@@ -210,3 +210,13 @@ primitives already in the app.
 Rationale: The MVP can become materially more usable for screen reader and
 motor-access users without adding dependencies or changing navigation
 architecture.
+
+### Treat Play Internal Testing As A Human-Owned Release Gate
+
+Decision: Keep the repo ready for internal testing QA while leaving signed AAB
+creation, Play Console upload, tester rollout, Data Safety submission, and legal
+approval as explicit human-owned gates.
+
+Rationale: Local automation can validate config, tests, assets, and docs, but
+Play upload requires credentials, account authority, and final policy decisions
+that should not be simulated by agents.
