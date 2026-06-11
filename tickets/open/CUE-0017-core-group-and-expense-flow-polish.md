@@ -1,7 +1,7 @@
 ---
 id: CUE-0017
 title: Core group and expense flow polish
-status: claimed
+status: in-review
 risk: R2
 priority: P0
 stream: app
