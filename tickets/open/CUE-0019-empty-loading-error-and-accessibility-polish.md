@@ -1,15 +1,15 @@
 ---
 id: CUE-0019
 title: Empty loading error and accessibility polish
-status: open
+status: claimed
 risk: R2
 priority: P1
 stream: app
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-11T05:58:10Z
+claim_ref: refs/palari/claims/CUE-0019
+claim_heartbeat_at: 2026-06-11T05:58:10Z
+claim_expires_at: 2026-06-11T07:58:10Z
 allowed_paths:
   - App.tsx
   - src/components/**
@@ -41,7 +41,7 @@ worktree: /home/quetza/projects/cuentas-claras/.palari/worktrees/CUE-0019
 accepted_by:
 accepted_at:
 created: 2026-06-10
-updated: 2026-06-10
+updated: 2026-06-11
 ---
 
 # CUE-0019 Empty loading error and accessibility polish
