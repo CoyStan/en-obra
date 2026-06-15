@@ -1,15 +1,15 @@
 ---
 id: CUE-0031
 title: One tap local demo identity onboarding
-status: open
+status: claimed
 risk: R2
 priority: P0
 stream: design
-claimed_by:
-claimed_at:
-claim_ref:
-claim_heartbeat_at:
-claim_expires_at:
+claimed_by: codex
+claimed_at: 2026-06-15T23:49:02Z
+claim_ref: refs/palari/claims/CUE-0031
+claim_heartbeat_at: 2026-06-15T23:49:02Z
+claim_expires_at: 2026-06-16T02:49:03Z
 allowed_paths:
   - src/screens/**
   - src/auth/**
