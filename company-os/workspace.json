@@ -1352,6 +1352,39 @@
         "paid_services",
         "remove_core_content"
       ]
+    },
+    {
+      "id": "WORK-APP-0018",
+      "title": "SQL backend dataset foundation",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Create a deterministic SQL-ready backend foundation for users, groups, group_members, expenses, expense_participants, settlements, activity_events, sync_outbox, and local metadata without choosing a production hosting/storage provider. Preserve local-first demo behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "The repo contains a concrete SQL schema and deterministic seed/export dataset for the current local model, tests prove referential integrity and integer-cent money invariants, and the design remains replaceable when access/storage decisions are made.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -1720,6 +1753,20 @@
       "result": "Implemented and verified group-scoped tab navigation in commit 1a1929fde436d31ca01df4aef912631a4e84574c.",
       "commits": [
         "1a1929fde436d31ca01df4aef912631a4e84574c"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0018",
+      "work_item_id": "WORK-APP-0018",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified SQL backend dataset foundation in commit a425cefdb33faa7e13325f6411cfdf6a5d7a1ca5.",
+      "commits": [
+        "a425cefdb33faa7e13325f6411cfdf6a5d7a1ca5"
       ]
     }
   ],
@@ -2173,6 +2220,29 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, web export, Company OS validate/scope, and Chromium navigation screenshots passed.",
       "timestamp": "2026-06-20T20:24:31Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0018"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0018/technical-report.md",
+        "docs/backend/sql-readiness.md",
+        "src/backend/sqlSchema.ts",
+        "src/backend/sqlDataset.ts",
+        "src/__tests__/sqlDataset.test.ts"
+      ],
+      "id": "EVIDENCE-APP-0018",
+      "work_item_id": "WORK-APP-0018",
+      "attempt_id": "ATTEMPT-APP-0018",
+      "head_sha": "a425cefdb33faa7e13325f6411cfdf6a5d7a1ca5",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for SQL backend dataset foundation.",
+      "timestamp": "2026-06-20T21:13:47Z"
     }
   ],
   "review_verdicts": [
@@ -2457,6 +2527,14 @@
       "reviewer": "PALARI-DESIGN",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T20:24:31Z"
+    },
+    {
+      "id": "REVIEW-APP-0018",
+      "work_item_id": "WORK-APP-0018",
+      "reviewed_head": "a425cefdb33faa7e13325f6411cfdf6a5d7a1ca5",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:13:47Z"
     }
   ],
   "human_decisions": [],
@@ -3134,6 +3212,40 @@
       "attempt_id": "ATTEMPT-APP-0017",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T20:24:31Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0018",
+        "added SQL schema contract",
+        "added deterministic SQL dataset export",
+        "added backend readiness documentation",
+        "added SQL dataset tests",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/sqlSchema.ts",
+        "src/backend/sqlDataset.ts",
+        "src/__tests__/sqlDataset.test.ts",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0018"
+      ],
+      "not_done": [
+        "production backend deployment",
+        "real account provider",
+        "remote sync service",
+        "native database package",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0018",
+      "work_item_id": "WORK-APP-0018",
+      "attempt_id": "ATTEMPT-APP-0018",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:13:47Z"
     }
   ],
   "decisions": [
@@ -3492,6 +3604,15 @@
       "what_happened": "Groups became the landing/switcher tab; selecting a group opens Activity; Balance and Profile stay scoped to that selected group.",
       "what_changed": "The app now matches the expected mental model: choose a group first, then inspect activity, balances, and profile/person settings for that group.",
       "timestamp": "2026-06-20T20:24:31Z"
+    },
+    {
+      "id": "OUTCOME-APP-0018",
+      "work_item_id": "WORK-APP-0018",
+      "summary": "Backend now has a concrete provider-neutral SQL foundation.",
+      "status": "captured",
+      "what_happened": "Added schema, seed/export generation, documentation, and tests for the app's SQL-ready backend model.",
+      "what_changed": "Users, groups, group_members, expenses, expense_participants, settlements, activity_events, and sync_outbox now have a deterministic SQL contract without requiring production storage decisions.",
+      "timestamp": "2026-06-20T21:13:47Z"
     }
   ]
 }
