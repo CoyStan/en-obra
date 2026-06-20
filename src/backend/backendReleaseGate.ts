@@ -27,6 +27,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "conflict-policy",
   "release-manifest",
   "import-restore",
+  "diagnostics",
   "export",
   "migrations",
 ] as const;

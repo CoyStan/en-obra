@@ -84,6 +84,10 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/dataImport.ts",
       "src/__tests__/dataImport.test.ts",
     ]),
+    item("diagnostics", "Backend health diagnostics report", "ready", [
+      "src/backend/backendDiagnostics.ts",
+      "src/__tests__/backendDiagnostics.test.ts",
+    ]),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
       "src/__tests__/dataExport.test.ts",

@@ -230,6 +230,21 @@ This is a local support/migration boundary, not cloud restore. A production
 backend restore flow still requires access, storage, deletion, privacy, and
 security decisions.
 
+## Backend Diagnostics
+
+`src/backend/backendDiagnostics.ts` creates support-safe local diagnostics for
+internal testing:
+
+- account and sync mode
+- entity counts
+- sync outbox status counts
+- integrity issue counts and codes
+- release gate status and blocker ids
+
+Diagnostics deliberately avoid raw expense titles, notes, outbox payload JSON,
+and contact fields. They are meant for local support/debug handoff, not
+production telemetry.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
@@ -255,6 +270,7 @@ to stay ready before Play internal testing:
 - conflict policy
 - backend release manifest
 - local import/restore validator
+- backend diagnostics
 - local export package
 - migration planner
 
