@@ -804,10 +804,11 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "implementation committed on main; governance record pending",
+      "cleanliness": "implementation, fix, and evidence committed on main; Company OS review record pending commit",
       "result": "Implemented SQL-ready local-first account model and evidence",
       "commits": [
-        "b25d5b6"
+        "b25d5b6",
+        "26bc02b"
       ],
       "changed_files": [
         "src/domain/types.ts",
@@ -816,8 +817,10 @@
         "src/data/demoData.ts",
         "src/state/useAppData.ts",
         "src/state/storage.ts",
+        "src/state/flowValidation.ts",
         "src/sync/types.ts",
         "src/__tests__/sqlReadyModel.test.ts",
+        "src/__tests__/flowValidation.test.ts",
         "docs/product/architecture.md",
         "docs/product/decisions.md",
         "docs/production/auth-account-model.md",
@@ -884,15 +887,17 @@
       ],
       "artifacts": [
         "reports/evidence/WORK-APP-0002/technical-report.md",
-        "reports/evidence/WORK-APP-0002/mobile-360x740.png"
+        "reports/evidence/WORK-APP-0002/mobile-360x740.png",
+        "reports/evidence/WORK-APP-0002/glm52-code-review.md",
+        "reports/evidence/WORK-APP-0002/glm52-fix-review.md"
       ],
       "id": "EVIDENCE-APP-0002",
       "work_item_id": "WORK-APP-0002",
       "attempt_id": "ATTEMPT-APP-0002",
-      "head_sha": "b25d5b6",
+      "head_sha": "26bc02b",
       "status": "passed",
       "base_ref": "main",
-      "summary": "SQL-ready local model checks passed: typecheck, unit tests, Expo config, web export, Company OS validate/scope, and 360px smoke screenshot.",
+      "summary": "SQL-ready local model checks passed after GLM-reviewed participant subset fix: typecheck, unit tests, Expo config, web export, Company OS validate/scope, and 360px smoke screenshot.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T14:31:19Z"
     }
@@ -917,6 +922,26 @@
       "reviewer": "GLM-5.2-code-review",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "checks_inspected": [
+        "committed SQL-ready model diff b25d5b6",
+        "fix diff 26bc02b",
+        "technical report",
+        "post-fix check summary"
+      ],
+      "residual_risks": [
+        "human approval still required",
+        "no Android emulator/device QA",
+        "production auth/backend sync out of scope",
+        "sync outbox processing not implemented"
+      ],
+      "id": "REVIEW-APP-0002",
+      "work_item_id": "WORK-APP-0002",
+      "reviewed_head": "26bc02b",
+      "reviewer": "GLM-5.2-code-review",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T14:35:08Z"
     }
   ],
   "human_decisions": [],
