@@ -173,7 +173,7 @@
     },
     {
       "id": "PALARI-DESIGN",
-      "name": "Clara Diseño",
+      "name": "Clara Dise\u00f1o",
       "role": "Android product design partner",
       "scope": "Drive the clean premium Android UI direction while preserving app content and usability.",
       "allowed_inputs": [
@@ -212,7 +212,7 @@
     },
     {
       "id": "PALARI-ENGINEERING",
-      "name": "Clara Ingeniería",
+      "name": "Clara Ingenier\u00eda",
       "role": "React Native implementation partner",
       "scope": "Implement bounded app changes with local-first adapters, tests, and Android verification.",
       "allowed_inputs": [
@@ -721,7 +721,7 @@
       "id": "ATTEMPT-MIGRATION-0001",
       "work_item_id": "WORK-MIGRATION-0001",
       "actor": "PALARI-OPS",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
@@ -735,14 +735,77 @@
         "README.md",
         ".gitignore"
       ],
-      "cleanliness": "migration isolated from app source changes that were dirty before migration",
-      "result": "in progress"
+      "cleanliness": "migration committed while pre-existing app-source edits remained unstaged",
+      "result": "Old Orchestrator artifacts archived, Company OS installed, app checks and Company OS checks passed",
+      "commits": [
+        "9aa71eb370d8"
+      ]
     }
   ],
-  "evidence_runs": [],
+  "evidence_runs": [
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os queue",
+        "./bin/company-os state",
+        "./bin/company-os scope WORK-MIGRATION-0001",
+        "tools/palari-company-os/scripts/verify.sh"
+      ],
+      "artifacts": [
+        "command output in Codex transcript",
+        "docs/company-os/migration.md"
+      ],
+      "id": "EVIDENCE-MIGRATION-0001",
+      "work_item_id": "WORK-MIGRATION-0001",
+      "attempt_id": "ATTEMPT-MIGRATION-0001",
+      "head_sha": "9aa71eb370d8",
+      "status": "passed",
+      "summary": "Migration checks passed: npm run typecheck, npm test, npx expo config --type public, Company OS validate/queue/state/scope, vendored Company OS verify.sh.",
+      "timestamp": "2026-06-20T00:00:00Z"
+    }
+  ],
   "review_verdicts": [],
   "human_decisions": [],
-  "receipts": [],
+  "receipts": [
+    {
+      "sources_used": [
+        "SOURCE-COMPANY-OS-DOCS",
+        "SOURCE-LEGACY-ARCHIVE",
+        "SOURCE-MIGRATION-NOTE"
+      ],
+      "actions_taken": [
+        "archived old Orchestrator workflow",
+        "installed vendored Company OS",
+        "created repo-local wrapper",
+        "created workspace",
+        "ran validation",
+        "committed migration"
+      ],
+      "outputs_created": [
+        "company-os/workspace.json",
+        "bin/company-os",
+        "tools/palari-company-os",
+        "docs/company-os/migration.md",
+        "docs/company-os/README.md",
+        "README.md"
+      ],
+      "not_done": [
+        "product feature work",
+        "Play Store submission",
+        "production backend",
+        "secret setup",
+        "old .palari worktree deletion"
+      ],
+      "id": "RECEIPT-MIGRATION-0001",
+      "work_item_id": "WORK-MIGRATION-0001",
+      "attempt_id": "ATTEMPT-MIGRATION-0001",
+      "actor": "PALARI-OPS",
+      "timestamp": "2026-06-20T00:00:00Z"
+    }
+  ],
   "decisions": [
     {
       "id": "DECISION-MIGRATION-0001",
@@ -793,5 +856,24 @@
       "due_date": "2026-06-20"
     }
   ],
-  "outcomes": []
+  "outcomes": [
+    {
+      "useful": [
+        "App source was not changed",
+        "Old reports and evidence remain discoverable",
+        "Company OS validates locally"
+      ],
+      "follow_up_needed": [
+        "Confirm whether local Company OS checkout ahead of origin is the intended authoritative version",
+        "Classify or commit pre-existing app-source dirty paths separately"
+      ],
+      "id": "OUTCOME-MIGRATION-0001",
+      "work_item_id": "WORK-MIGRATION-0001",
+      "summary": "Repository governance migrated to Palari Company OS.",
+      "status": "completed",
+      "what_happened": "Old Orchestrator files were archived under docs/legacy/palari-orchestrator, Company OS was vendored under tools/palari-company-os, and a new company-os/workspace.json became the forward source of truth.",
+      "what_changed": "New work should use ./bin/company-os queue/detail/validate instead of old CUE tickets.",
+      "timestamp": "2026-06-20T00:00:00Z"
+    }
+  ]
 }
