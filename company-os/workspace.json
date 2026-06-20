@@ -922,7 +922,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Align money-affecting local actions with the active group identity: expenses and settlement records should use the active group member userId as actor/creator where available, so activity audit rows show the person currently acting. No production auth, backend sync, secrets, payments, or external services.",
       "acceptance_target": "Adding expenses and marking settlements locally records createdByUserId/recordedByUserId and activity actor from the active group member identity, with fallback to selected demo user.",
       "required_approval_capability": "engineering",
@@ -1111,13 +1111,24 @@
       "id": "ATTEMPT-APP-0007",
       "work_item_id": "WORK-APP-0007",
       "actor": "PALARI-ENGINEERING",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean; previous app work items are reviewed and waiting on human approval",
-      "result": "in progress"
+      "cleanliness": "implementation and evidence committed on main; Company OS record pending commit",
+      "result": "Aligned local action recording with active group identity",
+      "commits": [
+        "c2d915a"
+      ],
+      "changed_files": [
+        "src/state/actorIdentity.ts",
+        "src/state/useAppData.ts",
+        "src/screens/MainScreen.tsx",
+        "src/__tests__/actorIdentity.test.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0007"
+      ]
     }
   ],
   "evidence_runs": [
@@ -1295,6 +1306,30 @@
       "summary": "Activity audit trail checks passed: typecheck, 22 tests, Expo config, web export, Company OS validate/scope, screenshots, and GLM follow-up review accept-ready.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T15:02:21Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0007"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0007/technical-report.md",
+        "reports/evidence/WORK-APP-0007/glm52-code-review.md",
+        "reports/evidence/WORK-APP-0007/glm52-followup-review.md"
+      ],
+      "id": "EVIDENCE-APP-0007",
+      "work_item_id": "WORK-APP-0007",
+      "attempt_id": "ATTEMPT-APP-0007",
+      "head_sha": "c2d915a",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "Active identity recording checks passed: typecheck, 25 tests, Expo config, web export, Company OS validate/scope, and GLM follow-up review accept-ready.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T15:07:36Z"
     }
   ],
   "review_verdicts": [
@@ -1422,6 +1457,26 @@
       "reviewer": "GLM-5.2-code-review",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T15:02:21Z"
+    },
+    {
+      "checks_inspected": [
+        "actor resolver",
+        "MainScreen actor threading",
+        "useAppData expense and settlement writes",
+        "actor tests",
+        "technical report"
+      ],
+      "residual_risks": [
+        "human approval still required",
+        "no Android emulator/device QA",
+        "no production auth/backend sync"
+      ],
+      "id": "REVIEW-APP-0007",
+      "work_item_id": "WORK-APP-0007",
+      "reviewed_head": "c2d915a",
+      "reviewer": "GLM-5.2-code-review",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T15:07:36Z"
     }
   ],
   "human_decisions": [],
@@ -1691,6 +1746,41 @@
       "attempt_id": "ATTEMPT-APP-0006",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T15:02:21Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added actor resolver",
+        "threaded active group user into expense creation",
+        "threaded active group user into settlement recording",
+        "added tests",
+        "ran checks",
+        "used GLM code review"
+      ],
+      "outputs_created": [
+        "src/state/actorIdentity.ts",
+        "src/state/useAppData.ts",
+        "src/screens/MainScreen.tsx",
+        "src/__tests__/actorIdentity.test.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0007"
+      ],
+      "not_done": [
+        "production auth",
+        "backend sync",
+        "real payments",
+        "Android emulator/device QA",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0007",
+      "work_item_id": "WORK-APP-0007",
+      "attempt_id": "ATTEMPT-APP-0007",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T15:07:36Z"
     }
   ],
   "decisions": [
@@ -1891,6 +1981,27 @@
       "what_happened": "Activity rows now use activityEvents when available, show actor identity and labels, preserve fallback rows, and keep settlement records local/no-real-payment.",
       "what_changed": "The history experience better supports the premium multi-user model and SQL-ready activity_events entity.",
       "timestamp": "2026-06-20T15:02:21Z"
+    },
+    {
+      "useful": [
+        "active actor resolver",
+        "createdByUserId alignment",
+        "recordedByUserId alignment",
+        "activity actor alignment",
+        "25 tests"
+      ],
+      "follow_up_needed": [
+        "human approval",
+        "Android device QA",
+        "production auth decisions later"
+      ],
+      "id": "OUTCOME-APP-0007",
+      "work_item_id": "WORK-APP-0007",
+      "summary": "Local money actions now record the active group identity.",
+      "status": "captured",
+      "what_happened": "Expenses and local settlement records now accept active group actor user IDs, with safe fallback to selected demo user.",
+      "what_changed": "The audit trail better reflects who is currently acting in a group, reinforcing the multi-user model.",
+      "timestamp": "2026-06-20T15:07:44Z"
     }
   ]
 }
