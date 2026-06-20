@@ -240,6 +240,7 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
         expenseParticipantCount(data, expense)
       } participantes`,
       actorName: expense.createdByUserId ? userName(data, expense.createdByUserId) : undefined,
+      categoryId: expense.categoryId,
       label: "Gasto",
       amountCents: expense.amountCents,
       currency: expense.currency,
@@ -287,6 +288,7 @@ function activityFromEvent(
           expenseParticipantCount(data, expense)
         } participantes`,
         actorName,
+        categoryId: expense.categoryId,
         label: "Gasto",
         amountCents: expense.amountCents,
         currency: expense.currency,

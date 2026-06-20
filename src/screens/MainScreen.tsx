@@ -55,12 +55,33 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
   month: "short",
 });
 
+const longDateFormatter = new Intl.DateTimeFormat("es-MX", {
+  day: "numeric",
+  month: "long",
+});
+
 const heroMoneyFormatter = new Intl.NumberFormat("es-MX", {
   currency: "MXN",
   currencyDisplay: "code",
   maximumFractionDigits: 0,
   style: "currency",
 });
+
+const expenseCategories: {
+  id: string;
+  label: string;
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
+  tone: "primary" | "blue" | "warm" | "due";
+}[] = [
+  { id: "food", label: "Comida", icon: "food-outline", tone: "warm" },
+  { id: "travel", label: "Viaje", icon: "bag-suitcase-outline", tone: "blue" },
+  { id: "transport", label: "Transporte", icon: "car-outline", tone: "primary" },
+  { id: "groceries", label: "Súper", icon: "cart-outline", tone: "primary" },
+  { id: "home", label: "Casa", icon: "home-outline", tone: "blue" },
+  { id: "fun", label: "Plan", icon: "glass-cocktail", tone: "due" },
+];
+
+const defaultCategory = expenseCategories[0];
 
 function findMember(members: Member[], id: string) {
   return members.find((member) => member.id === id);
@@ -70,8 +91,70 @@ function formatDate(value: string) {
   return dateFormatter.format(new Date(value));
 }
 
+function formatActivityDate(value: string) {
+  return longDateFormatter.format(new Date(value));
+}
+
 function formatHeroMoney(cents: number) {
   return heroMoneyFormatter.format(cents / 100);
+}
+
+function categoryFor(id?: string) {
+  return expenseCategories.find((category) => category.id === id) ?? defaultCategory;
+}
+
+function categoryToneStyle(tone: (typeof expenseCategories)[number]["tone"]) {
+  if (tone === "blue") {
+    return styles.objectToneBlue;
+  }
+  if (tone === "warm") {
+    return styles.objectToneWarm;
+  }
+  if (tone === "due") {
+    return styles.objectToneDue;
+  }
+  return styles.objectTonePrimary;
+}
+
+function groupGlyph(group: Group): keyof typeof MaterialCommunityIcons.glyphMap {
+  const normalized = `${group.name} ${group.description}`.toLowerCase();
+  if (normalized.includes("viaje") || normalized.includes("hotel") || normalized.includes("oaxaca")) {
+    return "bag-suitcase-outline";
+  }
+  if (normalized.includes("depa") || normalized.includes("casa") || normalized.includes("roma")) {
+    return "home-city-outline";
+  }
+  if (normalized.includes("asada") || normalized.includes("comida") || normalized.includes("taco")) {
+    return "food-steak";
+  }
+  if (normalized.includes("oficina") || normalized.includes("trabajo")) {
+    return "briefcase-outline";
+  }
+  return "account-group-outline";
+}
+
+function groupAccent(group: Group) {
+  const normalized = `${group.name} ${group.description}`.toLowerCase();
+  if (normalized.includes("viaje") || normalized.includes("oaxaca")) {
+    return { color: colors.accentBlue, style: styles.objectToneBlue };
+  }
+  if (normalized.includes("asada") || normalized.includes("comida")) {
+    return { color: colors.terracotta, style: styles.objectToneWarm };
+  }
+  return { color: colors.primaryDark, style: styles.objectTonePrimary };
+}
+
+function groupActivityByDate(items: ActivityItem[]) {
+  return items.reduce<{ dateKey: string; label: string; items: ActivityItem[] }[]>((sections, item) => {
+    const dateKey = item.createdAt.slice(0, 10);
+    const existing = sections.find((section) => section.dateKey === dateKey);
+    if (existing) {
+      existing.items.push(item);
+      return sections;
+    }
+    sections.push({ dateKey, label: formatActivityDate(item.createdAt), items: [item] });
+    return sections;
+  }, []);
 }
 
 function activityIconForTitle(title: string): keyof typeof MaterialCommunityIcons.glyphMap {
@@ -193,6 +276,52 @@ function settlementPerspective(
   };
 }
 
+function GroupObject({ group, size = "regular" }: { group: Group; size?: "regular" | "large" }) {
+  const accent = groupAccent(group);
+  return (
+    <View style={[styles.groupObject, accent.style, size === "large" && styles.groupObjectLarge]}>
+      <MaterialCommunityIcons
+        color={accent.color}
+        name={groupGlyph(group)}
+        size={size === "large" ? 24 : 20}
+      />
+    </View>
+  );
+}
+
+function AvatarStack({ members, limit = 4 }: { members: Member[]; limit?: number }) {
+  const visible = members.slice(0, limit);
+  const remaining = Math.max(0, members.length - visible.length);
+
+  return (
+    <View accessibilityLabel={`${members.length} integrantes`} style={styles.avatarStack}>
+      {visible.map((member, index) => (
+        <View key={member.id} style={[styles.avatarStackItem, index > 0 && styles.avatarStackOverlap]}>
+          <Avatar color={member.avatarColor} label={member.name} />
+        </View>
+      ))}
+      {remaining ? (
+        <View style={[styles.avatarStackMore, visible.length > 0 && styles.avatarStackOverlap]}>
+          <Text style={styles.avatarStackMoreText}>+{remaining}</Text>
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
+function CategoryObject({ categoryId, size = "regular" }: { categoryId?: string; size?: "regular" | "small" }) {
+  const category = categoryFor(categoryId);
+  return (
+    <View style={[styles.categoryObject, categoryToneStyle(category.tone), size === "small" && styles.categoryObjectSmall]}>
+      <MaterialCommunityIcons
+        color={category.tone === "due" ? colors.due : category.tone === "blue" ? colors.accentBlue : category.tone === "warm" ? colors.terracotta : colors.primaryDark}
+        name={category.icon}
+        size={size === "small" ? 16 : 19}
+      />
+    </View>
+  );
+}
+
 function GroupCard({
   data,
   group,
@@ -227,6 +356,7 @@ function GroupCard({
       style={({ pressed }) => [styles.groupCard, isSelected && styles.groupCardSelected, pressed && styles.pressed]}
     >
       <View style={styles.groupCardTop}>
+        <GroupObject group={group} />
         <View style={styles.groupTitleWrap}>
           <Text style={styles.groupName}>{group.name}</Text>
           <Text style={styles.groupDescription} numberOfLines={2}>
@@ -238,6 +368,13 @@ function GroupCard({
       <View style={styles.groupPreview}>
         <MaterialCommunityIcons color={summary.openBalanceCents ? colors.due : colors.primary} name="swap-horizontal" size={16} />
         <Text style={styles.groupPreviewText}>{previewCopy}</Text>
+      </View>
+      <View style={styles.groupPeopleRow}>
+        <AvatarStack members={members} />
+        <Text style={styles.groupPeopleText}>
+          {members.map((member) => member.name).slice(0, 3).join(", ")}
+          {members.length > 3 ? ` y ${members.length - 3} más` : ""}
+        </Text>
       </View>
       <View style={styles.groupStats}>
         <View>
@@ -293,13 +430,17 @@ function ActivityRow({ item }: { item: ActivityItem }) {
       <View style={styles.activityRail}>
         <View style={[styles.activityRailDot, item.type === "settlement" && styles.activityRailDotSettlement]} />
       </View>
-      <View style={[styles.activityIcon, activityTone(item)]}>
+      {item.type === "expense" ? (
+        <CategoryObject categoryId={item.categoryId} size="small" />
+      ) : (
+        <View style={[styles.activityIcon, activityTone(item)]}>
         <MaterialCommunityIcons
           color={item.type === "settlement" ? colors.primary : colors.mutedInk}
           name={activityIcon(item)}
           size={18}
         />
-      </View>
+        </View>
+      )}
       <View style={styles.activityCopy}>
         <View style={styles.activityMetaLine}>
           {item.label ? <Pill label={item.label} tone={item.type === "settlement" ? "gold" : "neutral"} /> : null}
@@ -462,6 +603,7 @@ export function MainScreen() {
   const [memberName, setMemberName] = useState("");
   const [expenseTitle, setExpenseTitle] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
+  const [expenseCategoryId, setExpenseCategoryId] = useState(defaultCategory.id);
   const [expenseNote, setExpenseNote] = useState("");
   const [payerId, setPayerId] = useState("");
   const [participantIds, setParticipantIds] = useState<string[]>([]);
@@ -651,6 +793,7 @@ export function MainScreen() {
     const added = addExpense(selectedGroup.id, {
       actorUserId: activeActorUserId,
       amount: expenseAmount,
+      categoryId: expenseCategoryId,
       note: expenseNote,
       participantIds,
       payerId,
@@ -661,6 +804,7 @@ export function MainScreen() {
     }
     setExpenseTitle("");
     setExpenseAmount("");
+    setExpenseCategoryId(defaultCategory.id);
     setExpenseNote("");
     setParticipantIds([]);
     setShowExpenseForm(false);
@@ -797,8 +941,12 @@ export function MainScreen() {
     return (
       <View key={`${settlement.fromMemberId}-${settlement.toMemberId}`} style={styles.settlementCard}>
         <View style={styles.settlementCompactTop}>
-          <View style={styles.settlementRouteIcon}>
-            <MaterialCommunityIcons color={colors.primaryDark} name="arrow-right" size={18} />
+          <View style={styles.settlementRoutePeople}>
+            <Avatar color={from?.avatarColor ?? colors.due} label={from?.name ?? "A"} />
+            <View style={styles.settlementRouteIcon}>
+              <MaterialCommunityIcons color={colors.primaryDark} name="arrow-right" size={16} />
+            </View>
+            <Avatar color={to?.avatarColor ?? colors.primary} label={to?.name ?? "B"} />
           </View>
           <View style={styles.settlementCompactCopy}>
             <View style={styles.settlementTitleRow}>
@@ -807,16 +955,18 @@ export function MainScreen() {
                 <Text style={styles.settlementPerspectiveText}>{perspective.badge}</Text>
               </View>
             </View>
-            <View style={styles.demoChip}>
-              <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
-              <Text style={styles.demoOnly}>Sin pagos reales</Text>
+            <View style={styles.settlementMetaRow}>
+              <View style={styles.settlementAmountInline}>
+                <Text style={styles.settlementAmountLabel}>Monto MXN</Text>
+                <Text style={styles.settlementAmountText}>
+                  {formatMoney(settlement.amountCents)}
+                </Text>
+              </View>
+              <View style={styles.demoChip}>
+                <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
+                <Text style={styles.demoOnly}>Sin pagos reales</Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.settlementAmountGroup}>
-            <Text style={styles.settlementAmountLabel}>Monto MXN</Text>
-            <Text style={styles.settlementAmountText}>
-              {formatMoney(settlement.amountCents)}
-            </Text>
           </View>
         </View>
         <View style={styles.settlementActions}>
@@ -935,7 +1085,12 @@ export function MainScreen() {
             title="Aún no hay actividad"
           />
         ) : (
-          activity.map((item) => <ActivityRow item={item} key={item.id} />)
+          groupActivityByDate(activity).map((section) => (
+            <View key={section.dateKey} style={styles.activitySection}>
+              <Text style={styles.activitySectionLabel}>{section.label}</Text>
+              {section.items.map((item) => <ActivityRow item={item} key={item.id} />)}
+            </View>
+          ))
         )}
       </Section>
     </View>
@@ -1181,19 +1336,60 @@ export function MainScreen() {
             </View>
           </View>
           {error ? <Text style={styles.formError}>{error}</Text> : null}
-          <Field
-            label="Concepto"
-            onChangeText={setExpenseTitle}
-            placeholder="Ej. Tacos después del cine"
-            value={expenseTitle}
-          />
-          <Field
-            keyboardType="decimal-pad"
-            label="Monto MXN"
-            onChangeText={setExpenseAmount}
-            placeholder="850.00"
-            value={expenseAmount}
-          />
+          <View style={styles.amountFirstPanel}>
+            <View style={styles.amountFirstTop}>
+              <CategoryObject categoryId={expenseCategoryId} />
+              <View style={styles.amountFirstCopy}>
+                <Text style={styles.fieldLabel}>Monto MXN</Text>
+                <TextInput
+                  accessibilityLabel="Monto MXN"
+                  keyboardType="decimal-pad"
+                  onChangeText={setExpenseAmount}
+                  placeholder="850.00"
+                  placeholderTextColor={colors.mutedInk}
+                  style={styles.amountInput}
+                  value={expenseAmount}
+                />
+              </View>
+            </View>
+            <Field
+              label="Concepto"
+              onChangeText={setExpenseTitle}
+              placeholder="Ej. Tacos después del cine"
+              value={expenseTitle}
+            />
+          </View>
+          <View style={styles.sheetSectionHeader}>
+            <View>
+              <Text style={styles.fieldLabel}>Categoría</Text>
+              <Text style={styles.accountSectionText}>Ayuda a leer el historial sin tanto texto.</Text>
+            </View>
+          </View>
+          <View style={styles.categoryGrid}>
+            {expenseCategories.map((category) => {
+              const selected = category.id === expenseCategoryId;
+              return (
+                <Pressable
+                  accessibilityLabel={`Categoría ${category.label}`}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
+                  hitSlop={4}
+                  key={category.id}
+                  onPress={() => setExpenseCategoryId(category.id)}
+                  style={[styles.categoryChip, selected && styles.categoryChipActive]}
+                >
+                  <View style={[styles.categoryChipIcon, categoryToneStyle(category.tone)]}>
+                    <MaterialCommunityIcons
+                      color={category.tone === "due" ? colors.due : category.tone === "blue" ? colors.accentBlue : category.tone === "warm" ? colors.terracotta : colors.primaryDark}
+                      name={category.icon}
+                      size={16}
+                    />
+                  </View>
+                  <Text style={[styles.categoryChipText, selected && styles.categoryChipTextActive]}>{category.label}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
           <Field
             label="Nota"
             onChangeText={setExpenseNote}
@@ -1470,8 +1666,12 @@ export function MainScreen() {
               </View>
 
               <View style={styles.heroGroupLine}>
-                <Text numberOfLines={1} style={styles.heroGroupName}>{selectedGroup.name}</Text>
-                <Text style={styles.heroGroupMeta}>MXN · {selectedMembers.length} integrantes</Text>
+                <GroupObject group={selectedGroup} size="large" />
+                <View style={styles.heroGroupCopy}>
+                  <Text numberOfLines={1} style={styles.heroGroupName}>{selectedGroup.name}</Text>
+                  <Text style={styles.heroGroupMeta}>MXN · {selectedMembers.length} integrantes</Text>
+                </View>
+                <AvatarStack members={selectedMembers} limit={3} />
               </View>
 
               <View style={styles.myBalancePanel}>
@@ -1683,6 +1883,61 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     lineHeight: 31,
   },
+  amountFirstCopy: {
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
+  },
+  amountFirstPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  amountFirstTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.md,
+  },
+  amountInput: {
+    color: colors.ink,
+    fontSize: 30,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "800",
+    letterSpacing: 0,
+    minHeight: 42,
+    padding: 0,
+  },
+  avatarStack: {
+    alignItems: "center",
+    flexDirection: "row",
+    flexShrink: 0,
+  },
+  avatarStackItem: {
+    borderColor: colors.surface,
+    borderRadius: 20,
+    borderWidth: 2,
+  },
+  avatarStackMore: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceStrong,
+    borderColor: colors.surface,
+    borderRadius: 20,
+    borderWidth: 2,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  avatarStackMoreText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "800",
+  },
+  avatarStackOverlap: {
+    marginLeft: -10,
+  },
   calmFigure: {
     alignItems: "center",
     flexDirection: "row",
@@ -1767,8 +2022,16 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 18,
   },
+  heroGroupCopy: {
+    flex: 1,
+    gap: 2,
+    minWidth: 0,
+  },
   heroGroupLine: {
-    gap: spacing.xs,
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 46,
   },
   heroGroupMeta: {
     color: colors.mutedInk,
@@ -2091,6 +2354,16 @@ const styles = StyleSheet.create({
   activitySettlement: {
     backgroundColor: colors.surfaceTinted,
   },
+  activitySection: {
+    gap: spacing.sm,
+  },
+  activitySectionLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    marginTop: spacing.xs,
+    textTransform: "capitalize",
+  },
   activitySubtitle: {
     color: colors.mutedInk,
     fontSize: typography.small,
@@ -2123,6 +2396,55 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     padding: spacing.md,
     paddingBottom: spacing.xxl,
+  },
+  categoryChip: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 44,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  categoryChipActive: {
+    backgroundColor: colors.surfaceTinted,
+    borderColor: colors.primary,
+  },
+  categoryChipIcon: {
+    alignItems: "center",
+    borderRadius: 14,
+    height: 28,
+    justifyContent: "center",
+    width: 28,
+  },
+  categoryChipText: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "600",
+  },
+  categoryChipTextActive: {
+    color: colors.primaryDark,
+    fontWeight: "800",
+  },
+  categoryGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  categoryObject: {
+    alignItems: "center",
+    borderRadius: 18,
+    height: 40,
+    justifyContent: "center",
+    width: 40,
+  },
+  categoryObjectSmall: {
+    borderRadius: 16,
+    height: 32,
+    width: 32,
   },
   demoOnly: {
     color: colors.mutedInk,
@@ -2235,6 +2557,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
+  objectToneBlue: {
+    backgroundColor: colors.blueWash,
+  },
+  objectToneDue: {
+    backgroundColor: colors.dueWash,
+  },
+  objectTonePrimary: {
+    backgroundColor: colors.successWash,
+  },
+  objectToneWarm: {
+    backgroundColor: colors.warmWash,
+  },
   dataActions: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -2323,6 +2657,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.md,
     justifyContent: "space-between",
+  },
+  groupObject: {
+    alignItems: "center",
+    borderRadius: 18,
+    flexShrink: 0,
+    height: 40,
+    justifyContent: "center",
+    width: 40,
+  },
+  groupObjectLarge: {
+    borderRadius: 20,
+    height: 44,
+    width: 44,
+  },
+  groupPeopleRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 38,
+  },
+  groupPeopleText: {
+    color: colors.mutedInk,
+    flex: 1,
+    fontSize: typography.micro,
+    fontWeight: "600",
+    lineHeight: 15,
   },
   groupDescription: {
     color: colors.mutedInk,
@@ -2658,6 +3018,9 @@ const styles = StyleSheet.create({
     gap: 2,
     minWidth: 104,
   },
+  settlementAmountInline: {
+    gap: 2,
+  },
   settlementAmountLabel: {
     color: colors.mutedInk,
     fontSize: typography.micro,
@@ -2697,6 +3060,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.md,
   },
+  settlementMetaRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
   settlementPerspectiveBadge: {
     alignSelf: "flex-start",
     backgroundColor: colors.surfaceTinted,
@@ -2716,6 +3086,12 @@ const styles = StyleSheet.create({
     height: 32,
     justifyContent: "center",
     width: 32,
+  },
+  settlementRoutePeople: {
+    alignItems: "center",
+    flexDirection: "row",
+    flexShrink: 0,
+    gap: spacing.xs,
   },
   settlementTitle: {
     color: colors.ink,

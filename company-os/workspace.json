@@ -1105,6 +1105,51 @@
       "acceptance_target": "First viewport and balance/activity surfaces include meaningful animated/visual comprehension cues, pass checks, and remain readable on Android viewport screenshots.",
       "required_approval_capability": "design",
       "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "company-os",
+        "src",
+        "docs/product",
+        "reports/evidence"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-PRD"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation",
+        "ai_design_review"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "remove_core_content"
+      ],
+      "id": "WORK-APP-0012",
+      "title": "Object-led Splitwise interaction pass",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "active",
+      "scope": "Recycle the useful toy-app interaction patterns into Cuentas Claras: restrained group identity icons, avatar stacks, category chips, amount-first add-expense flow, settlement route visuals, date-sectioned activity, and richer empty states while preserving the premium local-only no-real-payments model.",
+      "acceptance_target": "Cuentas Claras feels more visual, easier to understand, and closer to a premium Android shared-expense app without becoming toy-like.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0012"
     }
   ],
   "attempts": [
@@ -1390,6 +1435,17 @@
         "docs/product/decisions.md",
         "reports/evidence/WORK-APP-0011"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0012",
+      "work_item_id": "WORK-APP-0012",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started object-led interaction implementation from toy app review."
     }
   ],
   "evidence_runs": [

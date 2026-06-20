@@ -29,6 +29,7 @@ const simpleData: AppData = {
       amountCents: 90000,
       currency: "MXN",
       payerId: "ana",
+      categoryId: "food",
       participantIds: ["ana", "luis", "maru"],
       createdAt: "2026-06-10T01:00:00Z",
     },
@@ -123,6 +124,7 @@ describe("group balances", () => {
       subtitle: "Marcado pagado localmente · Sin pagos reales",
     });
     expect(activity[1].subtitle).toBe("Pagó Ana · Dividido entre 3 participantes");
+    expect(activity[1].categoryId).toBe("food");
   });
 
   it("builds an actor-aware audit trail from activity events", () => {
@@ -158,6 +160,7 @@ describe("group balances", () => {
     expect(activity).toHaveLength(1);
     expect(activity[0]).toMatchObject({
       actorName: "Ana",
+      categoryId: "food",
       label: "Gasto",
       subtitle: "Ana registró · Pagó Ana · 3 participantes",
       title: "Cena",

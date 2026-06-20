@@ -23,6 +23,7 @@ type AddExpenseInput = {
   title: string;
   amount: string;
   payerId: string;
+  categoryId?: string;
   participantIds?: string[];
   actorUserId?: string;
   note?: string;
@@ -309,6 +310,7 @@ export function useAppData() {
         payerId: validation.value.payerId,
         paidByMemberId: validation.value.payerId,
         createdByUserId: actorUserId,
+        categoryId: input.categoryId,
         participantIds,
         note: validation.value.note,
         expenseDate: createdAt.slice(0, 10),

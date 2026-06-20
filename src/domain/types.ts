@@ -125,6 +125,7 @@ export type ActivityItem = {
   title: string;
   subtitle: string;
   actorName?: string;
+  categoryId?: string;
   label?: string;
   amountCents: number;
   currency: CurrencyCode;

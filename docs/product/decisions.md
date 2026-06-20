@@ -362,3 +362,17 @@ Rationale: The app was becoming too text-led. A small animated object showing
 who pays whom helps everyday users understand settlement direction faster, while
 the reduced-motion path and `Sin pagos reales` semantics prevent the animation
 from feeling like real payment processing or inaccessible decoration.
+
+### Recycle Flow Patterns, Not Toy Visual Skin
+
+Decision: Borrow the toy app's useful shared-expense interaction patterns:
+restrained group identity objects, stacked avatars, category chips, amount-first
+expense entry, visible payer-to-receiver routes, and date-sectioned activity.
+Do not copy its raw emoji identity system, saturated green headers, decimal
+money model, or payment-like settlement language.
+
+Rationale: Cuentas Claras needs to become easier to understand visually without
+becoming playful or cluttered. Object-led rows reduce reliance on text for
+mainstream Android users, while the existing slate/agave palette, integer cents,
+SQL-ready local model, and `Sin pagos reales` cues preserve the premium finance
+trust bar.
