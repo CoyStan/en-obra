@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { createSyncOutboxItem } from "../backend/syncOutbox";
 import { calculateGroupSummary, getGroupMembers } from "../domain/balances";
 import { splitEqual } from "../domain/money";
 import type {
@@ -9,7 +10,6 @@ import type {
   GroupMember,
   Settlement,
   SettlementSuggestion,
-  SyncOutboxItem,
   User,
 } from "../domain/types";
 import { createId } from "../utils/id";
@@ -39,25 +39,6 @@ function pickAvatarColor(index: number) {
 
 function defaultActorUserId(data: AppData) {
   return resolveActorUserId(data);
-}
-
-function outboxItem(
-  operation: SyncOutboxItem["operation"],
-  entityType: SyncOutboxItem["entityType"],
-  entityId: string,
-  payload: unknown,
-  createdAt: string,
-): SyncOutboxItem {
-  return {
-    id: createId("outbox"),
-    operation,
-    entityType,
-    entityId,
-    payloadJson: JSON.stringify(payload),
-    status: "pending",
-    attemptCount: 0,
-    createdAt,
-  };
 }
 
 function activityEvent(
@@ -198,9 +179,19 @@ export function useAppData() {
         selectedUserId: actorUserId,
         syncOutbox: [
           ...(current.syncOutbox ?? []),
-          outboxItem("create", "group", group.id, group, createdAt),
-          ...(ownerMember ? [outboxItem("create", "group_member", ownerMember.id, ownerMember, createdAt)] : []),
-          outboxItem("create", "activity_event", event.id, event, createdAt),
+          createSyncOutboxItem({ operation: "create", entityType: "group", entityId: group.id, payload: group, createdAt }),
+          ...(ownerMember
+            ? [
+                createSyncOutboxItem({
+                  operation: "create",
+                  entityType: "group_member",
+                  entityId: ownerMember.id,
+                  payload: ownerMember,
+                  createdAt,
+                }),
+              ]
+            : []),
+          createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt }),
         ],
       };
     });
@@ -266,9 +257,15 @@ export function useAppData() {
         ),
         syncOutbox: [
           ...(current.syncOutbox ?? []),
-          outboxItem("create", "user", user.id, user, createdAt),
-          outboxItem("create", "group_member", groupMember.id, groupMember, createdAt),
-          outboxItem("create", "activity_event", event.id, event, createdAt),
+          createSyncOutboxItem({ operation: "create", entityType: "user", entityId: user.id, payload: user, createdAt }),
+          createSyncOutboxItem({
+            operation: "create",
+            entityType: "group_member",
+            entityId: groupMember.id,
+            payload: groupMember,
+            createdAt,
+          }),
+          createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt }),
         ],
       };
     });
@@ -345,11 +342,17 @@ export function useAppData() {
         ),
         syncOutbox: [
           ...(current.syncOutbox ?? []),
-          outboxItem("create", "expense", expense.id, expense, createdAt),
+          createSyncOutboxItem({ operation: "create", entityType: "expense", entityId: expense.id, payload: expense, createdAt }),
           ...participants.map((participant) =>
-            outboxItem("create", "expense_participant", participant.id, participant, createdAt),
+            createSyncOutboxItem({
+              operation: "create",
+              entityType: "expense_participant",
+              entityId: participant.id,
+              payload: participant,
+              createdAt,
+            }),
           ),
-          outboxItem("create", "activity_event", event.id, event, createdAt),
+          createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt }),
         ],
       };
     });
@@ -392,8 +395,14 @@ export function useAppData() {
         ),
         syncOutbox: [
           ...(current.syncOutbox ?? []),
-          outboxItem("create", "settlement", settlement.id, settlement, createdAt),
-          outboxItem("create", "activity_event", event.id, event, createdAt),
+          createSyncOutboxItem({
+            operation: "create",
+            entityType: "settlement",
+            entityId: settlement.id,
+            payload: settlement,
+            createdAt,
+          }),
+          createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt }),
         ],
       };
     });

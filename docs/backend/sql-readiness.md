@@ -52,6 +52,22 @@ When access/storage is selected, implement a concrete repository/adapter that:
 5. Replays/sends outbox operations through the chosen backend.
 6. Keeps local-first behavior when offline.
 
+## Sync Outbox Lifecycle
+
+`src/backend/syncOutbox.ts` owns local mutation queue helpers for future backend
+adapters:
+
+- deterministic payload JSON via sorted keys
+- `pending` outbox record creation
+- oldest-first pending reads
+- attempt timestamp/count updates
+- sent and failed status transitions
+- typed payload parsing
+
+`useAppData` creates mutation outbox rows through this shared module. A future
+backend adapter can process the same rows without changing group, member,
+expense, settlement, or activity mutations.
+
 ## Integrity Guard
 
 `src/backend/dataIntegrity.ts` audits and safely repairs persisted local
