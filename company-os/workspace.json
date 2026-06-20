@@ -2037,6 +2037,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0039"
+    },
+    {
+      "id": "WORK-APP-0040",
+      "title": "Play Data Safety technical inventory",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested technical inventory for Google Play Data Safety categories for the current local-first build, including local-only account/app data, no sharing, no real payments, no analytics/ads SDKs, and explicit legal/human blocker preservation. Forbidden: legal approval, final Play Console submission, secrets, paid services, production backend deployment, real payments.",
+      "acceptance_target": "Backend exposes a tested Data Safety inventory for the current build, release readiness/docs/manifest include it, legal/Play submission remains a human blocker, and verification passes.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0040"
     }
   ],
   "attempts": [
@@ -2726,6 +2740,21 @@
       "result": "Implemented and verified provider-neutral storage readiness contract in commit d285a41939259ccd1b218d919b14645d44b3132a.",
       "commits": [
         "d285a41939259ccd1b218d919b14645d44b3132a"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0040",
+      "work_item_id": "WORK-APP-0040",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:11:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified technical Data Safety inventory in commit e789f91cf685afd315033aeb536d5b65c30d507c.",
+      "commits": [
+        "e789f91cf685afd315033aeb536d5b65c30d507c"
       ]
     }
   ],
@@ -3653,6 +3682,27 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for provider-neutral storage readiness.",
       "timestamp": "2026-06-20T23:09:39Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0040"
+      ],
+      "artifacts": [
+        "src/backend/dataSafetyInventory.ts",
+        "src/__tests__/dataSafetyInventory.test.ts",
+        "reports/evidence/WORK-APP-0040/technical-report.md",
+        "docs/backend/release-manifest-v1.json",
+        "docs/production/privacy-terms-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0040",
+      "work_item_id": "WORK-APP-0040",
+      "attempt_id": "ATTEMPT-APP-0040",
+      "head_sha": "e789f91cf685afd315033aeb536d5b65c30d507c",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for Data Safety technical inventory.",
+      "timestamp": "2026-06-20T23:13:06Z"
     }
   ],
   "review_verdicts": [
@@ -4113,6 +4163,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:09:39Z"
+    },
+    {
+      "id": "REVIEW-APP-0040",
+      "work_item_id": "WORK-APP-0040",
+      "reviewed_head": "e789f91cf685afd315033aeb536d5b65c30d507c",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:13:06Z"
     }
   ],
   "human_decisions": [],
@@ -5579,6 +5637,46 @@
       "attempt_id": "ATTEMPT-APP-0039",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:09:39Z"
+    },
+    {
+      "actions_taken": [
+        "created WORK-APP-0040",
+        "added Data Safety inventory model",
+        "added Data Safety inventory tests",
+        "updated backend release gate",
+        "updated release readiness report",
+        "regenerated release manifest",
+        "updated backend/privacy docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/dataSafetyInventory.ts",
+        "src/__tests__/dataSafetyInventory.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "src/backend/backendReleaseGate.ts",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md",
+        "docs/production/privacy-terms-readiness.md",
+        "reports/evidence/WORK-APP-0040/technical-report.md"
+      ],
+      "not_done": [
+        "legal approval",
+        "final Play Console submission",
+        "public privacy URL hosting",
+        "production backend",
+        "analytics SDK",
+        "ads SDK",
+        "payment rails",
+        "secrets",
+        "paid services",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0040",
+      "work_item_id": "WORK-APP-0040",
+      "attempt_id": "ATTEMPT-APP-0040",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:13:06Z"
     }
   ],
   "decisions": [
@@ -6135,6 +6233,15 @@
       "what_happened": "Added local internal-testing storage criteria, production storage blockers, and future-provider readiness evaluation without choosing a provider or configuring secrets.",
       "what_changed": "The backend release gate now requires storage-readiness while still allowing production-storage as a human/provider blocker.",
       "timestamp": "2026-06-20T23:09:39Z"
+    },
+    {
+      "id": "OUTCOME-APP-0040",
+      "work_item_id": "WORK-APP-0040",
+      "summary": "The current build now has a tested technical Data Safety inventory.",
+      "status": "captured",
+      "what_happened": "Added a local-first Data Safety inventory that records no real payments, no ads/analytics SDK, no backend sharing, local-only data categories, and human legal/Play blockers.",
+      "what_changed": "The backend release gate now requires data-safety-inventory while final Play Console answers remain a human/legal blocker.",
+      "timestamp": "2026-06-20T23:13:06Z"
     }
   ]
 }
