@@ -10,6 +10,7 @@ deployment approval.
 - SQL demo seed: `src/backend/sqlDataset.ts`,
   `docs/backend/seed-demo-v1.sql`
 - Backend release manifest artifact: `docs/backend/release-manifest-v1.json`
+- Backend Play preflight artifact: `docs/backend/play-preflight-v1.json`
 - SQL artifact drift tests: `src/__tests__/sqlArtifacts.test.ts`
 - Schema migration planner: `src/backend/sqlMigrations.ts`
 - Data integrity audit/repair: `src/backend/dataIntegrity.ts`
@@ -96,6 +97,8 @@ and the only remaining blockers are the expected human/provider decisions:
 `src/backend/playPreflight.ts` is intentionally downstream from the release
 gate. It aggregates the gate plus access, storage, deletion, and Data Safety
 readiness into one handoff report without becoming part of the gate itself.
+The committed artifact is `docs/backend/play-preflight-v1.json`, and
+`src/__tests__/playPreflight.test.ts` keeps it synchronized with the generator.
 
 ## Remaining Human/External Blockers
 

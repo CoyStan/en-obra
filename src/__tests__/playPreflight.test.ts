@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { createPlayPreflightReport } from "../backend/playPreflight";
+import {
+  createPlayPreflightReport,
+  createPlayPreflightReportJson,
+} from "../backend/playPreflight";
+
+declare const require: (moduleName: string) => { readFileSync: (path: string, encoding: "utf8") => string };
+
+const { readFileSync } = require("fs");
 
 describe("Play preflight report", () => {
   it("aggregates backend readiness into an internal-testing preflight report", () => {
@@ -35,5 +42,15 @@ describe("Play preflight report", () => {
     expect(report.evidence).toContain("src/backend/accessReadiness.ts");
     expect(report.evidence).toContain("src/backend/storageReadiness.ts");
     expect(report.evidence).toContain("src/backend/dataSafetyInventory.ts");
+  });
+
+  it("keeps the committed preflight artifact synchronized", () => {
+    const committed = readFileSync("docs/backend/play-preflight-v1.json", "utf8");
+    const generated = createPlayPreflightReportJson("2026-06-20T12:00:00Z");
+    const parsed = JSON.parse(committed);
+
+    expect(committed).toBe(generated);
+    expect(parsed.status).toBe("ready-for-internal-testing");
+    expect(parsed.humanBlockers).toContain("production-auth");
   });
 });

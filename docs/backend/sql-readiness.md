@@ -46,6 +46,7 @@ Committed backend handoff artifacts:
 - `docs/backend/schema-v1.sql`
 - `docs/backend/seed-demo-v1.sql`
 - `docs/backend/release-manifest-v1.json`
+- `docs/backend/play-preflight-v1.json`
 
 `src/__tests__/sqlArtifacts.test.ts` verifies both files match the TypeScript
 schema/seed generator exactly. `src/__tests__/backendReleaseManifest.test.ts`
@@ -335,6 +336,10 @@ internal-testing handoff report. It summarizes:
 The preflight report is intentionally downstream from the release gate. It does
 not choose providers, configure secrets, submit Play Console answers, or make
 legal commitments.
+
+The committed handoff artifact is `docs/backend/play-preflight-v1.json`.
+`src/__tests__/playPreflight.test.ts` verifies the artifact matches the
+generator.
 
 ## Verification
 

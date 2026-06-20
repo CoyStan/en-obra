@@ -81,3 +81,7 @@ export function createPlayPreflightReport(generatedAt: string): PlayPreflightRep
     ]),
   };
 }
+
+export function createPlayPreflightReportJson(generatedAt: string) {
+  return `${JSON.stringify(createPlayPreflightReport(generatedAt), null, 2)}\n`;
+}
