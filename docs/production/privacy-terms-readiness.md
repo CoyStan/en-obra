@@ -11,7 +11,7 @@ testing preparation:
 They are not final legal documents and should not be published until reviewed
 and approved by a human with authority for legal/compliance decisions.
 
-Official references checked on 2026-06-11:
+Official references checked on 2026-06-20:
 
 - Google Play review/privacy policy guidance:
   https://support.google.com/googleplay/android-developer/answer/9859455?hl=en

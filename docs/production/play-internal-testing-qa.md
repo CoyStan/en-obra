@@ -5,20 +5,23 @@
 Cuentas Claras is close to Google Play internal testing from a repo/config
 standpoint, but not uploadable from this environment. The app still requires
 human-owned Play Console access, signing/EAS credentials, hosted privacy URL,
-Data Safety answers, and approval of CUE-0012/CUE-0013 gates before upload.
+Data Safety answers, and Company OS human approval gates before upload.
 
-## Verified Locally On 2026-06-11
+## Verified Locally On 2026-06-20
 
-- `npm run release:android:check` passed.
 - `npm run typecheck` passed.
-- `npm test` passed with 5 files and 15 tests.
+- `npm test` passed with 6 files and 19 tests.
 - `npx expo config --type public` resolved Android config.
+- `npm run export:web` passed.
+- `./bin/company-os validate` passed.
 - Android package: `com.cuentasclaras.app`.
 - App version: `0.1.0`.
 - Android versionCode: `1`.
 - Android permissions: none requested.
 - Runtime version policy: app version.
-- `identify` verified release/store/screenshot dimensions.
+- `file` verified release/store asset dimensions.
+- Current 360px web smoke screenshot:
+  `reports/evidence/WORK-APP-0002/mobile-360x740.png`.
 
 ## Asset Inventory
 
@@ -28,13 +31,22 @@ Data Safety answers, and approval of CUE-0012/CUE-0013 gates before upload.
 - Play listing icon candidate: `assets/store/icon-512.png`, 512x512.
 - Feature graphic candidate: `assets/store/feature-graphic.png`, 1024x500.
 - Mobile screenshot evidence:
-  - `reports/evidence/CUE-0015/screenshots/mobile-360x740.png`, 360x740.
-  - `reports/evidence/CUE-0015/screenshots/mobile-412x915.png`, 412x915.
+  - `reports/evidence/WORK-APP-0001/screenshots-after/mobile-360x740.png`,
+    360x740.
+  - `reports/evidence/WORK-APP-0001/screenshots-after/mobile-390x844.png`,
+    390x844.
+  - `reports/evidence/WORK-APP-0001/screenshots-after/mobile-412x915.png`,
+    412x915.
+  - `reports/evidence/WORK-APP-0002/mobile-360x740.png`, 360x740.
 
 ## Official References Checked
 
 - Google Play target API level requirements:
   https://developer.android.com/google/play/requirements/target-sdk
+- Google Play internal testing setup:
+  https://support.google.com/googleplay/android-developer/answer/9845334
+- Google Play release preparation:
+  https://support.google.com/googleplay/android-developer/answer/9859348
 - Google Play store listing preview assets:
   https://support.google.com/googleplay/android-developer/answer/9866151?hl=en
 - Google Play app review/privacy policy guidance:
@@ -52,8 +64,10 @@ Data Safety answers, and approval of CUE-0012/CUE-0013 gates before upload.
 - Signing/app signing strategy requires owner approval.
 - Privacy policy URL must be hosted and approved.
 - Data Safety answers must be completed by the owner.
-- CUE-0012 privacy/terms remains `needs-human`.
-- CUE-0013 security/data deletion remains `needs-human`.
+- `WORK-APP-0001` and `WORK-APP-0002` are accept-ready but still waiting on
+  human approval.
+- Privacy/terms and security/deletion docs still need human legal/security
+  approval before publication or upload.
 - App owner must approve store listing, screenshots, tester list, and rollout.
 
 ## Internal Testing Upload Runbook
@@ -62,7 +76,7 @@ Data Safety answers, and approval of CUE-0012/CUE-0013 gates before upload.
 2. Run `npm run release:android:check`.
 3. Run `npx expo config --type public` and confirm package/versionCode.
 4. Confirm assets and screenshots match the exact build.
-5. Close or formally waive CUE-0012 and CUE-0013 human gates.
+5. Close or formally waive relevant Company OS human gates.
 6. Host approved privacy policy URL.
 7. Complete Play Console App content, Data Safety, App access, and store listing.
 8. Configure EAS or local Android signing.

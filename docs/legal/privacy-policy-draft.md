@@ -2,7 +2,7 @@
 
 Producto: Cuentas Claras
 Estado: borrador para revision legal y aprobacion humana.
-Fecha del borrador: 2026-06-11
+Fecha del borrador: 2026-06-20
 
 Este documento es un borrador operativo para preparar pruebas internas en
 Android. No es asesoria legal y no debe publicarse como politica final hasta que
@@ -38,6 +38,10 @@ La version actual puede guardar en el dispositivo:
 - Historial de actividad derivado de gastos y liquidaciones.
 - Datos de cuenta demo local, como nombre para mostrar y correo capturado por la
   interfaz demo.
+- Identificadores locales para usuarios demo, membresias de grupo,
+  participantes de gastos y cola local de sincronizacion pendiente. Estos
+  identificadores preparan una arquitectura futura, pero no sincronizan datos en
+  la version actual.
 - Preferencias y estado necesario para restaurar la experiencia local.
 
 Estos datos se guardan con almacenamiento local de la app. En la version actual

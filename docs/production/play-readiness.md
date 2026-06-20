@@ -9,13 +9,18 @@ documented until human decisions are made.
 
 ## Current Play Requirements Researched
 
+Official references checked on 2026-06-20:
+
 - Target API: Google Play requires new Android apps and updates submitted from
   August 31, 2025 to target Android 15 / API 35 or higher, except for certain
   non-phone form factors. Source:
   https://developer.android.com/google/play/requirements/target-sdk
-- Internal testing: Play Console internal testing is intended for quick
-  distribution to a small set of trusted testers without waiting for app review.
-  Source: https://play.google.com/console/about/internal-testing/
+- Internal testing: Play Console internal testing can distribute to up to 100
+  testers and can be started before all app setup is complete. Source:
+  https://support.google.com/googleplay/android-developer/answer/9845334
+- Release upload: Google Play release tracks use an Android App Bundle for new
+  apps. Source:
+  https://support.google.com/googleplay/android-developer/answer/9859348
 - Data Safety: all developers must declare collected/shared data and security
   practices, including data handled by SDKs. Source:
   https://support.google.com/googleplay/android-developer/answer/10787469
@@ -34,16 +39,20 @@ documented until human decisions are made.
   EAS/Play credentials.
 - Static web export and mobile screenshots work.
 - Expo project config can be prepared for Android release builds without secrets.
+- `eas.json` already defines `internal` and `production` Android app-bundle
+  profiles, plus a `preview-apk` internal distribution profile.
 
-## Production-Readiness Tickets
+## Company OS Work Items
 
-- `CUE-0008`: Auth/account model with local mock adapter.
-- `CUE-0009`: Backend/sync architecture with replaceable local mock adapter.
-- `CUE-0010`: Android release build readiness.
-- `CUE-0011`: App icon, splash, and store assets.
-- `CUE-0012`: Privacy/terms draft.
-- `CUE-0013`: Security and data deletion model.
-- `CUE-0014`: Internal testing checklist.
+- `WORK-APP-0001`: Premium Android visual system redesign; reviewed
+  accept-ready, waiting on human approval.
+- `WORK-APP-0002`: Local-first user and group account model; reviewed
+  accept-ready, waiting on human approval.
+- `WORK-APP-0003`: Android internal testing readiness; current release-readiness
+  work item.
+
+Older `CUE-*` records are legacy Palari Orchestrator history and should not be
+used as the forward workflow.
 
 ## Release Definition For This Phase
 
@@ -52,8 +61,8 @@ The app is "very close to internal testing" when:
 - Expo Android app identity is configured with version and versionCode.
 - App assets exist for icon, adaptive icon foreground, splash, screenshots, and
   feature graphic.
-- Auth, sync, deletion, privacy, and terms are designed and present in-app or in
-  documentation with mock adapters.
+- Auth/account, sync, deletion, privacy, and terms are designed in documentation
+  with local/mock adapters where implementation exists.
 - `npm run typecheck`, `npm test`, Expo public config, and static export pass.
 - Internal testing checklist identifies remaining human/tooling blockers:
   developer account, package signing, privacy policy URL, data deletion URL,

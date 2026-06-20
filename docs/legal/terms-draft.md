@@ -2,7 +2,7 @@
 
 Producto: Cuentas Claras
 Estado: borrador para revision legal y aprobacion humana.
-Fecha del borrador: 2026-06-11
+Fecha del borrador: 2026-06-20
 
 Este documento es un borrador operativo para preparar pruebas internas en
 Android. No es asesoria legal y no debe publicarse como terminos finales hasta
@@ -17,6 +17,10 @@ de la app.
 
 La version actual es local-first y de demostracion. Los datos se guardan en el
 dispositivo y no se sincronizan con un backend de produccion.
+
+La version actual puede mostrar identidades demo y preparar registros locales
+con forma compatible con una futura base de datos. Eso no significa que exista
+una cuenta real, colaboracion en vivo o respaldo en la nube.
 
 ## Sin Pagos Reales
 

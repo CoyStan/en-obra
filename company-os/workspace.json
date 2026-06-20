@@ -707,13 +707,14 @@
       "palari": "PALARI-RELEASE",
       "risk": "R4",
       "intensity": "standard",
-      "status": "proposed",
-      "scope": "Prepare the app, docs, assets, and checklist needed to be very close to a Play Store internal testing upload without secrets, signing keys, or production submission.",
+      "status": "active",
+      "scope": "Prepare the app, docs, assets, and checklist needed to be very close to a Play Store internal testing upload without secrets, signing keys, or production submission. Evidence reports may be written under reports/evidence for this work item.",
       "allowed_resources": [
         "app.json",
         "assets",
         "docs/production",
         "docs/legal",
+        "reports/evidence",
         "company-os/workspace.json"
       ],
       "allowed_sources": [
@@ -728,7 +729,9 @@
       "output_targets": [
         "docs/production",
         "docs/legal",
-        "assets"
+        "assets",
+        "reports/evidence",
+        "company-os/workspace.json"
       ],
       "forbidden_actions": [
         "submit to Play Store",
@@ -743,7 +746,8 @@
         "human gates documented"
       ],
       "required_approval_count": 1,
-      "required_approval_capability": "release"
+      "required_approval_capability": "release",
+      "current_attempt": "ATTEMPT-APP-0003"
     }
   ],
   "attempts": [
@@ -826,6 +830,18 @@
         "docs/production/auth-account-model.md",
         "reports/evidence/WORK-APP-0002"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0003",
+      "work_item_id": "WORK-APP-0003",
+      "actor": "PALARI-RELEASE",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "main clean after WORK-APP-0002 review handoff",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [

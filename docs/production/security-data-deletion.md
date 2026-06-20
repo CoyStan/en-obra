@@ -1,6 +1,6 @@
 # Security And Data Deletion Model
 
-Official references checked on 2026-06-11:
+Official references checked on 2026-06-20:
 
 - Google Play account deletion policy explanation:
   https://android-developers.googleblog.com/2024/03/designing-your-account-deletion-experience-google-play.html
@@ -52,9 +52,8 @@ Current local-only deletion path:
 3. The helper removes app data, mock sync state, and local mock account state.
 4. On next launch, empty storage loads demo data and no local account profile.
 
-The helper is not wired to UI in this ticket because screen changes are outside
-CUE-0013 scope. A future UI ticket should expose this behind a deliberate,
-high-friction confirmation action.
+The helper is not wired to UI yet. A future Company OS work item should expose
+this behind a deliberate, high-friction confirmation action.
 
 ## Remote Deletion
 
