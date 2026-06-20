@@ -88,6 +88,10 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/backendDiagnostics.ts",
       "src/__tests__/backendDiagnostics.test.ts",
     ]),
+    item("deletion-workflow", "Provider-neutral deletion workflow model", "ready", [
+      "src/backend/deletionWorkflow.ts",
+      "src/__tests__/deletionWorkflow.test.ts",
+    ]),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
       "src/__tests__/dataExport.test.ts",

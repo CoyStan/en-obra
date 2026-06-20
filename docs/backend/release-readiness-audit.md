@@ -20,6 +20,7 @@ deployment approval.
 - Backend release manifest: `src/backend/backendReleaseManifest.ts`
 - Local import/restore validator: `src/backend/dataImport.ts`
 - Backend health diagnostics: `src/backend/backendDiagnostics.ts`
+- Provider-neutral deletion workflow: `src/backend/deletionWorkflow.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -51,6 +52,8 @@ deployment approval.
 - Support-safe backend diagnostics for integrity state, sync queue counts,
   account/sync modes, release gate status, and known blockers without raw
   expense titles, notes, payload JSON, or contact fields.
+- Provider-neutral deletion request lifecycle for requested, verified, queued,
+  completed, failed, and cancelled states without configuring a remote endpoint.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.

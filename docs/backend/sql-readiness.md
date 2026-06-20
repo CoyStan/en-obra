@@ -245,6 +245,23 @@ Diagnostics deliberately avoid raw expense titles, notes, outbox payload JSON,
 and contact fields. They are meant for local support/debug handoff, not
 production telemetry.
 
+## Deletion Workflow Model
+
+`src/backend/deletionWorkflow.ts` models future deletion request lifecycle
+states without performing remote deletion:
+
+- requested
+- verified
+- queued
+- completed
+- failed
+- cancelled
+
+It validates required account/request ids, rejects unsafe transitions, requires
+failure reasons, and produces support-safe summaries that do not expose account
+contact details. Remote deletion remains blocked until provider, URL, support,
+legal, and security decisions are made.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
@@ -271,6 +288,7 @@ to stay ready before Play internal testing:
 - backend release manifest
 - local import/restore validator
 - backend diagnostics
+- deletion workflow model
 - local export package
 - migration planner
 

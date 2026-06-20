@@ -28,6 +28,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "release-manifest",
   "import-restore",
   "diagnostics",
+  "deletion-workflow",
   "export",
   "migrations",
 ] as const;

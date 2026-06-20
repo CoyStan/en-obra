@@ -74,6 +74,13 @@ The existing sync adapter already has a `clearRemoteData(accountId)` boundary,
 but the current implementation is a local mock. Production code must replace it
 with a real backend deletion workflow before accounts/sync are marketed as real.
 
+Provider-neutral backend preparation now exists in
+`src/backend/deletionWorkflow.ts`. It models deletion request lifecycle states
+and support-safe summaries, but it does not configure a remote endpoint or make
+legal promises. The `remote-deletion` release blocker remains active until the
+provider, public URL, support process, retention policy, legal approval, and
+security review are complete.
+
 ## Security Rules For Internal Testing
 
 - Keep "Sin pagos reales" visible near settlement actions.
