@@ -1824,6 +1824,40 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0031"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0032",
+      "title": "Backend release manifest",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add a deterministic backend release manifest for Play internal testing readiness, covering schema/seed checksums, release gate status, required capabilities, known blockers, and evidence commands. Forbidden: choosing production auth/storage, secrets, paid services, real payments, deployment.",
+      "acceptance_target": "Manifest module creates deterministic checksums for backend handoff artifacts, reports gate status and known blockers, is included in backend release gate readiness, and has tests for determinism and tamper/change detection.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0032"
     }
   ],
   "attempts": [
@@ -2393,6 +2427,21 @@
       "result": "Implemented and verified provider-neutral sync conflict policy in commit 2e0e9e86251dd306fa7de0c8776f0732e908cd7c.",
       "commits": [
         "2e0e9e86251dd306fa7de0c8776f0732e908cd7c"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0032",
+      "work_item_id": "WORK-APP-0032",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T22:40:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified backend release manifest in commit b98dd0406bb1f6420596cf440b24ac26f1a9a818.",
+      "commits": [
+        "b98dd0406bb1f6420596cf440b24ac26f1a9a818"
       ]
     }
   ],
@@ -3156,6 +3205,27 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for sync conflict policy.",
       "timestamp": "2026-06-20T22:29:10Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0032"
+      ],
+      "artifacts": [
+        "src/backend/backendReleaseManifest.ts",
+        "src/__tests__/backendReleaseManifest.test.ts",
+        "reports/evidence/WORK-APP-0032/technical-report.md",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0032",
+      "work_item_id": "WORK-APP-0032",
+      "attempt_id": "ATTEMPT-APP-0032",
+      "head_sha": "b98dd0406bb1f6420596cf440b24ac26f1a9a818",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for backend release manifest.",
+      "timestamp": "2026-06-20T22:32:20Z"
     }
   ],
   "review_verdicts": [
@@ -3552,6 +3622,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T22:29:10Z"
+    },
+    {
+      "id": "REVIEW-APP-0032",
+      "work_item_id": "WORK-APP-0032",
+      "reviewed_head": "b98dd0406bb1f6420596cf440b24ac26f1a9a818",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T22:32:20Z"
     }
   ],
   "human_decisions": [],
@@ -4707,6 +4785,46 @@
       "attempt_id": "ATTEMPT-APP-0031",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T22:29:10Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0032",
+        "exported deterministic checksum",
+        "added backend release manifest",
+        "added manifest tests",
+        "updated release gate",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/backendReleaseManifest.ts",
+        "src/__tests__/backendReleaseManifest.test.ts",
+        "src/backend/dataExport.ts",
+        "src/backend/backendReleaseGate.ts",
+        "src/backend/releaseReadiness.ts",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0032/technical-report.md"
+      ],
+      "not_done": [
+        "production backend provider",
+        "auth provider",
+        "storage provider",
+        "remote endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "legal approval",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0032",
+      "work_item_id": "WORK-APP-0032",
+      "attempt_id": "ATTEMPT-APP-0032",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T22:32:20Z"
     }
   ],
   "decisions": [
@@ -5191,6 +5309,15 @@
       "what_happened": "Added provider-neutral conflict decisions for append-only rows, duplicate settlements, stale revisions, deletes, and remote deletions.",
       "what_changed": "Backend release readiness now includes conflict-policy behavior as a required gate capability before provider selection.",
       "timestamp": "2026-06-20T22:29:10Z"
+    },
+    {
+      "id": "OUTCOME-APP-0032",
+      "work_item_id": "WORK-APP-0032",
+      "summary": "Backend readiness now has a deterministic release manifest.",
+      "status": "captured",
+      "what_happened": "Added manifest checksums for schema, seed, gate status, required capabilities, known blockers, and verification commands.",
+      "what_changed": "The backend handoff for the access/storage discussion can now reference a deterministic provider-neutral manifest.",
+      "timestamp": "2026-06-20T22:32:20Z"
     }
   ]
 }
