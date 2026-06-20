@@ -793,6 +793,53 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0004"
+    },
+    {
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "docs/production",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-SECURITY-DELETION",
+        "SOURCE-PRIVACY-TERMS",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "docs/production",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "production auth",
+        "backend deletion",
+        "legal decisions",
+        "secrets",
+        "real payments",
+        "Play Store submission"
+      ],
+      "id": "WORK-APP-0005",
+      "title": "Premium account and local data controls",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "active",
+      "scope": "Expose account/settings local data controls for the premium MVP: clear local account state, reset demo/local data, show what local data exists, and reinforce no backend/no remote deletion. Use only local adapters and docs; no production auth, backend, legal approval, secrets, or payments.",
+      "acceptance_target": "Perfil provides clear local-only account/data controls with safe confirmation, local deletion/reset behavior, Spanish copy, tests/docs/evidence, and no production service claims.",
+      "required_approval_capability": "security",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0005"
     }
   ],
   "attempts": [
@@ -922,6 +969,18 @@
         "docs/product/decisions.md",
         "reports/evidence/WORK-APP-0004"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0005",
+      "work_item_id": "WORK-APP-0005",
+      "actor": "PALARI-ENGINEERING",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "main clean; previous app work items are reviewed and waiting on human approval",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [
