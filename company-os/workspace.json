@@ -1385,6 +1385,39 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "id": "WORK-APP-0019",
+      "title": "Backend data integrity audit and repair",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add backend-grade integrity validation and safe repair for persisted local app data so corrupted, legacy, or partial snapshots cannot break release-candidate flows. Preserve demo/local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "Persisted app data is normalized, audited for referential and money invariants, repaired when safe, and covered by tests for dangling references, bad selected group, missing participants, and integer-cent rules.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -1767,6 +1800,20 @@
       "result": "Implemented and verified SQL backend dataset foundation in commit a425cefdb33faa7e13325f6411cfdf6a5d7a1ca5.",
       "commits": [
         "a425cefdb33faa7e13325f6411cfdf6a5d7a1ca5"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0019",
+      "work_item_id": "WORK-APP-0019",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified backend data integrity repair in commit c6cd821dced0dd6e0404d948b1eda010ba0bc43d.",
+      "commits": [
+        "c6cd821dced0dd6e0404d948b1eda010ba0bc43d"
       ]
     }
   ],
@@ -2243,6 +2290,28 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for SQL backend dataset foundation.",
       "timestamp": "2026-06-20T21:13:47Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0019"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0019/technical-report.md",
+        "src/backend/dataIntegrity.ts",
+        "src/__tests__/dataIntegrity.test.ts",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0019",
+      "work_item_id": "WORK-APP-0019",
+      "attempt_id": "ATTEMPT-APP-0019",
+      "head_sha": "c6cd821dced0dd6e0404d948b1eda010ba0bc43d",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for backend data integrity repair.",
+      "timestamp": "2026-06-20T21:16:28Z"
     }
   ],
   "review_verdicts": [
@@ -2535,6 +2604,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:13:47Z"
+    },
+    {
+      "id": "REVIEW-APP-0019",
+      "work_item_id": "WORK-APP-0019",
+      "reviewed_head": "c6cd821dced0dd6e0404d948b1eda010ba0bc43d",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:16:28Z"
     }
   ],
   "human_decisions": [],
@@ -3246,6 +3323,40 @@
       "attempt_id": "ATTEMPT-APP-0018",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:13:47Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0019",
+        "added integrity audit",
+        "added safe repair",
+        "connected storage load to repair",
+        "added corruption tests",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/dataIntegrity.ts",
+        "src/state/storage.ts",
+        "src/__tests__/dataIntegrity.test.ts",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0019"
+      ],
+      "not_done": [
+        "production backend deployment",
+        "native database package",
+        "remote sync service",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0019",
+      "work_item_id": "WORK-APP-0019",
+      "attempt_id": "ATTEMPT-APP-0019",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:16:28Z"
     }
   ],
   "decisions": [
@@ -3613,6 +3724,15 @@
       "what_happened": "Added schema, seed/export generation, documentation, and tests for the app's SQL-ready backend model.",
       "what_changed": "Users, groups, group_members, expenses, expense_participants, settlements, activity_events, and sync_outbox now have a deterministic SQL contract without requiring production storage decisions.",
       "timestamp": "2026-06-20T21:13:47Z"
+    },
+    {
+      "id": "OUTCOME-APP-0019",
+      "work_item_id": "WORK-APP-0019",
+      "summary": "Persisted local data now has backend-grade integrity repair.",
+      "status": "captured",
+      "what_happened": "Added audit and repair for stale selected group, references, participant shares, settlements, activity events, and outbox rows.",
+      "what_changed": "Release-candidate local snapshots are safer to load and align with the SQL-ready model before future backend sync/storage is chosen.",
+      "timestamp": "2026-06-20T21:16:28Z"
     }
   ]
 }
