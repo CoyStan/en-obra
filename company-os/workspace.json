@@ -2051,6 +2051,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0040"
+    },
+    {
+      "id": "WORK-APP-0041",
+      "title": "Backend Play preflight report",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested backend Play preflight report that aggregates release gate, access readiness, storage readiness, deletion workflow, Data Safety inventory, and remaining human blockers for internal testing handoff. Forbidden: choosing production providers, secrets, paid services, production backend deployment, legal commitments, final Play submission, real payments.",
+      "acceptance_target": "Backend exposes a tested preflight report showing internal-testing readiness and remaining human/provider blockers, docs mention it, backend release gate remains passing, and verification passes.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0041"
     }
   ],
   "attempts": [
@@ -2755,6 +2769,21 @@
       "result": "Implemented and verified technical Data Safety inventory in commit e789f91cf685afd315033aeb536d5b65c30d507c.",
       "commits": [
         "e789f91cf685afd315033aeb536d5b65c30d507c"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0041",
+      "work_item_id": "WORK-APP-0041",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:18:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified backend Play preflight report in commit 5215dc4270125a699e0b867793f7d08645db43b9.",
+      "commits": [
+        "5215dc4270125a699e0b867793f7d08645db43b9"
       ]
     }
   ],
@@ -3703,6 +3732,28 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for Data Safety technical inventory.",
       "timestamp": "2026-06-20T23:13:06Z"
+    },
+    {
+      "commands": [
+        "npm test -- src/__tests__/playPreflight.test.ts src/__tests__/backendReleaseGate.test.ts src/__tests__/releaseReadiness.test.ts",
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0041"
+      ],
+      "artifacts": [
+        "src/backend/playPreflight.ts",
+        "src/__tests__/playPreflight.test.ts",
+        "reports/evidence/WORK-APP-0041/technical-report.md",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0041",
+      "work_item_id": "WORK-APP-0041",
+      "attempt_id": "ATTEMPT-APP-0041",
+      "head_sha": "5215dc4270125a699e0b867793f7d08645db43b9",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, focused preflight tests, Company OS validate, and Company OS scope passed for backend Play preflight.",
+      "timestamp": "2026-06-20T23:16:59Z"
     }
   ],
   "review_verdicts": [
@@ -4171,6 +4222,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:13:06Z"
+    },
+    {
+      "id": "REVIEW-APP-0041",
+      "work_item_id": "WORK-APP-0041",
+      "reviewed_head": "5215dc4270125a699e0b867793f7d08645db43b9",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:16:59Z"
     }
   ],
   "human_decisions": [],
@@ -5677,6 +5736,37 @@
       "attempt_id": "ATTEMPT-APP-0040",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:13:06Z"
+    },
+    {
+      "actions_taken": [
+        "created WORK-APP-0041",
+        "added backend Play preflight report",
+        "added preflight tests",
+        "documented downstream gate architecture",
+        "ran focused and full verification"
+      ],
+      "outputs_created": [
+        "src/backend/playPreflight.ts",
+        "src/__tests__/playPreflight.test.ts",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0041/technical-report.md"
+      ],
+      "not_done": [
+        "production provider choices",
+        "secrets",
+        "paid services",
+        "production backend deployment",
+        "legal commitments",
+        "final Play submission",
+        "real payments",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0041",
+      "work_item_id": "WORK-APP-0041",
+      "attempt_id": "ATTEMPT-APP-0041",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:16:59Z"
     }
   ],
   "decisions": [
@@ -6242,6 +6332,15 @@
       "what_happened": "Added a local-first Data Safety inventory that records no real payments, no ads/analytics SDK, no backend sharing, local-only data categories, and human legal/Play blockers.",
       "what_changed": "The backend release gate now requires data-safety-inventory while final Play Console answers remain a human/legal blocker.",
       "timestamp": "2026-06-20T23:13:06Z"
+    },
+    {
+      "id": "OUTCOME-APP-0041",
+      "work_item_id": "WORK-APP-0041",
+      "summary": "Backend readiness can now be summarized in a single Play preflight report.",
+      "status": "captured",
+      "what_happened": "Added a downstream report that aggregates release gate state, access/storage readiness, Data Safety posture, deletion workflow state, and human/provider blockers.",
+      "what_changed": "Internal testing handoff now has one tested backend preflight object without creating circular release gate dependencies.",
+      "timestamp": "2026-06-20T23:16:59Z"
     }
   ]
 }
