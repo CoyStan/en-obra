@@ -1100,7 +1100,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Add tasteful Android-first visual objects and lightweight animations so the app is easier to understand without relying mostly on text: animated balance/settlement route cues, clearer money-flow figures, and visual anchors for activity. Preserve content, accessibility, local/no-real-payments boundaries, and performance. No real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
       "acceptance_target": "First viewport and balance/activity surfaces include meaningful animated/visual comprehension cues, pass checks, and remain readable on Android viewport screenshots.",
       "required_approval_capability": "design",
@@ -1375,13 +1375,21 @@
       "id": "ATTEMPT-APP-0011",
       "work_item_id": "WORK-APP-0011",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean; prior app work items are reviewed and waiting on human approval",
-      "result": "in progress"
+      "cleanliness": "implementation and evidence committed on main; Company OS record pending commit",
+      "result": "Added visual money-flow motion, reduced-motion fallback, and activity markers",
+      "commits": [
+        "2d822e2"
+      ],
+      "changed_files": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0011"
+      ]
     }
   ],
   "evidence_runs": [
@@ -1662,6 +1670,33 @@
       "base_ref": "main",
       "summary": "Premium color refinement checks passed: typecheck, 25 tests, Expo config, web export, contrast checks, Company OS validate/scope, Android-size screenshots, and GLM 5.2 final review accept-ready.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0011",
+        "playwright screenshots",
+        "GLM 5.2 code-only review"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0011/technical-report.md",
+        "reports/evidence/WORK-APP-0011/glm52-code-review.md",
+        "reports/evidence/WORK-APP-0011/screenshots/balance-360x740.png",
+        "reports/evidence/WORK-APP-0011/screenshots/balance-390x844.png",
+        "reports/evidence/WORK-APP-0011/screenshots/balance-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0011",
+      "work_item_id": "WORK-APP-0011",
+      "attempt_id": "ATTEMPT-APP-0011",
+      "head_sha": "2d822e2",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "Visual comprehension motion checks passed: typecheck, 25 tests, Expo config, web export, Company OS validate/scope, Android-size screenshots, reduced-motion handling, and GLM 5.2 final review accept-ready.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -1873,6 +1908,29 @@
       "id": "REVIEW-APP-0010",
       "work_item_id": "WORK-APP-0010",
       "reviewed_head": "cfa7812",
+      "reviewer": "GLM-5.2-code-review",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "MoneyFlowFigure",
+        "Animated loop",
+        "reduced-motion handling",
+        "static fallback",
+        "activity markers",
+        "local/no-real-payments accessibility labels",
+        "technical report",
+        "Android viewport screenshots"
+      ],
+      "residual_risks": [
+        "human approval still required",
+        "no native Android emulator/device QA",
+        "animation taste remains founder-owned",
+        "web bundle increased due Animated runtime"
+      ],
+      "id": "REVIEW-APP-0011",
+      "work_item_id": "WORK-APP-0011",
+      "reviewed_head": "2d822e2",
       "reviewer": "GLM-5.2-code-review",
       "verdict": "accept-ready"
     }
@@ -2300,6 +2358,43 @@
       "work_item_id": "WORK-APP-0010",
       "attempt_id": "ATTEMPT-APP-0010",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added Animated money-flow figure",
+        "added reduced-motion support",
+        "added static calm state figure",
+        "added activity marker dots",
+        "recorded product decision",
+        "ran verification",
+        "captured screenshots",
+        "used GLM 5.2 code review"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0011"
+      ],
+      "not_done": [
+        "real payments",
+        "backend services",
+        "secrets",
+        "paid APIs",
+        "push services",
+        "Play Store submission",
+        "native Android emulator QA",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0011",
+      "work_item_id": "WORK-APP-0011",
+      "attempt_id": "ATTEMPT-APP-0011",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -2584,6 +2679,26 @@
       "status": "captured",
       "what_happened": "Replaced the warmer green/sand palette with slate neutrals, deep agave, indigo, muted warm accents, and a rose debt state across theme tokens, docs, demo data, fallbacks, and tests.",
       "what_changed": "The app should feel cleaner, less beige/green-heavy, and more professional while preserving contrast and Mexico/LATAM trust cues."
+    },
+    {
+      "useful": [
+        "animated money-flow figure",
+        "reduced-motion static fallback",
+        "calm-state visual",
+        "activity scan markers",
+        "GLM accept-ready review"
+      ],
+      "follow_up_needed": [
+        "human approval",
+        "native Android emulator/device QA",
+        "possible broader visual illustration system"
+      ],
+      "id": "OUTCOME-APP-0011",
+      "work_item_id": "WORK-APP-0011",
+      "summary": "Added visual money-flow motion and activity markers.",
+      "status": "captured",
+      "what_happened": "The balance home now includes an animated/local money-flow figure between payer and receiver, a calm todo-en-paz visual, reduced-motion support, and activity marker dots.",
+      "what_changed": "The app is less text-only and easier to understand visually while keeping no-real-payments and local-record boundaries explicit."
     }
   ]
 }
