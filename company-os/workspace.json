@@ -2065,6 +2065,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0041"
+    },
+    {
+      "id": "WORK-APP-0042",
+      "title": "Committed backend preflight artifact",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, reports/evidence, company-os. Add a deterministic committed backend Play preflight artifact and drift test so internal-testing handoff can be inspected without running app code. Forbidden: choosing production providers, secrets, paid services, production backend deployment, legal commitments, final Play submission, real payments.",
+      "acceptance_target": "A committed docs/backend/play-preflight-v1.json artifact matches the generator, tests catch drift, verification passes, and blockers remain explicit.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0042"
     }
   ],
   "attempts": [
@@ -2784,6 +2798,21 @@
       "result": "Implemented and verified backend Play preflight report in commit 5215dc4270125a699e0b867793f7d08645db43b9.",
       "commits": [
         "5215dc4270125a699e0b867793f7d08645db43b9"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0042",
+      "work_item_id": "WORK-APP-0042",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:20:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified committed backend Play preflight artifact in commit a25d39f771b988bc728b4bfea66a29661ec2fbba.",
+      "commits": [
+        "a25d39f771b988bc728b4bfea66a29661ec2fbba"
       ]
     }
   ],
@@ -3754,6 +3783,27 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, focused preflight tests, Company OS validate, and Company OS scope passed for backend Play preflight.",
       "timestamp": "2026-06-20T23:16:59Z"
+    },
+    {
+      "commands": [
+        "npm test -- src/__tests__/playPreflight.test.ts",
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0042"
+      ],
+      "artifacts": [
+        "docs/backend/play-preflight-v1.json",
+        "src/backend/playPreflight.ts",
+        "src/__tests__/playPreflight.test.ts",
+        "reports/evidence/WORK-APP-0042/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0042",
+      "work_item_id": "WORK-APP-0042",
+      "attempt_id": "ATTEMPT-APP-0042",
+      "head_sha": "a25d39f771b988bc728b4bfea66a29661ec2fbba",
+      "status": "passed",
+      "summary": "Focused preflight artifact test, Android release check, backend release gate, Company OS validate, and Company OS scope passed.",
+      "timestamp": "2026-06-20T23:19:21Z"
     }
   ],
   "review_verdicts": [
@@ -4230,6 +4280,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:16:59Z"
+    },
+    {
+      "id": "REVIEW-APP-0042",
+      "work_item_id": "WORK-APP-0042",
+      "reviewed_head": "a25d39f771b988bc728b4bfea66a29661ec2fbba",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:19:21Z"
     }
   ],
   "human_decisions": [],
@@ -5767,6 +5825,39 @@
       "attempt_id": "ATTEMPT-APP-0041",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:16:59Z"
+    },
+    {
+      "actions_taken": [
+        "created WORK-APP-0042",
+        "added committed preflight JSON artifact",
+        "added generator helper",
+        "added artifact drift test",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "docs/backend/play-preflight-v1.json",
+        "src/backend/playPreflight.ts",
+        "src/__tests__/playPreflight.test.ts",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0042/technical-report.md"
+      ],
+      "not_done": [
+        "production provider choices",
+        "secrets",
+        "paid services",
+        "production backend deployment",
+        "legal commitments",
+        "final Play submission",
+        "real payments",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0042",
+      "work_item_id": "WORK-APP-0042",
+      "attempt_id": "ATTEMPT-APP-0042",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:19:21Z"
     }
   ],
   "decisions": [
@@ -6341,6 +6432,15 @@
       "what_happened": "Added a downstream report that aggregates release gate state, access/storage readiness, Data Safety posture, deletion workflow state, and human/provider blockers.",
       "what_changed": "Internal testing handoff now has one tested backend preflight object without creating circular release gate dependencies.",
       "timestamp": "2026-06-20T23:16:59Z"
+    },
+    {
+      "id": "OUTCOME-APP-0042",
+      "work_item_id": "WORK-APP-0042",
+      "summary": "Backend preflight handoff now has a committed deterministic JSON artifact.",
+      "status": "captured",
+      "what_happened": "Generated docs/backend/play-preflight-v1.json from the preflight module and added a drift test.",
+      "what_changed": "Internal testing reviewers can inspect backend readiness without running app code, and CI catches stale preflight evidence.",
+      "timestamp": "2026-06-20T23:19:21Z"
     }
   ]
 }
