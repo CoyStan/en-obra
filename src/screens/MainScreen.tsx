@@ -52,6 +52,8 @@ const tabs: { id: TabId; label: string; icon: keyof typeof MaterialCommunityIcon
   { id: "account", label: "Perfil", icon: "account-circle", groupScoped: true },
 ];
 
+const firstGroupWorkspaceTab: TabId = "activity";
+
 const dateFormatter = new Intl.DateTimeFormat("es-MX", {
   day: "2-digit",
   month: "short",
@@ -836,6 +838,15 @@ export function MainScreen() {
     }
     setActiveTab("account");
   };
+
+  const openGroupWorkspace = (groupId: string) => {
+    selectGroup(groupId);
+    setShowGroupForm(false);
+    setShowExpenseForm(false);
+    setPendingSettlement(null);
+    setActiveTab(firstGroupWorkspaceTab);
+  };
+
   const openTab = (tab: TabId) => {
     if (tab !== "groups" && !selectedGroup) {
       setActiveTab("groups");
@@ -1031,6 +1042,19 @@ export function MainScreen() {
 
   const renderGroups = () => (
     <View style={styles.tabContent}>
+      <View style={styles.groupSelectorIntro}>
+        <View style={styles.groupSelectorIcon}>
+          <MaterialCommunityIcons color={colors.primaryDark} name="account-switch-outline" size={18} />
+        </View>
+        <View style={styles.groupSelectorCopy}>
+          <Text style={styles.groupSelectorTitle}>
+            {selectedGroup ? "Cambia el grupo activo" : "Elige un grupo para empezar"}
+          </Text>
+          <Text style={styles.groupSelectorText}>
+            Actividad, Balance y Perfil se actualizan con el grupo que selecciones.
+          </Text>
+        </View>
+      </View>
       <Section
         action={
           <ActionButton
@@ -1079,10 +1103,7 @@ export function MainScreen() {
               group={group}
               isSelected={group.id === selectedGroup?.id}
               key={group.id}
-              onPress={() => {
-                selectGroup(group.id);
-                setActiveTab("activity");
-              }}
+              onPress={() => openGroupWorkspace(group.id)}
             />
           ))
         )}
@@ -2064,30 +2085,39 @@ export function MainScreen() {
         <View style={styles.bottomNav}>
           {tabs.map((tab) => {
             const active = activeTab === tab.id;
-            const navLabel = tab.id === "groups" ? (selectedGroup ? "Cambiar" : "Elegir") : tab.label;
+            const disabledByContext = Boolean(tab.groupScoped && !selectedGroup);
             const accessibilityLabel =
               tab.id === "groups"
                 ? selectedGroup
-                  ? `Cambiar grupo activo. Ahora estás en ${selectedGroup.name}`
+                  ? `Grupos. Cambiar grupo activo. Ahora estás en ${selectedGroup.name}`
                   : "Elegir grupo"
-                : `${tab.label} de ${selectedGroup?.name ?? "un grupo"}`;
+                : selectedGroup
+                  ? `${tab.label} de ${selectedGroup.name}`
+                  : `${tab.label}. Primero elige un grupo`;
             return (
               <Pressable
                 accessibilityLabel={accessibilityLabel}
                 accessibilityRole="tab"
-                accessibilityState={{ selected: active }}
+                accessibilityState={{ disabled: disabledByContext, selected: active }}
                 hitSlop={4}
                 key={tab.id}
                 onPress={() => openTab(tab.id)}
-                style={[styles.navItem, active && styles.navItemActive]}
+                style={[styles.navItem, active && styles.navItemActive, disabledByContext && styles.navItemDisabled]}
               >
                 <MaterialCommunityIcons
-                  color={colors.primaryDark}
+                  color={disabledByContext ? colors.mutedInk : colors.primaryDark}
                   name={tab.icon}
                   size={20}
                 />
-                <Text style={[styles.navLabel, compact && styles.navLabelCompact, active && styles.navLabelActive]}>
-                  {navLabel}
+                <Text
+                  style={[
+                    styles.navLabel,
+                    compact && styles.navLabelCompact,
+                    active && styles.navLabelActive,
+                    disabledByContext && styles.navLabelDisabled,
+                  ]}
+                >
+                  {tab.label}
                 </Text>
               </Pressable>
             );
@@ -3115,6 +3145,42 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 18,
   },
+  groupSelectorCopy: {
+    flex: 1,
+    gap: 2,
+    minWidth: 0,
+  },
+  groupSelectorIcon: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderRadius: 17,
+    height: 34,
+    justifyContent: "center",
+    width: 34,
+  },
+  groupSelectorIntro: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceTinted,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 62,
+    padding: spacing.sm,
+  },
+  groupSelectorText: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "600",
+    lineHeight: 15,
+  },
+  groupSelectorTitle: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "800",
+    lineHeight: 18,
+  },
   workspaceBar: {
     alignItems: "center",
     backgroundColor: colors.surfaceTinted,
@@ -3372,6 +3438,9 @@ const styles = StyleSheet.create({
   navItemActive: {
     backgroundColor: colors.surfaceTinted,
   },
+  navItemDisabled: {
+    opacity: 0.5,
+  },
   navLabel: {
     color: colors.primaryDark,
     fontSize: typography.micro,
@@ -3383,6 +3452,9 @@ const styles = StyleSheet.create({
   navLabelActive: {
     color: colors.primaryDark,
     fontWeight: "700",
+  },
+  navLabelDisabled: {
+    color: colors.mutedInk,
   },
   payerChip: {
     alignItems: "center",
