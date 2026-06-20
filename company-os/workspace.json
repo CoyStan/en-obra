@@ -1858,6 +1858,40 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0032"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0033",
+      "title": "Committed backend release manifest artifact",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Commit a deterministic backend release manifest artifact and drift test for Play internal testing readiness. Preserve provider-neutral local-first backend posture. Forbidden: choosing production auth/storage, secrets, paid services, real payments, deployment.",
+      "acceptance_target": "docs/backend/release-manifest-v1.json exists, matches the manifest generator exactly, validates checksums, appears in backend docs, and is covered by release verification.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0033"
     }
   ],
   "attempts": [
@@ -2442,6 +2476,21 @@
       "result": "Implemented and verified backend release manifest in commit b98dd0406bb1f6420596cf440b24ac26f1a9a818.",
       "commits": [
         "b98dd0406bb1f6420596cf440b24ac26f1a9a818"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0033",
+      "work_item_id": "WORK-APP-0033",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T22:45:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified committed backend release manifest artifact in commit 56d272e952daa3f6078e15c8dd982ad3d9420b51.",
+      "commits": [
+        "56d272e952daa3f6078e15c8dd982ad3d9420b51"
       ]
     }
   ],
@@ -3226,6 +3275,26 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for backend release manifest.",
       "timestamp": "2026-06-20T22:32:20Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0033"
+      ],
+      "artifacts": [
+        "docs/backend/release-manifest-v1.json",
+        "src/backend/backendReleaseManifest.ts",
+        "src/__tests__/backendReleaseManifest.test.ts",
+        "reports/evidence/WORK-APP-0033/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0033",
+      "work_item_id": "WORK-APP-0033",
+      "attempt_id": "ATTEMPT-APP-0033",
+      "head_sha": "56d272e952daa3f6078e15c8dd982ad3d9420b51",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for committed backend release manifest artifact.",
+      "timestamp": "2026-06-20T22:37:50Z"
     }
   ],
   "review_verdicts": [
@@ -3630,6 +3699,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T22:32:20Z"
+    },
+    {
+      "id": "REVIEW-APP-0033",
+      "work_item_id": "WORK-APP-0033",
+      "reviewed_head": "56d272e952daa3f6078e15c8dd982ad3d9420b51",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T22:37:50Z"
     }
   ],
   "human_decisions": [],
@@ -4825,6 +4902,45 @@
       "attempt_id": "ATTEMPT-APP-0032",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T22:32:20Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0033",
+        "added committed release manifest artifact",
+        "added manifest JSON serializer",
+        "moved checksum helper",
+        "updated manifest drift test",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "docs/backend/release-manifest-v1.json",
+        "src/backend/checksum.ts",
+        "src/backend/backendReleaseManifest.ts",
+        "src/__tests__/backendReleaseManifest.test.ts",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0033/technical-report.md"
+      ],
+      "not_done": [
+        "production backend provider",
+        "auth provider",
+        "storage provider",
+        "remote endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "legal approval",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0033",
+      "work_item_id": "WORK-APP-0033",
+      "attempt_id": "ATTEMPT-APP-0033",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T22:37:50Z"
     }
   ],
   "decisions": [
@@ -5318,6 +5434,15 @@
       "what_happened": "Added manifest checksums for schema, seed, gate status, required capabilities, known blockers, and verification commands.",
       "what_changed": "The backend handoff for the access/storage discussion can now reference a deterministic provider-neutral manifest.",
       "timestamp": "2026-06-20T22:32:20Z"
+    },
+    {
+      "id": "OUTCOME-APP-0033",
+      "work_item_id": "WORK-APP-0033",
+      "summary": "Backend release manifest is now a committed drift-tested artifact.",
+      "status": "captured",
+      "what_happened": "Added docs/backend/release-manifest-v1.json and tests that compare it exactly to the manifest generator.",
+      "what_changed": "The backend handoff now includes a stable manifest artifact with checksums for schema, seed, gate, blockers, and commands.",
+      "timestamp": "2026-06-20T22:37:50Z"
     }
   ]
 }
