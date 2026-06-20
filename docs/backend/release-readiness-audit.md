@@ -11,6 +11,7 @@ deployment approval.
   `docs/backend/seed-demo-v1.sql`
 - Backend release manifest artifact: `docs/backend/release-manifest-v1.json`
 - Backend Play preflight artifact: `docs/backend/play-preflight-v1.json`
+- Backend release handoff artifact: `docs/backend/release-handoff-v1.json`
 - SQL artifact drift tests: `src/__tests__/sqlArtifacts.test.ts`
 - Schema migration planner: `src/backend/sqlMigrations.ts`
 - Data integrity audit/repair: `src/backend/dataIntegrity.ts`
@@ -32,6 +33,7 @@ deployment approval.
 - Release secret/config safety scan: `src/backend/secretSafetyScan.ts`
 - Redacted backend support bundle: `src/backend/supportBundle.ts`
 - Backend Play preflight report: `src/backend/playPreflight.ts`
+- Backend release handoff summary: `src/backend/releaseHandoff.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -95,6 +97,9 @@ deployment approval.
 - Backend Play preflight report that summarizes release gate state, local
   backend readiness, no-real-payment posture, and remaining human/provider
   blockers for internal testing handoff.
+- Backend release handoff summary that aggregates the release gate, preflight,
+  Data Safety draft, retention readiness, secret safety, demo-only boundaries,
+  no-go guarantees, and exact next human actions.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.

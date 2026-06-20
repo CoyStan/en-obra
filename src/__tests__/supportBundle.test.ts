@@ -95,6 +95,9 @@ describe("redacted support bundle", () => {
     expect(bundle.diagnostics.syncOutbox.failed).toBe(1);
     expect(bundle.preflight.status).toBe("ready-for-internal-testing");
     expect(bundle.releaseManifest.realPaymentsEnabled).toBe(false);
+    expect(bundle.handoff.status).toBe("ready-for-local-internal-testing");
+    expect(bundle.handoff.noGoGuarantees).toContain("no real payments");
+    expect(bundle.handoff.nextHumanActions).toContain("Choose production auth/access provider.");
     expect(bundle.privacy.scan.status).toBe("pass");
     expect(bundle.privacy.secretSafety.status).toBe("pass");
     expect(bundle.privacy.playDataSafetyDraft.status).toBe("technical-draft");
@@ -127,6 +130,7 @@ describe("redacted support bundle", () => {
     expect(bundle.privacy.scan.status).toBe("fail");
     expect(bundle.privacy.secretSafety.status).toBe("fail");
     expect(bundle.privacy.playDataSafetyDraft.status).toBe("blocked-by-release-risk");
+    expect(bundle.handoff.status).toBe("blocked");
     expect(bundle.privacy.scan.risks.map((risk) => risk.kind)).toEqual([
       "payments-sdk",
       "android-permission",

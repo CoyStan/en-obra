@@ -155,6 +155,11 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/dataSafetyInventory.ts",
       "docs/production/privacy-terms-readiness.md",
     ]),
+    item("release-handoff", "Backend release handoff summary", "ready", [
+      "src/backend/releaseHandoff.ts",
+      "src/__tests__/releaseHandoff.test.ts",
+      "docs/backend/release-handoff-v1.json",
+    ]),
     item("release-privacy-scan", "Release privacy and dependency scan", "ready", [
       "src/backend/releasePrivacyScan.ts",
       "src/__tests__/releasePrivacyScan.test.ts",

@@ -387,6 +387,17 @@ The committed handoff artifact is `docs/backend/play-preflight-v1.json`.
 `src/__tests__/playPreflight.test.ts` verifies the artifact matches the
 generator.
 
+## Backend Release Handoff
+
+`src/backend/releaseHandoff.ts` aggregates the backend release gate, Play
+preflight, technical Data Safety draft, privacy scan, secret/config scan,
+retention readiness, demo-only boundaries, no-go guarantees, and next human
+actions into one deterministic review artifact.
+
+The committed handoff artifact is `docs/backend/release-handoff-v1.json`.
+`src/__tests__/releaseHandoff.test.ts` verifies the artifact matches the
+generator and blocks if release privacy or secret risks are detected.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
@@ -419,6 +430,7 @@ to stay ready before Play internal testing:
 - account access readiness contract
 - technical Data Safety inventory
 - technical Play Data Safety draft
+- backend release handoff summary
 - release privacy/dependency scan
 - release secret/config safety scan
 - redacted support bundle

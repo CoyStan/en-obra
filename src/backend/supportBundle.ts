@@ -3,6 +3,7 @@ import { createBackendReleaseManifest, type BackendReleaseManifest } from "./bac
 import { createDataSafetyInventory, type DataSafetyHandling } from "./dataSafetyInventory";
 import { createPlayDataSafetyDraft, type PlayDataSafetyDraft } from "./playDataSafetyDraft";
 import { createPlayPreflightReport, type PlayPreflightStatus } from "./playPreflight";
+import { createReleaseHandoffSummary, type ReleaseHandoffSummary } from "./releaseHandoff";
 import { createReleasePrivacyScan, type ReleasePrivacyScanReport } from "./releasePrivacyScan";
 import { createRetentionReadinessReport, type RetentionReadinessReport } from "./retentionReadiness";
 import type { BackendSnapshot } from "./repository";
@@ -34,6 +35,12 @@ export type RedactedSupportBundle = {
     readyCapabilities: string[];
     knownBlockers: string[];
     unexpectedBlockers: string[];
+  };
+  handoff: {
+    status: ReleaseHandoffSummary["status"];
+    demoOnly: string[];
+    noGoGuarantees: string[];
+    nextHumanActions: string[];
   };
   privacy: {
     scan: ReleasePrivacyScanReport;
@@ -82,6 +89,11 @@ export function createRedactedSupportBundle(
     secretSafety,
     inventory: dataSafety,
   });
+  const handoff = createReleaseHandoffSummary({
+    generatedAt,
+    releaseConfig,
+    secretScanTargets: releaseConfig.secretScanTargets ?? [],
+  });
   const retention = createRetentionReadinessReport();
 
   return {
@@ -110,6 +122,12 @@ export function createRedactedSupportBundle(
       readyCapabilities: manifest.readyCapabilities,
       knownBlockers: manifest.knownBlockers,
       unexpectedBlockers: manifest.unexpectedBlockers,
+    },
+    handoff: {
+      status: handoff.status,
+      demoOnly: handoff.demoOnly,
+      noGoGuarantees: handoff.noGoGuarantees,
+      nextHumanActions: handoff.nextHumanActions,
     },
     privacy: {
       scan,

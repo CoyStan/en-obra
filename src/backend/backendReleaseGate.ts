@@ -34,6 +34,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "access-readiness",
   "data-safety-inventory",
   "play-data-safety-draft",
+  "release-handoff",
   "release-privacy-scan",
   "secret-safety-scan",
   "support-bundle",
