@@ -2121,6 +2121,20 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0045"
+    },
+    {
+      "id": "WORK-APP-0046",
+      "title": "Provider-neutral retention and backup readiness model",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend/retentionReadiness.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/retentionReadiness.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0046/**, company-os/workspace.json. Add provider-neutral retention/backup readiness contracts and release evidence. Forbidden: choosing storage/auth providers, adding secrets, changing production infrastructure, app UI feature work, destructive repo cleanup.",
+      "acceptance_target": "Backend readiness includes a tested retention/backup model that marks local-first internal testing as ready while keeping production retention policy, server backup/recovery, remote delete fulfillment, public deletion URL, and legal approval blocked until human/provider decisions exist.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0046"
     }
   ],
   "attempts": [
@@ -2896,6 +2910,17 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:30:26Z",
+      "cleanliness": "clean"
+    },
+    {
+      "id": "ATTEMPT-APP-0046",
+      "work_item_id": "WORK-APP-0046",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:36:48Z",
       "cleanliness": "clean"
     }
   ],
@@ -3941,6 +3966,16 @@
       "summary": "Typecheck, test suite, Expo public config, Company OS validate, and Company OS scope passed for group-scoped tab navigation clarity. Runtime web launch attempted but blocked by local Metro watcher limit in legacy .palari worktrees.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T23:33:16Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0046",
+      "work_item_id": "WORK-APP-0046",
+      "attempt_id": "ATTEMPT-APP-0046",
+      "head_sha": "f80043d0a78153d0e90819bba76aa4fa4145a0f0",
+      "status": "passed",
+      "summary": "Added provider-neutral retention and backup readiness model. npm run release:android:check passed: typecheck, 32 test files / 129 tests, backend release gate, and Expo public config.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T23:41:11Z"
     }
   ],
   "review_verdicts": [
@@ -4449,6 +4484,14 @@
       "reviewer": "PALARI-DESIGN",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:33:16Z"
+    },
+    {
+      "id": "REVIEW-APP-0046",
+      "work_item_id": "WORK-APP-0046",
+      "reviewed_head": "f80043d0a78153d0e90819bba76aa4fa4145a0f0",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:41:11Z"
     }
   ],
   "human_decisions": [],
@@ -6104,6 +6147,13 @@
       "attempt_id": "ATTEMPT-APP-0045",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T23:33:16Z"
+    },
+    {
+      "id": "RECEIPT-APP-0046",
+      "work_item_id": "WORK-APP-0046",
+      "attempt_id": "ATTEMPT-APP-0046",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:41:11Z"
     }
   ],
   "decisions": [
@@ -6714,6 +6764,15 @@
       "what_happened": "Implemented a navigation clarity pass for the bottom tabs and workspace header.",
       "what_changed": "Groups becomes Cambiar when a group is active; Activity, Balance, and Profile are visually scoped to the selected group; workspace header separates group name from active section.",
       "timestamp": "2026-06-20T23:33:16Z"
+    },
+    {
+      "id": "OUTCOME-APP-0046",
+      "work_item_id": "WORK-APP-0046",
+      "summary": "Retention and backup readiness are now modeled in the backend release gate.",
+      "status": "completed",
+      "what_happened": "Added retentionReadiness module, tests, release gate/preflight/support bundle integration, regenerated artifacts, and updated docs.",
+      "what_changed": "Local internal testing remains ready; production retention, backup, restore, public deletion URL, remote deletion fulfillment, and legal approval remain explicit blockers.",
+      "timestamp": "2026-06-20T23:41:11Z"
     }
   ]
 }
