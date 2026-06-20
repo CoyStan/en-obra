@@ -150,6 +150,21 @@ It proves the shape needed by future storage providers without selecting one.
 Concrete adapters can be added later for AsyncStorage, SQLite, or a hosted API
 while preserving the same mutation/export/delete semantics.
 
+## AsyncStorage Repository Adapter
+
+`src/backend/asyncStorageRepository.ts` implements the same `BackendRepository`
+contract against the app's current local storage keys:
+
+- `cuentas-claras:v1` for app data
+- `cuentas-claras:account:v1` for the local mock account
+- `cuentas-claras:sync:v1` for mock sync state
+
+The adapter is still local-only. It loads demo defaults from empty storage,
+repairs app data through the integrity guard, persists successful mutations,
+exports the same deterministic local package, and deletes all current local
+keys. It gives the release candidate a tested storage boundary while preserving
+the future option to replace AsyncStorage with SQLite or a hosted API.
+
 ## Integrity Guard
 
 `src/backend/dataIntegrity.ts` audits and safely repairs persisted local

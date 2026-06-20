@@ -60,6 +60,10 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/repository.ts",
       "src/__tests__/repository.test.ts",
     ]),
+    item("local-storage-adapter", "AsyncStorage repository adapter", "ready", [
+      "src/backend/asyncStorageRepository.ts",
+      "src/__tests__/asyncStorageRepository.test.ts",
+    ]),
     item("outbox", "Sync outbox lifecycle", "ready", [
       "src/backend/syncOutbox.ts",
       "src/__tests__/syncOutbox.test.ts",

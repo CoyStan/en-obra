@@ -17,6 +17,7 @@ deployment approval.
 - Provider-neutral sync engine: `src/backend/syncEngine.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
+- AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
 
 ## Tested Coverage
 
@@ -29,6 +30,8 @@ deployment approval.
 - Corrupt local snapshot repair.
 - Local data export checksum.
 - Repository load/save/mutate/export/delete semantics.
+- AsyncStorage load/save/mutate/export/delete behavior across app, account, and
+  sync storage keys.
 - Outbox processing order, limits, sent/failed states, retryable errors, and
   immutable repository snapshots.
 - Current schema migration no-op and unsupported future-version handling.
@@ -47,4 +50,6 @@ deployment approval.
 The backend is now close to provider-ready for internal testing. The app still
 runs local-first with demo/mock adapters, but the data model, mutation behavior,
 SQL handoff, integrity guard, export package, repository boundary, and sync
-engine are in place for the access/storage discussion.
+engine are in place for the access/storage discussion. The real local storage
+keys now also have a tested repository adapter, so replacing local storage with
+a selected production provider can happen behind the same contract.
