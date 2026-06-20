@@ -45,11 +45,11 @@ const MONEY_FLOW_TRACK_WIDTH = 120;
 const MONEY_FLOW_DOT_SIZE = 24;
 const MONEY_FLOW_TRAVEL = MONEY_FLOW_TRACK_WIDTH - MONEY_FLOW_DOT_SIZE;
 
-const tabs: { id: TabId; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap }[] = [
-  { id: "groups", label: "Grupos", icon: "account-group" },
-  { id: "activity", label: "Actividad", icon: "history" },
-  { id: "balance", label: "Balance", icon: "scale-balance" },
-  { id: "account", label: "Perfil", icon: "account-circle" },
+const tabs: { id: TabId; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap; groupScoped?: boolean }[] = [
+  { id: "groups", label: "Grupos", icon: "account-switch" },
+  { id: "activity", label: "Actividad", icon: "history", groupScoped: true },
+  { id: "balance", label: "Balance", icon: "scale-balance", groupScoped: true },
+  { id: "account", label: "Perfil", icon: "account-circle", groupScoped: true },
 ];
 
 const dateFormatter = new Intl.DateTimeFormat("es-MX", {
@@ -806,6 +806,8 @@ export function MainScreen() {
       ? `Tú eres ${account.profile.displayName}`
       : "Elige tu persona";
   const identityMeta = account.profile && account.mode === "signed-in" ? "Perfil local" : "Demo local";
+  const activeTabConfig = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
+  const workspaceSectionLabel = activeTabConfig.groupScoped ? activeTabConfig.label : "Grupos";
   const expenseAmountCents = useMemo(() => parseMoneyInput(expenseAmount), [expenseAmount]);
   const participantShares = useMemo(() => {
     if (!expenseAmountCents || participantIds.length === 0) {
@@ -835,6 +837,10 @@ export function MainScreen() {
     setActiveTab("account");
   };
   const openTab = (tab: TabId) => {
+    if (tab !== "groups" && !selectedGroup) {
+      setActiveTab("groups");
+      return;
+    }
     setActiveTab(tab);
   };
 
@@ -1904,6 +1910,30 @@ export function MainScreen() {
             </View>
           ) : null}
 
+          {activeTab !== "groups" ? (
+            <View style={[styles.workspaceBar, compact && styles.workspaceBarCompact]}>
+              <View style={styles.workspaceBarIcon}>
+                <MaterialCommunityIcons color={colors.primaryDark} name="account-group" size={18} />
+              </View>
+              <View style={styles.workspaceBarCopy}>
+                <Text style={styles.workspaceBarKicker}>Grupo activo</Text>
+                <Text numberOfLines={1} style={styles.workspaceBarTitle}>
+                  {selectedGroup ? `${selectedGroup.name} · ${workspaceSectionLabel}` : "Elige un grupo"}
+                </Text>
+              </View>
+              <Pressable
+                accessibilityLabel={selectedGroup ? "Cambiar grupo activo" : "Elegir grupo"}
+                accessibilityRole="button"
+                hitSlop={4}
+                onPress={() => openTab("groups")}
+                style={({ pressed }) => [styles.workspaceSwitchButton, pressed && styles.pressed]}
+              >
+                <MaterialCommunityIcons color={colors.primaryDark} name="swap-horizontal" size={15} />
+                <Text style={styles.workspaceSwitchText}>{selectedGroup ? "Cambiar" : "Elegir"}</Text>
+              </Pressable>
+            </View>
+          ) : null}
+
           {activeTab !== "groups" && selectedGroup && selectedSummary ? (
             <View style={[styles.heroCard, compact && styles.heroCardCompact, roomy && styles.heroCardRoomy]}>
               <View style={styles.heroTop}>
@@ -2034,9 +2064,16 @@ export function MainScreen() {
         <View style={styles.bottomNav}>
           {tabs.map((tab) => {
             const active = activeTab === tab.id;
+            const navLabel = tab.id === "groups" ? (selectedGroup ? "Cambiar" : "Elegir") : tab.label;
+            const accessibilityLabel =
+              tab.id === "groups"
+                ? selectedGroup
+                  ? `Cambiar grupo activo. Ahora estás en ${selectedGroup.name}`
+                  : "Elegir grupo"
+                : `${tab.label} de ${selectedGroup?.name ?? "un grupo"}`;
             return (
               <Pressable
-                accessibilityLabel={tab.label}
+                accessibilityLabel={accessibilityLabel}
                 accessibilityRole="tab"
                 accessibilityState={{ selected: active }}
                 hitSlop={4}
@@ -2049,7 +2086,9 @@ export function MainScreen() {
                   name={tab.icon}
                   size={20}
                 />
-                <Text style={[styles.navLabel, compact && styles.navLabelCompact, active && styles.navLabelActive]}>{tab.label}</Text>
+                <Text style={[styles.navLabel, compact && styles.navLabelCompact, active && styles.navLabelActive]}>
+                  {navLabel}
+                </Text>
               </Pressable>
             );
           })}
@@ -3075,6 +3114,61 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontWeight: "500",
     lineHeight: 18,
+  },
+  workspaceBar: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceTinted,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 54,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  workspaceBarCompact: {
+    minHeight: 50,
+  },
+  workspaceBarCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  workspaceBarIcon: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderRadius: 16,
+    height: 32,
+    justifyContent: "center",
+    width: 32,
+  },
+  workspaceBarKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+  },
+  workspaceBarTitle: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "800",
+    lineHeight: 18,
+  },
+  workspaceSwitchButton: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 34,
+    paddingHorizontal: spacing.sm,
+  },
+  workspaceSwitchText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "800",
   },
   header: {
     alignItems: "center",
