@@ -97,6 +97,9 @@ describe("redacted support bundle", () => {
     expect(bundle.releaseManifest.realPaymentsEnabled).toBe(false);
     expect(bundle.privacy.scan.status).toBe("pass");
     expect(bundle.privacy.secretSafety.status).toBe("pass");
+    expect(bundle.privacy.playDataSafetyDraft.status).toBe("technical-draft");
+    expect(bundle.privacy.playDataSafetyDraft.legalSubmissionReady).toBe(false);
+    expect(bundle.privacy.playDataSafetyDraft.humanBlockers).toContain("final Play Console Data Safety answers");
     expect(bundle.privacy.dataSafety.handlingByCategory["financial-info"]).toBe("local-only");
     expect(bundle.retention.cloudBackupEnabled).toBe(false);
     expect(bundle.retention.blockers).toContain("server-side-backups");
@@ -123,6 +126,7 @@ describe("redacted support bundle", () => {
 
     expect(bundle.privacy.scan.status).toBe("fail");
     expect(bundle.privacy.secretSafety.status).toBe("fail");
+    expect(bundle.privacy.playDataSafetyDraft.status).toBe("blocked-by-release-risk");
     expect(bundle.privacy.scan.risks.map((risk) => risk.kind)).toEqual([
       "payments-sdk",
       "android-permission",

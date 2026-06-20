@@ -1,6 +1,7 @@
 import { createBackendDiagnosticsReport, type BackendDiagnosticsReport } from "./backendDiagnostics";
 import { createBackendReleaseManifest, type BackendReleaseManifest } from "./backendReleaseManifest";
 import { createDataSafetyInventory, type DataSafetyHandling } from "./dataSafetyInventory";
+import { createPlayDataSafetyDraft, type PlayDataSafetyDraft } from "./playDataSafetyDraft";
 import { createPlayPreflightReport, type PlayPreflightStatus } from "./playPreflight";
 import { createReleasePrivacyScan, type ReleasePrivacyScanReport } from "./releasePrivacyScan";
 import { createRetentionReadinessReport, type RetentionReadinessReport } from "./retentionReadiness";
@@ -37,6 +38,12 @@ export type RedactedSupportBundle = {
   privacy: {
     scan: ReleasePrivacyScanReport;
     secretSafety: SecretSafetyScanReport;
+    playDataSafetyDraft: {
+      status: PlayDataSafetyDraft["status"];
+      legalSubmissionReady: false;
+      humanBlockers: string[];
+      releaseRisks: string[];
+    };
     dataSafety: {
       legalSubmissionReady: false;
       remoteBackendEnabled: false;
@@ -69,6 +76,12 @@ export function createRedactedSupportBundle(
   const scan = createReleasePrivacyScan(releaseConfig);
   const secretSafety = createSecretSafetyScan(releaseConfig.secretScanTargets ?? []);
   const dataSafety = createDataSafetyInventory();
+  const playDataSafetyDraft = createPlayDataSafetyDraft({
+    generatedAt,
+    privacyScan: scan,
+    secretSafety,
+    inventory: dataSafety,
+  });
   const retention = createRetentionReadinessReport();
 
   return {
@@ -101,6 +114,12 @@ export function createRedactedSupportBundle(
     privacy: {
       scan,
       secretSafety,
+      playDataSafetyDraft: {
+        status: playDataSafetyDraft.status,
+        legalSubmissionReady: false,
+        humanBlockers: playDataSafetyDraft.humanBlockers,
+        releaseRisks: playDataSafetyDraft.releaseRisks,
+      },
       dataSafety: {
         legalSubmissionReady: false,
         remoteBackendEnabled: false,

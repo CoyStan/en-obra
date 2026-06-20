@@ -21,6 +21,7 @@ describe("Play preflight report", () => {
     expect(report.readySignals).toContain("backend release gate passes");
     expect(report.readySignals).toContain("retention and backup model is ready for local internal testing");
     expect(report.readySignals).toContain("Data Safety technical inventory is local-first");
+    expect(report.readySignals).toContain("technical Play Data Safety draft is generated from current scans");
     expect(report.readySignals).toContain("release config has no committed secrets or production endpoints");
   });
 
@@ -44,6 +45,7 @@ describe("Play preflight report", () => {
     expect(report.evidence).toContain("src/backend/accessReadiness.ts");
     expect(report.evidence).toContain("src/backend/storageReadiness.ts");
     expect(report.evidence).toContain("src/backend/retentionReadiness.ts");
+    expect(report.evidence).toContain("src/backend/playDataSafetyDraft.ts");
     expect(report.evidence).toContain("src/backend/secretSafetyScan.ts");
     expect(report.evidence).toContain("src/backend/dataSafetyInventory.ts");
   });

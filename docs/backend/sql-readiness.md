@@ -321,6 +321,12 @@ location, advertising, device contacts, and payments. It is technical evidence
 only; final Play Console answers, privacy URL, and legal approval remain human
 blockers.
 
+`src/backend/playDataSafetyDraft.ts` turns that inventory plus the current
+privacy and secret/config scans into a technical Play Data Safety draft. The
+draft suggests local-only versus not-collected declarations for the current
+build, records evidence for each category, and remains blocked for final
+submission until legal/privacy approval and Play Console wording review happen.
+
 `src/backend/releasePrivacyScan.ts` backs the inventory by scanning
 `package.json` and `app.json` for ads, analytics, payment, location/contact SDK
 signals, and Android permissions.
@@ -368,6 +374,7 @@ internal-testing handoff report. It summarizes:
 - local/internal storage readiness
 - local/internal retention and backup readiness
 - technical Data Safety posture
+- technical Play Data Safety draft status
 - secret/config safety posture
 - deletion workflow readiness without remote endpoint
 - remaining human/provider blockers
@@ -411,6 +418,7 @@ to stay ready before Play internal testing:
 - retention and backup readiness contract
 - account access readiness contract
 - technical Data Safety inventory
+- technical Play Data Safety draft
 - release privacy/dependency scan
 - release secret/config safety scan
 - redacted support bundle

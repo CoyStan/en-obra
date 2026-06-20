@@ -149,6 +149,12 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
         "docs/production/privacy-terms-readiness.md",
       ],
     ),
+    item("play-data-safety-draft", "Technical Play Data Safety draft", "ready", [
+      "src/backend/playDataSafetyDraft.ts",
+      "src/__tests__/playDataSafetyDraft.test.ts",
+      "src/backend/dataSafetyInventory.ts",
+      "docs/production/privacy-terms-readiness.md",
+    ]),
     item("release-privacy-scan", "Release privacy and dependency scan", "ready", [
       "src/backend/releasePrivacyScan.ts",
       "src/__tests__/releasePrivacyScan.test.ts",

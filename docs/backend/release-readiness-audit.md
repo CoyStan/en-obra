@@ -27,6 +27,7 @@ deployment approval.
 - Provider-neutral account access readiness contract:
   `src/backend/accessReadiness.ts`
 - Technical Data Safety inventory: `src/backend/dataSafetyInventory.ts`
+- Technical Play Data Safety draft: `src/backend/playDataSafetyDraft.ts`
 - Release privacy/dependency scan: `src/backend/releasePrivacyScan.ts`
 - Release secret/config safety scan: `src/backend/secretSafetyScan.ts`
 - Redacted backend support bundle: `src/backend/supportBundle.ts`
@@ -79,6 +80,9 @@ deployment approval.
 - Technical Data Safety inventory showing the current build is local-first,
   has no real payments, no ads/analytics SDK, no backend sharing, and still
   requires human legal/Play Console submission.
+- Technical Play Data Safety draft that maps the current inventory to
+  local-only or not-collected declarations, fails when release/privacy or
+  secret scans detect risk, and remains explicitly non-legal.
 - Release privacy/dependency scan covering `package.json` and `app.json` for
   ads, analytics, payment, location/contact SDK signals, and Android
   permissions.
