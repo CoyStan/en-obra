@@ -1,0 +1,797 @@
+{
+  "schema_version": 1,
+  "name": "Cuentas Claras Company OS",
+  "goals": [
+    {
+      "id": "GOAL-MIGRATION-0001",
+      "title": "Replace the old Palari Orchestrator workflow with Company OS",
+      "owner": "HUMAN-FOUNDER",
+      "status": "active",
+      "priority": "high",
+      "success_criteria": [
+        "Old ticket/worktree workflow is archived rather than used for new product work",
+        "Company OS validates from the app repo through a repo-local command",
+        "Useful product docs, decisions, production notes, reports, and evidence remain discoverable",
+        "The app source remains untouched during the migration"
+      ],
+      "linked_palaris": [
+        "PALARI-OPS"
+      ],
+      "linked_work": [
+        "WORK-MIGRATION-0001"
+      ],
+      "linked_decisions": [
+        "DECISION-MIGRATION-0001"
+      ]
+    },
+    {
+      "id": "GOAL-PREMIUM-MVP",
+      "title": "Make Cuentas Claras a premium Android-first LATAM finance app",
+      "owner": "HUMAN-FOUNDER",
+      "status": "active",
+      "priority": "high",
+      "success_criteria": [
+        "The app feels cleaner, lighter, and more professional than the current MVP",
+        "Core local-first split-expense flows support users, groups, expenses, balances, and settlements",
+        "Spanish-first MXN defaults and Mexico/LATAM demo data remain clear",
+        "The Android experience is verified on mobile sizes and is close to Play internal testing readiness",
+        "No real payments, secrets, production backend, or paid services are introduced without human approval"
+      ],
+      "linked_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING",
+        "PALARI-RELEASE"
+      ],
+      "linked_work": [
+        "WORK-APP-0001",
+        "WORK-APP-0002",
+        "WORK-APP-0003"
+      ],
+      "linked_decisions": [
+        "DECISION-PRODUCT-0001"
+      ]
+    }
+  ],
+  "humans": [
+    {
+      "id": "HUMAN-FOUNDER",
+      "name": "Founder",
+      "aliases": [
+        "founder",
+        "user"
+      ],
+      "role": "Product owner and final acceptor",
+      "authority_level": "admin",
+      "approval_capabilities": [
+        "product",
+        "design",
+        "merge",
+        "release",
+        "privacy",
+        "policy",
+        "security"
+      ],
+      "skills": [
+        "product judgment",
+        "visual direction",
+        "release approval"
+      ],
+      "ownership_areas": [
+        "product direction",
+        "legal/privacy decisions",
+        "Play Store readiness",
+        "production infrastructure decisions"
+      ],
+      "availability": "active",
+      "capacity_signal": "approve human gates and high-risk changes explicitly"
+    }
+  ],
+  "palaris": [
+    {
+      "id": "PALARI-OPS",
+      "name": "Clara Ops",
+      "role": "Repository operating-system maintainer",
+      "scope": "Maintain the Company OS workspace, migration records, receipts, and authority boundaries.",
+      "allowed_inputs": [
+        "company-os/workspace.json",
+        "docs/company-os",
+        "docs/legacy/palari-orchestrator",
+        "tools/palari-company-os",
+        "human prompts"
+      ],
+      "forbidden_inputs": [
+        "secrets",
+        "production credentials"
+      ],
+      "forbidden_actions": [
+        "delete old worktrees",
+        "deploy",
+        "push",
+        "spend money",
+        "accept legal or policy decisions"
+      ],
+      "standards": [
+        "prefer least-destructive migration decisions",
+        "document ambiguity",
+        "keep app feature work out of migration commits"
+      ],
+      "memory_sources": [
+        "SOURCE-MIGRATION-NOTE",
+        "SOURCE-COMPANY-OS-DOCS"
+      ],
+      "default_worker": "gpt-5-codex",
+      "owner_human": "HUMAN-FOUNDER",
+      "linked_goals": [
+        "GOAL-MIGRATION-0001"
+      ],
+      "active_work": [
+        "WORK-MIGRATION-0001"
+      ],
+      "outcomes": []
+    },
+    {
+      "id": "PALARI-PRODUCT",
+      "name": "Clara Producto",
+      "role": "Product strategy partner",
+      "scope": "Translate founder intent into product briefs, decisions, and high-signal work items for Cuentas Claras.",
+      "allowed_inputs": [
+        "docs/product",
+        "docs/production",
+        "company-os/workspace.json",
+        "selected visual evidence",
+        "human prompts"
+      ],
+      "forbidden_inputs": [
+        "unselected private files",
+        "secrets"
+      ],
+      "forbidden_actions": [
+        "make legal commitments",
+        "change monetization",
+        "enable real payments"
+      ],
+      "standards": [
+        "Spanish-first for user-facing product decisions",
+        "plain financial trust cues",
+        "low cognitive load for mainstream users"
+      ],
+      "memory_sources": [
+        "SOURCE-PRODUCT-BRIEF",
+        "SOURCE-PRD",
+        "SOURCE-DECISIONS"
+      ],
+      "default_worker": "gpt-5-codex",
+      "owner_human": "HUMAN-FOUNDER",
+      "linked_goals": [
+        "GOAL-PREMIUM-MVP"
+      ],
+      "active_work": [
+        "WORK-APP-0001"
+      ],
+      "outcomes": []
+    },
+    {
+      "id": "PALARI-DESIGN",
+      "name": "Clara Diseño",
+      "role": "Android product design partner",
+      "scope": "Drive the clean premium Android UI direction while preserving app content and usability.",
+      "allowed_inputs": [
+        "docs/product/design-system.md",
+        "docs/product/visual-direction.md",
+        "reports/evidence from the legacy archive",
+        "human prompts"
+      ],
+      "forbidden_inputs": [
+        "secrets"
+      ],
+      "forbidden_actions": [
+        "remove required product content to simplify visuals",
+        "ship dark-pattern financial copy"
+      ],
+      "standards": [
+        "clean Stripe-like hierarchy with green, blue, purple, or warm sand accents as appropriate",
+        "Android-first interaction structure",
+        "accessible touch targets and contrast",
+        "avoid generic landing pages"
+      ],
+      "memory_sources": [
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-LEGACY-EVIDENCE"
+      ],
+      "default_worker": "glm-5.2-review-when-authorized",
+      "owner_human": "HUMAN-FOUNDER",
+      "linked_goals": [
+        "GOAL-PREMIUM-MVP"
+      ],
+      "active_work": [
+        "WORK-APP-0001"
+      ],
+      "outcomes": []
+    },
+    {
+      "id": "PALARI-ENGINEERING",
+      "name": "Clara Ingeniería",
+      "role": "React Native implementation partner",
+      "scope": "Implement bounded app changes with local-first adapters, tests, and Android verification.",
+      "allowed_inputs": [
+        "src",
+        "assets",
+        "docs/product",
+        "docs/production",
+        "package.json",
+        "app.json",
+        "tsconfig.json"
+      ],
+      "forbidden_inputs": [
+        "secrets",
+        "production user data"
+      ],
+      "forbidden_actions": [
+        "implement real payments",
+        "store production secrets",
+        "deploy production infrastructure"
+      ],
+      "standards": [
+        "React Native and Expo TypeScript patterns already present in the app",
+        "focused tests for domain and UI behavior",
+        "no app source changes during OS migration work"
+      ],
+      "memory_sources": [
+        "SOURCE-ARCHITECTURE",
+        "SOURCE-PRD",
+        "SOURCE-ROADMAP"
+      ],
+      "default_worker": "gpt-5-codex",
+      "owner_human": "HUMAN-FOUNDER",
+      "linked_goals": [
+        "GOAL-PREMIUM-MVP"
+      ],
+      "active_work": [
+        "WORK-APP-0002"
+      ],
+      "outcomes": []
+    },
+    {
+      "id": "PALARI-RELEASE",
+      "name": "Clara Release",
+      "role": "Android release-readiness partner",
+      "scope": "Prepare internal-testing readiness without requiring production credentials or legal acceptance.",
+      "allowed_inputs": [
+        "docs/production",
+        "assets",
+        "app.json",
+        "package.json",
+        "company-os/workspace.json"
+      ],
+      "forbidden_inputs": [
+        "signing keys",
+        "API secrets",
+        "Play Console credentials"
+      ],
+      "forbidden_actions": [
+        "submit to Play Store",
+        "create paid services",
+        "approve privacy policy as legal advice"
+      ],
+      "standards": [
+        "explicit human gates for policy, privacy, security, and release decisions",
+        "mock/local adapters until production services are approved"
+      ],
+      "memory_sources": [
+        "SOURCE-PLAY-READINESS",
+        "SOURCE-SECURITY-DELETION",
+        "SOURCE-PRIVACY-TERMS"
+      ],
+      "default_worker": "gpt-5-codex",
+      "owner_human": "HUMAN-FOUNDER",
+      "linked_goals": [
+        "GOAL-PREMIUM-MVP"
+      ],
+      "active_work": [
+        "WORK-APP-0003"
+      ],
+      "outcomes": []
+    }
+  ],
+  "sources": [
+    {
+      "id": "SOURCE-COMPANY-OS-DOCS",
+      "label": "Vendored Palari Company OS docs",
+      "kind": "documentation",
+      "provider": "local_repo",
+      "uri": "tools/palari-company-os/docs/product",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-OPS"
+      ],
+      "last_seen_revision": "22df9b8193db988ed2c85a22a43c6ddd0355133c",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-MIGRATION-NOTE",
+      "label": "Company OS migration note",
+      "kind": "note",
+      "provider": "local_file",
+      "uri": "docs/company-os/migration.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-OPS"
+      ],
+      "last_seen_revision": "migration-2026-06-20",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-LEGACY-ARCHIVE",
+      "label": "Archived Palari Orchestrator tickets and reports",
+      "kind": "archive",
+      "provider": "local_file_tree",
+      "uri": "docs/legacy/palari-orchestrator",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-OPS",
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING",
+        "PALARI-RELEASE"
+      ],
+      "last_seen_revision": "legacy-cue-archive",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-LEGACY-EVIDENCE",
+      "label": "Archived visual and verification evidence",
+      "kind": "archive",
+      "provider": "local_file_tree",
+      "uri": "docs/legacy/palari-orchestrator/reports/evidence",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING",
+        "PALARI-RELEASE"
+      ],
+      "last_seen_revision": "legacy-evidence-archive",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-PRODUCT-BRIEF",
+      "label": "Product brief",
+      "kind": "product_doc",
+      "provider": "local_file",
+      "uri": "docs/product/brief.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-PRD",
+      "label": "Product requirements document",
+      "kind": "product_doc",
+      "provider": "local_file",
+      "uri": "docs/product/prd.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-DECISIONS",
+      "label": "Product decision log",
+      "kind": "decision_log",
+      "provider": "local_file",
+      "uri": "docs/product/decisions.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING",
+        "PALARI-RELEASE"
+      ],
+      "last_seen_revision": "main-dirty-at-migration",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-ARCHITECTURE",
+      "label": "Architecture note",
+      "kind": "technical_doc",
+      "provider": "local_file",
+      "uri": "docs/product/architecture.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-ENGINEERING",
+        "PALARI-RELEASE"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-DESIGN-SYSTEM",
+      "label": "Design system note",
+      "kind": "design_doc",
+      "provider": "local_file",
+      "uri": "docs/product/design-system.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-VISUAL-DIRECTION",
+      "label": "Visual direction note",
+      "kind": "design_doc",
+      "provider": "local_file",
+      "uri": "docs/product/visual-direction.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-ROADMAP",
+      "label": "MVP roadmap",
+      "kind": "product_doc",
+      "provider": "local_file",
+      "uri": "docs/product/roadmap.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-ENGINEERING",
+        "PALARI-RELEASE"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-PLAY-READINESS",
+      "label": "Play internal testing readiness notes",
+      "kind": "release_doc",
+      "provider": "local_file",
+      "uri": "docs/production/play-readiness.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-RELEASE"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-PRIVACY-TERMS",
+      "label": "Privacy and terms drafts",
+      "kind": "policy_draft",
+      "provider": "local_files",
+      "uri": "docs/legal",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-RELEASE"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-SECURITY-DELETION",
+      "label": "Security and data deletion model",
+      "kind": "security_doc",
+      "provider": "local_file",
+      "uri": "docs/production/security-data-deletion.md",
+      "access_mode": "read",
+      "selected": true,
+      "owner_human": "HUMAN-FOUNDER",
+      "allowed_palaris": [
+        "PALARI-RELEASE",
+        "PALARI-ENGINEERING"
+      ],
+      "last_seen_revision": "main",
+      "last_read_at": "2026-06-20T00:00:00Z"
+    }
+  ],
+  "work_items": [
+    {
+      "id": "WORK-MIGRATION-0001",
+      "title": "Migrate repository governance to Palari Company OS",
+      "goal": "GOAL-MIGRATION-0001",
+      "palari": "PALARI-OPS",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "active",
+      "scope": "Archive old Palari Orchestrator artifacts, install the new Company OS CLI and workspace, map useful docs as sources, and verify the app still passes existing checks.",
+      "allowed_resources": [
+        "company-os",
+        "tools/palari-company-os",
+        "bin/company-os",
+        "docs/company-os",
+        "docs/legacy/palari-orchestrator",
+        "README.md",
+        ".gitignore"
+      ],
+      "allowed_sources": [
+        "SOURCE-COMPANY-OS-DOCS",
+        "SOURCE-LEGACY-ARCHIVE",
+        "SOURCE-MIGRATION-NOTE"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation",
+        "git_commit"
+      ],
+      "output_targets": [
+        "company-os/workspace.json",
+        "docs/company-os/migration.md",
+        "bin/company-os",
+        "tools/palari-company-os"
+      ],
+      "forbidden_actions": [
+        "delete local .palari worktrees",
+        "reset git history",
+        "deploy",
+        "use secrets",
+        "start product feature work"
+      ],
+      "acceptance_target": "Founder can continue work with Company OS commands and can find the archived Orchestrator history.",
+      "verification_expectations": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os queue",
+        "./bin/company-os scope WORK-MIGRATION-0001 for changed migration paths"
+      ],
+      "current_attempt": "ATTEMPT-MIGRATION-0001",
+      "required_approval_count": 0,
+      "required_approval_capability": "merge"
+    },
+    {
+      "id": "WORK-APP-0001",
+      "title": "Premium Android visual system redesign",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "proposed",
+      "scope": "Make the app feel cleaner, lighter, premium, and Android-native while retaining content and mainstream usability.",
+      "allowed_resources": [
+        "src",
+        "assets",
+        "docs/product",
+        "reports/evidence"
+      ],
+      "allowed_sources": [
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-LEGACY-EVIDENCE",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation",
+        "ai_design_review"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence"
+      ],
+      "forbidden_actions": [
+        "remove core content",
+        "introduce production services",
+        "use paid design APIs without human approval"
+      ],
+      "acceptance_target": "Founder says the app direction feels premium enough to proceed toward internal testing.",
+      "verification_expectations": [
+        "typecheck",
+        "tests",
+        "Expo config",
+        "mobile visual screenshots"
+      ],
+      "required_approval_count": 1,
+      "required_approval_capability": "design"
+    },
+    {
+      "id": "WORK-APP-0002",
+      "title": "Local-first user and group account model",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Move the MVP away from one-person bookkeeping toward local users who can join groups and record their own expenses, using replaceable local adapters.",
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "docs/production/auth-account-model.md",
+        "package.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PRD",
+        "SOURCE-ARCHITECTURE",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product"
+      ],
+      "forbidden_actions": [
+        "add production auth secrets",
+        "connect real backend services"
+      ],
+      "acceptance_target": "Local demo accounts and group participation model are clear and replaceable by future auth/sync adapters.",
+      "verification_expectations": [
+        "typecheck",
+        "tests",
+        "manual mobile verification"
+      ],
+      "required_approval_count": 1,
+      "required_approval_capability": "product"
+    },
+    {
+      "id": "WORK-APP-0003",
+      "title": "Android internal testing readiness",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-RELEASE",
+      "risk": "R4",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Prepare the app, docs, assets, and checklist needed to be very close to a Play Store internal testing upload without secrets, signing keys, or production submission.",
+      "allowed_resources": [
+        "app.json",
+        "assets",
+        "docs/production",
+        "docs/legal",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PLAY-READINESS",
+        "SOURCE-PRIVACY-TERMS",
+        "SOURCE-SECURITY-DELETION"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "output_targets": [
+        "docs/production",
+        "docs/legal",
+        "assets"
+      ],
+      "forbidden_actions": [
+        "submit to Play Store",
+        "generate or store signing keys",
+        "make legal decisions",
+        "activate production backend"
+      ],
+      "acceptance_target": "Founder has a concrete internal testing checklist and all local assets/docs are ready for credential-backed release work.",
+      "verification_expectations": [
+        "Expo config validates",
+        "asset dimensions documented",
+        "human gates documented"
+      ],
+      "required_approval_count": 1,
+      "required_approval_capability": "release"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "ATTEMPT-MIGRATION-0001",
+      "work_item_id": "WORK-MIGRATION-0001",
+      "actor": "PALARI-OPS",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "changed_files": [
+        "company-os/workspace.json",
+        "bin/company-os",
+        "tools/palari-company-os",
+        "docs/company-os",
+        "docs/legacy/palari-orchestrator",
+        "README.md",
+        ".gitignore"
+      ],
+      "cleanliness": "migration isolated from app source changes that were dirty before migration",
+      "result": "in progress"
+    }
+  ],
+  "evidence_runs": [],
+  "review_verdicts": [],
+  "human_decisions": [],
+  "receipts": [],
+  "decisions": [
+    {
+      "id": "DECISION-MIGRATION-0001",
+      "question": "How should old Palari Orchestrator artifacts be handled during the Company OS migration?",
+      "status": "decided",
+      "context": "The repository had an old tracked Orchestrator workflow plus many local .palari worktrees. The migration needed to preserve useful records while preventing new work from continuing in the old CUE system.",
+      "options": [
+        "Delete old workflow files",
+        "Archive old workflow files inside docs/legacy and install Company OS alongside the app",
+        "Keep both systems active"
+      ],
+      "tradeoffs": [
+        "Deleting would be clean but could lose evidence and branch recovery context",
+        "Keeping both active would preserve everything but keep the slow workflow alive",
+        "Archiving preserves history while making the forward workflow clear"
+      ],
+      "recommendation": "Archive old workflow files inside docs/legacy, leave local .palari worktrees untouched, and make Company OS the forward workflow.",
+      "safe_default": "Archive instead of delete.",
+      "required_human": "HUMAN-FOUNDER",
+      "required_role": "Founder",
+      "linked_goal": "GOAL-MIGRATION-0001",
+      "linked_work": "WORK-MIGRATION-0001",
+      "linked_palari": "PALARI-OPS",
+      "result": "Archive old workflow files inside docs/legacy, leave local .palari worktrees untouched, and make Company OS the forward workflow.",
+      "due_date": "2026-06-20"
+    },
+    {
+      "id": "DECISION-PRODUCT-0001",
+      "question": "What product direction should future Company OS work optimize for?",
+      "status": "decided",
+      "context": "The founder said the current app still feels ugly and wants a cleaner, more professional Android-first experience.",
+      "options": [
+        "Continue the old heavy MVP visual direction",
+        "Restart toward a lighter premium Android finance app with Stripe-like clarity and LATAM warmth"
+      ],
+      "tradeoffs": [
+        "Continuing the old direction is faster but preserves the perceived heaviness",
+        "Restarting the visual system takes more work but better matches the desired premium product bar"
+      ],
+      "recommendation": "Restart toward a lighter premium Android finance app with Stripe-like clarity and LATAM warmth.",
+      "safe_default": "Do visual redesign work locally with no payments or production integrations.",
+      "required_human": "HUMAN-FOUNDER",
+      "required_role": "Founder",
+      "linked_goal": "GOAL-PREMIUM-MVP",
+      "linked_work": "WORK-APP-0001",
+      "linked_palari": "PALARI-DESIGN",
+      "result": "Restart toward a lighter premium Android finance app with Stripe-like clarity and LATAM warmth.",
+      "due_date": "2026-06-20"
+    }
+  ],
+  "outcomes": []
+}

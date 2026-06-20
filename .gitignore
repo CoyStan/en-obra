@@ -2,6 +2,9 @@
 .palari/locks/
 .palari/worktrees/
 .palari/gate/keys/
+.palari-company-os/
+company-os/.palari/
+tools/palari-company-os/**/.palari/
 .expo/
 .expo-shared/
 node_modules/

@@ -1,0 +1,10 @@
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.venv/
+.palari-company-os/
+dist/
+build/
+*.egg-info/
