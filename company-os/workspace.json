@@ -3936,9 +3936,9 @@
       "id": "EVIDENCE-APP-0045",
       "work_item_id": "WORK-APP-0045",
       "attempt_id": "ATTEMPT-APP-0045",
-      "head_sha": "f4fbf075667a98c3855f11efc22b96ee2b370b50",
+      "head_sha": "main",
       "status": "passed",
-      "summary": "Typecheck, test suite, and Expo public config passed for group-scoped tab navigation clarity. Runtime web launch attempted but blocked by local Metro watcher limit in legacy .palari worktrees.",
+      "summary": "Typecheck, test suite, Expo public config, Company OS validate, and Company OS scope passed for group-scoped tab navigation clarity. Runtime web launch attempted but blocked by local Metro watcher limit in legacy .palari worktrees.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T23:33:16Z"
     }
@@ -4445,7 +4445,7 @@
     {
       "id": "REVIEW-APP-0045",
       "work_item_id": "WORK-APP-0045",
-      "reviewed_head": "f4fbf075667a98c3855f11efc22b96ee2b370b50",
+      "reviewed_head": "main",
       "reviewer": "PALARI-DESIGN",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:33:16Z"
