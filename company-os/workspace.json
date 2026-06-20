@@ -1789,6 +1789,41 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0030"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "docs/production",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0031",
+      "title": "Provider-neutral sync conflict policy",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add a tested provider-neutral sync conflict policy for future backend adapters, covering append-only safety, duplicate settlement protection, stale revision handling, and local-first retry guidance. Forbidden: choosing production auth/storage, secrets, paid services, real payments, deployment.",
+      "acceptance_target": "Conflict policy module returns deterministic decisions for append-only creates, duplicate settlements, stale local/remote revisions, deletes, and equal revisions; backend release gate and docs include the policy as a required capability.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0031"
     }
   ],
   "attempts": [
@@ -2343,6 +2378,21 @@
       "result": "Implemented and verified backend release gate in commit dd9afe9a1ceafdf81c20ae9f842de4f12f770c61.",
       "commits": [
         "dd9afe9a1ceafdf81c20ae9f842de4f12f770c61"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0031",
+      "work_item_id": "WORK-APP-0031",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T22:35:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified provider-neutral sync conflict policy in commit 2e0e9e86251dd306fa7de0c8776f0732e908cd7c.",
+      "commits": [
+        "2e0e9e86251dd306fa7de0c8776f0732e908cd7c"
       ]
     }
   ],
@@ -3085,6 +3135,27 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for backend release gate verifier.",
       "timestamp": "2026-06-20T22:26:02Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0031"
+      ],
+      "artifacts": [
+        "src/backend/syncConflictPolicy.ts",
+        "src/__tests__/syncConflictPolicy.test.ts",
+        "reports/evidence/WORK-APP-0031/technical-report.md",
+        "docs/production/backend-sync-architecture.md",
+        "docs/backend/release-readiness-audit.md"
+      ],
+      "id": "EVIDENCE-APP-0031",
+      "work_item_id": "WORK-APP-0031",
+      "attempt_id": "ATTEMPT-APP-0031",
+      "head_sha": "2e0e9e86251dd306fa7de0c8776f0732e908cd7c",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for sync conflict policy.",
+      "timestamp": "2026-06-20T22:29:10Z"
     }
   ],
   "review_verdicts": [
@@ -3473,6 +3544,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T22:26:02Z"
+    },
+    {
+      "id": "REVIEW-APP-0031",
+      "work_item_id": "WORK-APP-0031",
+      "reviewed_head": "2e0e9e86251dd306fa7de0c8776f0732e908cd7c",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T22:29:10Z"
     }
   ],
   "human_decisions": [],
@@ -4588,6 +4667,46 @@
       "attempt_id": "ATTEMPT-APP-0030",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T22:26:02Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0031",
+        "added sync conflict policy",
+        "added conflict policy tests",
+        "updated backend readiness report",
+        "updated backend release gate",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/syncConflictPolicy.ts",
+        "src/__tests__/syncConflictPolicy.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "src/backend/backendReleaseGate.ts",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md",
+        "docs/production/backend-sync-architecture.md",
+        "reports/evidence/WORK-APP-0031/technical-report.md"
+      ],
+      "not_done": [
+        "production backend adapter",
+        "auth provider",
+        "storage provider",
+        "remote endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "legal approval",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0031",
+      "work_item_id": "WORK-APP-0031",
+      "attempt_id": "ATTEMPT-APP-0031",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T22:29:10Z"
     }
   ],
   "decisions": [
@@ -5063,6 +5182,15 @@
       "what_happened": "Added release gate that fails on missing provider-neutral backend capabilities or unexpected blockers, and wired it into Android release checks.",
       "what_changed": "Backend readiness is now verifiable with npm run release:backend:gate and npm run release:android:check.",
       "timestamp": "2026-06-20T22:26:02Z"
+    },
+    {
+      "id": "OUTCOME-APP-0031",
+      "work_item_id": "WORK-APP-0031",
+      "summary": "Future sync adapters now have a tested conflict policy.",
+      "status": "captured",
+      "what_happened": "Added provider-neutral conflict decisions for append-only rows, duplicate settlements, stale revisions, deletes, and remote deletions.",
+      "what_changed": "Backend release readiness now includes conflict-policy behavior as a required gate capability before provider selection.",
+      "timestamp": "2026-06-20T22:29:10Z"
     }
   ]
 }
