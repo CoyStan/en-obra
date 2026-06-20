@@ -1316,6 +1316,42 @@
         "paid_services",
         "remove_core_content"
       ]
+    },
+    {
+      "id": "WORK-APP-0017",
+      "title": "Clarify group-scoped tab navigation",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs/product, reports/evidence, company-os. Make Groups the group switcher/landing context and make Activity, Balance, and Profile clearly scoped to the selected group. Preserve core content and demo/local-only behavior. Forbidden: real payments, production backend, secrets, paid services, removing group functionality.",
+      "acceptance_target": "The app starts on Groups, selecting a group opens that group's Activity, Balance and Profile/participants remain scoped to the selected group, and returning to Groups lets the user switch context for all other tabs.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "remove_core_content"
+      ]
     }
   ],
   "attempts": [
@@ -1670,6 +1706,20 @@
       "result": "Implemented and verified member balance row composition in commit 129ba62b1d0ded68dacfaef3a77cb521e84b6c09.",
       "commits": [
         "129ba62b1d0ded68dacfaef3a77cb521e84b6c09"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0017",
+      "work_item_id": "WORK-APP-0017",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified group-scoped tab navigation in commit 1a1929fde436d31ca01df4aef912631a4e84574c.",
+      "commits": [
+        "1a1929fde436d31ca01df4aef912631a4e84574c"
       ]
     }
   ],
@@ -2098,6 +2148,31 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, web export, Company OS validate/scope, and Chromium screenshots passed for member balance row composition.",
       "timestamp": "2026-06-20T20:18:14Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npm run export:web",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0017",
+        "Chromium CDP screenshots 390x844"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0017/technical-report.md",
+        "reports/evidence/WORK-APP-0017/screenshots/groups-landing-390x844.png",
+        "reports/evidence/WORK-APP-0017/screenshots/activity-after-group-select-390x844.png",
+        "reports/evidence/WORK-APP-0017/screenshots/balance-tab-390x844.png",
+        "reports/evidence/WORK-APP-0017/screenshots/profile-tab-390x844.png"
+      ],
+      "id": "EVIDENCE-APP-0017",
+      "work_item_id": "WORK-APP-0017",
+      "attempt_id": "ATTEMPT-APP-0017",
+      "head_sha": "1a1929fde436d31ca01df4aef912631a4e84574c",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, web export, Company OS validate/scope, and Chromium navigation screenshots passed.",
+      "timestamp": "2026-06-20T20:24:31Z"
     }
   ],
   "review_verdicts": [
@@ -2374,6 +2449,14 @@
       "reviewer": "PALARI-DESIGN",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T20:18:14Z"
+    },
+    {
+      "id": "REVIEW-APP-0017",
+      "work_item_id": "WORK-APP-0017",
+      "reviewed_head": "1a1929fde436d31ca01df4aef912631a4e84574c",
+      "reviewer": "PALARI-DESIGN",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T20:24:31Z"
     }
   ],
   "human_decisions": [],
@@ -3016,6 +3099,41 @@
       "attempt_id": "ATTEMPT-APP-0016",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T20:18:42Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0017",
+        "made Groups the landing tab",
+        "reordered tabs",
+        "opened Activity after group selection",
+        "scoped Profile to selected group",
+        "ran verification",
+        "captured screenshots"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0017"
+      ],
+      "not_done": [
+        "native Android emulator QA",
+        "real group invites",
+        "real payments",
+        "production backend",
+        "secrets",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0017",
+      "work_item_id": "WORK-APP-0017",
+      "attempt_id": "ATTEMPT-APP-0017",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-20T20:24:31Z"
     }
   ],
   "decisions": [
@@ -3365,6 +3483,15 @@
       "what_happened": "Added a flexible identity/detail zone and stable right-side money rail for each member balance card.",
       "what_changed": "Balances por integrante is easier to scan, with aligned MXN amounts and less left-side crowding across Android-width screens.",
       "timestamp": "2026-06-20T20:18:42Z"
+    },
+    {
+      "id": "OUTCOME-APP-0017",
+      "work_item_id": "WORK-APP-0017",
+      "summary": "Tabs now follow a group-first navigation model.",
+      "status": "captured",
+      "what_happened": "Groups became the landing/switcher tab; selecting a group opens Activity; Balance and Profile stay scoped to that selected group.",
+      "what_changed": "The app now matches the expected mental model: choose a group first, then inspect activity, balances, and profile/person settings for that group.",
+      "timestamp": "2026-06-20T20:24:31Z"
     }
   ]
 }
