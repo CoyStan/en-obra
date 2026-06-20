@@ -33,6 +33,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "access-readiness",
   "data-safety-inventory",
   "release-privacy-scan",
+  "support-bundle",
   "export",
   "migrations",
 ] as const;

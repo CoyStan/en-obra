@@ -140,6 +140,10 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "package.json",
       "app.json",
     ]),
+    item("support-bundle", "Redacted backend support bundle", "ready", [
+      "src/backend/supportBundle.ts",
+      "src/__tests__/supportBundle.test.ts",
+    ]),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
       "src/__tests__/dataExport.test.ts",

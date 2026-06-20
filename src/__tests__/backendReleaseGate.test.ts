@@ -23,6 +23,7 @@ describe("backend release gate", () => {
     expect(report.evidence).toContain("src/backend/accessReadiness.ts");
     expect(report.evidence).toContain("src/backend/dataSafetyInventory.ts");
     expect(report.evidence).toContain("src/backend/releasePrivacyScan.ts");
+    expect(report.evidence).toContain("src/backend/supportBundle.ts");
     expect(report.evidence).toContain("docs/backend/seed-demo-v1.sql");
     expect(() => assertBackendReleaseGate(report)).not.toThrow();
   });

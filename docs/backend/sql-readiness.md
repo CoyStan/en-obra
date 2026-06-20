@@ -325,6 +325,14 @@ blockers.
 `package.json` and `app.json` for ads, analytics, payment, location/contact SDK
 signals, and Android permissions.
 
+## Redacted Support Bundle
+
+`src/backend/supportBundle.ts` packages internal-testing support signals without
+raw local app rows. It includes diagnostics, preflight summary, release manifest
+summary, privacy scan result, and Data Safety handling categories. It
+intentionally excludes account contact details, raw user rows, expense titles,
+notes, and outbox payload JSON.
+
 ## Backend Play Preflight
 
 `src/backend/playPreflight.ts` aggregates backend readiness into one
@@ -375,6 +383,8 @@ to stay ready before Play internal testing:
 - deletion workflow model
 - account access readiness contract
 - technical Data Safety inventory
+- release privacy/dependency scan
+- redacted support bundle
 - local export package
 - migration planner
 

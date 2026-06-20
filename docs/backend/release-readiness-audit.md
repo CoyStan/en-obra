@@ -26,6 +26,7 @@ deployment approval.
   `src/backend/accessReadiness.ts`
 - Technical Data Safety inventory: `src/backend/dataSafetyInventory.ts`
 - Release privacy/dependency scan: `src/backend/releasePrivacyScan.ts`
+- Redacted backend support bundle: `src/backend/supportBundle.ts`
 - Backend Play preflight report: `src/backend/playPreflight.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
@@ -74,6 +75,9 @@ deployment approval.
 - Release privacy/dependency scan covering `package.json` and `app.json` for
   ads, analytics, payment, location/contact SDK signals, and Android
   permissions.
+- Redacted backend support bundle that aggregates diagnostics, preflight,
+  release manifest summary, privacy scan, and Data Safety posture without raw
+  account contacts, user rows, expense rows, notes, or outbox payload JSON.
 - Backend Play preflight report that summarizes release gate state, local
   backend readiness, no-real-payment posture, and remaining human/provider
   blockers for internal testing handoff.
