@@ -262,6 +262,27 @@ failure reasons, and produces support-safe summaries that do not expose account
 contact details. Remote deletion remains blocked until provider, URL, support,
 legal, and security decisions are made.
 
+## Account Access Readiness
+
+`src/backend/accessReadiness.ts` defines the provider-neutral auth/access
+contract for the release candidate.
+
+The current `local-mock` account model is ready for internal testing because it
+supports:
+
+- stable local user ids
+- session restore boundary
+- sign-out boundary
+- active group member identity mapping
+- offline guest mode
+- local data export
+
+Production auth remains blocked until a human provider decision adds verified
+sessions, production secrets outside the client bundle, account deletion
+requests, remote deletion status, and a public privacy policy URL. The contract
+lets future email, passkey, OAuth, magic-link, or custom providers be evaluated
+without changing the app data model.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
@@ -289,6 +310,7 @@ to stay ready before Play internal testing:
 - local import/restore validator
 - backend diagnostics
 - deletion workflow model
+- account access readiness contract
 - local export package
 - migration planner
 

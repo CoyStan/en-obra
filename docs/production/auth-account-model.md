@@ -32,6 +32,26 @@ Production provider candidates remain undecided and require a human decision:
 - OAuth/Sign in with Google,
 - magic link.
 
+## Access Readiness Contract
+
+`src/backend/accessReadiness.ts` defines the provider-neutral readiness contract
+for auth/access work. It does not choose a vendor and does not configure
+secrets. It separates two states:
+
+- Internal testing readiness: the local mock account must keep stable user ids,
+  session restore, sign-out, group identity mapping, offline guest mode, and
+  local data export.
+- Production readiness: a future provider must add verified sessions, account
+  deletion requests, remote deletion status, a public privacy URL, production
+  secrets outside the client bundle, and human-approved deletion/security
+  process.
+
+Current status:
+
+- internal testing access: ready with `local-mock`
+- production auth: blocked until the founder chooses the access provider and
+  the deletion/privacy/security requirements are implemented
+
 ## UX Rules
 
 - A user can keep using the app in local guest mode.

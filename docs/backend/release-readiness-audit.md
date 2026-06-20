@@ -21,6 +21,8 @@ deployment approval.
 - Local import/restore validator: `src/backend/dataImport.ts`
 - Backend health diagnostics: `src/backend/backendDiagnostics.ts`
 - Provider-neutral deletion workflow: `src/backend/deletionWorkflow.ts`
+- Provider-neutral account access readiness contract:
+  `src/backend/accessReadiness.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -54,6 +56,9 @@ deployment approval.
   expense titles, notes, payload JSON, or contact fields.
 - Provider-neutral deletion request lifecycle for requested, verified, queued,
   completed, failed, and cancelled states without configuring a remote endpoint.
+- Account/access readiness model that marks local mock access ready for internal
+  testing while keeping production auth blocked until provider, secrets,
+  deletion endpoint, and privacy URL decisions exist.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.

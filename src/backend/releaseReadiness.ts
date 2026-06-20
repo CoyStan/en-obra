@@ -3,6 +3,7 @@ import { SQL_SCHEMA_VERSION } from "./sqlSchema";
 import { SQL_MIGRATIONS, planSqlMigrations } from "./sqlMigrations";
 import { demoData } from "../data/demoData";
 import { auditAppDataIntegrity } from "./dataIntegrity";
+import { createAccessReadinessReport } from "./accessReadiness";
 
 export type BackendReadinessItem = {
   id: string;
@@ -35,6 +36,7 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
   const snapshot = createSqlSnapshot(demoData);
   const integrityIssues = auditAppDataIntegrity(demoData);
   const migrationPlan = planSqlMigrations(SQL_SCHEMA_VERSION);
+  const accessReadiness = createAccessReadinessReport();
 
   const items: BackendReadinessItem[] = [
     item("sql-schema", "SQL schema contract", "ready", [
@@ -92,6 +94,19 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/deletionWorkflow.ts",
       "src/__tests__/deletionWorkflow.test.ts",
     ]),
+    item(
+      "access-readiness",
+      "Provider-neutral account access readiness contract",
+      accessReadiness.internalTestingStatus,
+      [
+        "src/backend/accessReadiness.ts",
+        "src/__tests__/accessReadiness.test.ts",
+        ...accessReadiness.evidence,
+      ],
+      accessReadiness.internalTestingStatus === "ready"
+        ? undefined
+        : "Local/internal testing access requirements are incomplete.",
+    ),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
       "src/__tests__/dataExport.test.ts",

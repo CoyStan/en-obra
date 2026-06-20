@@ -20,8 +20,8 @@
   "checksums": {
     "schemaSql": "fnv1a32:153b4aad",
     "seedSql": "fnv1a32:93e2272c",
-    "gate": "fnv1a32:0eab9e72",
-    "manifestBody": "fnv1a32:c1b48611"
+    "gate": "fnv1a32:078aa354",
+    "manifestBody": "fnv1a32:a5c0d8cf"
   },
   "requiredCapabilities": [
     "sql-schema",
@@ -37,10 +37,12 @@
     "import-restore",
     "diagnostics",
     "deletion-workflow",
+    "access-readiness",
     "export",
     "migrations"
   ],
   "readyCapabilities": [
+    "access-readiness",
     "conflict-policy",
     "deletion-workflow",
     "diagnostics",
