@@ -274,3 +274,15 @@ Rationale: The premium goal needs the app to feel multi-user and later become
 SQLite/backend-ready. Adding SQL-shaped entities now lets balances, payer
 defaults, participant shares, activity, and future sync adapt without introducing
 production auth, backend secrets, or paid services.
+
+### Make Expense Creation Participant-First
+
+Decision: The add-expense sheet must explicitly show the active identity, payer,
+participants, equal MXN split preview, and `Sin pagos reales` before saving a
+local expense.
+
+Rationale: A shared-expense app should not feel like one person is entering
+accounting for everyone. Showing `Quién participa` and the per-person split
+aligns the UI with the SQL-ready `expenseParticipants` model, keeps low-IQ
+everyday users from guessing how the split works, and preserves the no-payments
+boundary at the moment money is discussed.

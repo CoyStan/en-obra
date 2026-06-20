@@ -20,7 +20,7 @@ import {
   getGroupMembers,
 } from "../domain/balances";
 import { useAccount } from "../auth/useAccount";
-import { formatMoney } from "../domain/money";
+import { formatMoney, parseMoneyInput, splitEqual } from "../domain/money";
 import type {
   ActivityItem,
   AppData,
@@ -328,6 +328,7 @@ export function MainScreen() {
   const [expenseAmount, setExpenseAmount] = useState("");
   const [expenseNote, setExpenseNote] = useState("");
   const [payerId, setPayerId] = useState("");
+  const [participantIds, setParticipantIds] = useState<string[]>([]);
   const [showActiveMemberSheet, setShowActiveMemberSheet] = useState(false);
   const [accountName, setAccountName] = useState("");
   const [accountEmail, setAccountEmail] = useState("");
@@ -387,6 +388,13 @@ export function MainScreen() {
       ? `Tú eres ${account.profile.displayName}`
       : "Elige tu persona";
   const identityMeta = account.profile && account.mode === "signed-in" ? "Perfil local" : "Demo local";
+  const expenseAmountCents = useMemo(() => parseMoneyInput(expenseAmount), [expenseAmount]);
+  const participantShares = useMemo(() => {
+    if (!expenseAmountCents || participantIds.length === 0) {
+      return [];
+    }
+    return splitEqual(expenseAmountCents, participantIds);
+  }, [expenseAmountCents, participantIds]);
   const openIdentity = () => {
     if (account.profile && account.mode === "signed-in" && selectedGroup) {
       openActiveMemberPicker();
@@ -409,6 +417,17 @@ export function MainScreen() {
       setPayerId("");
     }
   }, [activeGroupMember?.id, payerId, selectedMembers, showExpenseForm]);
+
+  useEffect(() => {
+    if (!showExpenseForm) {
+      return;
+    }
+    setParticipantIds((current) => {
+      const currentIds = new Set(selectedMembers.map((member) => member.id));
+      const filtered = current.filter((id) => currentIds.has(id));
+      return filtered.length ? filtered : selectedMembers.map((member) => member.id);
+    });
+  }, [selectedMembers, showExpenseForm]);
 
   const openActiveMemberPicker = () => {
     if (!account.profile || account.mode !== "signed-in" || !selectedGroup) {
@@ -456,6 +475,7 @@ export function MainScreen() {
     const added = addExpense(selectedGroup.id, {
       amount: expenseAmount,
       note: expenseNote,
+      participantIds,
       payerId,
       title: expenseTitle,
     });
@@ -465,7 +485,25 @@ export function MainScreen() {
     setExpenseTitle("");
     setExpenseAmount("");
     setExpenseNote("");
+    setParticipantIds([]);
     setShowExpenseForm(false);
+  };
+
+  const chooseExpensePayer = (memberId: string) => {
+    setPayerId(memberId);
+    setParticipantIds((current) => (current.includes(memberId) ? current : [memberId, ...current]));
+  };
+
+  const toggleExpenseParticipant = (memberId: string) => {
+    setParticipantIds((current) => {
+      if (current.includes(memberId)) {
+        if (memberId === payerId) {
+          return current;
+        }
+        return current.filter((id) => id !== memberId);
+      }
+      return [...current, memberId];
+    });
   };
 
   const submitAccount = async () => {
@@ -886,9 +924,22 @@ export function MainScreen() {
           <View style={styles.sheetHeader}>
             <View>
               <Text style={styles.sheetTitle}>Agregar gasto</Text>
-              <Text style={styles.sheetSubtitle}>División igualitaria en MXN para el grupo activo.</Text>
+              <Text style={styles.sheetSubtitle}>Quién pagó, quién participa y cuánto toca.</Text>
             </View>
             <ActionButton icon="close" label="Cerrar" onPress={() => setShowExpenseForm(false)} tone="ghost" />
+          </View>
+          <View style={styles.expenseIdentityBand}>
+            <Avatar color={displayMember?.avatarColor ?? colors.primary} label={displayMember?.name ?? "Yo"} />
+            <View style={styles.expenseIdentityCopy}>
+              <Text style={styles.expenseIdentityLabel}>{identityLabel}</Text>
+              <Text style={styles.expenseIdentityMeta}>
+                Registro local en {selectedGroup?.name ?? "tu grupo"} · MXN
+              </Text>
+            </View>
+            <View style={styles.sheetTrustChip}>
+              <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
+              <Text style={styles.sheetTrustText}>Sin pagos reales</Text>
+            </View>
           </View>
           {error ? <Text style={styles.formError}>{error}</Text> : null}
           <Field
@@ -910,13 +961,18 @@ export function MainScreen() {
             placeholder="Opcional"
             value={expenseNote}
           />
-          <Text style={styles.fieldLabel}>¿Quién pagó?</Text>
-          <Text style={styles.accountSectionText}>
-            {activeGroupMember
-              ? `Tu sesión está como ${activeGroupMember.name}. Puedes ajustar si otro miembro pagó.`
-              : "Selecciona un integrante para registrar este gasto."}
-          </Text>
-          <View style={styles.payerOptions}>
+          <View style={styles.sheetSectionHeader}>
+            <View>
+              <Text style={styles.fieldLabel}>¿Quién pagó?</Text>
+              <Text style={styles.accountSectionText}>
+                {activeGroupMember
+                  ? `Tu sesión empieza como ${activeGroupMember.name}.`
+                  : "Selecciona un integrante para registrar este gasto."}
+              </Text>
+            </View>
+            {payerId ? <Pill label="Pagó" tone="success" /> : null}
+          </View>
+          <View style={styles.peopleGrid}>
             {selectedMembers.map((member) => (
               <Pressable
                 accessibilityHint="Selecciona quién pagó este gasto."
@@ -925,8 +981,8 @@ export function MainScreen() {
                 accessibilityState={{ checked: payerId === member.id }}
                 hitSlop={4}
                 key={member.id}
-                onPress={() => setPayerId(member.id)}
-                style={[styles.payerOption, payerId === member.id && styles.payerOptionActive]}
+                onPress={() => chooseExpensePayer(member.id)}
+                style={[styles.personOption, payerId === member.id && styles.personOptionActive]}
               >
                 <Avatar color={member.avatarColor} label={member.name} />
                 <Text style={styles.payerName}>{member.name}</Text>
@@ -936,12 +992,71 @@ export function MainScreen() {
               </Pressable>
             ))}
           </View>
+          <View style={styles.sheetSectionHeader}>
+            <View>
+              <Text style={styles.fieldLabel}>Quién participa</Text>
+              <Text style={styles.accountSectionText}>Dividido en partes iguales.</Text>
+            </View>
+            <Pill label={`${participantIds.length}/${selectedMembers.length}`} tone="neutral" />
+          </View>
+          <View style={styles.peopleGrid}>
+            {selectedMembers.map((member) => {
+              const selected = participantIds.includes(member.id);
+              const share = participantShares.find((item) => item.memberId === member.id);
+              return (
+                <Pressable
+                  accessibilityHint="Incluye o quita a este integrante del gasto."
+                  accessibilityLabel={`${selected ? "Incluido" : "No incluido"} ${member.name}${
+                    payerId === member.id ? ", pagó el gasto" : ""
+                  }`}
+                  accessibilityRole="checkbox"
+                  accessibilityState={{ checked: selected, disabled: payerId === member.id }}
+                  hitSlop={4}
+                  key={member.id}
+                  onPress={() => toggleExpenseParticipant(member.id)}
+                  style={[styles.participantOption, selected && styles.personOptionActive]}
+                >
+                  <Avatar color={member.avatarColor} label={member.name} />
+                  <View style={styles.participantCopy}>
+                    <Text style={styles.payerName}>{member.name}</Text>
+                    <Text style={styles.participantShare}>
+                      {payerId === member.id
+                        ? "Pagó · participa"
+                        : selected && share
+                          ? formatMoney(share.amountCents)
+                          : "No participa"}
+                    </Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    color={selected ? colors.primary : colors.mutedInk}
+                    name={selected ? "check-circle" : "circle-outline"}
+                    size={18}
+                  />
+                </Pressable>
+              );
+            })}
+          </View>
+          <View style={styles.splitPreview}>
+            <View style={styles.splitPreviewIcon}>
+              <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
+            </View>
+            <View style={styles.splitPreviewCopy}>
+              <Text style={styles.splitPreviewTitle}>Resumen de división</Text>
+              <Text style={styles.splitPreviewText}>
+                {participantShares.length
+                  ? `${participantShares.length} participan · ${formatMoney(expenseAmountCents ?? 0)} dividido en MXN`
+                  : "Elige participantes y monto para ver cuánto toca."}
+              </Text>
+            </View>
+          </View>
           <ActionButton
             disabled={
               selectedMembers.length === 0 ||
               !expenseTitle.trim() ||
               !expenseAmount.trim() ||
-              !payerId
+              !payerId ||
+              participantIds.length === 0 ||
+              !participantIds.includes(payerId)
             }
             icon="receipt-text-plus"
             label="Guardar gasto"
@@ -1621,6 +1736,33 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontWeight: "500",
   },
+  expenseIdentityBand: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceStrong,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 58,
+    padding: spacing.sm,
+  },
+  expenseIdentityCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  expenseIdentityLabel: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "800",
+  },
+  expenseIdentityMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "500",
+    lineHeight: 15,
+  },
   eyebrow: {
     color: colors.mutedInk,
     fontSize: typography.small,
@@ -2143,6 +2285,54 @@ const styles = StyleSheet.create({
   payerOptions: {
     gap: spacing.sm,
   },
+  participantCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  participantOption: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexBasis: "48%",
+    flexGrow: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 58,
+    minWidth: 148,
+    padding: spacing.sm,
+  },
+  participantShare: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "600",
+  },
+  peopleGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  personOption: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexBasis: "48%",
+    flexGrow: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 50,
+    minWidth: 148,
+    padding: spacing.sm,
+  },
+  personOptionActive: {
+    backgroundColor: colors.surfaceTinted,
+    borderColor: colors.primary,
+    borderWidth: 2,
+  },
   sheet: {
     backgroundColor: colors.surface,
     borderTopLeftRadius: radius.md,
@@ -2170,6 +2360,12 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     justifyContent: "space-between",
   },
+  sheetSectionHeader: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+  },
   sheetSubtitle: {
     color: colors.mutedInk,
     fontSize: typography.small,
@@ -2180,6 +2376,57 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: typography.heading,
     fontWeight: "700",
+  },
+  sheetTrustChip: {
+    alignItems: "center",
+    backgroundColor: colors.warmWash,
+    borderRadius: radius.sm,
+    flexDirection: "row",
+    flexShrink: 0,
+    gap: spacing.xs,
+    minHeight: 30,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  sheetTrustText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "700",
+  },
+  splitPreview: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceTinted,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 58,
+    padding: spacing.md,
+  },
+  splitPreviewCopy: {
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
+  },
+  splitPreviewIcon: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderRadius: 17,
+    height: 34,
+    justifyContent: "center",
+    width: 34,
+  },
+  splitPreviewText: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "500",
+    lineHeight: 18,
+  },
+  splitPreviewTitle: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "800",
   },
   title: {
     color: colors.ink,
