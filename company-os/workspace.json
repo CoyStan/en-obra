@@ -1231,7 +1231,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Make the first-viewport personal balance card less oversized, show cents, and place the amount on the right where horizontal space is available.",
       "acceptance_target": "The personal balance block feels calmer and more finance-native, with decimal cents visible and no oversized centered amount.",
       "required_approval_capability": "design",
@@ -1555,12 +1555,15 @@
       "id": "ATTEMPT-APP-0014",
       "work_item_id": "WORK-APP-0014",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started hero balance layout correction from founder screenshot feedback."
+      "result": "Implemented and verified hero balance layout refinement in commit 35a84a4852c4ee495d1c8a6c815fa53ace0bff92.",
+      "commits": [
+        "35a84a4852c4ee495d1c8a6c815fa53ace0bff92"
+      ]
     }
   ],
   "evidence_runs": [
@@ -1917,6 +1920,29 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, web export, Company OS validate/scope, and Chromium/CDP dropdown screenshots passed.",
       "timestamp": "2026-06-20T19:56:50Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0014",
+        "Chromium screenshots 360x740 390x844"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0014/technical-report.md",
+        "reports/evidence/WORK-APP-0014/screenshots/balance-360x740.png",
+        "reports/evidence/WORK-APP-0014/screenshots/balance-390x844.png"
+      ],
+      "id": "EVIDENCE-APP-0014",
+      "work_item_id": "WORK-APP-0014",
+      "attempt_id": "ATTEMPT-APP-0014",
+      "head_sha": "35a84a4852c4ee495d1c8a6c815fa53ace0bff92",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, web export, Company OS validate/scope, and Chromium screenshots passed for hero balance refinement.",
+      "timestamp": "2026-06-20T20:03:34Z"
     }
   ],
   "review_verdicts": [
@@ -2169,6 +2195,14 @@
       "reviewer": "PALARI-DESIGN",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T19:56:50Z"
+    },
+    {
+      "id": "REVIEW-APP-0014",
+      "work_item_id": "WORK-APP-0014",
+      "reviewed_head": "35a84a4852c4ee495d1c8a6c815fa53ace0bff92",
+      "reviewer": "PALARI-DESIGN",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T20:03:34Z"
     }
   ],
   "human_decisions": [],
@@ -2710,6 +2744,40 @@
       "attempt_id": "ATTEMPT-APP-0013",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T19:56:50Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0014",
+        "restored hero decimals",
+        "split MXN label from amount",
+        "right aligned amount",
+        "reduced card visual weight",
+        "ran verification",
+        "captured screenshots"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0014"
+      ],
+      "not_done": [
+        "native Android emulator QA",
+        "real payments",
+        "production backend",
+        "secrets",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0014",
+      "work_item_id": "WORK-APP-0014",
+      "attempt_id": "ATTEMPT-APP-0014",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-20T20:03:34Z"
     }
   ],
   "decisions": [
@@ -3032,6 +3100,15 @@
       "what_happened": "The add-expense sheet now uses compact animated dropdown list menus for category, payer, and participants, with 14 categories and corrected participant labels.",
       "what_changed": "The broken card-grid layout no longer overwhelms narrow Android widths, and the form reads more like a polished native finance input flow.",
       "timestamp": "2026-06-20T19:56:50Z"
+    },
+    {
+      "id": "OUTCOME-APP-0014",
+      "work_item_id": "WORK-APP-0014",
+      "summary": "Hero balance amount is calmer and precise.",
+      "status": "captured",
+      "what_happened": "The first-viewport balance card now shows cents, places the numeric amount on the right, and uses a smaller card and type scale.",
+      "what_changed": "The balance module feels less oversized and more finance-native while remaining readable at 360px Android width.",
+      "timestamp": "2026-06-20T20:03:34Z"
     }
   ]
 }
