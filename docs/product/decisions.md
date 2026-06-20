@@ -398,3 +398,16 @@ Rationale: Shared-expense apps need exact money values, but oversized hero
 money makes the app feel less professional and can truncate on narrow Android
 screens. A compact right-aligned number preserves precision and trust while
 leaving the left side for the user's balance state.
+
+### Use Responsive Density For Finance UI
+
+Decision: High-risk finance UI should adapt by screen and container width rather
+than relying on one fixed size for every phone. Use compact, regular, and roomy
+density modes for spacing, and measured container width for sensitive money
+amounts.
+
+Rationale: Android devices vary enough that single fixed sizes repeatedly cause
+either truncation on narrow screens or unnecessary smallness on larger screens.
+Responsive density keeps normal text stable while letting money amounts,
+selector triggers, nav labels, and hero spacing tighten or breathe based on the
+space they actually have.

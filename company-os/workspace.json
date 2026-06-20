@@ -1237,6 +1237,49 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0014"
+    },
+    {
+      "allowed_resources": [
+        "company-os",
+        "src",
+        "docs/product",
+        "reports/evidence"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "remove_core_content"
+      ],
+      "id": "WORK-APP-0015",
+      "title": "Responsive density for finance components",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "active",
+      "scope": "Add screen/container-aware responsive density for high-risk finance UI elements so narrow and larger Android widths need fewer one-off visual fixes; start with hero balance, spacing density, selector triggers, and bottom navigation labels.",
+      "acceptance_target": "The app adapts key finance components across narrow and larger phone widths without relying on one fixed font size everywhere.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0015"
     }
   ],
   "attempts": [
@@ -1564,6 +1607,17 @@
       "commits": [
         "35a84a4852c4ee495d1c8a6c815fa53ace0bff92"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0015",
+      "work_item_id": "WORK-APP-0015",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started responsive density pass from founder feedback about avoiding fixed sizes across phones."
     }
   ],
   "evidence_runs": [

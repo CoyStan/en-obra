@@ -13,6 +13,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  useWindowDimensions,
   View,
 } from "react-native";
 import {
@@ -104,6 +105,20 @@ function formatActivityDate(value: string) {
 
 function formatHeroMoney(cents: number) {
   return heroMoneyFormatter.format(cents / 100);
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function densityForWidth(width: number) {
+  if (width < 380) {
+    return "compact" as const;
+  }
+  if (width >= 420) {
+    return "roomy" as const;
+  }
+  return "regular" as const;
 }
 
 function categoryFor(id?: string) {
@@ -388,6 +403,9 @@ function SelectTrigger({
   open: boolean;
   value: string;
 }) {
+  const { width } = useWindowDimensions();
+  const density = densityForWidth(width);
+  const compact = density === "compact";
   return (
     <Pressable
       accessibilityLabel={`${label}: ${value}`}
@@ -395,12 +413,17 @@ function SelectTrigger({
       accessibilityState={{ expanded: open }}
       hitSlop={4}
       onPress={onPress}
-      style={({ pressed }) => [styles.selectTrigger, open && styles.selectTriggerOpen, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.selectTrigger,
+        compact && styles.selectTriggerCompact,
+        open && styles.selectTriggerOpen,
+        pressed && styles.pressed,
+      ]}
     >
       {icon ? <View style={styles.selectTriggerIcon}>{icon}</View> : null}
       <View style={styles.selectTriggerCopy}>
-        <Text style={styles.selectTriggerLabel}>{label}</Text>
-        <Text numberOfLines={1} style={styles.selectTriggerValue}>{value}</Text>
+        <Text style={[styles.selectTriggerLabel, compact && styles.selectTriggerLabelCompact]}>{label}</Text>
+        <Text numberOfLines={1} style={[styles.selectTriggerValue, compact && styles.selectTriggerValueCompact]}>{value}</Text>
         {meta ? <Text numberOfLines={1} style={styles.selectTriggerMeta}>{meta}</Text> : null}
       </View>
       <MaterialCommunityIcons
@@ -658,6 +681,7 @@ function QuickActionTile({
 }
 
 export function MainScreen() {
+  const { width: viewportWidth } = useWindowDimensions();
   const {
     account,
     accountError,
@@ -706,7 +730,11 @@ export function MainScreen() {
   const [dataControlTone, setDataControlTone] = useState<"success" | "error">("success");
   const [pendingSettlement, setPendingSettlement] = useState<SettlementSuggestion | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [balancePanelWidth, setBalancePanelWidth] = useState(0);
   const moneyFlowProgress = useRef(new Animated.Value(0)).current;
+  const density = densityForWidth(viewportWidth);
+  const compact = density === "compact";
+  const roomy = density === "roomy";
 
   const selectedMembers = useMemo(
     () => (selectedGroup ? getGroupMembers(data, selectedGroup.id) : []),
@@ -737,6 +765,19 @@ export function MainScreen() {
     [displayMemberId, selectedSummary?.balances],
   );
   const personalBalanceState = personalBalanceLabel(personalBalance);
+  const heroAmountText = formatHeroMoney(personalBalanceState.amountCents);
+  const measuredAmountArea = balancePanelWidth
+    ? balancePanelWidth - (compact ? 154 : roomy ? 164 : 152)
+    : compact
+      ? 132
+      : roomy
+        ? 210
+        : 178;
+  const heroAmountFontSize = clamp(
+    Math.floor(measuredAmountArea / Math.max(heroAmountText.length * 0.9, 1)),
+    compact ? 18 : 20,
+    roomy ? 28 : 25,
+  );
   const personalSettlement = useMemo(
     () =>
       selectedSummary?.settlements.find(
@@ -1755,9 +1796,15 @@ export function MainScreen() {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={styles.keyboard}
       >
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.content,
+            compact && styles.contentCompact,
+            roomy && styles.contentRoomy,
+          ]}
+        >
           <View style={styles.appBar}>
-            <Text style={styles.appTitle}>Cuentas Claras</Text>
+            <Text style={[styles.appTitle, compact && styles.appTitleCompact]}>Cuentas Claras</Text>
             <View style={styles.appActions}>
               <Pressable
                 accessibilityLabel="Ver actividad"
@@ -1805,7 +1852,7 @@ export function MainScreen() {
           ) : null}
 
           {selectedGroup && selectedSummary ? (
-            <View style={styles.heroCard}>
+            <View style={[styles.heroCard, compact && styles.heroCardCompact, roomy && styles.heroCardRoomy]}>
               <View style={styles.heroTop}>
                 <Pressable
                   accessibilityHint="Abre perfil o cambia tu integrante del grupo."
@@ -1837,7 +1884,13 @@ export function MainScreen() {
                 <AvatarStack members={selectedMembers} limit={3} />
               </View>
 
-              <View style={styles.myBalancePanel}>
+              <View
+                onLayout={(event) => {
+                  const nextWidth = Math.round(event.nativeEvent.layout.width);
+                  setBalancePanelWidth((current) => (current === nextWidth ? current : nextWidth));
+                }}
+                style={[styles.myBalancePanel, compact && styles.myBalancePanelCompact, roomy && styles.myBalancePanelRoomy]}
+              >
                 <View style={styles.myBalanceIcon}>
                   <MaterialCommunityIcons
                     color={personalBalanceState.tone === "due" ? colors.terracotta : colors.primaryDark}
@@ -1854,11 +1907,14 @@ export function MainScreen() {
                 <View style={styles.myBalanceAmountWrap}>
                   <Text style={styles.myBalanceCurrency}>MXN</Text>
                   <Text
-                    adjustsFontSizeToFit
                     numberOfLines={1}
-                    style={[styles.myBalanceAmount, personalBalanceState.tone === "due" && styles.myBalanceAmountDue]}
+                    style={[
+                      styles.myBalanceAmount,
+                      { fontSize: heroAmountFontSize, lineHeight: Math.ceil(heroAmountFontSize * 1.18) },
+                      personalBalanceState.tone === "due" && styles.myBalanceAmountDue,
+                    ]}
                   >
-                    {formatHeroMoney(personalBalanceState.amountCents)}
+                    {heroAmountText}
                   </Text>
                 </View>
               </View>
@@ -1940,7 +1996,7 @@ export function MainScreen() {
                   name={tab.icon}
                   size={20}
                 />
-                <Text style={[styles.navLabel, active && styles.navLabelActive]}>{tab.label}</Text>
+                <Text style={[styles.navLabel, compact && styles.navLabelCompact, active && styles.navLabelActive]}>{tab.label}</Text>
               </Pressable>
             );
           })}
@@ -2049,6 +2105,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     lineHeight: 31,
   },
+  appTitleCompact: {
+    fontSize: 23,
+    lineHeight: 29,
+  },
   amountFirstCopy: {
     flex: 1,
     gap: spacing.xs,
@@ -2151,6 +2211,14 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     gap: spacing.sm,
     padding: spacing.md,
+  },
+  heroCardCompact: {
+    gap: spacing.xs,
+    padding: spacing.sm,
+  },
+  heroCardRoomy: {
+    gap: spacing.md,
+    padding: spacing.lg,
   },
   heroCue: {
     alignItems: "center",
@@ -2359,6 +2427,14 @@ const styles = StyleSheet.create({
     minHeight: 68,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+  },
+  myBalancePanelCompact: {
+    gap: spacing.xs,
+    paddingHorizontal: spacing.sm,
+  },
+  myBalancePanelRoomy: {
+    minHeight: 76,
+    paddingHorizontal: spacing.lg,
   },
   myBalanceState: {
     color: colors.primaryDark,
@@ -2575,6 +2651,15 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     padding: spacing.md,
     paddingBottom: spacing.xxl,
+  },
+  contentCompact: {
+    gap: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    paddingTop: spacing.sm,
+  },
+  contentRoomy: {
+    gap: spacing.md,
+    paddingHorizontal: spacing.lg,
   },
   categoryChip: {
     alignItems: "center",
@@ -3047,6 +3132,9 @@ const styles = StyleSheet.create({
     fontSize: typography.micro,
     fontWeight: "500",
   },
+  navLabelCompact: {
+    fontSize: 11,
+  },
   navLabelActive: {
     color: colors.primaryDark,
     fontWeight: "700",
@@ -3229,6 +3317,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
+  selectTriggerCompact: {
+    minHeight: 52,
+    paddingHorizontal: spacing.sm,
+  },
   selectTriggerCopy: {
     flex: 1,
     gap: 1,
@@ -3242,6 +3334,10 @@ const styles = StyleSheet.create({
     fontSize: typography.micro,
     fontWeight: "700",
     lineHeight: 15,
+  },
+  selectTriggerLabelCompact: {
+    fontSize: 11,
+    lineHeight: 14,
   },
   selectTriggerMeta: {
     color: colors.mutedInk,
@@ -3258,6 +3354,10 @@ const styles = StyleSheet.create({
     fontSize: typography.body,
     fontWeight: "800",
     lineHeight: 19,
+  },
+  selectTriggerValueCompact: {
+    fontSize: typography.small,
+    lineHeight: 17,
   },
   settlementCard: {
     backgroundColor: "transparent",
