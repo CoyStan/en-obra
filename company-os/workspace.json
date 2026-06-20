@@ -1616,6 +1616,39 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "id": "WORK-APP-0026",
+      "title": "Backend release readiness audit",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add a backend release-readiness audit that evaluates provider-neutral backend capabilities and explicitly lists remaining human/external blockers before Play Store internal testing. Preserve local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "The repo can produce a tested backend readiness report covering SQL, mutations, repository, integrity, export, deletion, sync, and remaining provider/access blockers.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -2096,6 +2129,20 @@
       "result": "Implemented and verified SQL migration planner in commit ff1ea07d1d16d7aff030357d7aa4138c2ed6215d.",
       "commits": [
         "ff1ea07d1d16d7aff030357d7aa4138c2ed6215d"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0026",
+      "work_item_id": "WORK-APP-0026",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified backend release readiness audit in commit b008e5570e25ed52a30be8b52234ecf8e377765b.",
+      "commits": [
+        "b008e5570e25ed52a30be8b52234ecf8e377765b"
       ]
     }
   ],
@@ -2728,6 +2775,28 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for SQL migration planner.",
       "timestamp": "2026-06-20T21:34:41Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0026"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0026/technical-report.md",
+        "src/backend/releaseReadiness.ts",
+        "src/__tests__/releaseReadiness.test.ts",
+        "docs/backend/release-readiness-audit.md"
+      ],
+      "id": "EVIDENCE-APP-0026",
+      "work_item_id": "WORK-APP-0026",
+      "attempt_id": "ATTEMPT-APP-0026",
+      "head_sha": "b008e5570e25ed52a30be8b52234ecf8e377765b",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for backend release readiness audit.",
+      "timestamp": "2026-06-20T21:37:10Z"
     }
   ],
   "review_verdicts": [
@@ -3076,6 +3145,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:34:41Z"
+    },
+    {
+      "id": "REVIEW-APP-0026",
+      "work_item_id": "WORK-APP-0026",
+      "reviewed_head": "b008e5570e25ed52a30be8b52234ecf8e377765b",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:37:10Z"
     }
   ],
   "human_decisions": [],
@@ -4015,6 +4092,39 @@
       "attempt_id": "ATTEMPT-APP-0025",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:34:41Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0026",
+        "added backend readiness audit",
+        "added readiness tests",
+        "documented blockers",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/releaseReadiness.ts",
+        "src/__tests__/releaseReadiness.test.ts",
+        "docs/backend/release-readiness-audit.md",
+        "reports/evidence/WORK-APP-0026"
+      ],
+      "not_done": [
+        "production auth provider",
+        "production storage provider",
+        "remote deletion endpoint",
+        "legal security approval",
+        "Play upload",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0026",
+      "work_item_id": "WORK-APP-0026",
+      "attempt_id": "ATTEMPT-APP-0026",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:37:10Z"
     }
   ],
   "decisions": [
@@ -4445,6 +4555,15 @@
       "what_happened": "Added migration planning for current, missing, unsupported, and future schema states.",
       "what_changed": "Future backend/storage schema changes now have a tested path for version detection and controlled failure instead of silent guessing.",
       "timestamp": "2026-06-20T21:34:41Z"
+    },
+    {
+      "id": "OUTCOME-APP-0026",
+      "work_item_id": "WORK-APP-0026",
+      "summary": "Backend readiness is now auditable in code and docs.",
+      "status": "captured",
+      "what_happened": "Added a readiness report covering SQL, seed, integrity, mutations, repository, outbox, export, migrations, and remaining blockers.",
+      "what_changed": "The app can distinguish local/provider-neutral backend readiness from external access, storage, deletion, and legal blockers before Play internal testing.",
+      "timestamp": "2026-06-20T21:37:10Z"
     }
   ]
 }
