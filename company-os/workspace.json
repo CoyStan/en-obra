@@ -2135,6 +2135,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0046"
+    },
+    {
+      "id": "WORK-APP-0047",
+      "title": "Release secret and config safety scan",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend/secretSafetyScan.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/secretSafetyScan.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0047/**, company-os/workspace.json. Add provider-neutral release safety scanning for accidental secrets or production credentials in release-facing config and docs. Forbidden: adding secrets, choosing providers, production deployment, destructive cleanup, app UI feature work.",
+      "acceptance_target": "Backend release readiness includes a tested secret/config safety scan that passes for the current local-first build, fails on representative API keys/payment keys/Play credentials/backend URLs, and is included in release gate/preflight/support evidence.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0047"
     }
   ],
   "attempts": [
@@ -2921,6 +2935,17 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:36:48Z",
+      "cleanliness": "clean"
+    },
+    {
+      "id": "ATTEMPT-APP-0047",
+      "work_item_id": "WORK-APP-0047",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:41:56Z",
       "cleanliness": "clean"
     }
   ],
@@ -3976,6 +4001,16 @@
       "summary": "Added provider-neutral retention and backup readiness model. npm run release:android:check passed: typecheck, 32 test files / 129 tests, backend release gate, and Expo public config.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T23:41:11Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0047",
+      "work_item_id": "WORK-APP-0047",
+      "attempt_id": "ATTEMPT-APP-0047",
+      "head_sha": "068f4bc90edf07eea4e1d812f74c6b4e78fe0fc4",
+      "status": "passed",
+      "summary": "Added release secret/config safety scan. npm run release:android:check passed: typecheck, 33 test files / 132 tests, backend release gate, and Expo public config.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T23:46:10Z"
     }
   ],
   "review_verdicts": [
@@ -4492,6 +4527,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:41:11Z"
+    },
+    {
+      "id": "REVIEW-APP-0047",
+      "work_item_id": "WORK-APP-0047",
+      "reviewed_head": "068f4bc90edf07eea4e1d812f74c6b4e78fe0fc4",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:46:10Z"
     }
   ],
   "human_decisions": [],
@@ -6154,6 +6197,13 @@
       "attempt_id": "ATTEMPT-APP-0046",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:41:11Z"
+    },
+    {
+      "id": "RECEIPT-APP-0047",
+      "work_item_id": "WORK-APP-0047",
+      "attempt_id": "ATTEMPT-APP-0047",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:46:10Z"
     }
   ],
   "decisions": [
@@ -6773,6 +6823,15 @@
       "what_happened": "Added retentionReadiness module, tests, release gate/preflight/support bundle integration, regenerated artifacts, and updated docs.",
       "what_changed": "Local internal testing remains ready; production retention, backup, restore, public deletion URL, remote deletion fulfillment, and legal approval remain explicit blockers.",
       "timestamp": "2026-06-20T23:41:11Z"
+    },
+    {
+      "id": "OUTCOME-APP-0047",
+      "work_item_id": "WORK-APP-0047",
+      "summary": "Release-facing config now has a tested secret safety guard.",
+      "status": "completed",
+      "what_happened": "Added secretSafetyScan module, tests, backend release gate/preflight/support bundle integration, regenerated artifacts, and updated docs.",
+      "what_changed": "The release gate now requires evidence that app/package/EAS-facing config has no committed API keys, payment keys, Play service-account credentials, private keys, or production backend endpoints.",
+      "timestamp": "2026-06-20T23:46:10Z"
     }
   ]
 }
