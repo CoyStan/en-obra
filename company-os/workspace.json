@@ -1280,6 +1280,42 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0015"
+    },
+    {
+      "id": "WORK-APP-0016",
+      "title": "Rebalance member balance rows",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs/product, reports/evidence, company-os. Improve Balances por integrante row composition so identity, status, explanation, and amount use space evenly across Android widths without removing content. Forbidden: real payments, production backend, secrets, paid services, removing core content.",
+      "acceptance_target": "Member balance rows feel balanced: amount is aligned in a reserved right column, the left copy has room to breathe, and rows remain readable at 360, 390, and 412px widths.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "remove_core_content"
+      ]
     }
   ],
   "attempts": [
@@ -1620,6 +1656,20 @@
       "result": "Implemented and verified responsive finance density in commit 984cc4926d100737142eb6d079901adda0acd17e.",
       "commits": [
         "984cc4926d100737142eb6d079901adda0acd17e"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0016",
+      "work_item_id": "WORK-APP-0016",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified member balance row composition in commit 129ba62b1d0ded68dacfaef3a77cb521e84b6c09.",
+      "commits": [
+        "129ba62b1d0ded68dacfaef3a77cb521e84b6c09"
       ]
     }
   ],
@@ -2024,6 +2074,30 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, web export, Company OS validate/scope, and Chromium screenshots passed for responsive density.",
       "timestamp": "2026-06-20T20:11:03Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0016",
+        "Chromium CDP screenshots 360x740 390x844 412x915"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0016/technical-report.md",
+        "reports/evidence/WORK-APP-0016/screenshots/balances-360x740.png",
+        "reports/evidence/WORK-APP-0016/screenshots/balances-390x844.png",
+        "reports/evidence/WORK-APP-0016/screenshots/balances-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0016",
+      "work_item_id": "WORK-APP-0016",
+      "attempt_id": "ATTEMPT-APP-0016",
+      "head_sha": "129ba62b1d0ded68dacfaef3a77cb521e84b6c09",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, web export, Company OS validate/scope, and Chromium screenshots passed for member balance row composition.",
+      "timestamp": "2026-06-20T20:18:14Z"
     }
   ],
   "review_verdicts": [
@@ -2292,6 +2366,14 @@
       "reviewer": "PALARI-DESIGN",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T20:11:03Z"
+    },
+    {
+      "id": "REVIEW-APP-0016",
+      "work_item_id": "WORK-APP-0016",
+      "reviewed_head": "129ba62b1d0ded68dacfaef3a77cb521e84b6c09",
+      "reviewer": "PALARI-DESIGN",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T20:18:14Z"
     }
   ],
   "human_decisions": [],
@@ -2901,6 +2983,39 @@
       "attempt_id": "ATTEMPT-APP-0015",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T20:11:03Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0016",
+        "rebalanced member balance rows",
+        "added right-side money rail",
+        "kept detailed balance copy",
+        "ran verification",
+        "captured screenshots"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0016"
+      ],
+      "not_done": [
+        "native Android emulator QA",
+        "real payments",
+        "production backend",
+        "secrets",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0016",
+      "work_item_id": "WORK-APP-0016",
+      "attempt_id": "ATTEMPT-APP-0016",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-20T20:18:42Z"
     }
   ],
   "decisions": [
@@ -3241,6 +3356,15 @@
       "what_happened": "Added compact, regular, and roomy density modes plus measured hero balance amount sizing.",
       "what_changed": "The app no longer depends on one fixed money/font size for every phone; key finance components tighten on narrow widths and breathe on larger widths.",
       "timestamp": "2026-06-20T20:11:03Z"
+    },
+    {
+      "id": "OUTCOME-APP-0016",
+      "work_item_id": "WORK-APP-0016",
+      "summary": "Member balance rows now use space more evenly.",
+      "status": "captured",
+      "what_happened": "Added a flexible identity/detail zone and stable right-side money rail for each member balance card.",
+      "what_changed": "Balances por integrante is easier to scan, with aligned MXN amounts and less left-side crowding across Android-width screens.",
+      "timestamp": "2026-06-20T20:18:42Z"
     }
   ]
 }
