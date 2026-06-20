@@ -1144,7 +1144,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Recycle the useful toy-app interaction patterns into Cuentas Claras: restrained group identity icons, avatar stacks, category chips, amount-first add-expense flow, settlement route visuals, date-sectioned activity, and richer empty states while preserving the premium local-only no-real-payments model.",
       "acceptance_target": "Cuentas Claras feels more visual, easier to understand, and closer to a premium Android shared-expense app without becoming toy-like.",
       "required_approval_capability": "design",
@@ -1753,6 +1753,30 @@
       "base_ref": "main",
       "summary": "Visual comprehension motion checks passed: typecheck, 25 tests, Expo config, web export, Company OS validate/scope, Android-size screenshots, reduced-motion handling, and GLM 5.2 final review accept-ready.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0012",
+        "chromium screenshots 360x740 390x844 412x915"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0012/technical-report.md",
+        "reports/evidence/WORK-APP-0012/screenshots/balance-360x740.png",
+        "reports/evidence/WORK-APP-0012/screenshots/balance-390x844.png",
+        "reports/evidence/WORK-APP-0012/screenshots/balance-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0012",
+      "work_item_id": "WORK-APP-0012",
+      "attempt_id": "ATTEMPT-APP-0012",
+      "head_sha": "645d903e12fd51069d2e3f6680f788c1d7f07b11",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, web export, Company OS validate/scope, and Chromium mobile screenshots passed for object-led interaction pass.",
+      "timestamp": "2026-06-20T19:45:36Z"
     }
   ],
   "review_verdicts": [
@@ -1989,6 +2013,14 @@
       "reviewed_head": "2d822e2",
       "reviewer": "GLM-5.2-code-review",
       "verdict": "accept-ready"
+    },
+    {
+      "id": "REVIEW-APP-0012",
+      "work_item_id": "WORK-APP-0012",
+      "reviewed_head": "645d903e12fd51069d2e3f6680f788c1d7f07b11",
+      "reviewer": "PALARI-DESIGN",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T19:46:07Z"
     }
   ],
   "human_decisions": [],
@@ -2451,6 +2483,49 @@
       "work_item_id": "WORK-APP-0011",
       "attempt_id": "ATTEMPT-APP-0011",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-PRD"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0012",
+        "reviewed toy app patterns",
+        "added group objects",
+        "added avatar stacks",
+        "added category chips",
+        "reworked add expense flow",
+        "updated settlement routes",
+        "grouped activity by date",
+        "ran verification",
+        "captured screenshots"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "src/domain/types.ts",
+        "src/domain/balances.ts",
+        "src/state/useAppData.ts",
+        "src/data/demoData.ts",
+        "src/__tests__/balances.test.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0012"
+      ],
+      "not_done": [
+        "real payments",
+        "production backend",
+        "secrets",
+        "native Android emulator QA",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0012",
+      "work_item_id": "WORK-APP-0012",
+      "attempt_id": "ATTEMPT-APP-0012",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-20T19:46:07Z"
     }
   ],
   "decisions": [
@@ -2755,6 +2830,15 @@
       "status": "captured",
       "what_happened": "The balance home now includes an animated/local money-flow figure between payer and receiver, a calm todo-en-paz visual, reduced-motion support, and activity marker dots.",
       "what_changed": "The app is less text-only and easier to understand visually while keeping no-real-payments and local-record boundaries explicit."
+    },
+    {
+      "id": "OUTCOME-APP-0012",
+      "work_item_id": "WORK-APP-0012",
+      "summary": "Object-led interaction pass improves visual comprehension.",
+      "status": "captured",
+      "what_happened": "The app now uses group identity objects, avatar stacks, category chips, category-aware activity, amount-first add-expense flow, clearer settlement routes, and date-sectioned history.",
+      "what_changed": "Cuentas Claras is less text-only and closer to a premium Android shared-expense app while preserving integer cents, SQL-ready local data, MXN, and Sin pagos reales boundaries.",
+      "timestamp": "2026-06-20T19:46:07Z"
     }
   ]
 }
