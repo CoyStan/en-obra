@@ -41,6 +41,14 @@ The seed uses the realistic Mexico/LATAM demo groups already present in the
 app. It includes users, group memberships, expense participants, activity
 events, and an empty `sync_outbox` ready for future backend operations.
 
+Committed backend handoff artifacts:
+
+- `docs/backend/schema-v1.sql`
+- `docs/backend/seed-demo-v1.sql`
+
+`src/__tests__/sqlArtifacts.test.ts` verifies both files match the TypeScript
+schema/seed generator exactly.
+
 ## Replacement Path
 
 When access/storage is selected, implement a concrete repository/adapter that:
