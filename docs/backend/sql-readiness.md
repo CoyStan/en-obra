@@ -321,6 +321,10 @@ location, advertising, device contacts, and payments. It is technical evidence
 only; final Play Console answers, privacy URL, and legal approval remain human
 blockers.
 
+`src/backend/releasePrivacyScan.ts` backs the inventory by scanning
+`package.json` and `app.json` for ads, analytics, payment, location/contact SDK
+signals, and Android permissions.
+
 ## Backend Play Preflight
 
 `src/backend/playPreflight.ts` aggregates backend readiness into one

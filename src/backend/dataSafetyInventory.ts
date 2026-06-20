@@ -93,7 +93,7 @@ export function createDataSafetyInventory(): DataSafetyInventory {
       handling: "not-collected",
       sharedWithThirdParties: false,
       userVisible: false,
-      evidence: ["app.json", "docs/production/play-readiness.md"],
+      evidence: ["app.json", "src/backend/releasePrivacyScan.ts", "docs/production/play-readiness.md"],
       note: "No location permission or location SDK is configured.",
     },
     {
@@ -102,7 +102,7 @@ export function createDataSafetyInventory(): DataSafetyInventory {
       handling: "not-collected",
       sharedWithThirdParties: false,
       userVisible: false,
-      evidence: ["package.json", "docs/production/play-readiness.md"],
+      evidence: ["package.json", "src/backend/releasePrivacyScan.ts", "docs/production/play-readiness.md"],
       note: "No ads or analytics SDK is configured.",
     },
   ];

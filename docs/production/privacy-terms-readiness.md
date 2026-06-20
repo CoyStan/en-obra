@@ -43,6 +43,9 @@ docs should describe these as local device data, not server-collected data.
 
 `src/backend/dataSafetyInventory.ts` captures the technical inventory for the
 current build. It is evidence for review, not a final legal submission.
+`src/backend/releasePrivacyScan.ts` verifies the current package/app config has
+no ads, analytics, payment, location/contact SDK signals, and no Android
+permissions.
 
 This needs human confirmation before submission:
 

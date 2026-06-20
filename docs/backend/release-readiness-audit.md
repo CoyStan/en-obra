@@ -25,6 +25,7 @@ deployment approval.
 - Provider-neutral account access readiness contract:
   `src/backend/accessReadiness.ts`
 - Technical Data Safety inventory: `src/backend/dataSafetyInventory.ts`
+- Release privacy/dependency scan: `src/backend/releasePrivacyScan.ts`
 - Backend Play preflight report: `src/backend/playPreflight.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
@@ -70,6 +71,9 @@ deployment approval.
 - Technical Data Safety inventory showing the current build is local-first,
   has no real payments, no ads/analytics SDK, no backend sharing, and still
   requires human legal/Play Console submission.
+- Release privacy/dependency scan covering `package.json` and `app.json` for
+  ads, analytics, payment, location/contact SDK signals, and Android
+  permissions.
 - Backend Play preflight report that summarizes release gate state, local
   backend readiness, no-real-payment posture, and remaining human/provider
   blockers for internal testing handoff.

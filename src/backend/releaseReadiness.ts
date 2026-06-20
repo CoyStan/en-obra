@@ -134,6 +134,12 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
         "docs/production/privacy-terms-readiness.md",
       ],
     ),
+    item("release-privacy-scan", "Release privacy and dependency scan", "ready", [
+      "src/backend/releasePrivacyScan.ts",
+      "src/__tests__/releasePrivacyScan.test.ts",
+      "package.json",
+      "app.json",
+    ]),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
       "src/__tests__/dataExport.test.ts",
