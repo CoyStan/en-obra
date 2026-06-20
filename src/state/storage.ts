@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { demoData } from "../data/demoData";
+import { normalizeAppData } from "../domain/appDataNormalization";
 import type { AppData } from "../domain/types";
 
 export const APP_DATA_STORAGE_KEY = "cuentas-claras:v1";
@@ -10,7 +11,7 @@ function isAppData(value: unknown): value is AppData {
   }
   const candidate = value as Partial<AppData>;
   return (
-    candidate.version === 1 &&
+    (candidate.version === 1 || candidate.version === 2) &&
     Array.isArray(candidate.groups) &&
     Array.isArray(candidate.members) &&
     Array.isArray(candidate.expenses) &&
@@ -20,7 +21,7 @@ function isAppData(value: unknown): value is AppData {
 }
 
 export function cloneDemoData(): AppData {
-  return JSON.parse(JSON.stringify(demoData)) as AppData;
+  return normalizeAppData(JSON.parse(JSON.stringify(demoData)) as AppData);
 }
 
 export async function loadPersistedData(): Promise<AppData> {
@@ -30,11 +31,11 @@ export async function loadPersistedData(): Promise<AppData> {
   }
 
   const parsed = JSON.parse(raw) as unknown;
-  return isAppData(parsed) ? parsed : cloneDemoData();
+  return isAppData(parsed) ? normalizeAppData(parsed) : cloneDemoData();
 }
 
 export async function persistData(data: AppData) {
-  await AsyncStorage.setItem(APP_DATA_STORAGE_KEY, JSON.stringify(data));
+  await AsyncStorage.setItem(APP_DATA_STORAGE_KEY, JSON.stringify(normalizeAppData(data)));
 }
 
 export async function clearPersistedData() {

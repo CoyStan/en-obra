@@ -263,3 +263,14 @@ managing everyone else's finances. Leading with `Tú eres Ana` and `Tu balance`
 makes the experience personal and easier to understand on 360 px Android
 screens. The hero rounds to whole pesos for scanning, while detailed rows keep
 exact cent values.
+
+### Add SQL-Ready Local Entities Without A Backend
+
+Decision: Evolve local app data to version 2 with `users`, `groupMembers`,
+`expenseParticipants`, `activityEvents`, and `syncOutbox` while still persisting
+one local AsyncStorage document for the MVP.
+
+Rationale: The premium goal needs the app to feel multi-user and later become
+SQLite/backend-ready. Adding SQL-shaped entities now lets balances, payer
+defaults, participant shares, activity, and future sync adapt without introducing
+production auth, backend secrets, or paid services.

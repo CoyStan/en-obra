@@ -25,6 +25,25 @@ function memberName(members: Map<string, Member>, id: string) {
 }
 
 export function getGroupMembers(data: AppData, groupId: string) {
+  const sqlMembers = data.groupMembers?.filter(
+    (item) => item.groupId === groupId && !item.leftAt,
+  );
+  if (sqlMembers?.length) {
+    const usersById = new Map((data.users ?? []).map((user) => [user.id, user]));
+    return sqlMembers.map((member): Member => {
+      const user = usersById.get(member.userId);
+      return {
+        id: member.id,
+        userId: member.userId,
+        name: member.displayNameSnapshot || user?.displayName || "Integrante",
+        avatarColor: user?.avatarColor ?? "#0F766E",
+        role: member.role,
+        joinedAt: member.joinedAt,
+        leftAt: member.leftAt,
+      };
+    });
+  }
+
   const group = data.groups.find((item) => item.id === groupId);
   if (!group) {
     return [];
@@ -46,6 +65,26 @@ export function getGroupSettlements(data: AppData, groupId: string) {
     .sort(byDateDesc);
 }
 
+function expensePayerId(expense: Expense) {
+  return expense.paidByMemberId ?? expense.payerId;
+}
+
+function expenseParticipantShares(data: AppData, expense: Expense) {
+  const persistedShares = data.expenseParticipants?.filter((share) => share.expenseId === expense.id);
+  if (persistedShares?.length) {
+    return persistedShares.map((share) => ({
+      memberId: share.memberId,
+      amountCents: share.shareCents,
+    }));
+  }
+  return splitEqual(expense.amountCents, expense.participantIds);
+}
+
+function expenseParticipantCount(data: AppData, expense: Expense) {
+  const persistedShares = data.expenseParticipants?.filter((share) => share.expenseId === expense.id);
+  return persistedShares?.length || expense.participantIds.length;
+}
+
 export function calculateGroupBalances(data: AppData, groupId: string): MemberBalance[] {
   const members = getGroupMembers(data, groupId);
   const ledger = new Map<string, LedgerEntry>(
@@ -62,13 +101,13 @@ export function calculateGroupBalances(data: AppData, groupId: string): MemberBa
   );
 
   for (const expense of data.expenses.filter((item) => item.groupId === groupId)) {
-    const payer = ledger.get(expense.payerId);
+    const payer = ledger.get(expensePayerId(expense));
     if (payer) {
       payer.paidCents += expense.amountCents;
       payer.netCents += expense.amountCents;
     }
 
-    for (const share of splitEqual(expense.amountCents, expense.participantIds)) {
+    for (const share of expenseParticipantShares(data, expense)) {
       const participant = ledger.get(share.memberId);
       if (participant) {
         participant.owedCents += share.amountCents;
@@ -186,8 +225,8 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
       groupId,
       type: "expense",
       title: expense.title,
-      subtitle: `Pagó ${memberName(members, expense.payerId)} · Dividido entre ${
-        expense.participantIds.length
+      subtitle: `Pagó ${memberName(members, expensePayerId(expense))} · Dividido entre ${
+        expenseParticipantCount(data, expense)
       } integrantes`,
       amountCents: expense.amountCents,
       currency: expense.currency,
@@ -205,7 +244,7 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
     subtitle: "Marcado pagado localmente · Sin pagos reales",
     amountCents: settlement.amountCents,
     currency: settlement.currency,
-    createdAt: settlement.createdAt,
+    createdAt: settlement.recordedAt ?? settlement.createdAt,
   }));
 
   return [...expenses, ...settlements].sort(byDateDesc);

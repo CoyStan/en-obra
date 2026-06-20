@@ -659,18 +659,21 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
-      "scope": "Move the MVP away from one-person bookkeeping toward local users who can join groups and record their own expenses, using replaceable local adapters.",
+      "status": "active",
+      "scope": "Introduce SQL-ready local entities for users, group_members, expense_participants, activity_events, and sync_outbox while preserving the current local-first UI behavior.",
       "allowed_resources": [
+        "company-os",
         "src",
         "docs/product",
         "docs/production/auth-account-model.md",
+        "reports/evidence",
         "package.json"
       ],
       "allowed_sources": [
         "SOURCE-PRD",
         "SOURCE-ARCHITECTURE",
-        "SOURCE-DECISIONS"
+        "SOURCE-DECISIONS",
+        "SOURCE-PREMIUM-VISUAL-GOAL"
       ],
       "allowed_actions": [
         "local_write",
@@ -678,7 +681,10 @@
       ],
       "output_targets": [
         "src",
-        "docs/product"
+        "docs/product",
+        "docs/production/auth-account-model.md",
+        "reports/evidence",
+        "company-os/workspace.json"
       ],
       "forbidden_actions": [
         "add production auth secrets",
@@ -691,7 +697,8 @@
         "manual mobile verification"
       ],
       "required_approval_count": 1,
-      "required_approval_capability": "product"
+      "required_approval_capability": "product",
+      "current_attempt": "ATTEMPT-APP-0002"
     },
     {
       "id": "WORK-APP-0003",
@@ -787,6 +794,18 @@
         "docs/product/decisions.md",
         "reports/evidence/WORK-APP-0001"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0002",
+      "work_item_id": "WORK-APP-0002",
+      "actor": "PALARI-ENGINEERING",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "main clean after WORK-APP-0001 review handoff",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [

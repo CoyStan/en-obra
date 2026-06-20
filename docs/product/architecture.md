@@ -29,21 +29,30 @@ Reasons:
 ## Local Persistence
 
 Use `@react-native-async-storage/async-storage` for app data. Persist a single
-versioned document:
+versioned document. The current shape is still local-first, but it is now
+SQL-ready: the app stores users, group membership rows, expense participant
+rows, activity events, and a sync outbox beside the display-friendly arrays.
 
 ```ts
 type PersistedState = {
-  version: 1;
+  version: 2;
+  users: User[];
   groups: Group[];
   members: Member[];
+  groupMembers: GroupMember[];
   expenses: Expense[];
+  expenseParticipants: ExpenseParticipant[];
   settlements: Settlement[];
+  activityEvents: ActivityEvent[];
+  syncOutbox: SyncOutboxItem[];
+  selectedUserId: string;
   selectedGroupId: string;
 };
 ```
 
 If storage fails, keep the app usable in memory and show a short recoverable
-error state. No secrets or production credentials are required.
+error state. No secrets or production credentials are required. Legacy v1 local
+documents are normalized into the v2 shape on load.
 
 ## Money Rules
 
@@ -97,3 +106,6 @@ mobile app feel.
   run commands.
 - AsyncStorage behavior differs slightly on web. Mitigation: keep storage behind
   a tiny adapter and test pure domain logic separately.
+- The SQL-ready model still persists as one local JSON document. Mitigation:
+  keep entity names, ids, cents, joins, and outbox records compatible with a
+  future SQLite/backend adapter.

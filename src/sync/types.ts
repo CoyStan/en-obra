@@ -1,6 +1,14 @@
 import type { AppData } from "../domain/types";
 
-export type SyncEntity = "group" | "member" | "expense" | "settlement" | "account";
+export type SyncEntity =
+  | "user"
+  | "group"
+  | "group_member"
+  | "expense"
+  | "expense_participant"
+  | "settlement"
+  | "activity_event"
+  | "account";
 
 export type SyncOperation = "create" | "update" | "delete" | "snapshot";
 
