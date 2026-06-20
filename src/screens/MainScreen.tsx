@@ -691,7 +691,7 @@ export function MainScreen() {
       <View key={`${settlement.fromMemberId}-${settlement.toMemberId}`} style={styles.settlementCard}>
         <View style={styles.settlementCompactTop}>
           <View style={styles.settlementRouteIcon}>
-            <MaterialCommunityIcons color={colors.primaryDark} name="bank-transfer-out" size={19} />
+            <MaterialCommunityIcons color={colors.primaryDark} name="arrow-right" size={18} />
           </View>
           <View style={styles.settlementCompactCopy}>
             <View style={styles.settlementTitleRow}>
@@ -734,30 +734,6 @@ export function MainScreen() {
         />
       ) : (
         <>
-          <View style={styles.quickActionRail}>
-            <QuickActionTile
-              icon="account-plus-outline"
-              label="Integrante"
-              onPress={() => setShowMemberForm(true)}
-            />
-            <QuickActionTile
-              detail="Sin pagos reales"
-              disabled={!primarySettlement}
-              icon="swap-horizontal"
-              label="Liquidar"
-              onPress={() => {
-                if (primarySettlement) {
-                  setPendingSettlement(primarySettlement);
-                }
-              }}
-            />
-            <QuickActionTile
-              icon="history"
-              label="Actividad"
-              onPress={() => setActiveTab("activity")}
-            />
-          </View>
-
           <Section
             action={
               selectedSummary.settlements.length > 1 ? (
@@ -1422,7 +1398,18 @@ export function MainScreen() {
                   <Text style={styles.heroCueLabel}>Siguiente paso</Text>
                   <Text numberOfLines={2} style={styles.heroCueText}>{personalCue}</Text>
                 </View>
-                {personalSettlement ? <Text style={styles.externalPayBadge}>Paga fuera</Text> : null}
+                {personalSettlement ? (
+                  <Pressable
+                    accessibilityLabel="Liquidar arreglo local"
+                    accessibilityRole="button"
+                    hitSlop={4}
+                    onPress={() => setPendingSettlement(personalSettlement)}
+                    style={({ pressed }) => [styles.externalPayAction, pressed && styles.pressed]}
+                  >
+                    <MaterialCommunityIcons color={colors.primaryDark} name="check" size={14} />
+                    <Text style={styles.externalPayActionText}>Liquidar</Text>
+                  </Pressable>
+                ) : null}
               </View>
 
               <ActionButton
@@ -1567,37 +1554,41 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     lineHeight: 31,
   },
-  externalPayBadge: {
+  externalPayAction: {
+    alignItems: "center",
     backgroundColor: colors.successWash,
     borderRadius: radius.sm,
-    color: colors.primaryDark,
     flexShrink: 0,
-    fontSize: typography.micro,
-    fontWeight: "700",
+    flexDirection: "row",
+    gap: spacing.xs,
     overflow: "hidden",
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
   },
+  externalPayActionText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "700",
+  },
   heroCard: {
     backgroundColor: colors.surface,
-    borderColor: colors.border,
+    borderColor: "transparent",
     borderRadius: radius.md,
-    borderWidth: 1,
-    gap: spacing.md,
+    borderWidth: 0,
+    gap: spacing.sm,
     padding: spacing.md,
   },
   heroCue: {
     alignItems: "center",
-    backgroundColor: colors.surfaceStrong,
-    borderColor: colors.border,
+    backgroundColor: "transparent",
+    borderColor: "transparent",
     borderRadius: radius.md,
-    borderStyle: "dashed",
-    borderWidth: 1,
+    borderWidth: 0,
     flexDirection: "row",
     gap: spacing.sm,
-    minHeight: 58,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    minHeight: 40,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
   heroCueCopy: {
     flex: 1,
@@ -1607,10 +1598,10 @@ const styles = StyleSheet.create({
   heroCueIcon: {
     alignItems: "center",
     backgroundColor: colors.blueWash,
-    borderRadius: 17,
-    height: 34,
+    borderRadius: 14,
+    height: 28,
     justifyContent: "center",
-    width: 34,
+    width: 28,
   },
   heroCueLabel: {
     color: colors.accentBlue,
@@ -1634,7 +1625,7 @@ const styles = StyleSheet.create({
   heroGroupName: {
     color: colors.ink,
     fontSize: typography.heading,
-    fontWeight: "800",
+    fontWeight: "700",
   },
   heroTop: {
     alignItems: "stretch",
@@ -1658,7 +1649,7 @@ const styles = StyleSheet.create({
   },
   identityPill: {
     alignItems: "center",
-    backgroundColor: colors.surfaceStrong,
+    backgroundColor: colors.surface,
     borderRadius: radius.md,
     flex: 1,
     flexDirection: "row",
@@ -1670,11 +1661,11 @@ const styles = StyleSheet.create({
   },
   myBalanceAmount: {
     color: colors.primary,
-    fontSize: 31,
+    fontSize: 34,
     fontVariant: ["tabular-nums"],
     fontWeight: "800",
     letterSpacing: 0,
-    lineHeight: 36,
+    lineHeight: 38,
   },
   myBalanceAmountDue: {
     color: colors.due,
@@ -1689,11 +1680,11 @@ const styles = StyleSheet.create({
   },
   myBalanceIcon: {
     alignItems: "center",
-    backgroundColor: colors.successWash,
-    borderRadius: 34,
-    height: 68,
+    backgroundColor: "transparent",
+    borderRadius: 24,
+    height: 48,
     justifyContent: "center",
-    width: 68,
+    width: 48,
   },
   myBalanceKicker: {
     color: colors.mutedInk,
@@ -1703,12 +1694,12 @@ const styles = StyleSheet.create({
   myBalancePanel: {
     alignItems: "center",
     backgroundColor: colors.successWash,
-    borderColor: colors.border,
+    borderColor: "transparent",
     borderRadius: radius.md,
-    borderWidth: 1,
+    borderWidth: 0,
     flexDirection: "row",
     gap: spacing.md,
-    minHeight: 118,
+    minHeight: 88,
     padding: spacing.md,
   },
   myBalanceState: {
@@ -2343,10 +2334,10 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
   },
   quickActionRail: {
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
+    backgroundColor: "transparent",
+    borderColor: "transparent",
     borderRadius: radius.md,
-    borderWidth: 1,
+    borderWidth: 0,
     flexDirection: "row",
     gap: 0,
     padding: spacing.xs,

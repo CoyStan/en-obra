@@ -330,3 +330,14 @@ Rationale: The premium Android MVP needs low cognitive load around the most
 sensitive money action. Clear payer/receiver language reduces mistakes, while
 `Sin pagos reales` and external-payment copy keep the app away from payment
 processing claims.
+
+### Prefer A Softer First Viewport Over Dense Action Rails
+
+Decision: The balance home should use one soft hero surface, a clear personal
+balance module, a compact settlement cue with `Liquidar`, and the settlement row
+itself instead of a separate three-button quick-action rail.
+
+Rationale: The premium goal calls for lower visual weight without hiding core
+content. Removing the extra action rail reduces decision fatigue on narrow
+Android screens, while keeping `Agregar gasto`, `Liquidar`, `Siguiente paso`,
+MXN, identity, group, and `Sin pagos reales` visible in the first viewport.
