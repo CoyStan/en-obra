@@ -1484,6 +1484,39 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "id": "WORK-APP-0022",
+      "title": "Backend mutation service extraction",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Extract group, member, expense, and settlement write behavior into tested pure backend mutation functions reusable by local storage, future SQLite, or hosted backend adapters. Preserve local-first behavior and UI behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "App write operations are available as deterministic backend mutation functions with tests for created records, activity events, sync_outbox records, validation failures, and React hook integration through the shared service.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -1908,6 +1941,20 @@
       "result": "Implemented and verified local data export package in commit f264e03d3f1c99ee6370e196436888fff7b52d28.",
       "commits": [
         "f264e03d3f1c99ee6370e196436888fff7b52d28"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0022",
+      "work_item_id": "WORK-APP-0022",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified backend mutation service extraction in commit 70e164f87bb1b61d12911f9d954f7e4a78ddcbe8.",
+      "commits": [
+        "70e164f87bb1b61d12911f9d954f7e4a78ddcbe8"
       ]
     }
   ],
@@ -2450,6 +2497,28 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for local data export readiness.",
       "timestamp": "2026-06-20T21:21:16Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0022"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0022/technical-report.md",
+        "src/backend/appMutations.ts",
+        "src/__tests__/appMutations.test.ts",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0022",
+      "work_item_id": "WORK-APP-0022",
+      "attempt_id": "ATTEMPT-APP-0022",
+      "head_sha": "70e164f87bb1b61d12911f9d954f7e4a78ddcbe8",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for backend mutation service extraction.",
+      "timestamp": "2026-06-20T21:25:28Z"
     }
   ],
   "review_verdicts": [
@@ -2766,6 +2835,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:21:16Z"
+    },
+    {
+      "id": "REVIEW-APP-0022",
+      "work_item_id": "WORK-APP-0022",
+      "reviewed_head": "70e164f87bb1b61d12911f9d954f7e4a78ddcbe8",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:25:28Z"
     }
   ],
   "human_decisions": [],
@@ -3575,6 +3652,39 @@
       "attempt_id": "ATTEMPT-APP-0021",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:21:16Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0022",
+        "added backend mutation service",
+        "refactored useAppData to call service",
+        "added mutation tests",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/appMutations.ts",
+        "src/state/useAppData.ts",
+        "src/__tests__/appMutations.test.ts",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0022"
+      ],
+      "not_done": [
+        "production backend provider",
+        "native database adapter",
+        "remote conflict resolution",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0022",
+      "work_item_id": "WORK-APP-0022",
+      "attempt_id": "ATTEMPT-APP-0022",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:25:28Z"
     }
   ],
   "decisions": [
@@ -3969,6 +4079,15 @@
       "what_happened": "Added a local-only export package with inventory, account state, sync state, app data, SQL snapshot, and checksum.",
       "what_changed": "The app now has a provider-neutral portability primitive for support, migration, and deletion-readiness workflows before production storage is selected.",
       "timestamp": "2026-06-20T21:21:16Z"
+    },
+    {
+      "id": "OUTCOME-APP-0022",
+      "work_item_id": "WORK-APP-0022",
+      "summary": "App writes now run through a tested backend mutation service.",
+      "status": "captured",
+      "what_happened": "Extracted create group, add member, add expense, and mark settlement paid into pure mutation functions with deterministic tests.",
+      "what_changed": "Future local database or hosted backend adapters can reuse the same write behavior without depending on React state.",
+      "timestamp": "2026-06-20T21:25:28Z"
     }
   ]
 }
