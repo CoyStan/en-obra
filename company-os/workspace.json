@@ -885,6 +885,49 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0006"
+    },
+    {
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "production auth",
+        "backend sync",
+        "secrets",
+        "real payments",
+        "paid APIs",
+        "Play Store submission"
+      ],
+      "id": "WORK-APP-0007",
+      "title": "Record actions with active local identity",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "active",
+      "scope": "Align money-affecting local actions with the active group identity: expenses and settlement records should use the active group member userId as actor/creator where available, so activity audit rows show the person currently acting. No production auth, backend sync, secrets, payments, or external services.",
+      "acceptance_target": "Adding expenses and marking settlements locally records createdByUserId/recordedByUserId and activity actor from the active group member identity, with fallback to selected demo user.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0007"
     }
   ],
   "attempts": [
@@ -1063,6 +1106,18 @@
         "docs/product/decisions.md",
         "reports/evidence/WORK-APP-0006"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0007",
+      "work_item_id": "WORK-APP-0007",
+      "actor": "PALARI-ENGINEERING",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "main clean; previous app work items are reviewed and waiting on human approval",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [
