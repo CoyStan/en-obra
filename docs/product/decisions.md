@@ -411,3 +411,14 @@ either truncation on narrow screens or unnecessary smallness on larger screens.
 Responsive density keeps normal text stable while letting money amounts,
 selector triggers, nav labels, and hero spacing tighten or breathe based on the
 space they actually have.
+
+### Reserve A Money Rail In Balance Rows
+
+Decision: Member balance rows should use a stable right-side money rail and a
+flexible left-side identity/detail area instead of letting name, explanation,
+and amount compete in one undifferentiated row.
+
+Rationale: Balance rows are scanned like a financial table, even when presented
+as mobile cards. A reserved amount rail makes pesos line up predictably, while
+the identity/status/detail cluster can wrap naturally on narrow Android screens
+without crowding the amount or leaving the right side visually empty.

@@ -1190,20 +1190,30 @@ export function MainScreen() {
             ) : (
               selectedSummary.balances.map((balance) => {
                 const status = balanceLabel(balance);
+                const amountTone = balance.netCents < 0 ? "due" : "success";
                 return (
-                  <View key={balance.member.id} style={styles.memberRow}>
+                  <View key={balance.member.id} style={[styles.memberRow, compact && styles.memberRowCompact]}>
                     <Avatar color={balance.member.avatarColor} label={balance.member.name} />
-                    <View style={styles.memberCopy}>
-                      <Text style={styles.memberName}>{balance.member.name}</Text>
-                      <View style={styles.balanceStatusLine}>
-                        <Pill label={status.label} tone={status.tone} />
-                        <Text style={styles.balanceExplanation}>{describeBalance(balance)}</Text>
+                    <View style={styles.memberBody}>
+                      <View style={styles.memberHeaderLine}>
+                        <View style={styles.memberIdentity}>
+                          <Text style={styles.memberName}>{balance.member.name}</Text>
+                          <Pill label={status.label} tone={status.tone} />
+                        </View>
+                        <View style={[styles.memberAmountRail, compact && styles.memberAmountRailCompact]}>
+                          <Text
+                            style={[
+                              styles.memberAmountText,
+                              amountTone === "due" ? styles.memberAmountDue : styles.memberAmountSuccess,
+                              compact && styles.memberAmountTextCompact,
+                            ]}
+                          >
+                            {formatMoney(Math.abs(balance.netCents))}
+                          </Text>
+                        </View>
                       </View>
+                      <Text style={styles.balanceExplanation}>{describeBalance(balance)}</Text>
                     </View>
-                    <Amount
-                      cents={Math.abs(balance.netCents)}
-                      tone={balance.netCents < 0 ? "due" : "success"}
-                    />
                   </View>
                 );
               })
@@ -2494,10 +2504,9 @@ const styles = StyleSheet.create({
   },
   balanceExplanation: {
     color: colors.mutedInk,
-    flexShrink: 1,
-    fontSize: typography.micro,
+    fontSize: typography.small,
     fontWeight: "500",
-    lineHeight: 16,
+    lineHeight: 19,
   },
   balanceIconDue: {
     alignItems: "center",
@@ -3095,9 +3104,53 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.sm,
   },
+  memberAmountDue: {
+    color: colors.due,
+  },
+  memberAmountRail: {
+    alignItems: "flex-end",
+    flexShrink: 0,
+    justifyContent: "center",
+    minWidth: 136,
+  },
+  memberAmountRailCompact: {
+    minWidth: 112,
+  },
+  memberAmountSuccess: {
+    color: colors.primary,
+  },
+  memberAmountText: {
+    fontSize: typography.body,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "800",
+    lineHeight: 24,
+    textAlign: "right",
+  },
+  memberAmountTextCompact: {
+    fontSize: typography.small,
+    lineHeight: 20,
+  },
+  memberBody: {
+    flex: 1,
+    gap: spacing.sm,
+    minWidth: 0,
+  },
   memberCopy: {
     flex: 1,
     gap: spacing.xs,
+  },
+  memberHeaderLine: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+    minWidth: 0,
+  },
+  memberIdentity: {
+    alignItems: "flex-start",
+    flexShrink: 1,
+    gap: spacing.xs,
+    minWidth: 0,
   },
   memberName: {
     color: colors.ink,
@@ -3114,6 +3167,11 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     minHeight: 60,
     padding: spacing.md,
+  },
+  memberRowCompact: {
+    gap: spacing.sm,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.md,
   },
   navItem: {
     alignItems: "center",
