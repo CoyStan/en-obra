@@ -2149,6 +2149,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0047"
+    },
+    {
+      "id": "WORK-APP-0048",
+      "title": "Technical Play Data Safety draft generator",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend/playDataSafetyDraft.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/playDataSafetyDraft.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0048/**, company-os/workspace.json. Add a non-legal technical Data Safety draft derived from current backend evidence. Forbidden: final Play Console submission, legal approval, provider choices, secrets, production deployment.",
+      "acceptance_target": "Backend readiness includes a tested technical Play Data Safety draft showing local-only/not-collected posture, evidence links, final human/legal blockers, and failure when privacy or secret scans detect release risks.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0048"
     }
   ],
   "attempts": [
@@ -2946,6 +2960,17 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:41:56Z",
+      "cleanliness": "clean"
+    },
+    {
+      "id": "ATTEMPT-APP-0048",
+      "work_item_id": "WORK-APP-0048",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:50:00Z",
       "cleanliness": "clean"
     }
   ],
@@ -4011,6 +4036,16 @@
       "summary": "Added release secret/config safety scan. npm run release:android:check passed: typecheck, 33 test files / 132 tests, backend release gate, and Expo public config.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T23:46:10Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0048",
+      "work_item_id": "WORK-APP-0048",
+      "attempt_id": "ATTEMPT-APP-0048",
+      "head_sha": "25740412e4b3f493bdd0af1082a2362e1f839898",
+      "status": "passed",
+      "summary": "Added technical Play Data Safety draft generator. npm run release:android:check passed: typecheck, 34 test files / 136 tests, backend release gate, and Expo public config.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T23:51:40Z"
     }
   ],
   "review_verdicts": [
@@ -4535,6 +4570,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:46:10Z"
+    },
+    {
+      "id": "REVIEW-APP-0048",
+      "work_item_id": "WORK-APP-0048",
+      "reviewed_head": "25740412e4b3f493bdd0af1082a2362e1f839898",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:51:40Z"
     }
   ],
   "human_decisions": [],
@@ -6204,6 +6247,13 @@
       "attempt_id": "ATTEMPT-APP-0047",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:46:10Z"
+    },
+    {
+      "id": "RECEIPT-APP-0048",
+      "work_item_id": "WORK-APP-0048",
+      "attempt_id": "ATTEMPT-APP-0048",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:51:40Z"
     }
   ],
   "decisions": [
@@ -6832,6 +6882,15 @@
       "what_happened": "Added secretSafetyScan module, tests, backend release gate/preflight/support bundle integration, regenerated artifacts, and updated docs.",
       "what_changed": "The release gate now requires evidence that app/package/EAS-facing config has no committed API keys, payment keys, Play service-account credentials, private keys, or production backend endpoints.",
       "timestamp": "2026-06-20T23:46:10Z"
+    },
+    {
+      "id": "OUTCOME-APP-0048",
+      "work_item_id": "WORK-APP-0048",
+      "summary": "Technical Play Data Safety draft is now generated from backend evidence.",
+      "status": "completed",
+      "what_happened": "Added playDataSafetyDraft module, tests, backend release gate/preflight/support bundle integration, regenerated artifacts, and docs.",
+      "what_changed": "Current local-first Data Safety posture is machine-readable, non-legal, and blocked if privacy or secret scans detect release risks.",
+      "timestamp": "2026-06-20T23:51:40Z"
     }
   ]
 }
