@@ -376,3 +376,14 @@ becoming playful or cluttered. Object-led rows reduce reliance on text for
 mainstream Android users, while the existing slate/agave palette, integer cents,
 SQL-ready local model, and `Sin pagos reales` cues preserve the premium finance
 trust bar.
+
+### Use Compact Dropdowns For Add-Expense Choices
+
+Decision: Category, payer, and participant selection in the add-expense sheet
+should use compact animated dropdown list menus instead of large card grids.
+
+Rationale: The card grids became visually broken on narrow Android screens and
+made the sheet feel heavy. Dropdown triggers keep the flow readable, allow a
+larger category taxonomy, and make payer/participant choice feel more like a
+native form control while preserving clear avatars, checks, and local-only
+money semantics.

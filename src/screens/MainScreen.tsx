@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import {
   AccessibilityInfo,
   Animated,
@@ -38,6 +38,7 @@ import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
 
 type TabId = "groups" | "balance" | "activity" | "account";
+type ExpenseMenuId = "category" | "payer" | "participants";
 
 const MONEY_FLOW_TRACK_WIDTH = 120;
 const MONEY_FLOW_DOT_SIZE = 24;
@@ -78,7 +79,15 @@ const expenseCategories: {
   { id: "transport", label: "Transporte", icon: "car-outline", tone: "primary" },
   { id: "groceries", label: "Súper", icon: "cart-outline", tone: "primary" },
   { id: "home", label: "Casa", icon: "home-outline", tone: "blue" },
+  { id: "rent", label: "Renta", icon: "home-city-outline", tone: "blue" },
+  { id: "utilities", label: "Servicios", icon: "flash-outline", tone: "primary" },
+  { id: "lodging", label: "Hospedaje", icon: "bed-king-outline", tone: "blue" },
+  { id: "fuel", label: "Gasolina", icon: "gas-station-outline", tone: "primary" },
+  { id: "tickets", label: "Boletos", icon: "ticket-confirmation-outline", tone: "due" },
+  { id: "health", label: "Salud", icon: "medical-bag", tone: "due" },
+  { id: "shopping", label: "Compras", icon: "shopping-outline", tone: "warm" },
   { id: "fun", label: "Plan", icon: "glass-cocktail", tone: "due" },
+  { id: "other", label: "Otro", icon: "dots-horizontal-circle-outline", tone: "primary" },
 ];
 
 const defaultCategory = expenseCategories[0];
@@ -319,6 +328,89 @@ function CategoryObject({ categoryId, size = "regular" }: { categoryId?: string;
         size={size === "small" ? 16 : 19}
       />
     </View>
+  );
+}
+
+function AnimatedDropdown({
+  children,
+  open,
+}: {
+  children: ReactNode;
+  open: boolean;
+}) {
+  const progress = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(progress, {
+      duration: 180,
+      easing: Easing.out(Easing.cubic),
+      toValue: open ? 1 : 0,
+      useNativeDriver: true,
+    }).start();
+  }, [open, progress]);
+
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <Animated.View
+      style={[
+        styles.dropdownPanel,
+        {
+          opacity: progress,
+          transform: [
+            {
+              translateY: progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [-6, 0],
+              }),
+            },
+          ],
+        },
+      ]}
+    >
+      {children}
+    </Animated.View>
+  );
+}
+
+function SelectTrigger({
+  icon,
+  label,
+  meta,
+  onPress,
+  open,
+  value,
+}: {
+  icon?: ReactNode;
+  label: string;
+  meta?: string;
+  onPress: () => void;
+  open: boolean;
+  value: string;
+}) {
+  return (
+    <Pressable
+      accessibilityLabel={`${label}: ${value}`}
+      accessibilityRole="button"
+      accessibilityState={{ expanded: open }}
+      hitSlop={4}
+      onPress={onPress}
+      style={({ pressed }) => [styles.selectTrigger, open && styles.selectTriggerOpen, pressed && styles.pressed]}
+    >
+      {icon ? <View style={styles.selectTriggerIcon}>{icon}</View> : null}
+      <View style={styles.selectTriggerCopy}>
+        <Text style={styles.selectTriggerLabel}>{label}</Text>
+        <Text numberOfLines={1} style={styles.selectTriggerValue}>{value}</Text>
+        {meta ? <Text numberOfLines={1} style={styles.selectTriggerMeta}>{meta}</Text> : null}
+      </View>
+      <MaterialCommunityIcons
+        color={colors.primaryDark}
+        name={open ? "chevron-up" : "chevron-down"}
+        size={22}
+      />
+    </Pressable>
   );
 }
 
@@ -607,6 +699,7 @@ export function MainScreen() {
   const [expenseNote, setExpenseNote] = useState("");
   const [payerId, setPayerId] = useState("");
   const [participantIds, setParticipantIds] = useState<string[]>([]);
+  const [openExpenseMenu, setOpenExpenseMenu] = useState<ExpenseMenuId | null>(null);
   const [showActiveMemberSheet, setShowActiveMemberSheet] = useState(false);
   const [showDeleteLocalDataConfirm, setShowDeleteLocalDataConfirm] = useState(false);
   const [accountName, setAccountName] = useState("");
@@ -681,6 +774,20 @@ export function MainScreen() {
     }
     return splitEqual(expenseAmountCents, participantIds);
   }, [expenseAmountCents, participantIds]);
+  const selectedCategory = categoryFor(expenseCategoryId);
+  const payer = selectedMembers.find((member) => member.id === payerId);
+  const participantNames = selectedMembers
+    .filter((member) => participantIds.includes(member.id))
+    .map((member) => member.name);
+  const participantSummary =
+    participantNames.length === selectedMembers.length
+      ? "Todos los integrantes"
+      : participantNames.length
+        ? participantNames.join(", ")
+        : "Selecciona participantes";
+  const toggleExpenseMenu = (menu: ExpenseMenuId) => {
+    setOpenExpenseMenu((current) => (current === menu ? null : menu));
+  };
   const openIdentity = () => {
     if (account.profile && account.mode === "signed-in" && selectedGroup) {
       openActiveMemberPicker();
@@ -807,12 +914,14 @@ export function MainScreen() {
     setExpenseCategoryId(defaultCategory.id);
     setExpenseNote("");
     setParticipantIds([]);
+    setOpenExpenseMenu(null);
     setShowExpenseForm(false);
   };
 
   const chooseExpensePayer = (memberId: string) => {
     setPayerId(memberId);
     setParticipantIds((current) => (current.includes(memberId) ? current : [memberId, ...current]));
+    setOpenExpenseMenu(null);
   };
 
   const toggleExpenseParticipant = (memberId: string) => {
@@ -1308,7 +1417,10 @@ export function MainScreen() {
   const renderExpenseSheet = () => (
     <Modal
       animationType="slide"
-      onRequestClose={() => setShowExpenseForm(false)}
+      onRequestClose={() => {
+        setOpenExpenseMenu(null);
+        setShowExpenseForm(false);
+      }}
       transparent
       visible={showExpenseForm}
     >
@@ -1320,7 +1432,15 @@ export function MainScreen() {
               <Text style={styles.sheetTitle}>Agregar gasto</Text>
               <Text style={styles.sheetSubtitle}>Quién pagó, quién participa y cuánto toca.</Text>
             </View>
-            <ActionButton icon="close" label="Cerrar" onPress={() => setShowExpenseForm(false)} tone="ghost" />
+            <ActionButton
+              icon="close"
+              label="Cerrar"
+              onPress={() => {
+                setOpenExpenseMenu(null);
+                setShowExpenseForm(false);
+              }}
+              tone="ghost"
+            />
           </View>
           <View style={styles.expenseIdentityBand}>
             <Avatar color={displayMember?.avatarColor ?? colors.primary} label={displayMember?.name ?? "Yo"} />
@@ -1362,10 +1482,18 @@ export function MainScreen() {
           <View style={styles.sheetSectionHeader}>
             <View>
               <Text style={styles.fieldLabel}>Categoría</Text>
-              <Text style={styles.accountSectionText}>Ayuda a leer el historial sin tanto texto.</Text>
+              <Text style={styles.accountSectionText}>Más opciones, sin llenar la pantalla.</Text>
             </View>
           </View>
-          <View style={styles.categoryGrid}>
+          <SelectTrigger
+            icon={<CategoryObject categoryId={expenseCategoryId} size="small" />}
+            label="Categoría"
+            meta={`${expenseCategories.length} categorías disponibles`}
+            onPress={() => toggleExpenseMenu("category")}
+            open={openExpenseMenu === "category"}
+            value={selectedCategory.label}
+          />
+          <AnimatedDropdown open={openExpenseMenu === "category"}>
             {expenseCategories.map((category) => {
               const selected = category.id === expenseCategoryId;
               return (
@@ -1375,21 +1503,28 @@ export function MainScreen() {
                   accessibilityState={{ checked: selected }}
                   hitSlop={4}
                   key={category.id}
-                  onPress={() => setExpenseCategoryId(category.id)}
-                  style={[styles.categoryChip, selected && styles.categoryChipActive]}
+                  onPress={() => {
+                    setExpenseCategoryId(category.id);
+                    setOpenExpenseMenu(null);
+                  }}
+                  style={({ pressed }) => [
+                    styles.dropdownRow,
+                    selected && styles.dropdownRowActive,
+                    pressed && styles.pressed,
+                  ]}
                 >
-                  <View style={[styles.categoryChipIcon, categoryToneStyle(category.tone)]}>
-                    <MaterialCommunityIcons
-                      color={category.tone === "due" ? colors.due : category.tone === "blue" ? colors.accentBlue : category.tone === "warm" ? colors.terracotta : colors.primaryDark}
-                      name={category.icon}
-                      size={16}
-                    />
+                  <CategoryObject categoryId={category.id} size="small" />
+                  <View style={styles.dropdownRowCopy}>
+                    <Text style={styles.dropdownRowTitle}>{category.label}</Text>
+                    <Text style={styles.dropdownRowMeta}>Para ordenar el historial</Text>
                   </View>
-                  <Text style={[styles.categoryChipText, selected && styles.categoryChipTextActive]}>{category.label}</Text>
+                  {selected ? (
+                    <MaterialCommunityIcons color={colors.primary} name="check-circle" size={20} />
+                  ) : null}
                 </Pressable>
               );
             })}
-          </View>
+          </AnimatedDropdown>
           <Field
             label="Nota"
             onChangeText={setExpenseNote}
@@ -1407,7 +1542,15 @@ export function MainScreen() {
             </View>
             {payerId ? <Pill label="Pagó" tone="success" /> : null}
           </View>
-          <View style={styles.peopleGrid}>
+          <SelectTrigger
+            icon={payer ? <Avatar color={payer.avatarColor} label={payer.name} /> : undefined}
+            label="Pagó"
+            meta={activeGroupMember ? `Tu sesión empieza como ${activeGroupMember.name}` : "Elige una persona"}
+            onPress={() => toggleExpenseMenu("payer")}
+            open={openExpenseMenu === "payer"}
+            value={payer?.name ?? "Selecciona quién pagó"}
+          />
+          <AnimatedDropdown open={openExpenseMenu === "payer"}>
             {selectedMembers.map((member) => (
               <Pressable
                 accessibilityHint="Selecciona quién pagó este gasto."
@@ -1417,16 +1560,25 @@ export function MainScreen() {
                 hitSlop={4}
                 key={member.id}
                 onPress={() => chooseExpensePayer(member.id)}
-                style={[styles.personOption, payerId === member.id && styles.personOptionActive]}
+                style={({ pressed }) => [
+                  styles.dropdownRow,
+                  payerId === member.id && styles.dropdownRowActive,
+                  pressed && styles.pressed,
+                ]}
               >
                 <Avatar color={member.avatarColor} label={member.name} />
-                <Text style={styles.payerName}>{member.name}</Text>
+                <View style={styles.dropdownRowCopy}>
+                  <Text style={styles.dropdownRowTitle}>{member.name}</Text>
+                  <Text style={styles.dropdownRowMeta}>
+                    {activeGroupMember?.id === member.id ? "Tu integrante activo" : "Integrante del grupo"}
+                  </Text>
+                </View>
                 {payerId === member.id ? (
-                  <MaterialCommunityIcons color={colors.primary} name="check-circle" size={18} />
+                  <MaterialCommunityIcons color={colors.primary} name="check-circle" size={20} />
                 ) : null}
               </Pressable>
             ))}
-          </View>
+          </AnimatedDropdown>
           <View style={styles.sheetSectionHeader}>
             <View>
               <Text style={styles.fieldLabel}>Quién participa</Text>
@@ -1434,7 +1586,14 @@ export function MainScreen() {
             </View>
             <Pill label={`${participantIds.length}/${selectedMembers.length}`} tone="neutral" />
           </View>
-          <View style={styles.peopleGrid}>
+          <SelectTrigger
+            label="Participan"
+            meta={`${participantIds.length} de ${selectedMembers.length} integrantes`}
+            onPress={() => toggleExpenseMenu("participants")}
+            open={openExpenseMenu === "participants"}
+            value={participantSummary}
+          />
+          <AnimatedDropdown open={openExpenseMenu === "participants"}>
             {selectedMembers.map((member) => {
               const selected = participantIds.includes(member.id);
               const share = participantShares.find((item) => item.memberId === member.id);
@@ -1449,28 +1608,34 @@ export function MainScreen() {
                   hitSlop={4}
                   key={member.id}
                   onPress={() => toggleExpenseParticipant(member.id)}
-                  style={[styles.participantOption, selected && styles.personOptionActive]}
+                  style={({ pressed }) => [
+                    styles.dropdownRow,
+                    selected && styles.dropdownRowActive,
+                    pressed && styles.pressed,
+                  ]}
                 >
                   <Avatar color={member.avatarColor} label={member.name} />
-                  <View style={styles.participantCopy}>
-                    <Text style={styles.payerName}>{member.name}</Text>
-                    <Text style={styles.participantShare}>
+                  <View style={styles.dropdownRowCopy}>
+                    <Text style={styles.dropdownRowTitle}>{member.name}</Text>
+                    <Text style={styles.dropdownRowMeta}>
                       {payerId === member.id
-                        ? "Pagó · participa"
+                        ? "Pagó · incluido"
                         : selected && share
                           ? formatMoney(share.amountCents)
+                          : selected
+                            ? "Incluido"
                           : "No participa"}
                     </Text>
                   </View>
                   <MaterialCommunityIcons
                     color={selected ? colors.primary : colors.mutedInk}
-                    name={selected ? "check-circle" : "circle-outline"}
-                    size={18}
+                    name={selected ? "checkbox-marked-circle" : "checkbox-blank-circle-outline"}
+                    size={20}
                   />
                 </Pressable>
               );
             })}
-          </View>
+          </AnimatedDropdown>
           <View style={styles.splitPreview}>
             <View style={styles.splitPreviewIcon}>
               <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
@@ -2480,6 +2645,44 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontWeight: "600",
   },
+  dropdownPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: 2,
+    overflow: "hidden",
+    padding: spacing.xs,
+  },
+  dropdownRow: {
+    alignItems: "center",
+    borderRadius: radius.sm,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 48,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  dropdownRowActive: {
+    backgroundColor: colors.surfaceTinted,
+  },
+  dropdownRowCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  dropdownRowMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "500",
+    lineHeight: 15,
+  },
+  dropdownRowTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "700",
+    lineHeight: 19,
+  },
   errorBanner: {
     alignItems: "center",
     backgroundColor: colors.dueWash,
@@ -2999,6 +3202,48 @@ const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: colors.canvas,
     flex: 1,
+  },
+  selectTrigger: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 56,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  selectTriggerCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  selectTriggerIcon: {
+    flexShrink: 0,
+  },
+  selectTriggerLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  selectTriggerMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "500",
+    lineHeight: 15,
+  },
+  selectTriggerOpen: {
+    backgroundColor: colors.surfaceTinted,
+    borderColor: colors.primary,
+  },
+  selectTriggerValue: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "800",
+    lineHeight: 19,
   },
   settlementCard: {
     backgroundColor: "transparent",
