@@ -49,6 +49,27 @@ Committed backend handoff artifacts:
 `src/__tests__/sqlArtifacts.test.ts` verifies both files match the TypeScript
 schema/seed generator exactly.
 
+## Schema Versioning
+
+`src/backend/sqlMigrations.ts` defines the migration planner for SQL schema
+versions.
+
+Current state:
+
+- current schema version: `1`
+- migration list: empty, because v1 is the first release-candidate schema
+- app metadata stores `schema_version`
+
+Future schema changes must add:
+
+1. a new `SQL_SCHEMA_VERSION`
+2. a migration entry from the previous version
+3. updated committed SQL artifacts
+4. tests for old-version planning and current-version no-op behavior
+
+If the app sees missing/invalid schema metadata or a local schema newer than the
+current build, it must refuse to guess and surface a controlled recovery path.
+
 ## Replacement Path
 
 When access/storage is selected, implement a concrete repository/adapter that:

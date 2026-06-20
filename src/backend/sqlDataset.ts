@@ -6,7 +6,9 @@ import { SQL_SCHEMA_VERSION, SQL_TABLES, createSqlSchema } from "./sqlSchema";
 type SqlValue = string | number | null;
 
 export type SqlRow = Record<string, SqlValue>;
-export type SqlDataset = Record<string, SqlRow[]>;
+export type SqlDataset = Record<string, SqlRow[]> & {
+  app_metadata: SqlRow[];
+};
 
 const TABLE_NAMES = SQL_TABLES.map((table) => table.name);
 
