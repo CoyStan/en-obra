@@ -122,6 +122,82 @@ describe("group balances", () => {
       title: "Luis pagó a Ana",
       subtitle: "Marcado pagado localmente · Sin pagos reales",
     });
-    expect(activity[1].subtitle).toBe("Pagó Ana · Dividido entre 3 integrantes");
+    expect(activity[1].subtitle).toBe("Pagó Ana · Dividido entre 3 participantes");
+  });
+
+  it("builds an actor-aware audit trail from activity events", () => {
+    const eventData: AppData = {
+      ...simpleData,
+      version: 2,
+      selectedUserId: "user-ana",
+      users: [
+        {
+          id: "user-ana",
+          displayName: "Ana",
+          avatarColor: "#0F766E",
+          createdAt: "2026-06-10T00:00:00Z",
+          updatedAt: "2026-06-10T00:00:00Z",
+        },
+      ],
+      activityEvents: [
+        {
+          id: "activity-expense",
+          groupId: "group",
+          actorUserId: "user-ana",
+          eventType: "expense_created",
+          entityType: "expense",
+          entityId: "expense",
+          summary: "Se agregó Cena",
+          createdAt: "2026-06-10T01:05:00Z",
+        },
+      ],
+    };
+
+    const activity = buildActivity(eventData, "group");
+
+    expect(activity).toHaveLength(1);
+    expect(activity[0]).toMatchObject({
+      actorName: "Ana",
+      label: "Gasto",
+      subtitle: "Ana registró · Pagó Ana · 3 participantes",
+      title: "Cena",
+      type: "expense",
+    });
+  });
+
+  it("keeps orphaned activity events as local audit rows", () => {
+    const eventData: AppData = {
+      ...simpleData,
+      version: 2,
+      users: [
+        {
+          id: "user-ana",
+          displayName: "Ana",
+          avatarColor: "#0F766E",
+          createdAt: "2026-06-10T00:00:00Z",
+          updatedAt: "2026-06-10T00:00:00Z",
+        },
+      ],
+      activityEvents: [
+        {
+          id: "activity-missing",
+          groupId: "group",
+          actorUserId: "user-ana",
+          eventType: "settlement_recorded",
+          entityType: "settlement",
+          entityId: "missing-settlement",
+          summary: "Se marcó un arreglo local",
+          createdAt: "2026-06-10T03:00:00Z",
+        },
+      ],
+    };
+
+    expect(buildActivity(eventData, "group")[0]).toMatchObject({
+      actorName: "Ana",
+      label: "Registro local",
+      subtitle: "Ana registró un cambio local · Cena",
+      title: "Se marcó un arreglo local",
+      type: "settlement",
+    });
   });
 });

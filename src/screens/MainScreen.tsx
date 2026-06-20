@@ -86,6 +86,29 @@ function activityIconForTitle(title: string): keyof typeof MaterialCommunityIcon
   return "receipt-text";
 }
 
+function activityIcon(item: ActivityItem): keyof typeof MaterialCommunityIcons.glyphMap {
+  if (item.type === "settlement") {
+    return "check-circle-outline";
+  }
+  if (item.type === "member") {
+    return "account-plus-outline";
+  }
+  if (item.type === "group") {
+    return "account-group-outline";
+  }
+  return activityIconForTitle(item.title);
+}
+
+function activityTone(item: ActivityItem) {
+  if (item.type === "settlement") {
+    return styles.activitySettlement;
+  }
+  if (item.type === "member" || item.type === "group") {
+    return styles.activityMember;
+  }
+  return styles.activityExpense;
+}
+
 function balanceLabel(balance: MemberBalance) {
   if (balance.netCents > 0) {
     return { label: "Debe recibir", tone: "success" as const };
@@ -223,23 +246,27 @@ function Field({
 }
 
 function ActivityRow({ item }: { item: ActivityItem }) {
-  const isSettlement = item.type === "settlement";
+  const hasAmount = item.amountCents > 0;
   return (
     <View style={styles.activityRow}>
-      <View style={[styles.activityIcon, isSettlement ? styles.activitySettlement : styles.activityExpense]}>
+      <View style={[styles.activityIcon, activityTone(item)]}>
         <MaterialCommunityIcons
-          color={isSettlement ? colors.primary : colors.mutedInk}
-          name={isSettlement ? "check-circle-outline" : activityIconForTitle(item.title)}
+          color={item.type === "settlement" ? colors.primary : colors.mutedInk}
+          name={activityIcon(item)}
           size={18}
         />
       </View>
       <View style={styles.activityCopy}>
-        <Text style={styles.activityTitle}>{item.title}</Text>
-        <Text style={styles.activitySubtitle}>{item.subtitle}</Text>
+        <View style={styles.activityMetaLine}>
+          {item.label ? <Pill label={item.label} tone={item.type === "settlement" ? "gold" : "neutral"} /> : null}
+          {item.actorName ? <Text style={styles.activityActor}>{item.actorName}</Text> : null}
+        </View>
+        <Text numberOfLines={2} style={styles.activityTitle}>{item.title}</Text>
+        <Text numberOfLines={2} style={styles.activitySubtitle}>{item.subtitle}</Text>
       </View>
       <View style={styles.activityAmount}>
         <Text style={styles.activityDate}>{formatDate(item.createdAt)}</Text>
-        <Amount cents={item.amountCents} tone={isSettlement ? "success" : "neutral"} />
+        {hasAmount ? <Amount cents={item.amountCents} tone={item.type === "settlement" ? "success" : "neutral"} /> : null}
       </View>
     </View>
   );
@@ -1754,12 +1781,27 @@ const styles = StyleSheet.create({
   activityExpense: {
     backgroundColor: colors.warmWash,
   },
+  activityActor: {
+    color: colors.mutedInk,
+    flexShrink: 1,
+    fontSize: typography.micro,
+    fontWeight: "600",
+  },
   activityIcon: {
     alignItems: "center",
     borderRadius: 16,
     height: 32,
     justifyContent: "center",
     width: 32,
+  },
+  activityMember: {
+    backgroundColor: colors.blueWash,
+  },
+  activityMetaLine: {
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.xs,
   },
   activityRow: {
     alignItems: "center",

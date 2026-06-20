@@ -297,3 +297,14 @@ Rationale: Internal testers need a trustworthy settings surface before Play
 testing. Local deletion can be implemented safely now, while remote deletion,
 legal language, backend retention, and account recovery remain explicit human
 and infrastructure gates.
+
+### Treat Activity As A Local Audit Trail
+
+Decision: Activity rows should be built from `activityEvents` when available and
+show actor identity, event type, relevant MXN amounts, and local/no-real-payment
+cues.
+
+Rationale: The premium app should feel multi-user and trustworthy, not like a
+passive receipt list. A local audit trail helps people understand who recorded a
+gasto, who marked a settlement, and what changed, while keeping backend sync and
+real payment claims out of scope.

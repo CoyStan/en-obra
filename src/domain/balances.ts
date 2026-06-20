@@ -1,5 +1,6 @@
 import { formatMoney, splitEqual } from "./money";
 import type {
+  ActivityEvent,
   ActivityItem,
   AppData,
   Expense,
@@ -22,6 +23,10 @@ function byDateDesc(left: { createdAt: string }, right: { createdAt: string }) {
 
 function memberName(members: Map<string, Member>, id: string) {
   return members.get(id)?.name ?? "Integrante";
+}
+
+function userName(data: AppData, userId: string) {
+  return data.users?.find((user) => user.id === userId)?.displayName ?? "Alguien";
 }
 
 export function getGroupMembers(data: AppData, groupId: string) {
@@ -217,9 +222,15 @@ export function describeBalance(balance: MemberBalance) {
 }
 
 export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
-  const members = new Map(data.members.map((member) => [member.id, member]));
+  const groupMembers = getGroupMembers(data, groupId);
+  const members = new Map([...data.members, ...groupMembers].map((member) => [member.id, member]));
+  const events = data.activityEvents?.filter((event) => event.groupId === groupId) ?? [];
+  const eventEntityKeys = new Set(events.map((event) => `${event.entityType}:${event.entityId}`));
+
   const expenses: ActivityItem[] = data.expenses
-    .filter((expense): expense is Expense => expense.groupId === groupId)
+    .filter((expense): expense is Expense =>
+      expense.groupId === groupId && !eventEntityKeys.has(`expense:${expense.id}`),
+    )
     .map((expense) => ({
       id: expense.id,
       groupId,
@@ -227,25 +238,133 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
       title: expense.title,
       subtitle: `Pagó ${memberName(members, expensePayerId(expense))} · Dividido entre ${
         expenseParticipantCount(data, expense)
-      } integrantes`,
+      } participantes`,
+      actorName: expense.createdByUserId ? userName(data, expense.createdByUserId) : undefined,
+      label: "Gasto",
       amountCents: expense.amountCents,
       currency: expense.currency,
       createdAt: expense.createdAt,
     }));
 
-  const settlements: ActivityItem[] = getGroupSettlements(data, groupId).map((settlement) => ({
-    id: settlement.id,
-    groupId,
-    type: "settlement",
-    title: `${memberName(members, settlement.fromMemberId)} pagó a ${memberName(
-      members,
-      settlement.toMemberId,
-    )}`,
-    subtitle: "Marcado pagado localmente · Sin pagos reales",
-    amountCents: settlement.amountCents,
-    currency: settlement.currency,
-    createdAt: settlement.recordedAt ?? settlement.createdAt,
-  }));
+  const settlements: ActivityItem[] = getGroupSettlements(data, groupId)
+    .filter((settlement) => !eventEntityKeys.has(`settlement:${settlement.id}`))
+    .map((settlement) => ({
+      id: settlement.id,
+      groupId,
+      type: "settlement",
+      title: `${memberName(members, settlement.fromMemberId)} pagó a ${memberName(
+        members,
+        settlement.toMemberId,
+      )}`,
+      subtitle: "Marcado pagado localmente · Sin pagos reales",
+      actorName: settlement.recordedByUserId ? userName(data, settlement.recordedByUserId) : undefined,
+      label: "Registro local",
+      amountCents: settlement.amountCents,
+      currency: settlement.currency,
+      createdAt: settlement.recordedAt ?? settlement.createdAt,
+    }));
 
-  return [...expenses, ...settlements].sort(byDateDesc);
+  return [...events.map((event) => activityFromEvent(data, members, event)), ...expenses, ...settlements]
+    .sort(byDateDesc);
+}
+
+function activityFromEvent(
+  data: AppData,
+  members: Map<string, Member>,
+  event: ActivityEvent,
+): ActivityItem {
+  const actorName = userName(data, event.actorUserId);
+
+  if (event.entityType === "expense") {
+    const expense = data.expenses.find((item) => item.id === event.entityId);
+    if (expense) {
+      return {
+        id: event.id,
+        groupId: event.groupId,
+        type: "expense",
+        title: expense.title,
+        subtitle: `${actorName} registró · Pagó ${memberName(members, expensePayerId(expense))} · ${
+          expenseParticipantCount(data, expense)
+        } participantes`,
+        actorName,
+        label: "Gasto",
+        amountCents: expense.amountCents,
+        currency: expense.currency,
+        createdAt: event.createdAt,
+      };
+    }
+    return orphanedActivityFromEvent(data, event, actorName, "Gasto");
+  }
+
+  if (event.entityType === "settlement") {
+    const settlement = data.settlements.find((item) => item.id === event.entityId);
+    if (settlement) {
+      return {
+        id: event.id,
+        groupId: event.groupId,
+        type: "settlement",
+        title: `${memberName(members, settlement.fromMemberId)} pagó a ${memberName(
+          members,
+          settlement.toMemberId,
+        )}`,
+        subtitle: `${actorName} marcó registro local · Sin pagos reales`,
+        actorName,
+        label: "Registro local",
+        amountCents: settlement.amountCents,
+        currency: settlement.currency,
+        createdAt: event.createdAt,
+      };
+    }
+    return orphanedActivityFromEvent(data, event, actorName, "Registro local");
+  }
+
+  if (event.entityType === "member") {
+    return {
+      id: event.id,
+      groupId: event.groupId,
+      type: "member",
+      title: event.summary,
+      subtitle: `${actorName} actualizó integrantes · Registro local`,
+      actorName,
+      label: "Integrante",
+      amountCents: 0,
+      currency: "MXN",
+      createdAt: event.createdAt,
+    };
+  }
+
+  return {
+    id: event.id,
+    groupId: event.groupId,
+    type: "group",
+    title: event.summary,
+    subtitle: `${actorName} creó el grupo · Registro local`,
+    actorName,
+    label: "Grupo",
+    amountCents: 0,
+    currency: "MXN",
+    createdAt: event.createdAt,
+  };
+}
+
+function orphanedActivityFromEvent(
+  data: AppData,
+  event: ActivityEvent,
+  actorName: string,
+  label: string,
+): ActivityItem {
+  const group = data.groups.find((item) => item.id === event.groupId);
+
+  return {
+    id: event.id,
+    groupId: event.groupId,
+    type: event.entityType === "expense" || event.entityType === "settlement" ? event.entityType : "group",
+    title: event.summary || "Movimiento local",
+    subtitle: `${actorName} registró un cambio local · ${group?.name ?? "Grupo local"}`,
+    actorName,
+    label,
+    amountCents: 0,
+    currency: "MXN",
+    createdAt: event.createdAt,
+  };
 }

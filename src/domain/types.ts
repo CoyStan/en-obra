@@ -121,9 +121,11 @@ export type SettlementSuggestion = {
 export type ActivityItem = {
   id: string;
   groupId: string;
-  type: "expense" | "settlement";
+  type: "expense" | "settlement" | "member" | "group";
   title: string;
   subtitle: string;
+  actorName?: string;
+  label?: string;
   amountCents: number;
   currency: CurrencyCode;
   createdAt: string;
