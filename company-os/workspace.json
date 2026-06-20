@@ -1017,6 +1017,50 @@
       "acceptance_target": "First viewport feels lighter, more professional, and closer to the premium goal while preserving core content and passing Android-size screenshot checks.",
       "required_approval_capability": "design",
       "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation",
+        "ai_design_review"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "real payments",
+        "backend services",
+        "secrets",
+        "paid APIs",
+        "push services",
+        "Play Store submission"
+      ],
+      "id": "WORK-APP-0010",
+      "title": "Premium color system refinement",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "active",
+      "scope": "Replace the current app palette with a more premium Android-first Mexico/LATAM fintech color selection that feels cleaner, less harsh, and more professional while preserving contrast, MXN trust cues, settlement risk cues, and no-real-payments boundaries. No layout overhaul, real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
+      "acceptance_target": "Theme tokens, design-system note, screenshots, and GLM 5.2 code-only review show a better premium palette with accessible contrast and no one-note color dominance.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
     }
   ],
   "attempts": [
@@ -1259,6 +1303,18 @@
         "docs/product/decisions.md",
         "reports/evidence/WORK-APP-0009"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0010",
+      "work_item_id": "WORK-APP-0010",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "main clean; prior app work items are reviewed and waiting on human approval",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [
