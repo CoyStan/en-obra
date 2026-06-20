@@ -1720,6 +1720,40 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0028"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0029",
+      "title": "AsyncStorage backend repository adapter",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add and test an AsyncStorage-backed BackendRepository adapter for the current local-first app storage keys. Preserve local demo behavior. Forbidden: real production backend, secrets, paid services, real payments, deployment.",
+      "acceptance_target": "Repository contract can load, save, mutate, export, and delete app/account/sync state through AsyncStorage keys with integrity repair and deterministic tests; readiness docs reflect the local storage adapter.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0029"
     }
   ],
   "attempts": [
@@ -2244,6 +2278,21 @@
       "result": "Implemented and verified provider-neutral backend sync engine in commit d2933dfd8b83cb9d15f39f3c134bfc7906b56928.",
       "commits": [
         "d2933dfd8b83cb9d15f39f3c134bfc7906b56928"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0029",
+      "work_item_id": "WORK-APP-0029",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T21:55:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified AsyncStorage backend repository adapter in commit cde226c946bfb12ae14103bac12a378cc9c4a5e9.",
+      "commits": [
+        "cde226c946bfb12ae14103bac12a378cc9c4a5e9"
       ]
     }
   ],
@@ -2941,6 +2990,29 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for provider-neutral sync engine.",
       "timestamp": "2026-06-20T21:47:00Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0029"
+      ],
+      "artifacts": [
+        "src/backend/asyncStorageRepository.ts",
+        "src/__tests__/asyncStorageRepository.test.ts",
+        "reports/evidence/WORK-APP-0029/technical-report.md",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md"
+      ],
+      "id": "EVIDENCE-APP-0029",
+      "work_item_id": "WORK-APP-0029",
+      "attempt_id": "ATTEMPT-APP-0029",
+      "head_sha": "cde226c946bfb12ae14103bac12a378cc9c4a5e9",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for AsyncStorage backend repository adapter.",
+      "timestamp": "2026-06-20T21:50:16Z"
     }
   ],
   "review_verdicts": [
@@ -3313,6 +3385,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:47:00Z"
+    },
+    {
+      "id": "REVIEW-APP-0029",
+      "work_item_id": "WORK-APP-0029",
+      "reviewed_head": "cde226c946bfb12ae14103bac12a378cc9c4a5e9",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:50:16Z"
     }
   ],
   "human_decisions": [],
@@ -4355,6 +4435,42 @@
       "attempt_id": "ATTEMPT-APP-0028",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:47:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0029",
+        "added AsyncStorage backend repository adapter",
+        "added AsyncStorage repository tests",
+        "updated backend readiness audit",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/asyncStorageRepository.ts",
+        "src/__tests__/asyncStorageRepository.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md",
+        "reports/evidence/WORK-APP-0029/technical-report.md"
+      ],
+      "not_done": [
+        "production backend provider",
+        "auth provider",
+        "network endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "legal approval",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0029",
+      "work_item_id": "WORK-APP-0029",
+      "attempt_id": "ATTEMPT-APP-0029",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:50:16Z"
     }
   ],
   "decisions": [
@@ -4812,6 +4928,15 @@
       "what_happened": "Added sync engine and mock transport for deterministic outbox processing with sent, failed, limit, retryable error, and immutable snapshot behavior.",
       "what_changed": "Future production storage/backend decisions can plug a real transport into tested local-first queue semantics.",
       "timestamp": "2026-06-20T21:47:00Z"
+    },
+    {
+      "id": "OUTCOME-APP-0029",
+      "work_item_id": "WORK-APP-0029",
+      "summary": "Backend repository contract now has a tested AsyncStorage adapter.",
+      "status": "captured",
+      "what_happened": "Added local storage repository implementation across app data, account state, and sync state with tested load, save, mutate, export, and delete behavior.",
+      "what_changed": "The current local-first app storage can now be exercised behind the same backend repository contract future providers should replace.",
+      "timestamp": "2026-06-20T21:50:16Z"
     }
   ]
 }
