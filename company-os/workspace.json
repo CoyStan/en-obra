@@ -928,6 +928,51 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0007"
+    },
+    {
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation",
+        "ai_design_review"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "real payments",
+        "backend services",
+        "secrets",
+        "paid APIs",
+        "push services",
+        "Play Store submission"
+      ],
+      "id": "WORK-APP-0008",
+      "title": "Premium settlement clarity and local confirmation",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "active",
+      "scope": "Polish settlement suggestions and confirmation so users can immediately understand who pays whom, whether the action involves the active identity, MXN amount, and that marking paid is only a local record outside the app. No real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
+      "acceptance_target": "Settlement rows and confirmation use personal Spanish copy, clear payer/receiver structure, MXN amount, no-real-payments cues, and local-only action language without removing existing content.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0008"
     }
   ],
   "attempts": [
@@ -1129,6 +1174,18 @@
         "docs/product/decisions.md",
         "reports/evidence/WORK-APP-0007"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0008",
+      "work_item_id": "WORK-APP-0008",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "main clean; prior app work items are reviewed and waiting on human approval",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [
