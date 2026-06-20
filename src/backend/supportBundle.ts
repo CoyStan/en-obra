@@ -3,6 +3,7 @@ import { createBackendReleaseManifest, type BackendReleaseManifest } from "./bac
 import { createDataSafetyInventory, type DataSafetyHandling } from "./dataSafetyInventory";
 import { createPlayPreflightReport, type PlayPreflightStatus } from "./playPreflight";
 import { createReleasePrivacyScan, type ReleasePrivacyScanReport } from "./releasePrivacyScan";
+import { createRetentionReadinessReport, type RetentionReadinessReport } from "./retentionReadiness";
 import type { BackendSnapshot } from "./repository";
 
 export type RedactedSupportBundle = {
@@ -42,6 +43,12 @@ export type RedactedSupportBundle = {
       blockers: string[];
     };
   };
+  retention: {
+    localDataRetention: RetentionReadinessReport["localDataRetention"];
+    cloudBackupEnabled: boolean;
+    productionStatus: RetentionReadinessReport["productionStatus"];
+    blockers: string[];
+  };
 };
 
 export function createRedactedSupportBundle(
@@ -58,6 +65,7 @@ export function createRedactedSupportBundle(
   const manifest = createBackendReleaseManifest(generatedAt);
   const scan = createReleasePrivacyScan(releaseConfig);
   const dataSafety = createDataSafetyInventory();
+  const retention = createRetentionReadinessReport();
 
   return {
     generatedAt,
@@ -95,6 +103,12 @@ export function createRedactedSupportBundle(
         handlingByCategory: Object.fromEntries(dataSafety.items.map((item) => [item.id, item.handling])),
         blockers: dataSafety.blockers,
       },
+    },
+    retention: {
+      localDataRetention: retention.localDataRetention,
+      cloudBackupEnabled: retention.cloudBackupEnabled,
+      productionStatus: retention.productionStatus,
+      blockers: retention.blockers,
     },
   };
 }

@@ -19,6 +19,7 @@ describe("Play preflight report", () => {
     expect(report.realPaymentsEnabled).toBe(false);
     expect(report.remoteBackendEnabled).toBe(false);
     expect(report.readySignals).toContain("backend release gate passes");
+    expect(report.readySignals).toContain("retention and backup model is ready for local internal testing");
     expect(report.readySignals).toContain("Data Safety technical inventory is local-first");
   });
 
@@ -41,6 +42,7 @@ describe("Play preflight report", () => {
     expect(report.evidence).toContain("docs/backend/release-manifest-v1.json");
     expect(report.evidence).toContain("src/backend/accessReadiness.ts");
     expect(report.evidence).toContain("src/backend/storageReadiness.ts");
+    expect(report.evidence).toContain("src/backend/retentionReadiness.ts");
     expect(report.evidence).toContain("src/backend/dataSafetyInventory.ts");
   });
 

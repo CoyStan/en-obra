@@ -81,6 +81,14 @@ legal promises. The `remote-deletion` release blocker remains active until the
 provider, public URL, support process, retention policy, legal approval, and
 security review are complete.
 
+`src/backend/retentionReadiness.ts` separately models the retention and backup
+contract. For internal testing, local data is treated as retained until the
+person clears local data, uninstalls the app, or resets the demo. Local export
+packages are support/migration artifacts, not cloud backups. Production remains
+blocked until retention windows, server backup/recovery, restore drills, public
+deletion URL, remote deletion fulfillment, and legal approval are defined for
+the chosen provider.
+
 ## Security Rules For Internal Testing
 
 - Keep "Sin pagos reales" visible near settlement actions.
@@ -101,7 +109,7 @@ Before production backend launch:
 - define access controls and least-privilege operational roles,
 - define incident response and user notification workflow,
 - define logs/observability with data minimization,
-- define retention and deletion SLAs,
+- define retention, backup restore, and deletion SLAs,
 - run security review against the actual backend and mobile build.
 
 ## Human Blockers

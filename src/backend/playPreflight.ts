@@ -2,6 +2,7 @@ import { createAccessReadinessReport } from "./accessReadiness";
 import { createBackendReleaseGateReport } from "./backendReleaseGate";
 import { createDataSafetyInventory } from "./dataSafetyInventory";
 import { createDeletionRequest, summarizeDeletionRequest } from "./deletionWorkflow";
+import { createRetentionReadinessReport } from "./retentionReadiness";
 import { createStorageReadinessReport } from "./storageReadiness";
 
 export type PlayPreflightStatus = "ready-for-internal-testing" | "blocked";
@@ -27,6 +28,7 @@ export function createPlayPreflightReport(generatedAt: string): PlayPreflightRep
   const gate = createBackendReleaseGateReport(generatedAt);
   const access = createAccessReadinessReport();
   const storage = createStorageReadinessReport();
+  const retention = createRetentionReadinessReport();
   const dataSafety = createDataSafetyInventory();
   const deletion = createDeletionRequest({
     id: "preflight-deletion-check",
@@ -40,6 +42,7 @@ export function createPlayPreflightReport(generatedAt: string): PlayPreflightRep
     gate.status === "pass" &&
     access.internalTestingStatus === "ready" &&
     storage.internalTestingStatus === "ready" &&
+    retention.internalTestingStatus === "ready" &&
     dataSafety.remoteBackendEnabled === false &&
     dataSafety.realPaymentsEnabled === false &&
     deletionSummary?.remoteEndpointConfigured === false;
@@ -58,6 +61,7 @@ export function createPlayPreflightReport(generatedAt: string): PlayPreflightRep
       "local repository and AsyncStorage adapter are tested",
       "access model is ready for local internal testing",
       "storage model is ready for local internal testing",
+      "retention and backup model is ready for local internal testing",
       "data export/import and diagnostics are tested",
       "Data Safety technical inventory is local-first",
       "deletion workflow is modeled without remote endpoint",
@@ -66,6 +70,7 @@ export function createPlayPreflightReport(generatedAt: string): PlayPreflightRep
       ...gate.knownBlockers,
       ...access.blockers,
       ...storage.blockers,
+      ...retention.blockers,
       ...dataSafety.blockers,
       "Play Console account and signing credentials",
       "signed Android App Bundle upload",
@@ -77,6 +82,7 @@ export function createPlayPreflightReport(generatedAt: string): PlayPreflightRep
       ...gate.evidence,
       ...access.evidence,
       ...storage.evidence,
+      ...retention.evidence,
       ...dataSafety.items.flatMap((item) => item.evidence),
     ]),
   };

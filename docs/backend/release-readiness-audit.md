@@ -22,6 +22,8 @@ deployment approval.
 - Local import/restore validator: `src/backend/dataImport.ts`
 - Backend health diagnostics: `src/backend/backendDiagnostics.ts`
 - Provider-neutral deletion workflow: `src/backend/deletionWorkflow.ts`
+- Provider-neutral retention and backup readiness contract:
+  `src/backend/retentionReadiness.ts`
 - Provider-neutral account access readiness contract:
   `src/backend/accessReadiness.ts`
 - Technical Data Safety inventory: `src/backend/dataSafetyInventory.ts`
@@ -66,6 +68,10 @@ deployment approval.
   expense titles, notes, payload JSON, or contact fields.
 - Provider-neutral deletion request lifecycle for requested, verified, queued,
   completed, failed, and cancelled states without configuring a remote endpoint.
+- Retention and backup readiness model that marks local clear-data, uninstall,
+  export/import validation, and support redaction ready for internal testing
+  while keeping production retention policy, server backups, restore drills,
+  remote deletion fulfillment, public deletion URL, and legal approval blocked.
 - Account/access readiness model that marks local mock access ready for internal
   testing while keeping production auth blocked until provider, secrets,
   deletion endpoint, and privacy URL decisions exist.
@@ -103,8 +109,9 @@ and the only remaining blockers are the expected human/provider decisions:
 `npm run release:android:check` also includes this backend gate.
 
 `src/backend/playPreflight.ts` is intentionally downstream from the release
-gate. It aggregates the gate plus access, storage, deletion, and Data Safety
-readiness into one handoff report without becoming part of the gate itself.
+gate. It aggregates the gate plus access, storage, retention, deletion, and
+Data Safety readiness into one handoff report without becoming part of the gate
+itself.
 The committed artifact is `docs/backend/play-preflight-v1.json`, and
 `src/__tests__/playPreflight.test.ts` keeps it synchronized with the generator.
 

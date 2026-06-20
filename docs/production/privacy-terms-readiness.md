@@ -92,6 +92,7 @@ Before production account/backend launch:
 - Add in-app account deletion flow.
 - Add public data deletion request URL.
 - Define retention windows and deletion fulfillment process.
+- Define server backup/recovery process and restore drill evidence.
 - Update privacy policy and terms for backend, auth provider, sync, diagnostics,
   incident handling, and support workflows.
 - Re-run security and privacy review.

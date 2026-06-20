@@ -21,6 +21,7 @@ describe("backend release readiness audit", () => {
     expect(byId.get("import-restore")?.status).toBe("ready");
     expect(byId.get("diagnostics")?.status).toBe("ready");
     expect(byId.get("deletion-workflow")?.status).toBe("ready");
+    expect(byId.get("retention-readiness")?.status).toBe("ready");
     expect(byId.get("access-readiness")?.status).toBe("ready");
     expect(byId.get("data-safety-inventory")?.status).toBe("ready");
     expect(byId.get("release-privacy-scan")?.status).toBe("ready");

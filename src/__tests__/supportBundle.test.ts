@@ -84,6 +84,8 @@ describe("redacted support bundle", () => {
     expect(bundle.releaseManifest.realPaymentsEnabled).toBe(false);
     expect(bundle.privacy.scan.status).toBe("pass");
     expect(bundle.privacy.dataSafety.handlingByCategory["financial-info"]).toBe("local-only");
+    expect(bundle.retention.cloudBackupEnabled).toBe(false);
+    expect(bundle.retention.blockers).toContain("server-side-backups");
 
     expect(serialized).not.toContain("ana@demo.local");
     expect(serialized).not.toContain("Hospedaje Centro");

@@ -6,6 +6,7 @@ import { auditAppDataIntegrity } from "./dataIntegrity";
 import { createAccessReadinessReport } from "./accessReadiness";
 import { createStorageReadinessReport } from "./storageReadiness";
 import { createDataSafetyInventory } from "./dataSafetyInventory";
+import { createRetentionReadinessReport } from "./retentionReadiness";
 
 export type BackendReadinessItem = {
   id: string;
@@ -41,6 +42,7 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
   const accessReadiness = createAccessReadinessReport();
   const storageReadiness = createStorageReadinessReport();
   const dataSafetyInventory = createDataSafetyInventory();
+  const retentionReadiness = createRetentionReadinessReport();
 
   const items: BackendReadinessItem[] = [
     item("sql-schema", "SQL schema contract", "ready", [
@@ -111,6 +113,19 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/deletionWorkflow.ts",
       "src/__tests__/deletionWorkflow.test.ts",
     ]),
+    item(
+      "retention-readiness",
+      "Provider-neutral retention and backup readiness contract",
+      retentionReadiness.internalTestingStatus,
+      [
+        "src/backend/retentionReadiness.ts",
+        "src/__tests__/retentionReadiness.test.ts",
+        ...retentionReadiness.evidence,
+      ],
+      retentionReadiness.internalTestingStatus === "ready"
+        ? undefined
+        : "Local/internal testing retention requirements are incomplete.",
+    ),
     item(
       "access-readiness",
       "Provider-neutral account access readiness contract",

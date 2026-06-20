@@ -333,6 +333,24 @@ summary, privacy scan result, and Data Safety handling categories. It
 intentionally excludes account contact details, raw user rows, expense titles,
 notes, and outbox payload JSON.
 
+## Retention And Backup Readiness
+
+`src/backend/retentionReadiness.ts` models retention and backup readiness
+without selecting a production provider or making legal promises. The current
+local-first build is ready for internal testing because it has:
+
+- local clear-data and demo reset behavior,
+- uninstall-clears-app-sandbox expectations,
+- local export packages,
+- import validation before restore,
+- redacted support evidence.
+
+Production remains blocked until a human-approved retention policy,
+server-side backups, backup restore drill, remote deletion fulfillment, public
+deletion URL, and legal retention approval exist. The model is included in the
+backend release gate so future provider work cannot accidentally ship without
+closing or intentionally waiving those production requirements.
+
 ## Backend Play Preflight
 
 `src/backend/playPreflight.ts` aggregates backend readiness into one
@@ -341,6 +359,7 @@ internal-testing handoff report. It summarizes:
 - backend release gate status
 - local/internal access readiness
 - local/internal storage readiness
+- local/internal retention and backup readiness
 - technical Data Safety posture
 - deletion workflow readiness without remote endpoint
 - remaining human/provider blockers
@@ -381,6 +400,7 @@ to stay ready before Play internal testing:
 - local import/restore validator
 - backend diagnostics
 - deletion workflow model
+- retention and backup readiness contract
 - account access readiness contract
 - technical Data Safety inventory
 - release privacy/dependency scan
