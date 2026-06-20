@@ -707,7 +707,7 @@
       "palari": "PALARI-RELEASE",
       "risk": "R4",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Prepare the app, docs, assets, and checklist needed to be very close to a Play Store internal testing upload without secrets, signing keys, or production submission. Evidence reports may be written under reports/evidence for this work item.",
       "allowed_resources": [
         "app.json",
@@ -835,13 +835,27 @@
       "id": "ATTEMPT-APP-0003",
       "work_item_id": "WORK-APP-0003",
       "actor": "PALARI-RELEASE",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean after WORK-APP-0002 review handoff",
-      "result": "in progress"
+      "cleanliness": "release-readiness docs committed on main; governance record pending commit",
+      "result": "Refreshed Android internal testing readiness docs and evidence",
+      "commits": [
+        "3cbe6d6"
+      ],
+      "changed_files": [
+        "docs/production/play-readiness.md",
+        "docs/production/internal-testing-checklist.md",
+        "docs/production/play-internal-testing-qa.md",
+        "docs/production/privacy-terms-readiness.md",
+        "docs/production/security-data-deletion.md",
+        "docs/legal/privacy-policy-draft.md",
+        "docs/legal/terms-draft.md",
+        "reports/evidence/WORK-APP-0003/technical-report.md",
+        "company-os/workspace.json"
+      ]
     }
   ],
   "evidence_runs": [
@@ -916,6 +930,27 @@
       "summary": "SQL-ready local model checks passed after GLM-reviewed participant subset fix: typecheck, unit tests, Expo config, web export, Company OS validate/scope, and 360px smoke screenshot.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T14:31:19Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "file assets/icon.png assets/adaptive-icon.png assets/splash.png assets/favicon.png assets/store/icon-512.png assets/store/feature-graphic.png",
+        "./bin/company-os scope WORK-APP-0003"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0003/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0003",
+      "work_item_id": "WORK-APP-0003",
+      "attempt_id": "ATTEMPT-APP-0003",
+      "head_sha": "3cbe6d6",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "Android internal testing readiness docs refreshed; release checks, web export, Company OS validate, asset dimension verification, and scope check passed.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T14:39:23Z"
     }
   ],
   "review_verdicts": [
@@ -1077,6 +1112,44 @@
       "attempt_id": "ATTEMPT-APP-0002",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T14:31:19Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PLAY-READINESS",
+        "SOURCE-PRIVACY-TERMS",
+        "SOURCE-SECURITY-DELETION"
+      ],
+      "actions_taken": [
+        "checked official Play and Expo references",
+        "refreshed Company OS release docs",
+        "updated legal draft dates and local data inventory",
+        "verified asset dimensions",
+        "ran release checks",
+        "documented human blockers"
+      ],
+      "outputs_created": [
+        "docs/production/play-readiness.md",
+        "docs/production/internal-testing-checklist.md",
+        "docs/production/play-internal-testing-qa.md",
+        "docs/production/privacy-terms-readiness.md",
+        "docs/production/security-data-deletion.md",
+        "docs/legal/privacy-policy-draft.md",
+        "docs/legal/terms-draft.md",
+        "reports/evidence/WORK-APP-0003/technical-report.md"
+      ],
+      "not_done": [
+        "Play Store submission",
+        "signing key generation",
+        "EAS authentication",
+        "legal approval",
+        "Data Safety answers",
+        "production backend"
+      ],
+      "id": "RECEIPT-APP-0003",
+      "work_item_id": "WORK-APP-0003",
+      "attempt_id": "ATTEMPT-APP-0003",
+      "actor": "PALARI-RELEASE",
+      "timestamp": "2026-06-20T14:39:23Z"
     }
   ],
   "decisions": [
@@ -1189,6 +1262,29 @@
       "what_happened": "Added users, group memberships, expense participants, activity events, sync outbox, normalization, docs, tests, and evidence.",
       "what_changed": "The app now models multi-user shared-expense data locally in a backend-replaceable shape while preserving offline demo behavior.",
       "timestamp": "2026-06-20T14:31:19Z"
+    },
+    {
+      "useful": [
+        "current Play target API and internal testing references",
+        "asset dimension inventory",
+        "EAS profile notes",
+        "Company OS gate mapping",
+        "human blocker list"
+      ],
+      "follow_up_needed": [
+        "fresh release review",
+        "human legal/privacy approval",
+        "Play Console setup",
+        "signing strategy",
+        "EAS or local Android build environment"
+      ],
+      "id": "OUTCOME-APP-0003",
+      "work_item_id": "WORK-APP-0003",
+      "summary": "Android internal testing readiness is documented and locally verified.",
+      "status": "captured",
+      "what_happened": "Updated release readiness, QA, privacy/terms, and security/deletion docs for Company OS and current Play/Expo requirements.",
+      "what_changed": "The repo now has clearer internal testing gates, asset inventory, build path, and human-owned blockers without touching secrets or production services.",
+      "timestamp": "2026-06-20T14:39:23Z"
     }
   ]
 }
