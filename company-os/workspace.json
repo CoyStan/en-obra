@@ -879,7 +879,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Polish activity/history so it uses the SQL-ready activity_events model, shows actor identity, group/member/expense/settlement events, local/demo trust cues, and a lighter audit-trail UI. No backend sync, payments, secrets, push, or production services.",
       "acceptance_target": "Activity tab and balance preview show a professional local audit trail with actor names, event types, MXN amounts where relevant, and no-real-payments cues for settlements.",
       "required_approval_capability": "design",
@@ -1045,13 +1045,24 @@
       "id": "ATTEMPT-APP-0006",
       "work_item_id": "WORK-APP-0006",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean; app work items 0001-0005 are reviewed and waiting on human approval",
-      "result": "in progress"
+      "cleanliness": "implementation and evidence committed on main; Company OS record pending commit",
+      "result": "Implemented premium activity history and local audit trail",
+      "commits": [
+        "575e42a"
+      ],
+      "changed_files": [
+        "src/domain/types.ts",
+        "src/domain/balances.ts",
+        "src/screens/MainScreen.tsx",
+        "src/__tests__/balances.test.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0006"
+      ]
     }
   ],
   "evidence_runs": [
@@ -1201,6 +1212,34 @@
       "summary": "Account/local data controls checks passed: typecheck, 20 tests, Expo config, web export, Company OS validate/scope, and GLM follow-up review accept-ready.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T14:55:50Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0006",
+        "npx playwright screenshot"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0006/technical-report.md",
+        "reports/evidence/WORK-APP-0006/glm52-code-review.md",
+        "reports/evidence/WORK-APP-0006/glm52-followup-review.md",
+        "reports/evidence/WORK-APP-0006/screenshots/activity-preview-360x740.png",
+        "reports/evidence/WORK-APP-0006/screenshots/activity-preview-390x844.png",
+        "reports/evidence/WORK-APP-0006/screenshots/activity-preview-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0006",
+      "work_item_id": "WORK-APP-0006",
+      "attempt_id": "ATTEMPT-APP-0006",
+      "head_sha": "575e42a",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "Activity audit trail checks passed: typecheck, 22 tests, Expo config, web export, Company OS validate/scope, screenshots, and GLM follow-up review accept-ready.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T15:02:21Z"
     }
   ],
   "review_verdicts": [
@@ -1308,6 +1347,26 @@
       "reviewer": "GLM-5.2-code-review",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T14:55:50Z"
+    },
+    {
+      "checks_inspected": [
+        "activity builder diff",
+        "activity row UI",
+        "balances tests",
+        "technical report",
+        "GLM follow-up fixes"
+      ],
+      "residual_risks": [
+        "human visual approval still required",
+        "Android emulator/device QA not run",
+        "interactive activity tab screenshot not captured without adding Playwright dependency"
+      ],
+      "id": "REVIEW-APP-0006",
+      "work_item_id": "WORK-APP-0006",
+      "reviewed_head": "575e42a",
+      "reviewer": "GLM-5.2-code-review",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T15:02:21Z"
     }
   ],
   "human_decisions": [],
@@ -1540,6 +1599,43 @@
       "attempt_id": "ATTEMPT-APP-0005",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T14:56:02Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "implemented event-backed activity builder",
+        "added actor identity and event labels",
+        "polished activity rows",
+        "added orphaned event fallback",
+        "added tests",
+        "captured Android-width screenshots",
+        "used GLM code review"
+      ],
+      "outputs_created": [
+        "src/domain/types.ts",
+        "src/domain/balances.ts",
+        "src/screens/MainScreen.tsx",
+        "src/__tests__/balances.test.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0006"
+      ],
+      "not_done": [
+        "backend sync worker",
+        "real payments",
+        "push services",
+        "Android emulator/device QA",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0006",
+      "work_item_id": "WORK-APP-0006",
+      "attempt_id": "ATTEMPT-APP-0006",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-20T15:02:21Z"
     }
   ],
   "decisions": [
@@ -1718,6 +1814,28 @@
       "what_happened": "Added local inventory, demo reset, confirmed local deletion, account state clearing, docs, tests, and evidence.",
       "what_changed": "Internal testers can now understand and clear local-only data without implying remote deletion or production accounts.",
       "timestamp": "2026-06-20T14:55:50Z"
+    },
+    {
+      "useful": [
+        "actor-aware activity",
+        "orphan event fallback",
+        "event labels",
+        "settlement no-payment cues",
+        "22 tests",
+        "GLM accept-ready review"
+      ],
+      "follow_up_needed": [
+        "human approval",
+        "Android device QA",
+        "interactive activity screenshot runner"
+      ],
+      "id": "OUTCOME-APP-0006",
+      "work_item_id": "WORK-APP-0006",
+      "summary": "Activity now reads as a local multi-user audit trail.",
+      "status": "captured",
+      "what_happened": "Activity rows now use activityEvents when available, show actor identity and labels, preserve fallback rows, and keep settlement records local/no-real-payment.",
+      "what_changed": "The history experience better supports the premium multi-user model and SQL-ready activity_events entity.",
+      "timestamp": "2026-06-20T15:02:21Z"
     }
   ]
 }
