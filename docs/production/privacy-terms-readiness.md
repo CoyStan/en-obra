@@ -41,6 +41,9 @@ docs should describe these as local device data, not server-collected data.
 
 ## Draft Google Play Data Safety Direction
 
+`src/backend/dataSafetyInventory.ts` captures the technical inventory for the
+current build. It is evidence for review, not a final legal submission.
+
 This needs human confirmation before submission:
 
 - Data collected by Cuentas Claras servers: likely "No" for the current local

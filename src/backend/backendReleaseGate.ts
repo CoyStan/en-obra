@@ -31,6 +31,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "diagnostics",
   "deletion-workflow",
   "access-readiness",
+  "data-safety-inventory",
   "export",
   "migrations",
 ] as const;

@@ -303,6 +303,23 @@ requests, remote deletion status, and a public privacy policy URL. The contract
 lets future email, passkey, OAuth, magic-link, or custom providers be evaluated
 without changing the app data model.
 
+## Data Safety Inventory
+
+`src/backend/dataSafetyInventory.ts` captures the technical inventory for Google
+Play Data Safety review. The current build is modeled as:
+
+- local-first demo mode
+- no real payments
+- no ads SDK
+- no analytics SDK
+- no remote backend sharing
+
+The inventory marks local-only account info, financial info, app activity, and
+diagnostics separately from categories the app does not collect, such as
+location, advertising, device contacts, and payments. It is technical evidence
+only; final Play Console answers, privacy URL, and legal approval remain human
+blockers.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
@@ -332,6 +349,7 @@ to stay ready before Play internal testing:
 - backend diagnostics
 - deletion workflow model
 - account access readiness contract
+- technical Data Safety inventory
 - local export package
 - migration planner
 

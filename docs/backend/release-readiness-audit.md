@@ -23,6 +23,7 @@ deployment approval.
 - Provider-neutral deletion workflow: `src/backend/deletionWorkflow.ts`
 - Provider-neutral account access readiness contract:
   `src/backend/accessReadiness.ts`
+- Technical Data Safety inventory: `src/backend/dataSafetyInventory.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -64,6 +65,9 @@ deployment approval.
 - Account/access readiness model that marks local mock access ready for internal
   testing while keeping production auth blocked until provider, secrets,
   deletion endpoint, and privacy URL decisions exist.
+- Technical Data Safety inventory showing the current build is local-first,
+  has no real payments, no ads/analytics SDK, no backend sharing, and still
+  requires human legal/Play Console submission.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.

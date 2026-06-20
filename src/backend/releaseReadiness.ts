@@ -5,6 +5,7 @@ import { demoData } from "../data/demoData";
 import { auditAppDataIntegrity } from "./dataIntegrity";
 import { createAccessReadinessReport } from "./accessReadiness";
 import { createStorageReadinessReport } from "./storageReadiness";
+import { createDataSafetyInventory } from "./dataSafetyInventory";
 
 export type BackendReadinessItem = {
   id: string;
@@ -39,6 +40,7 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
   const migrationPlan = planSqlMigrations(SQL_SCHEMA_VERSION);
   const accessReadiness = createAccessReadinessReport();
   const storageReadiness = createStorageReadinessReport();
+  const dataSafetyInventory = createDataSafetyInventory();
 
   const items: BackendReadinessItem[] = [
     item("sql-schema", "SQL schema contract", "ready", [
@@ -121,6 +123,16 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       accessReadiness.internalTestingStatus === "ready"
         ? undefined
         : "Local/internal testing access requirements are incomplete.",
+    ),
+    item(
+      "data-safety-inventory",
+      "Technical Data Safety inventory",
+      dataSafetyInventory.legalSubmissionReady ? "blocked" : "ready",
+      [
+        "src/backend/dataSafetyInventory.ts",
+        "src/__tests__/dataSafetyInventory.test.ts",
+        "docs/production/privacy-terms-readiness.md",
+      ],
     ),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
