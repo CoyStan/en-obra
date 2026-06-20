@@ -2023,6 +2023,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0038"
+    },
+    {
+      "id": "WORK-APP-0039",
+      "title": "Provider-neutral storage readiness contract",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested provider-neutral storage/backend readiness model for future data storage decisions, including internal-testing local storage readiness, production backend blockers, offline-first requirements, and no-secret/no-provider-selection behavior. Forbidden: choosing production storage provider, secrets, paid services, production backend deployment, legal commitments, real payments.",
+      "acceptance_target": "Backend exposes a tested storage readiness contract, release readiness/docs/manifest include it, production-storage remains an allowed blocker until human provider decision, and verification passes.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0039"
     }
   ],
   "attempts": [
@@ -2697,6 +2711,21 @@
       "result": "Implemented and verified provider-neutral account access readiness contract in commit cc98d116c4fc66ebe2fb8194746a60c2e9fcfe4a.",
       "commits": [
         "cc98d116c4fc66ebe2fb8194746a60c2e9fcfe4a"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0039",
+      "work_item_id": "WORK-APP-0039",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:08:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified provider-neutral storage readiness contract in commit d285a41939259ccd1b218d919b14645d44b3132a.",
+      "commits": [
+        "d285a41939259ccd1b218d919b14645d44b3132a"
       ]
     }
   ],
@@ -3603,6 +3632,27 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for provider-neutral access readiness.",
       "timestamp": "2026-06-20T23:06:04Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0039"
+      ],
+      "artifacts": [
+        "src/backend/storageReadiness.ts",
+        "src/__tests__/storageReadiness.test.ts",
+        "reports/evidence/WORK-APP-0039/technical-report.md",
+        "docs/backend/release-manifest-v1.json",
+        "docs/production/backend-sync-architecture.md"
+      ],
+      "id": "EVIDENCE-APP-0039",
+      "work_item_id": "WORK-APP-0039",
+      "attempt_id": "ATTEMPT-APP-0039",
+      "head_sha": "d285a41939259ccd1b218d919b14645d44b3132a",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for provider-neutral storage readiness.",
+      "timestamp": "2026-06-20T23:09:39Z"
     }
   ],
   "review_verdicts": [
@@ -4055,6 +4105,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:06:04Z"
+    },
+    {
+      "id": "REVIEW-APP-0039",
+      "work_item_id": "WORK-APP-0039",
+      "reviewed_head": "d285a41939259ccd1b218d919b14645d44b3132a",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:09:39Z"
     }
   ],
   "human_decisions": [],
@@ -5482,6 +5540,45 @@
       "attempt_id": "ATTEMPT-APP-0038",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:06:04Z"
+    },
+    {
+      "actions_taken": [
+        "created WORK-APP-0039",
+        "added storage readiness model",
+        "added storage readiness tests",
+        "updated backend release gate",
+        "updated release readiness report",
+        "regenerated release manifest",
+        "updated backend/storage docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/storageReadiness.ts",
+        "src/__tests__/storageReadiness.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "src/backend/backendReleaseGate.ts",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md",
+        "docs/production/backend-sync-architecture.md",
+        "reports/evidence/WORK-APP-0039/technical-report.md"
+      ],
+      "not_done": [
+        "production storage provider",
+        "production endpoint",
+        "secrets",
+        "data region decision",
+        "remote deletion fulfillment",
+        "legal/security approval",
+        "paid services",
+        "real payments",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0039",
+      "work_item_id": "WORK-APP-0039",
+      "attempt_id": "ATTEMPT-APP-0039",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:09:39Z"
     }
   ],
   "decisions": [
@@ -6029,6 +6126,15 @@
       "what_happened": "Added local internal-testing access criteria, production auth blockers, and future-provider readiness evaluation without choosing a vendor or configuring secrets.",
       "what_changed": "The backend release gate now requires access-readiness while still allowing production-auth as a human/provider blocker.",
       "timestamp": "2026-06-20T23:06:04Z"
+    },
+    {
+      "id": "OUTCOME-APP-0039",
+      "work_item_id": "WORK-APP-0039",
+      "summary": "Future storage/provider decisions now have a tested backend readiness contract.",
+      "status": "captured",
+      "what_happened": "Added local internal-testing storage criteria, production storage blockers, and future-provider readiness evaluation without choosing a provider or configuring secrets.",
+      "what_changed": "The backend release gate now requires storage-readiness while still allowing production-storage as a human/provider blocker.",
+      "timestamp": "2026-06-20T23:09:39Z"
     }
   ]
 }
