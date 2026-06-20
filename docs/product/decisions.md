@@ -434,3 +434,15 @@ the rest of the app feel disconnected: users could be in Balance or Profile
 without understanding which group they were editing. A parent group switcher
 keeps the model simple for everyday users: choose a group, then inspect activity,
 balances, or profile/person settings for that group.
+
+### Keep The Backend Contract Provider-Neutral Until Access Is Decided
+
+Decision: Define the backend foundation as a deterministic SQL schema and
+seed/export layer in code before choosing production storage, auth, hosting, or
+sync infrastructure.
+
+Rationale: The app needs to be close to Play Store readiness, but the founder
+still needs to decide access and storage. A provider-neutral SQL contract lets us
+test users, groups, memberships, expenses, participants, settlements, activity,
+and sync outbox behavior now without introducing secrets, paid services, or
+irreversible infrastructure choices.
