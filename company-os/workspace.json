@@ -1686,6 +1686,40 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0027"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0028",
+      "title": "Backend sync engine adapter",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add a provider-neutral backend sync engine that processes local sync_outbox items through a replaceable transport adapter. Preserve local-first behavior. Forbidden: real production backend, secrets, paid services, real payments, deployment.",
+      "acceptance_target": "Sync engine processes pending outbox records in deterministic order, respects limits, marks sent/failed attempts, preserves immutable input snapshots, exposes a mock transport, works with repository snapshots, updates readiness docs, and is fully tested.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0028"
     }
   ],
   "attempts": [
@@ -2195,6 +2229,21 @@
       "result": "Implemented and verified selected-group workspace navigation in commit f49b8f1210110866c2fa4d30dae32c9ee4cf1228.",
       "commits": [
         "f49b8f1210110866c2fa4d30dae32c9ee4cf1228"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0028",
+      "work_item_id": "WORK-APP-0028",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T21:50:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified provider-neutral backend sync engine in commit d2933dfd8b83cb9d15f39f3c134bfc7906b56928.",
+      "commits": [
+        "d2933dfd8b83cb9d15f39f3c134bfc7906b56928"
       ]
     }
   ],
@@ -2869,6 +2918,29 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for selected-group workspace navigation.",
       "timestamp": "2026-06-20T21:42:46Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0028"
+      ],
+      "artifacts": [
+        "src/backend/syncEngine.ts",
+        "src/__tests__/syncEngine.test.ts",
+        "reports/evidence/WORK-APP-0028/technical-report.md",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md"
+      ],
+      "id": "EVIDENCE-APP-0028",
+      "work_item_id": "WORK-APP-0028",
+      "attempt_id": "ATTEMPT-APP-0028",
+      "head_sha": "d2933dfd8b83cb9d15f39f3c134bfc7906b56928",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for provider-neutral sync engine.",
+      "timestamp": "2026-06-20T21:47:00Z"
     }
   ],
   "review_verdicts": [
@@ -3233,6 +3305,14 @@
       "reviewer": "PALARI-DESIGN",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:42:46Z"
+    },
+    {
+      "id": "REVIEW-APP-0028",
+      "work_item_id": "WORK-APP-0028",
+      "reviewed_head": "d2933dfd8b83cb9d15f39f3c134bfc7906b56928",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:47:00Z"
     }
   ],
   "human_decisions": [],
@@ -4238,6 +4318,43 @@
       "attempt_id": "ATTEMPT-APP-0027",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T21:42:46Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0028",
+        "added provider-neutral sync engine",
+        "added mock sync transport",
+        "added sync engine tests",
+        "updated backend readiness audit",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/syncEngine.ts",
+        "src/__tests__/syncEngine.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md",
+        "reports/evidence/WORK-APP-0028/technical-report.md"
+      ],
+      "not_done": [
+        "production backend provider",
+        "auth provider",
+        "network endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "legal approval",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0028",
+      "work_item_id": "WORK-APP-0028",
+      "attempt_id": "ATTEMPT-APP-0028",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:47:00Z"
     }
   ],
   "decisions": [
@@ -4686,6 +4803,15 @@
       "what_happened": "Groups now behaves as the switcher while Activity, Balance, and Perfil show a compact active-group workspace header and are guarded when no group is selected.",
       "what_changed": "Changing the selected group is now visibly the action that changes the context of the other tabs.",
       "timestamp": "2026-06-20T21:42:46Z"
+    },
+    {
+      "id": "OUTCOME-APP-0028",
+      "work_item_id": "WORK-APP-0028",
+      "summary": "Backend outbox rows now have tested provider-neutral replay semantics.",
+      "status": "captured",
+      "what_happened": "Added sync engine and mock transport for deterministic outbox processing with sent, failed, limit, retryable error, and immutable snapshot behavior.",
+      "what_changed": "Future production storage/backend decisions can plug a real transport into tested local-first queue semantics.",
+      "timestamp": "2026-06-20T21:47:00Z"
     }
   ]
 }
