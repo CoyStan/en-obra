@@ -659,7 +659,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Introduce SQL-ready local entities for users, group_members, expense_participants, activity_events, and sync_outbox while preserving the current local-first UI behavior.",
       "allowed_resources": [
         "company-os",
@@ -799,13 +799,30 @@
       "id": "ATTEMPT-APP-0002",
       "work_item_id": "WORK-APP-0002",
       "actor": "PALARI-ENGINEERING",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean after WORK-APP-0001 review handoff",
-      "result": "in progress"
+      "cleanliness": "implementation committed on main; governance record pending",
+      "result": "Implemented SQL-ready local-first account model and evidence",
+      "commits": [
+        "b25d5b6"
+      ],
+      "changed_files": [
+        "src/domain/types.ts",
+        "src/domain/balances.ts",
+        "src/domain/appDataNormalization.ts",
+        "src/data/demoData.ts",
+        "src/state/useAppData.ts",
+        "src/state/storage.ts",
+        "src/sync/types.ts",
+        "src/__tests__/sqlReadyModel.test.ts",
+        "docs/product/architecture.md",
+        "docs/product/decisions.md",
+        "docs/production/auth-account-model.md",
+        "reports/evidence/WORK-APP-0002"
+      ]
     }
   ],
   "evidence_runs": [
@@ -855,6 +872,29 @@
       "status": "passed",
       "summary": "Premium first-viewport pass checks passed: typecheck, tests, Expo config, web export, Company OS validate/scope, screenshots at 360/390/412.",
       "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0002"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0002/technical-report.md",
+        "reports/evidence/WORK-APP-0002/mobile-360x740.png"
+      ],
+      "id": "EVIDENCE-APP-0002",
+      "work_item_id": "WORK-APP-0002",
+      "attempt_id": "ATTEMPT-APP-0002",
+      "head_sha": "b25d5b6",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "SQL-ready local model checks passed: typecheck, unit tests, Expo config, web export, Company OS validate/scope, and 360px smoke screenshot.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T14:31:19Z"
     }
   ],
   "review_verdicts": [
@@ -953,6 +993,49 @@
       "attempt_id": "ATTEMPT-APP-0001",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PRD",
+        "SOURCE-ARCHITECTURE",
+        "SOURCE-DECISIONS",
+        "SOURCE-PREMIUM-VISUAL-GOAL"
+      ],
+      "actions_taken": [
+        "implemented SQL-ready local entities",
+        "updated demo data to v2 local model",
+        "added legacy normalization",
+        "updated local write actions",
+        "added model tests",
+        "ran checks",
+        "captured 360px smoke screenshot"
+      ],
+      "outputs_created": [
+        "src/domain/types.ts",
+        "src/domain/balances.ts",
+        "src/domain/appDataNormalization.ts",
+        "src/data/demoData.ts",
+        "src/state/useAppData.ts",
+        "src/state/storage.ts",
+        "src/sync/types.ts",
+        "src/__tests__/sqlReadyModel.test.ts",
+        "docs/product/architecture.md",
+        "docs/product/decisions.md",
+        "docs/production/auth-account-model.md",
+        "reports/evidence/WORK-APP-0002"
+      ],
+      "not_done": [
+        "production auth backend",
+        "backend sync service",
+        "real payments",
+        "Android emulator/device build",
+        "human review approval"
+      ],
+      "id": "RECEIPT-APP-0002",
+      "work_item_id": "WORK-APP-0002",
+      "attempt_id": "ATTEMPT-APP-0002",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T14:31:19Z"
     }
   ],
   "decisions": [
@@ -1044,6 +1127,27 @@
       "what_happened": "The home balance screen now shows Cuentas Claras, active demo user, group, MXN, personal balance, one settlement cue, primary add-expense action, and no-real-payments cue in the first viewport.",
       "what_changed": "The app moved away from a group-wide dashboard card toward a personal, lower-cognitive-load Android finance home.",
       "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "useful": [
+        "participant-level equal splits",
+        "legacy v1 normalization",
+        "multi-user local demo data",
+        "sync outbox placeholders"
+      ],
+      "follow_up_needed": [
+        "fresh review",
+        "production auth provider selection",
+        "backend sync implementation",
+        "Android emulator/device QA"
+      ],
+      "id": "OUTCOME-APP-0002",
+      "work_item_id": "WORK-APP-0002",
+      "summary": "SQL-ready local-first account model is implemented and verified.",
+      "status": "captured",
+      "what_happened": "Added users, group memberships, expense participants, activity events, sync outbox, normalization, docs, tests, and evidence.",
+      "what_changed": "The app now models multi-user shared-expense data locally in a backend-replaceable shape while preserving offline demo behavior.",
+      "timestamp": "2026-06-20T14:31:19Z"
     }
   ]
 }
