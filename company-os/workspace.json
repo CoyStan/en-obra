@@ -2163,6 +2163,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0048"
+    },
+    {
+      "id": "WORK-APP-0049",
+      "title": "Backend release handoff summary artifact",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend/releaseHandoff.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/releaseHandoff.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0049/**, company-os/workspace.json. Add deterministic backend release handoff summary that aggregates gate, preflight, Data Safety draft, secret scan, retention, blockers, and next human actions. Forbidden: provider selection, secrets, production deployment, final legal/Play decisions, app UI feature work.",
+      "acceptance_target": "A tested backend release handoff artifact summarizes what is ready, what is demo/local-only, what is blocked by access/storage/legal/Play decisions, and the exact evidence commands/files for internal testing review.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0049"
     }
   ],
   "attempts": [
@@ -2971,6 +2985,17 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:50:00Z",
+      "cleanliness": "clean"
+    },
+    {
+      "id": "ATTEMPT-APP-0049",
+      "work_item_id": "WORK-APP-0049",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:52:51Z",
       "cleanliness": "clean"
     }
   ],
@@ -4046,6 +4071,16 @@
       "summary": "Added technical Play Data Safety draft generator. npm run release:android:check passed: typecheck, 34 test files / 136 tests, backend release gate, and Expo public config.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T23:51:40Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0049",
+      "work_item_id": "WORK-APP-0049",
+      "attempt_id": "ATTEMPT-APP-0049",
+      "head_sha": "3daa3e0c5ba4f8dfd3fbdc9264810e617c5b1074",
+      "status": "passed",
+      "summary": "Added deterministic backend release handoff artifact. npm run release:android:check passed: typecheck, 35 test files / 141 tests, backend release gate, and Expo public config.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T23:56:36Z"
     }
   ],
   "review_verdicts": [
@@ -4578,6 +4613,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:51:40Z"
+    },
+    {
+      "id": "REVIEW-APP-0049",
+      "work_item_id": "WORK-APP-0049",
+      "reviewed_head": "3daa3e0c5ba4f8dfd3fbdc9264810e617c5b1074",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:56:36Z"
     }
   ],
   "human_decisions": [],
@@ -6254,6 +6297,13 @@
       "attempt_id": "ATTEMPT-APP-0048",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:51:40Z"
+    },
+    {
+      "id": "RECEIPT-APP-0049",
+      "work_item_id": "WORK-APP-0049",
+      "attempt_id": "ATTEMPT-APP-0049",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:56:36Z"
     }
   ],
   "decisions": [
@@ -6891,6 +6941,15 @@
       "what_happened": "Added playDataSafetyDraft module, tests, backend release gate/preflight/support bundle integration, regenerated artifacts, and docs.",
       "what_changed": "Current local-first Data Safety posture is machine-readable, non-legal, and blocked if privacy or secret scans detect release risks.",
       "timestamp": "2026-06-20T23:51:40Z"
+    },
+    {
+      "id": "OUTCOME-APP-0049",
+      "work_item_id": "WORK-APP-0049",
+      "summary": "Backend release handoff artifact is now generated and tested.",
+      "status": "completed",
+      "what_happened": "Added releaseHandoff module, drift-tested JSON artifact, backend gate/preflight/support bundle integration, docs, and evidence.",
+      "what_changed": "Release review now has one deterministic artifact summarizing local readiness, demo-only boundaries, no-go guarantees, blockers, evidence, commands, and next human actions.",
+      "timestamp": "2026-06-20T23:56:36Z"
     }
   ]
 }
