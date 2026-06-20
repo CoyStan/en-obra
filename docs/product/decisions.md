@@ -387,3 +387,14 @@ made the sheet feel heavy. Dropdown triggers keep the flow readable, allow a
 larger category taxonomy, and make payer/participant choice feel more like a
 native form control while preserving clear avatars, checks, and local-only
 money semantics.
+
+### Keep Hero Money Precise But Quiet
+
+Decision: The first-viewport personal balance should show decimal cents, keep
+the currency label compact, and align the numeric amount to the right instead
+of using a large centered amount.
+
+Rationale: Shared-expense apps need exact money values, but oversized hero
+money makes the app feel less professional and can truncate on narrow Android
+screens. A compact right-aligned number preserves precision and trust while
+leaving the left side for the user's balance state.

@@ -1194,6 +1194,49 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0013"
+    },
+    {
+      "allowed_resources": [
+        "company-os",
+        "src",
+        "docs/product",
+        "reports/evidence"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "remove_core_content"
+      ],
+      "id": "WORK-APP-0014",
+      "title": "Refine hero balance amount layout",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "active",
+      "scope": "Make the first-viewport personal balance card less oversized, show cents, and place the amount on the right where horizontal space is available.",
+      "acceptance_target": "The personal balance block feels calmer and more finance-native, with decimal cents visible and no oversized centered amount.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0014"
     }
   ],
   "attempts": [
@@ -1507,6 +1550,17 @@
       "commits": [
         "09eae3ae629a7faab6e78fd78faa46ad8614476b"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0014",
+      "work_item_id": "WORK-APP-0014",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started hero balance layout correction from founder screenshot feedback."
     }
   ],
   "evidence_runs": [

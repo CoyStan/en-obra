@@ -62,10 +62,8 @@ const longDateFormatter = new Intl.DateTimeFormat("es-MX", {
 });
 
 const heroMoneyFormatter = new Intl.NumberFormat("es-MX", {
-  currency: "MXN",
-  currencyDisplay: "code",
-  maximumFractionDigits: 0,
-  style: "currency",
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
 });
 
 const expenseCategories: {
@@ -1844,7 +1842,7 @@ export function MainScreen() {
                   <MaterialCommunityIcons
                     color={personalBalanceState.tone === "due" ? colors.terracotta : colors.primaryDark}
                     name={personalBalanceState.tone === "due" ? "wallet-outline" : "cash-multiple"}
-                    size={25}
+                    size={20}
                   />
                 </View>
                 <View style={styles.myBalanceCopy}>
@@ -1852,6 +1850,9 @@ export function MainScreen() {
                   <Text style={[styles.myBalanceState, personalBalanceState.tone === "due" && styles.myBalanceDue]}>
                     {personalBalanceState.label}
                   </Text>
+                </View>
+                <View style={styles.myBalanceAmountWrap}>
+                  <Text style={styles.myBalanceCurrency}>MXN</Text>
                   <Text
                     adjustsFontSizeToFit
                     numberOfLines={1}
@@ -2305,19 +2306,31 @@ const styles = StyleSheet.create({
   },
   myBalanceAmount: {
     color: colors.primary,
-    fontSize: 34,
+    fontSize: 25,
     fontVariant: ["tabular-nums"],
     fontWeight: "800",
     letterSpacing: 0,
-    lineHeight: 38,
+    lineHeight: 30,
+    textAlign: "right",
   },
   myBalanceAmountDue: {
     color: colors.due,
   },
-  myBalanceCopy: {
+  myBalanceAmountWrap: {
+    alignItems: "flex-end",
     flex: 1,
-    gap: 1,
     minWidth: 0,
+  },
+  myBalanceCopy: {
+    flexShrink: 0,
+    gap: 1,
+    width: 68,
+  },
+  myBalanceCurrency: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
   },
   myBalanceDue: {
     color: colors.due,
@@ -2325,14 +2338,14 @@ const styles = StyleSheet.create({
   myBalanceIcon: {
     alignItems: "center",
     backgroundColor: "transparent",
-    borderRadius: 24,
-    height: 48,
+    borderRadius: 18,
+    height: 36,
     justifyContent: "center",
-    width: 48,
+    width: 36,
   },
   myBalanceKicker: {
     color: colors.mutedInk,
-    fontSize: typography.small,
+    fontSize: typography.micro,
     fontWeight: "600",
   },
   myBalancePanel: {
@@ -2342,13 +2355,14 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     borderWidth: 0,
     flexDirection: "row",
-    gap: spacing.md,
-    minHeight: 88,
-    padding: spacing.md,
+    gap: spacing.sm,
+    minHeight: 68,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   myBalanceState: {
     color: colors.primaryDark,
-    fontSize: typography.heading,
+    fontSize: typography.body,
     fontWeight: "800",
   },
   noPaymentChip: {
