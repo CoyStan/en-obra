@@ -1061,6 +1061,50 @@
       "acceptance_target": "Theme tokens, design-system note, screenshots, and GLM 5.2 code-only review show a better premium palette with accessible contrast and no one-note color dominance.",
       "required_approval_capability": "design",
       "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation",
+        "ai_design_review"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "real payments",
+        "backend services",
+        "secrets",
+        "paid APIs",
+        "push services",
+        "Play Store submission"
+      ],
+      "id": "WORK-APP-0011",
+      "title": "Visual comprehension and motion layer",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "active",
+      "scope": "Add tasteful Android-first visual objects and lightweight animations so the app is easier to understand without relying mostly on text: animated balance/settlement route cues, clearer money-flow figures, and visual anchors for activity. Preserve content, accessibility, local/no-real-payments boundaries, and performance. No real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
+      "acceptance_target": "First viewport and balance/activity surfaces include meaningful animated/visual comprehension cues, pass checks, and remain readable on Android viewport screenshots.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
     }
   ],
   "attempts": [
@@ -1326,6 +1370,18 @@
         "docs/product",
         "reports/evidence/WORK-APP-0010"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0011",
+      "work_item_id": "WORK-APP-0011",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "main clean; prior app work items are reviewed and waiting on human approval",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [
