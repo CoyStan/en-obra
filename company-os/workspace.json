@@ -608,7 +608,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Implement the premium Android visual system from docs/product/premium-visual-goal, starting with a lighter first screen and multi-user clarity while preserving content.",
       "allowed_resources": [
         "company-os",
@@ -768,13 +768,25 @@
       "id": "ATTEMPT-APP-0001",
       "work_item_id": "WORK-APP-0001",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "continuing with pre-existing dirty app source edits preserved",
-      "result": "in progress"
+      "cleanliness": "committed implementation and evidence on main",
+      "result": "Implemented identity-first premium balance hero, lighter quick actions, active member defaults, and screenshot evidence",
+      "commits": [
+        "6113a5a31ae9"
+      ],
+      "changed_files": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "src/auth/localAccountAdapter.ts",
+        "src/auth/types.ts",
+        "src/auth/useAccount.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0001"
+      ]
     }
   ],
   "evidence_runs": [
@@ -799,6 +811,30 @@
       "head_sha": "9aa71eb370d8",
       "status": "passed",
       "summary": "Migration checks passed: npm run typecheck, npm test, npx expo config --type public, Company OS validate/queue/state/scope, vendored Company OS verify.sh.",
+      "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0001"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0001/technical-report.md",
+        "reports/evidence/WORK-APP-0001/glm52-code-review.md",
+        "reports/evidence/WORK-APP-0001/screenshots-after/mobile-360x740.png",
+        "reports/evidence/WORK-APP-0001/screenshots-after/mobile-390x844.png",
+        "reports/evidence/WORK-APP-0001/screenshots-after/mobile-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0001",
+      "work_item_id": "WORK-APP-0001",
+      "attempt_id": "ATTEMPT-APP-0001",
+      "head_sha": "6113a5a31ae9",
+      "status": "passed",
+      "summary": "Premium first-viewport pass checks passed: typecheck, tests, Expo config, web export, Company OS validate/scope, screenshots at 360/390/412.",
       "timestamp": "2026-06-20T00:00:00Z"
     }
   ],
@@ -838,6 +874,44 @@
       "work_item_id": "WORK-MIGRATION-0001",
       "attempt_id": "ATTEMPT-MIGRATION-0001",
       "actor": "PALARI-OPS",
+      "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-PRD"
+      ],
+      "actions_taken": [
+        "used GLM 5.2 code-only review",
+        "implemented identity-first hero",
+        "flattened quick actions",
+        "lightened settlement rows",
+        "captured viewport screenshots",
+        "ran checks"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "src/auth/localAccountAdapter.ts",
+        "src/auth/types.ts",
+        "src/auth/useAccount.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0001"
+      ],
+      "not_done": [
+        "Android emulator verification",
+        "full SQL-ready model",
+        "full add-expense sheet redesign",
+        "full settlement/activity polish",
+        "Play internal testing readiness"
+      ],
+      "id": "RECEIPT-APP-0001",
+      "work_item_id": "WORK-APP-0001",
+      "attempt_id": "ATTEMPT-APP-0001",
+      "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T00:00:00Z"
     }
   ],
@@ -908,6 +982,27 @@
       "status": "completed",
       "what_happened": "Old Orchestrator files were archived under docs/legacy/palari-orchestrator, Company OS was vendored under tools/palari-company-os, and a new company-os/workspace.json became the forward source of truth.",
       "what_changed": "New work should use ./bin/company-os queue/detail/validate instead of old CUE tickets.",
+      "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "useful": [
+        "360px identity text is readable",
+        "hero amount no longer truncates",
+        "GLM code-only review is saved",
+        "viewport screenshots captured"
+      ],
+      "follow_up_needed": [
+        "Run Android emulator/device QA",
+        "continue SQL-ready model work",
+        "polish add-expense sheet",
+        "polish settlement and activity flows"
+      ],
+      "id": "OUTCOME-APP-0001",
+      "work_item_id": "WORK-APP-0001",
+      "summary": "First viewport now presents identity-first personal balance with lower visual weight.",
+      "status": "captured",
+      "what_happened": "The home balance screen now shows Cuentas Claras, active demo user, group, MXN, personal balance, one settlement cue, primary add-expense action, and no-real-payments cue in the first viewport.",
+      "what_changed": "The app moved away from a group-wide dashboard card toward a personal, lower-cognitive-load Android finance home.",
       "timestamp": "2026-06-20T00:00:00Z"
     }
   ]
