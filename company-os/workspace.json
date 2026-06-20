@@ -1440,12 +1440,15 @@
       "id": "ATTEMPT-APP-0012",
       "work_item_id": "WORK-APP-0012",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started object-led interaction implementation from toy app review."
+      "result": "Implemented and verified object-led interaction pass in commit 645d903e12fd51069d2e3f6680f788c1d7f07b11.",
+      "commits": [
+        "645d903e12fd51069d2e3f6680f788c1d7f07b11"
+      ]
     }
   ],
   "evidence_runs": [
