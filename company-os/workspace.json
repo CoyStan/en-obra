@@ -838,7 +838,28 @@
       "timestamp": "2026-06-20T00:00:00Z"
     }
   ],
-  "review_verdicts": [],
+  "review_verdicts": [
+    {
+      "checks_inspected": [
+        "implementation diff 6113a5a",
+        "current MainScreen/theme/ui code",
+        "technical report",
+        "premium visual goal",
+        "reports/evidence/WORK-APP-0001/glm52-fresh-review.md"
+      ],
+      "residual_risks": [
+        "human visual taste approval still required",
+        "Android emulator/device QA still pending",
+        "broader premium goal remains incomplete"
+      ],
+      "id": "REVIEW-APP-0001",
+      "work_item_id": "WORK-APP-0001",
+      "reviewed_head": "6113a5a31ae9",
+      "reviewer": "GLM-5.2-code-review",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T00:00:00Z"
+    }
+  ],
   "human_decisions": [],
   "receipts": [
     {
