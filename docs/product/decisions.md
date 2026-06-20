@@ -319,3 +319,14 @@ Rationale: The app must not feel like one person manages everyone else's money.
 If a tester switches to Diego in a group, new gastos and local settlement
 records should be attributed to Diego in the audit trail. If that identity is
 stale or missing, the app falls back to the selected demo user.
+
+### Make Settlement Actions Perspective-Aware
+
+Decision: Settlement suggestions and confirmations should say whether the active
+identity pays, receives, or is only viewing a group record, and every action must
+be framed as a local record of a payment made outside the app.
+
+Rationale: The premium Android MVP needs low cognitive load around the most
+sensitive money action. Clear payer/receiver language reduces mistakes, while
+`Sin pagos reales` and external-payment copy keep the app away from payment
+processing claims.

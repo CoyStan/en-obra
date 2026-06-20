@@ -139,17 +139,51 @@ function settlementCue(
     return "Todo en paz · Registro local";
   }
 
-  if (activeMemberId && settlement.toMemberId === activeMemberId) {
-    return `${from?.name ?? "Alguien"} te debe ${formatMoney(settlement.amountCents)}`;
+  const perspective = settlementPerspective(settlement, activeMemberId, from, to);
+  return `${perspective.title} ${formatMoney(settlement.amountCents)}`;
+}
+
+function settlementPerspective(
+  settlement: SettlementSuggestion,
+  activeMemberId: string,
+  from?: Member | null,
+  to?: Member | null,
+) {
+  const fromName = from?.name ?? "Integrante";
+  const toName = to?.name ?? "integrante";
+  const isActivePayer = activeMemberId === settlement.fromMemberId;
+  const isActiveReceiver = activeMemberId === settlement.toMemberId;
+
+  if (isActivePayer) {
+    return {
+      actionLabel: "Registrar pago",
+      badge: "Pago pendiente",
+      confirmBody:
+        "Confirma si ya pagaste fuera de la app. No se mueve dinero.",
+      confirmTitle: `¿Registrar pago a ${toName}?`,
+      title: `Tú pagas a ${toName}`,
+    };
   }
 
-  if (activeMemberId && settlement.fromMemberId === activeMemberId) {
-    return `Debes a ${to?.name ?? "alguien"} ${formatMoney(settlement.amountCents)}`;
+  if (isActiveReceiver) {
+    return {
+      actionLabel: "Marcar recibido",
+      badge: "Por recibir",
+      confirmBody:
+        "Confirma si ya recibiste el pago fuera de la app. Solo actualiza el registro local.",
+      confirmTitle: `¿Marcar como recibido de ${fromName}?`,
+      title: `${fromName} te paga`,
+    };
   }
 
-  return `${from?.name ?? "Alguien"} le debe a ${to?.name ?? "alguien"} ${formatMoney(
-    settlement.amountCents,
-  )}`;
+  return {
+    actionLabel: "Registrar acuerdo",
+    badge: "Grupo",
+    confirmBody:
+      "Confirma si el grupo ya liquidó fuera de la app. No se mueve dinero.",
+    confirmTitle: "Confirmar registro local",
+    title: `Vista de grupo: ${fromName} paga a ${toName}`,
+  };
 }
 
 function GroupCard({
@@ -651,33 +685,37 @@ export function MainScreen() {
   const renderSettlementCard = (settlement: SettlementSuggestion) => {
     const from = findMember(data.members, settlement.fromMemberId);
     const to = findMember(data.members, settlement.toMemberId);
+    const perspective = settlementPerspective(settlement, displayMemberId, from, to);
 
     return (
       <View key={`${settlement.fromMemberId}-${settlement.toMemberId}`} style={styles.settlementCard}>
         <View style={styles.settlementCompactTop}>
           <View style={styles.settlementRouteIcon}>
-            <MaterialCommunityIcons color={colors.primaryDark} name="arrow-decision-outline" size={18} />
+            <MaterialCommunityIcons color={colors.primaryDark} name="bank-transfer-out" size={19} />
           </View>
           <View style={styles.settlementCompactCopy}>
-            <Text style={styles.settlementTitle}>
-              {from?.name ?? "Integrante"} le debe a {to?.name ?? "integrante"}
-            </Text>
-            <Text style={styles.settlementInstruction}>
-              Registra un pago externo cuando lo hayan liquidado.
-            </Text>
+            <View style={styles.settlementTitleRow}>
+              <Text style={styles.settlementTitle}>{perspective.title}</Text>
+              <View style={styles.settlementPerspectiveBadge}>
+                <Text style={styles.settlementPerspectiveText}>{perspective.badge}</Text>
+              </View>
+            </View>
             <View style={styles.demoChip}>
               <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
               <Text style={styles.demoOnly}>Sin pagos reales</Text>
             </View>
           </View>
-          <Text style={styles.settlementAmountText}>
-            {formatMoney(settlement.amountCents)}
-          </Text>
+          <View style={styles.settlementAmountGroup}>
+            <Text style={styles.settlementAmountLabel}>Monto MXN</Text>
+            <Text style={styles.settlementAmountText}>
+              {formatMoney(settlement.amountCents)}
+            </Text>
+          </View>
         </View>
         <View style={styles.settlementActions}>
           <ActionButton
             icon="check"
-            label="Marcar pagado"
+            label={perspective.actionLabel}
             onPress={() => setPendingSettlement(settlement)}
             tone="secondary"
           />
@@ -1188,6 +1226,9 @@ export function MainScreen() {
   const renderSettlementConfirmation = () => {
     const from = pendingSettlement ? findMember(data.members, pendingSettlement.fromMemberId) : null;
     const to = pendingSettlement ? findMember(data.members, pendingSettlement.toMemberId) : null;
+    const perspective = pendingSettlement
+      ? settlementPerspective(pendingSettlement, displayMemberId, from, to)
+      : null;
 
     return (
       <Modal
@@ -1201,9 +1242,10 @@ export function MainScreen() {
             <View style={styles.confirmIcon}>
               <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={18} />
             </View>
-            <Text style={styles.confirmTitle}>Confirmar arreglo local</Text>
+            <Text style={styles.confirmTitle}>{perspective?.confirmTitle ?? "Confirmar arreglo local"}</Text>
             <Text style={styles.confirmBody}>
-              Esto solo marca el arreglo como pagado en Cuentas Claras. No mueve dinero ni inicia pagos reales.
+              {perspective?.confirmBody ??
+                "Esto solo marca el arreglo como pagado en Cuentas Claras. No mueve dinero ni inicia pagos reales."}
             </Text>
             {pendingSettlement ? (
               <View style={styles.confirmRoute}>
@@ -1219,7 +1261,11 @@ export function MainScreen() {
             </View>
             <View style={styles.sheetActions}>
               <ActionButton icon="close" label="Cancelar" onPress={() => setPendingSettlement(null)} tone="ghost" />
-              <ActionButton icon="check" label="Marcar como pagado" onPress={confirmSettlementPaid} />
+              <ActionButton
+                icon="check"
+                label={perspective?.actionLabel ?? "Registrar local"}
+                onPress={confirmSettlementPaid}
+              />
             </View>
           </View>
         </View>
@@ -2381,6 +2427,19 @@ const styles = StyleSheet.create({
   settlementActions: {
     alignItems: "flex-start",
   },
+  settlementAmountGroup: {
+    alignItems: "flex-end",
+    flexShrink: 0,
+    gap: 2,
+    minWidth: 104,
+  },
+  settlementAmountLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 14,
+    textAlign: "right",
+  },
   settlementAmountText: {
     color: colors.due,
     fontSize: typography.heading,
@@ -2408,16 +2467,22 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     paddingTop: spacing.md,
   },
-  settlementInstruction: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "500",
-    lineHeight: 16,
-  },
   settlementPeople: {
     alignItems: "center",
     flexDirection: "row",
     gap: spacing.md,
+  },
+  settlementPerspectiveBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: colors.surfaceTinted,
+    borderRadius: 999,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+  },
+  settlementPerspectiveText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "700",
   },
   settlementRouteIcon: {
     alignItems: "center",
@@ -2429,9 +2494,16 @@ const styles = StyleSheet.create({
   },
   settlementTitle: {
     color: colors.ink,
+    flexShrink: 1,
     fontSize: typography.body,
     fontWeight: "700",
     lineHeight: 19,
+  },
+  settlementTitleRow: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.xs,
   },
   statLabel: {
     color: colors.mutedInk,
