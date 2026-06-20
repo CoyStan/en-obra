@@ -52,6 +52,32 @@ When access/storage is selected, implement a concrete repository/adapter that:
 5. Replays/sends outbox operations through the chosen backend.
 6. Keeps local-first behavior when offline.
 
+## Integrity Guard
+
+`src/backend/dataIntegrity.ts` audits and safely repairs persisted local
+snapshots before the app loads them into state.
+
+It checks:
+
+- selected group existence
+- user/group/member references
+- expense payer and participant membership
+- integer-cent amounts
+- participant share totals
+- settlement participants
+- activity event actors/groups
+- parseable sync outbox payloads
+
+Safe repairs include:
+
+- choosing a valid selected group when the stored selection is stale
+- rebuilding equal participant share rows
+- removing dangling participants, settlements, activity events, and outbox rows
+- forcing MVP currency fields back to `MXN`
+
+Unsafe records such as expenses with missing groups, invalid payers, or invalid
+money amounts are dropped instead of being rendered.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
@@ -61,3 +87,4 @@ When access/storage is selected, implement a concrete repository/adapter that:
 - referential integrity of the demo seed rows
 - deterministic SQL insert generation
 - provider-neutral snapshot packaging
+- local snapshot integrity audit and repair

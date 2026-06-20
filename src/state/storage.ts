@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { auditAndRepairAppData } from "../backend/dataIntegrity";
 import { demoData } from "../data/demoData";
-import { normalizeAppData } from "../domain/appDataNormalization";
 import type { AppData } from "../domain/types";
 
 export const APP_DATA_STORAGE_KEY = "cuentas-claras:v1";
@@ -31,7 +31,7 @@ export async function loadPersistedData(): Promise<AppData> {
   }
 
   const parsed = JSON.parse(raw) as unknown;
-  return isAppData(parsed) ? normalizeAppData(parsed) : cloneDemoData();
+  return isAppData(parsed) ? auditAndRepairAppData(parsed).data : cloneDemoData();
 }
 
 export async function persistData(data: AppData) {
