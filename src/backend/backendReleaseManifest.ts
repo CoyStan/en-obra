@@ -1,6 +1,6 @@
 import { demoData } from "../data/demoData";
 import { stablePayloadJson } from "./syncOutbox";
-import { deterministicChecksum } from "./dataExport";
+import { deterministicChecksum } from "./checksum";
 import { createSqlSnapshot } from "./sqlDataset";
 import {
   REQUIRED_BACKEND_CAPABILITIES,
@@ -76,4 +76,8 @@ export function verifyBackendReleaseManifest(manifest: BackendReleaseManifest) {
     schemaSql: checksums.schemaSql,
     seedSql: checksums.seedSql,
   } })) === checksums.manifestBody;
+}
+
+export function createBackendReleaseManifestJson(generatedAt: string) {
+  return `${JSON.stringify(createBackendReleaseManifest(generatedAt), null, 2)}\n`;
 }

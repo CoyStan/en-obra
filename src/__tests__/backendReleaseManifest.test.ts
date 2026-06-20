@@ -1,9 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  createBackendReleaseManifestJson,
   createBackendReleaseManifest,
   verifyBackendReleaseManifest,
 } from "../backend/backendReleaseManifest";
 import { REQUIRED_BACKEND_CAPABILITIES } from "../backend/backendReleaseGate";
+
+declare const require: (moduleName: string) => { readFileSync: (path: string, encoding: "utf8") => string };
+
+const { readFileSync } = require("fs");
 
 vi.mock("@react-native-async-storage/async-storage", () => ({
   default: {
@@ -59,5 +64,14 @@ describe("backend release manifest", () => {
     };
 
     expect(verifyBackendReleaseManifest(tampered)).toBe(false);
+  });
+
+  it("keeps the committed backend release manifest synchronized", () => {
+    const committed = readFileSync("docs/backend/release-manifest-v1.json", "utf8");
+    const generated = createBackendReleaseManifestJson("2026-06-20T12:00:00Z");
+    const parsed = JSON.parse(committed);
+
+    expect(committed).toBe(generated);
+    expect(verifyBackendReleaseManifest(parsed)).toBe(true);
   });
 });

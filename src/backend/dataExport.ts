@@ -4,6 +4,7 @@ import { getLocalDataInventory, getRemoteDeletionStatus } from "../security/data
 import type { SyncState } from "../sync/types";
 import { createSqlSnapshot } from "./sqlDataset";
 import { stablePayloadJson } from "./syncOutbox";
+import { deterministicChecksum } from "./checksum";
 
 export type LocalDataExportPackage = {
   version: 1;
@@ -27,15 +28,6 @@ export type LocalDataExportPackage = {
   };
   checksum: string;
 };
-
-export function deterministicChecksum(input: string) {
-  let hash = 2166136261;
-  for (let index = 0; index < input.length; index += 1) {
-    hash ^= input.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return `fnv1a32:${(hash >>> 0).toString(16).padStart(8, "0")}`;
-}
 
 export function createLocalDataExportPackage({
   account,

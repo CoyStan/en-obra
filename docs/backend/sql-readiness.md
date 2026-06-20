@@ -45,9 +45,11 @@ Committed backend handoff artifacts:
 
 - `docs/backend/schema-v1.sql`
 - `docs/backend/seed-demo-v1.sql`
+- `docs/backend/release-manifest-v1.json`
 
 `src/__tests__/sqlArtifacts.test.ts` verifies both files match the TypeScript
-schema/seed generator exactly.
+schema/seed generator exactly. `src/__tests__/backendReleaseManifest.test.ts`
+verifies the release manifest artifact matches its generator and checksum.
 
 ## Schema Versioning
 

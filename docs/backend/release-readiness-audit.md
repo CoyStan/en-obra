@@ -9,6 +9,7 @@ deployment approval.
   `docs/backend/schema-v1.sql`
 - SQL demo seed: `src/backend/sqlDataset.ts`,
   `docs/backend/seed-demo-v1.sql`
+- Backend release manifest artifact: `docs/backend/release-manifest-v1.json`
 - SQL artifact drift tests: `src/__tests__/sqlArtifacts.test.ts`
 - Schema migration planner: `src/backend/sqlMigrations.ts`
 - Data integrity audit/repair: `src/backend/dataIntegrity.ts`
@@ -41,6 +42,8 @@ deployment approval.
   stale revisions, deletes, and remote deletion handling.
 - Deterministic release manifest checksums for schema SQL, seed SQL, backend
   gate status, required capabilities, known blockers, and evidence commands.
+- Committed release manifest drift against generator:
+  `docs/backend/release-manifest-v1.json`
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.
