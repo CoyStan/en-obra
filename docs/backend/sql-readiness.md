@@ -94,6 +94,26 @@ Safe repairs include:
 Unsafe records such as expenses with missing groups, invalid payers, or invalid
 money amounts are dropped instead of being rendered.
 
+## Local Data Export Package
+
+`src/backend/dataExport.ts` builds a deterministic local-only export package for
+support, migration, and deletion-readiness workflows.
+
+The package includes:
+
+- app identity and `realPaymentsEnabled: false`
+- local storage inventory
+- remote deletion status
+- local account state
+- sync state
+- normalized app data
+- SQL schema/seed snapshot
+- deterministic checksum
+
+This is not a cloud backup and does not upload data. A future access/storage
+decision can reuse the same package for explicit user export, support bundles,
+or migration into a hosted backend.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
