@@ -2079,6 +2079,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0042"
+    },
+    {
+      "id": "WORK-APP-0043",
+      "title": "Release privacy dependency scan",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested release privacy/dependency scan that verifies current package/app config has no ads, analytics, payment, location/contact SDK signals and no Android permissions, supporting Play Data Safety claims. Forbidden: adding SDKs, choosing providers, secrets, paid services, production backend deployment, legal commitments, final Play submission, real payments.",
+      "acceptance_target": "Backend exposes a tested privacy/dependency scan, release readiness/docs/manifest include it, claims remain local/no ads/no analytics/no payments/no permissions, and verification passes.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0043"
     }
   ],
   "attempts": [
@@ -2813,6 +2827,21 @@
       "result": "Implemented and verified committed backend Play preflight artifact in commit a25d39f771b988bc728b4bfea66a29661ec2fbba.",
       "commits": [
         "a25d39f771b988bc728b4bfea66a29661ec2fbba"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0043",
+      "work_item_id": "WORK-APP-0043",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:23:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified release privacy dependency scan in commit d2be42920880a9f39a06a98ca94076f3ed81ea9d.",
+      "commits": [
+        "d2be42920880a9f39a06a98ca94076f3ed81ea9d"
       ]
     }
   ],
@@ -3804,6 +3833,28 @@
       "status": "passed",
       "summary": "Focused preflight artifact test, Android release check, backend release gate, Company OS validate, and Company OS scope passed.",
       "timestamp": "2026-06-20T23:19:21Z"
+    },
+    {
+      "commands": [
+        "npm test -- src/__tests__/releasePrivacyScan.test.ts src/__tests__/dataSafetyInventory.test.ts src/__tests__/backendReleaseGate.test.ts src/__tests__/backendReleaseManifest.test.ts src/__tests__/playPreflight.test.ts src/__tests__/releaseReadiness.test.ts",
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0043"
+      ],
+      "artifacts": [
+        "src/backend/releasePrivacyScan.ts",
+        "src/__tests__/releasePrivacyScan.test.ts",
+        "reports/evidence/WORK-APP-0043/technical-report.md",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/play-preflight-v1.json"
+      ],
+      "id": "EVIDENCE-APP-0043",
+      "work_item_id": "WORK-APP-0043",
+      "attempt_id": "ATTEMPT-APP-0043",
+      "head_sha": "d2be42920880a9f39a06a98ca94076f3ed81ea9d",
+      "status": "passed",
+      "summary": "Focused privacy scan tests, Android release check, backend release gate, Company OS validate, and Company OS scope passed.",
+      "timestamp": "2026-06-20T23:22:49Z"
     }
   ],
   "review_verdicts": [
@@ -4288,6 +4339,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:19:21Z"
+    },
+    {
+      "id": "REVIEW-APP-0043",
+      "work_item_id": "WORK-APP-0043",
+      "reviewed_head": "d2be42920880a9f39a06a98ca94076f3ed81ea9d",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:22:49Z"
     }
   ],
   "human_decisions": [],
@@ -5858,6 +5917,47 @@
       "attempt_id": "ATTEMPT-APP-0042",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:19:21Z"
+    },
+    {
+      "actions_taken": [
+        "created WORK-APP-0043",
+        "added release privacy dependency scan",
+        "added scan tests",
+        "updated backend release gate",
+        "updated Data Safety inventory evidence",
+        "regenerated release artifacts",
+        "updated docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/releasePrivacyScan.ts",
+        "src/__tests__/releasePrivacyScan.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "src/backend/backendReleaseGate.ts",
+        "src/backend/dataSafetyInventory.ts",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/play-preflight-v1.json",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md",
+        "docs/production/privacy-terms-readiness.md",
+        "reports/evidence/WORK-APP-0043/technical-report.md"
+      ],
+      "not_done": [
+        "SDK additions",
+        "production provider choices",
+        "secrets",
+        "paid services",
+        "production deployment",
+        "legal commitments",
+        "final Play submission",
+        "real payments",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0043",
+      "work_item_id": "WORK-APP-0043",
+      "attempt_id": "ATTEMPT-APP-0043",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:22:49Z"
     }
   ],
   "decisions": [
@@ -6441,6 +6541,15 @@
       "what_happened": "Generated docs/backend/play-preflight-v1.json from the preflight module and added a drift test.",
       "what_changed": "Internal testing reviewers can inspect backend readiness without running app code, and CI catches stale preflight evidence.",
       "timestamp": "2026-06-20T23:19:21Z"
+    },
+    {
+      "id": "OUTCOME-APP-0043",
+      "work_item_id": "WORK-APP-0043",
+      "summary": "Current privacy/Data Safety claims are now backed by a tested dependency/config scan.",
+      "status": "captured",
+      "what_happened": "Added a scan for ads, analytics, payment, location/contact SDK signals and Android permissions, then wired it into backend readiness and artifacts.",
+      "what_changed": "Future risky SDK or permission additions now fail tests unless intentionally handled.",
+      "timestamp": "2026-06-20T23:22:49Z"
     }
   ]
 }
