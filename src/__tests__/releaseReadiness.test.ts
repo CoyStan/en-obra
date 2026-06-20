@@ -13,6 +13,7 @@ describe("backend release readiness audit", () => {
     expect(byId.get("mutations")?.status).toBe("ready");
     expect(byId.get("repository")?.status).toBe("ready");
     expect(byId.get("outbox")?.status).toBe("ready");
+    expect(byId.get("sync-engine")?.status).toBe("ready");
     expect(byId.get("export")?.status).toBe("ready");
     expect(byId.get("migrations")?.status).toBe("ready");
     expect(report.readinessPercent).toBeGreaterThanOrEqual(70);

@@ -14,6 +14,7 @@ deployment approval.
 - Data integrity audit/repair: `src/backend/dataIntegrity.ts`
 - Backend mutation service: `src/backend/appMutations.ts`
 - Sync outbox lifecycle: `src/backend/syncOutbox.ts`
+- Provider-neutral sync engine: `src/backend/syncEngine.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 
@@ -28,6 +29,8 @@ deployment approval.
 - Corrupt local snapshot repair.
 - Local data export checksum.
 - Repository load/save/mutate/export/delete semantics.
+- Outbox processing order, limits, sent/failed states, retryable errors, and
+  immutable repository snapshots.
 - Current schema migration no-op and unsupported future-version handling.
 
 ## Remaining Human/External Blockers
@@ -43,5 +46,5 @@ deployment approval.
 
 The backend is now close to provider-ready for internal testing. The app still
 runs local-first with demo/mock adapters, but the data model, mutation behavior,
-SQL handoff, integrity guard, export package, and repository boundary are in
-place for the access/storage discussion.
+SQL handoff, integrity guard, export package, repository boundary, and sync
+engine are in place for the access/storage discussion.

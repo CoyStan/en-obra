@@ -97,6 +97,28 @@ adapters:
 backend adapter can process the same rows without changing group, member,
 expense, settlement, or activity mutations.
 
+## Sync Engine
+
+`src/backend/syncEngine.ts` processes `sync_outbox` rows through a replaceable
+transport adapter.
+
+Current release-candidate behavior:
+
+- provider-neutral `SyncTransport` contract
+- deterministic oldest-first processing
+- optional processing limit for background/drip sync
+- immutable input snapshots
+- sent/failed transitions with attempt timestamps
+- retryable error capture
+- mock transport for tests and local demos
+- repository snapshot compatibility
+
+This is not a production sync service. It does not choose storage, auth, a
+network host, conflict-resolution policy, or retention promises. Those remain
+blocked until the access/storage decision is made. The value now is that future
+SQLite or hosted adapters can reuse the tested queue semantics instead of
+inventing a new mutation path.
+
 ## Mutation Service
 
 `src/backend/appMutations.ts` owns pure write operations for:

@@ -64,6 +64,10 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/syncOutbox.ts",
       "src/__tests__/syncOutbox.test.ts",
     ]),
+    item("sync-engine", "Provider-neutral sync engine", "ready", [
+      "src/backend/syncEngine.ts",
+      "src/__tests__/syncEngine.test.ts",
+    ]),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
       "src/__tests__/dataExport.test.ts",
