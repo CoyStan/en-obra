@@ -787,7 +787,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Redesign and implement the add-expense flow so it feels premium, light, Android-first, and multi-user: active identity, payer, participant selection, equal MXN split preview, no-real-payments cue, keyboard-safe sheet behavior, and clear empty/error states. No real payments, backend services, secrets, or production deployment.",
       "acceptance_target": "Add-expense flow lets a user choose payer and participants, previews equal MXN shares, preserves selected participant IDs in local data, and passes visual/code checks.",
       "required_approval_capability": "design",
@@ -907,13 +907,21 @@
       "id": "ATTEMPT-APP-0004",
       "work_item_id": "WORK-APP-0004",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean; prior app work items are reviewed and waiting on human approval",
-      "result": "in progress"
+      "cleanliness": "implementation and evidence committed on main; Company OS record pending commit",
+      "result": "Implemented premium participant-first add-expense sheet",
+      "commits": [
+        "3c53f3c"
+      ],
+      "changed_files": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0004"
+      ]
     }
   ],
   "evidence_runs": [
@@ -1010,6 +1018,35 @@
       "summary": "Android internal testing readiness docs refreshed and GLM-reviewed accept-ready; release checks, web export, Company OS validate, asset dimension verification, and scope check passed.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T14:39:23Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0004",
+        "npx playwright screenshot"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0004/technical-report.md",
+        "reports/evidence/WORK-APP-0004/glm52-code-design-review.md",
+        "reports/evidence/WORK-APP-0004/glm52-followup-review.md",
+        "reports/evidence/WORK-APP-0004/glm52-final-review.md",
+        "reports/evidence/WORK-APP-0004/screenshots/home-360x740.png",
+        "reports/evidence/WORK-APP-0004/screenshots/home-390x844.png",
+        "reports/evidence/WORK-APP-0004/screenshots/home-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0004",
+      "work_item_id": "WORK-APP-0004",
+      "attempt_id": "ATTEMPT-APP-0004",
+      "head_sha": "3c53f3c",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "Premium add-expense participant flow checks passed: typecheck, tests, Expo config, web export, Company OS validate/scope, static Android viewport screenshots, and GLM final code review accept-ready.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T14:49:10Z"
     }
   ],
   "review_verdicts": [
@@ -1075,6 +1112,27 @@
       "reviewer": "GLM-5.2-text-release-review",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T14:40:37Z"
+    },
+    {
+      "checks_inspected": [
+        "MainScreen add-expense code",
+        "flowValidation parser",
+        "money parser",
+        "premium visual goal",
+        "technical report",
+        "post-fix diff"
+      ],
+      "residual_risks": [
+        "human visual approval still required",
+        "Android emulator/device QA not run",
+        "interactive sheet screenshot not captured without adding Playwright dependency"
+      ],
+      "id": "REVIEW-APP-0004",
+      "work_item_id": "WORK-APP-0004",
+      "reviewed_head": "3c53f3c",
+      "reviewer": "GLM-5.2-code-design-review",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T14:49:10Z"
     }
   ],
   "human_decisions": [],
@@ -1232,6 +1290,40 @@
       "attempt_id": "ATTEMPT-APP-0003",
       "actor": "PALARI-RELEASE",
       "timestamp": "2026-06-20T14:39:23Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "implemented participant selection",
+        "added equal MXN split preview",
+        "added active identity and trust cue",
+        "kept payer included in participants",
+        "ran checks",
+        "captured Android-width screenshots",
+        "used GLM 5.2 code-only review"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0004"
+      ],
+      "not_done": [
+        "real payments",
+        "production backend",
+        "Android emulator/device QA",
+        "interactive sheet screenshot without adding Playwright dependency",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0004",
+      "work_item_id": "WORK-APP-0004",
+      "attempt_id": "ATTEMPT-APP-0004",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-20T14:49:21Z"
     }
   ],
   "decisions": [
@@ -1367,6 +1459,28 @@
       "what_happened": "Updated release readiness, QA, privacy/terms, and security/deletion docs for Company OS and current Play/Expo requirements.",
       "what_changed": "The repo now has clearer internal testing gates, asset inventory, build path, and human-owned blockers without touching secrets or production services.",
       "timestamp": "2026-06-20T14:39:23Z"
+    },
+    {
+      "useful": [
+        "participant controls",
+        "equal split preview",
+        "payer inclusion guard",
+        "GLM accept-ready review",
+        "Android-width home screenshots"
+      ],
+      "follow_up_needed": [
+        "Android device QA",
+        "interactive sheet screenshot with stable runner",
+        "broader activity and account polish",
+        "human approval"
+      ],
+      "id": "OUTCOME-APP-0004",
+      "work_item_id": "WORK-APP-0004",
+      "summary": "Add-expense flow now supports participant-first equal split UX.",
+      "status": "captured",
+      "what_happened": "The sheet now shows identity, payer, participants, equal MXN split preview, and no-real-payments cue; payer remains included in the split.",
+      "what_changed": "Expense creation better matches the multi-user premium goal and the SQL-ready expenseParticipants model.",
+      "timestamp": "2026-06-20T14:49:10Z"
     }
   ]
 }
