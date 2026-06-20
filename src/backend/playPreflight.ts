@@ -64,6 +64,7 @@ export function createPlayPreflightReport(generatedAt: string): PlayPreflightRep
       "retention and backup model is ready for local internal testing",
       "data export/import and diagnostics are tested",
       "Data Safety technical inventory is local-first",
+      "release config has no committed secrets or production endpoints",
       "deletion workflow is modeled without remote endpoint",
     ],
     humanBlockers: uniqueSorted([
@@ -78,6 +79,8 @@ export function createPlayPreflightReport(generatedAt: string): PlayPreflightRep
     evidence: uniqueSorted([
       "src/backend/playPreflight.ts",
       "src/__tests__/playPreflight.test.ts",
+      "src/backend/secretSafetyScan.ts",
+      "src/__tests__/secretSafetyScan.test.ts",
       "docs/backend/release-manifest-v1.json",
       ...gate.evidence,
       ...access.evidence,

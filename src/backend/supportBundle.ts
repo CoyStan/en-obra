@@ -5,6 +5,7 @@ import { createPlayPreflightReport, type PlayPreflightStatus } from "./playPrefl
 import { createReleasePrivacyScan, type ReleasePrivacyScanReport } from "./releasePrivacyScan";
 import { createRetentionReadinessReport, type RetentionReadinessReport } from "./retentionReadiness";
 import type { BackendSnapshot } from "./repository";
+import { createSecretSafetyScan, type SecretSafetyScanReport, type SecretSafetyTarget } from "./secretSafetyScan";
 
 export type RedactedSupportBundle = {
   generatedAt: string;
@@ -35,6 +36,7 @@ export type RedactedSupportBundle = {
   };
   privacy: {
     scan: ReleasePrivacyScanReport;
+    secretSafety: SecretSafetyScanReport;
     dataSafety: {
       legalSubmissionReady: false;
       remoteBackendEnabled: false;
@@ -58,12 +60,14 @@ export function createRedactedSupportBundle(
     dependencies: Record<string, string>;
     devDependencies: Record<string, string>;
     androidPermissions: string[];
+    secretScanTargets?: SecretSafetyTarget[];
   },
 ): RedactedSupportBundle {
   const diagnostics = createBackendDiagnosticsReport(snapshot, generatedAt);
   const preflight = createPlayPreflightReport(generatedAt);
   const manifest = createBackendReleaseManifest(generatedAt);
   const scan = createReleasePrivacyScan(releaseConfig);
+  const secretSafety = createSecretSafetyScan(releaseConfig.secretScanTargets ?? []);
   const dataSafety = createDataSafetyInventory();
   const retention = createRetentionReadinessReport();
 
@@ -96,6 +100,7 @@ export function createRedactedSupportBundle(
     },
     privacy: {
       scan,
+      secretSafety,
       dataSafety: {
         legalSubmissionReady: false,
         remoteBackendEnabled: false,

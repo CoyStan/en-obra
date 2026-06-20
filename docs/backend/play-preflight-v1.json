@@ -15,6 +15,7 @@
     "retention and backup model is ready for local internal testing",
     "data export/import and diagnostics are tested",
     "Data Safety technical inventory is local-first",
+    "release config has no committed secrets or production endpoints",
     "deletion workflow is modeled without remote endpoint"
   ],
   "humanBlockers": [
@@ -74,6 +75,7 @@
     "docs/production/play-readiness.md",
     "docs/production/privacy-terms-readiness.md",
     "docs/production/security-data-deletion.md",
+    "eas.json",
     "package.json",
     "registered migrations=0",
     "src/__tests__/accessReadiness.test.ts",
@@ -89,6 +91,7 @@
     "src/__tests__/releasePrivacyScan.test.ts",
     "src/__tests__/repository.test.ts",
     "src/__tests__/retentionReadiness.test.ts",
+    "src/__tests__/secretSafetyScan.test.ts",
     "src/__tests__/storageReadiness.test.ts",
     "src/__tests__/supportBundle.test.ts",
     "src/__tests__/syncConflictPolicy.test.ts",
@@ -111,6 +114,7 @@
     "src/backend/releasePrivacyScan.ts",
     "src/backend/repository.ts",
     "src/backend/retentionReadiness.ts",
+    "src/backend/secretSafetyScan.ts",
     "src/backend/sqlMigrations.ts",
     "src/backend/sqlSchema.ts",
     "src/backend/storageReadiness.ts",

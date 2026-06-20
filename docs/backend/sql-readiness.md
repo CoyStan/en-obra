@@ -325,6 +325,13 @@ blockers.
 `package.json` and `app.json` for ads, analytics, payment, location/contact SDK
 signals, and Android permissions.
 
+`src/backend/secretSafetyScan.ts` provides a separate release-facing config
+guard. It scans explicit target text such as `app.json`, `package.json`, and
+`eas.json` for API keys, payment keys, Play service-account credentials,
+private keys, and premature production backend URLs. It intentionally allows
+obvious placeholders in docs while failing representative committed secret
+literals in tests.
+
 ## Redacted Support Bundle
 
 `src/backend/supportBundle.ts` packages internal-testing support signals without
@@ -361,6 +368,7 @@ internal-testing handoff report. It summarizes:
 - local/internal storage readiness
 - local/internal retention and backup readiness
 - technical Data Safety posture
+- secret/config safety posture
 - deletion workflow readiness without remote endpoint
 - remaining human/provider blockers
 
@@ -404,6 +412,7 @@ to stay ready before Play internal testing:
 - account access readiness contract
 - technical Data Safety inventory
 - release privacy/dependency scan
+- release secret/config safety scan
 - redacted support bundle
 - local export package
 - migration planner

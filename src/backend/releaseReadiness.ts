@@ -155,6 +155,13 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "package.json",
       "app.json",
     ]),
+    item("secret-safety-scan", "Release secret and config safety scan", "ready", [
+      "src/backend/secretSafetyScan.ts",
+      "src/__tests__/secretSafetyScan.test.ts",
+      "app.json",
+      "package.json",
+      "eas.json",
+    ]),
     item("support-bundle", "Redacted backend support bundle", "ready", [
       "src/backend/supportBundle.ts",
       "src/__tests__/supportBundle.test.ts",

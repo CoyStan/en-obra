@@ -7,6 +7,13 @@ import { demoData } from "../data/demoData";
 import { initialSyncState } from "../sync/localSyncAdapter";
 import type { AppData } from "../domain/types";
 
+declare const require: (moduleName: string) => {
+  existsSync?: (path: string) => boolean;
+  readFileSync?: (path: string, encoding: "utf8") => string;
+};
+
+const fs = require("fs");
+
 vi.mock("@react-native-async-storage/async-storage", () => ({
   default: {
     getItem: vi.fn(),
@@ -65,6 +72,12 @@ const releaseConfig = {
     vitest: "4.1.8",
   },
   androidPermissions: [],
+  secretScanTargets: ["app.json", "package.json", "eas.json"]
+    .filter((path) => fs.existsSync?.(path))
+    .map((path) => ({
+      path,
+      text: fs.readFileSync?.(path, "utf8") ?? "",
+    })),
 };
 
 describe("redacted support bundle", () => {
@@ -83,6 +96,7 @@ describe("redacted support bundle", () => {
     expect(bundle.preflight.status).toBe("ready-for-internal-testing");
     expect(bundle.releaseManifest.realPaymentsEnabled).toBe(false);
     expect(bundle.privacy.scan.status).toBe("pass");
+    expect(bundle.privacy.secretSafety.status).toBe("pass");
     expect(bundle.privacy.dataSafety.handlingByCategory["financial-info"]).toBe("local-only");
     expect(bundle.retention.cloudBackupEnabled).toBe(false);
     expect(bundle.retention.blockers).toContain("server-side-backups");
@@ -99,9 +113,16 @@ describe("redacted support bundle", () => {
       dependencies: { "@stripe/stripe-react-native": "1.0.0" },
       devDependencies: {},
       androidPermissions: ["ACCESS_FINE_LOCATION"],
+      secretScanTargets: [
+        {
+          path: "app.json",
+          text: '{"extra":{"apiKey":"sk-proj-abcdefghijklmnopqrstuvwxyz123456"}}',
+        },
+      ],
     });
 
     expect(bundle.privacy.scan.status).toBe("fail");
+    expect(bundle.privacy.secretSafety.status).toBe("fail");
     expect(bundle.privacy.scan.risks.map((risk) => risk.kind)).toEqual([
       "payments-sdk",
       "android-permission",

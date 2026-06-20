@@ -19,6 +19,11 @@ Local verification:
 npm run release:android:check
 ```
 
+This command includes the backend release gate. The gate requires the
+release secret/config safety scan, which fails on committed API keys, payment
+keys, Play service-account credentials, private keys, or premature production
+backend URLs in release-facing config.
+
 Internal testing build path, after EAS and credentials exist:
 
 ```bash
