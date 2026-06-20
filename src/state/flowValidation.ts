@@ -15,6 +15,7 @@ export type ValidExpenseInput = {
   amountCents: number;
   note?: string;
   payerId: string;
+  participantIds: string[];
   title: string;
 };
 
@@ -54,12 +55,14 @@ export function validateExpenseInput({
   amount,
   memberIds,
   note,
+  participantIds,
   payerId,
   title,
 }: {
   amount: string;
   memberIds: string[];
   note?: string;
+  participantIds?: string[];
   payerId: string;
   title: string;
 }): ValidationResult<ValidExpenseInput> {
@@ -81,6 +84,15 @@ export function validateExpenseInput({
     return { ok: false, error: "Elige quien pago el gasto." };
   }
 
+  const selectedParticipantIds = participantIds?.length ? Array.from(new Set(participantIds)) : memberIds;
+  if (selectedParticipantIds.length === 0) {
+    return { ok: false, error: "Elige integrantes para dividir el gasto." };
+  }
+
+  if (selectedParticipantIds.some((memberId) => !memberIds.includes(memberId))) {
+    return { ok: false, error: "Elige solo integrantes de este grupo." };
+  }
+
   const cleanNote = note?.trim();
   return {
     ok: true,
@@ -88,6 +100,7 @@ export function validateExpenseInput({
       amountCents,
       note: cleanNote || undefined,
       payerId,
+      participantIds: selectedParticipantIds,
       title: cleanTitle,
     },
   };

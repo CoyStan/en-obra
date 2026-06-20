@@ -21,7 +21,7 @@ function isAppData(value: unknown): value is AppData {
 }
 
 export function cloneDemoData(): AppData {
-  return normalizeAppData(JSON.parse(JSON.stringify(demoData)) as AppData);
+  return JSON.parse(JSON.stringify(demoData)) as AppData;
 }
 
 export async function loadPersistedData(): Promise<AppData> {
@@ -35,7 +35,7 @@ export async function loadPersistedData(): Promise<AppData> {
 }
 
 export async function persistData(data: AppData) {
-  await AsyncStorage.setItem(APP_DATA_STORAGE_KEY, JSON.stringify(normalizeAppData(data)));
+  await AsyncStorage.setItem(APP_DATA_STORAGE_KEY, JSON.stringify(data));
 }
 
 export async function clearPersistedData() {

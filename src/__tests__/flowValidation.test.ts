@@ -40,7 +40,28 @@ describe("core flow validation", () => {
         amountCents: 125075,
         note: "cena y taxi",
         payerId: "ana",
+        participantIds: ["ana", "diego"],
         title: "Noche de tacos",
+      },
+    });
+  });
+
+  it("keeps a validated participant subset when splitting an expense", () => {
+    expect(
+      validateExpenseInput({
+        amount: "900",
+        memberIds: ["ana", "diego", "luis"],
+        participantIds: ["ana", "luis"],
+        payerId: "diego",
+        title: "Boletos",
+      }),
+    ).toEqual({
+      ok: true,
+      value: {
+        amountCents: 90000,
+        payerId: "diego",
+        participantIds: ["ana", "luis"],
+        title: "Boletos",
       },
     });
   });
@@ -61,6 +82,18 @@ describe("core flow validation", () => {
     expect(validateExpenseInput({ amount: "50", memberIds: ["ana"], payerId: "luis", title: "Cena" })).toEqual({
       ok: false,
       error: "Elige quien pago el gasto.",
+    });
+    expect(
+      validateExpenseInput({
+        amount: "50",
+        memberIds: ["ana"],
+        participantIds: ["luis"],
+        payerId: "ana",
+        title: "Cena",
+      }),
+    ).toEqual({
+      ok: false,
+      error: "Elige solo integrantes de este grupo.",
     });
   });
 });

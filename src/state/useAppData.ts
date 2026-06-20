@@ -7,6 +7,7 @@ import type {
   Expense,
   Group,
   GroupMember,
+  Settlement,
   SettlementSuggestion,
   SyncOutboxItem,
   User,
@@ -21,6 +22,7 @@ type AddExpenseInput = {
   title: string;
   amount: string;
   payerId: string;
+  participantIds?: string[];
   note?: string;
 };
 
@@ -278,6 +280,7 @@ export function useAppData() {
       amount: input.amount,
       memberIds: groupMemberIds,
       note: input.note,
+      participantIds: input.participantIds,
       payerId: input.payerId,
       title: input.title,
     });
@@ -293,7 +296,7 @@ export function useAppData() {
         return current;
       }
       const createdAt = now();
-      const participantIds = getGroupMembers(current, groupId).map((member) => member.id);
+      const participantIds = validation.value.participantIds;
       const actorUserId = selectedUserId(current);
       const expense: Expense = {
         id: createId("expense"),
@@ -353,7 +356,8 @@ export function useAppData() {
   const markSettlementPaid = useCallback((groupId: string, suggestion: SettlementSuggestion) => {
     updateData((current) => {
       const createdAt = now();
-      const settlement = {
+      const actorUserId = selectedUserId(current);
+      const settlement: Settlement = {
         id: createId("settlement"),
         groupId,
         fromMemberId: suggestion.fromMemberId,
@@ -361,14 +365,14 @@ export function useAppData() {
         amountCents: suggestion.amountCents,
         currency: "MXN" as const,
         status: "paid" as const,
-        recordedByUserId: selectedUserId(current),
+        recordedByUserId: actorUserId,
         recordedAt: createdAt,
         createdAt,
         note: "Registro local de pago externo.",
       };
       const event = activityEvent(
         groupId,
-        settlement.recordedByUserId,
+        actorUserId,
         "settlement_recorded",
         "settlement",
         settlement.id,
