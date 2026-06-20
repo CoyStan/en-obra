@@ -1012,7 +1012,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Reduce visual weight and improve premium Android first-viewport clarity without removing required content: active identity, group, personal balance, next action, settlement cue, MXN, and Sin pagos reales must remain visible on 360x740, 390x844, and 412x915. Use code-only GLM 5.2 review for design planning. No real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
       "acceptance_target": "First viewport feels lighter, more professional, and closer to the premium goal while preserving core content and passing Android-size screenshot checks.",
       "required_approval_capability": "design",
@@ -1243,13 +1243,22 @@
       "id": "ATTEMPT-APP-0009",
       "work_item_id": "WORK-APP-0009",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean; prior app work items are reviewed and waiting on human approval",
-      "result": "in progress"
+      "cleanliness": "implementation and evidence committed on main; Company OS record pending commit",
+      "result": "Reduced first-viewport visual density while preserving required finance cues",
+      "commits": [
+        "8c6a846"
+      ],
+      "changed_files": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0009"
+      ]
     }
   ],
   "evidence_runs": [
@@ -1477,6 +1486,32 @@
       "base_ref": "main",
       "summary": "Settlement clarity checks passed after final simplification: typecheck, 25 tests, Expo config, web export, Company OS validate/scope, Android-size screenshots, and GLM 5.2 code-only review trail with actionable findings addressed.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0009",
+        "playwright screenshots"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0009/technical-report.md",
+        "reports/evidence/WORK-APP-0009/glm52-code-review.md",
+        "reports/evidence/WORK-APP-0009/screenshots/balance-360x740.png",
+        "reports/evidence/WORK-APP-0009/screenshots/balance-390x844.png",
+        "reports/evidence/WORK-APP-0009/screenshots/balance-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0009",
+      "work_item_id": "WORK-APP-0009",
+      "attempt_id": "ATTEMPT-APP-0009",
+      "head_sha": "8c6a846",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "First-viewport density checks passed: typecheck, 25 tests, Expo config, web export, Company OS validate/scope, Android-size screenshots, and GLM 5.2 final review accept-ready.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -1645,6 +1680,27 @@
       "work_item_id": "WORK-APP-0008",
       "reviewed_head": "9884aae",
       "reviewer": "GLM-5.2-code-review-plus-local-followup",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "first viewport hero hierarchy",
+        "required content preservation",
+        "Liquidar action placement",
+        "Monto MXN label",
+        "Siguiente paso cue",
+        "theme token updates",
+        "Android viewport screenshots"
+      ],
+      "residual_risks": [
+        "human approval still required",
+        "no native Android emulator/device QA",
+        "activity section starts lower on 360px but required first-viewport content is preserved"
+      ],
+      "id": "REVIEW-APP-0009",
+      "work_item_id": "WORK-APP-0009",
+      "reviewed_head": "8c6a846",
+      "reviewer": "GLM-5.2-code-review",
       "verdict": "accept-ready"
     }
   ],
@@ -1988,6 +2044,45 @@
       "work_item_id": "WORK-APP-0008",
       "attempt_id": "ATTEMPT-APP-0008",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "used GLM 5.2 code-only planning",
+        "flattened hero hierarchy",
+        "removed quick-action rail",
+        "added compact Liquidar cue action",
+        "calmed balance module",
+        "updated palette tokens",
+        "recorded decision",
+        "ran verification",
+        "captured screenshots"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0009"
+      ],
+      "not_done": [
+        "real payments",
+        "backend services",
+        "secrets",
+        "paid APIs",
+        "push services",
+        "Play Store submission",
+        "native Android emulator QA",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0009",
+      "work_item_id": "WORK-APP-0009",
+      "attempt_id": "ATTEMPT-APP-0009",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -2229,6 +2324,27 @@
       "status": "captured",
       "what_happened": "The balance screen settlement card and confirmation modal now distinguish payer, receiver, and group-observer states while keeping settlement actions local-only.",
       "what_changed": "Users can see who pays whom, the active identity relationship, the MXN amount, and the no-real-payments boundary with less visual density."
+    },
+    {
+      "useful": [
+        "softer hero surface",
+        "compact Liquidar cue action",
+        "warmer canvas",
+        "calmer balance module",
+        "removed quick-action rail",
+        "GLM accept-ready review"
+      ],
+      "follow_up_needed": [
+        "human approval",
+        "native Android emulator/device QA",
+        "further tab-level visual consistency passes"
+      ],
+      "id": "OUTCOME-APP-0009",
+      "work_item_id": "WORK-APP-0009",
+      "summary": "First viewport is lighter while preserving required finance cues.",
+      "status": "captured",
+      "what_happened": "The balance home now uses a softer hero surface, reduced balance-module density, a compact local settlement cue action, and no separate quick-action rail.",
+      "what_changed": "The app feels calmer and more premium on Android-sized viewports while keeping identity, group, balance, next step, MXN, settlement action, and Sin pagos reales visible."
     }
   ]
 }
