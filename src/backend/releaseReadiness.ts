@@ -80,6 +80,10 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/backendReleaseManifest.ts",
       "src/__tests__/backendReleaseManifest.test.ts",
     ]),
+    item("import-restore", "Local export import restore validator", "ready", [
+      "src/backend/dataImport.ts",
+      "src/__tests__/dataImport.test.ts",
+    ]),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
       "src/__tests__/dataExport.test.ts",

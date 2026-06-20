@@ -213,6 +213,23 @@ This is not a cloud backup and does not upload data. A future access/storage
 decision can reuse the same package for explicit user export, support bundles,
 or migration into a hosted backend.
 
+## Local Data Import Validator
+
+`src/backend/dataImport.ts` validates local export packages before restore or
+future migration:
+
+- verifies the deterministic checksum
+- rejects wrong-app packages
+- rejects packages claiming real payment support
+- rejects unsupported SQL schema versions
+- imports only `local-only` packages
+- repairs app data through the integrity guard before returning a
+  `BackendSnapshot`
+
+This is a local support/migration boundary, not cloud restore. A production
+backend restore flow still requires access, storage, deletion, privacy, and
+security decisions.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
@@ -237,6 +254,7 @@ to stay ready before Play internal testing:
 - sync engine
 - conflict policy
 - backend release manifest
+- local import/restore validator
 - local export package
 - migration planner
 

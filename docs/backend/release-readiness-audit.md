@@ -18,6 +18,7 @@ deployment approval.
 - Provider-neutral sync engine: `src/backend/syncEngine.ts`
 - Provider-neutral conflict policy: `src/backend/syncConflictPolicy.ts`
 - Backend release manifest: `src/backend/backendReleaseManifest.ts`
+- Local import/restore validator: `src/backend/dataImport.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -44,6 +45,8 @@ deployment approval.
   gate status, required capabilities, known blockers, and evidence commands.
 - Committed release manifest drift against generator:
   `docs/backend/release-manifest-v1.json`
+- Local export import validation for checksum, app boundary, real-payment
+  boundary, schema compatibility, and repaired backend snapshots.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.

@@ -26,6 +26,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "sync-engine",
   "conflict-policy",
   "release-manifest",
+  "import-restore",
   "export",
   "migrations",
 ] as const;
