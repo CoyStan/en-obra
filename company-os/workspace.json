@@ -1960,6 +1960,41 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0035"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "docs/production",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0036",
+      "title": "Provider-neutral deletion workflow model",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add a tested provider-neutral deletion request workflow model for future backend adapters, including request validation, status transitions, audit-safe summaries, and explicit remote endpoint blocker preservation. Forbidden: production deletion endpoint, secrets, paid services, real payments, deployment, legal commitments.",
+      "acceptance_target": "Deletion workflow module models request lifecycle without remote side effects, rejects unsafe transitions, produces support-safe summaries, is covered by tests, and is reflected in backend readiness/docs/manifest while remote deletion remains blocked.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0036"
     }
   ],
   "attempts": [
@@ -2589,6 +2624,21 @@
       "result": "Implemented and verified support-safe backend diagnostics report in commit 36985025ec6de37c95030c9e739d54e9d0fc781e.",
       "commits": [
         "36985025ec6de37c95030c9e739d54e9d0fc781e"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0036",
+      "work_item_id": "WORK-APP-0036",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:00:00Z",
+      "cleanliness": "dirty-unrelated-screen-change",
+      "result": "Implemented and verified provider-neutral deletion workflow model in commit 0f12c3ae05b76afc27b54ca9be0e607b4400360d.",
+      "commits": [
+        "0f12c3ae05b76afc27b54ca9be0e607b4400360d"
       ]
     }
   ],
@@ -3435,6 +3485,27 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for backend diagnostics report.",
       "timestamp": "2026-06-20T22:48:03Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0036"
+      ],
+      "artifacts": [
+        "src/backend/deletionWorkflow.ts",
+        "src/__tests__/deletionWorkflow.test.ts",
+        "reports/evidence/WORK-APP-0036/technical-report.md",
+        "docs/backend/release-manifest-v1.json",
+        "docs/production/security-data-deletion.md"
+      ],
+      "id": "EVIDENCE-APP-0036",
+      "work_item_id": "WORK-APP-0036",
+      "attempt_id": "ATTEMPT-APP-0036",
+      "head_sha": "0f12c3ae05b76afc27b54ca9be0e607b4400360d",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for provider-neutral deletion workflow model.",
+      "timestamp": "2026-06-20T22:57:22Z"
     }
   ],
   "review_verdicts": [
@@ -3863,6 +3934,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T22:48:03Z"
+    },
+    {
+      "id": "REVIEW-APP-0036",
+      "work_item_id": "WORK-APP-0036",
+      "reviewed_head": "0f12c3ae05b76afc27b54ca9be0e607b4400360d",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T22:57:22Z"
     }
   ],
   "human_decisions": [],
@@ -5182,6 +5261,49 @@
       "attempt_id": "ATTEMPT-APP-0035",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T22:48:03Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0036",
+        "added deletion workflow model",
+        "added deletion workflow tests",
+        "updated backend release gate",
+        "updated backend readiness report",
+        "updated release manifest artifact",
+        "updated backend/security docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/deletionWorkflow.ts",
+        "src/__tests__/deletionWorkflow.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "src/backend/backendReleaseGate.ts",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md",
+        "docs/production/security-data-deletion.md",
+        "reports/evidence/WORK-APP-0036/technical-report.md"
+      ],
+      "not_done": [
+        "production deletion endpoint",
+        "legal deletion promise",
+        "production backend provider",
+        "auth provider",
+        "storage provider",
+        "remote endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0036",
+      "work_item_id": "WORK-APP-0036",
+      "attempt_id": "ATTEMPT-APP-0036",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T22:57:22Z"
     }
   ],
   "decisions": [
@@ -5702,6 +5824,15 @@
       "what_happened": "Added diagnostics that report integrity, sync queue, entity count, account/sync mode, release gate, and blockers without raw financial/contact data.",
       "what_changed": "Support/internal testing has a safe backend health artifact path before production provider decisions.",
       "timestamp": "2026-06-20T22:48:03Z"
+    },
+    {
+      "id": "OUTCOME-APP-0036",
+      "work_item_id": "WORK-APP-0036",
+      "summary": "Future remote deletion now has a tested provider-neutral workflow model.",
+      "status": "captured",
+      "what_happened": "Added deletion request lifecycle states, transition validation, failure reason handling, and support-safe summaries while leaving remoteEndpointConfigured false.",
+      "what_changed": "The backend is better prepared for Play account deletion requirements without crossing provider/legal decision gates.",
+      "timestamp": "2026-06-20T22:57:22Z"
     }
   ]
 }
