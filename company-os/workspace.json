@@ -526,6 +526,24 @@
       ],
       "last_seen_revision": "main",
       "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "selected": true,
+      "allowed_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING",
+        "PALARI-RELEASE"
+      ],
+      "id": "SOURCE-PREMIUM-VISUAL-GOAL",
+      "label": "Premium visual goal and concept images",
+      "kind": "design_goal",
+      "provider": "local_file_tree",
+      "uri": "docs/product/premium-visual-goal",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "imported-from-CUE-0041",
+      "last_read_at": "2026-06-20T00:00:00Z"
     }
   ],
   "work_items": [
@@ -590,19 +608,22 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "proposed",
-      "scope": "Make the app feel cleaner, lighter, premium, and Android-native while retaining content and mainstream usability.",
+      "status": "active",
+      "scope": "Implement the premium Android visual system from docs/product/premium-visual-goal, starting with a lighter first screen and multi-user clarity while preserving content.",
       "allowed_resources": [
+        "company-os",
         "src",
         "assets",
         "docs/product",
         "reports/evidence"
       ],
       "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
         "SOURCE-DESIGN-SYSTEM",
         "SOURCE-VISUAL-DIRECTION",
         "SOURCE-LEGACY-EVIDENCE",
-        "SOURCE-DECISIONS"
+        "SOURCE-DECISIONS",
+        "SOURCE-PRD"
       ],
       "allowed_actions": [
         "local_write",
@@ -612,7 +633,8 @@
       "output_targets": [
         "src",
         "docs/product",
-        "reports/evidence"
+        "reports/evidence",
+        "company-os/workspace.json"
       ],
       "forbidden_actions": [
         "remove core content",
@@ -627,7 +649,8 @@
         "mobile visual screenshots"
       ],
       "required_approval_count": 1,
-      "required_approval_capability": "design"
+      "required_approval_capability": "design",
+      "current_attempt": "ATTEMPT-APP-0001"
     },
     {
       "id": "WORK-APP-0002",
@@ -740,6 +763,18 @@
       "commits": [
         "9aa71eb370d8"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0001",
+      "work_item_id": "WORK-APP-0001",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "continuing with pre-existing dirty app source edits preserved",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [
