@@ -1517,6 +1517,39 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "id": "WORK-APP-0023",
+      "title": "Committed SQL schema and seed artifacts",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add committed SQL schema and demo seed artifacts generated from the provider-neutral backend contract, plus tests that keep the artifacts synchronized with code. Preserve local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "docs/backend contains schema-v1.sql and seed-demo-v1.sql artifacts; tests prove they match createSqlSnapshot output; artifacts include the current SQL-ready dataset for backend handoff.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -1955,6 +1988,20 @@
       "result": "Implemented and verified backend mutation service extraction in commit 70e164f87bb1b61d12911f9d954f7e4a78ddcbe8.",
       "commits": [
         "70e164f87bb1b61d12911f9d954f7e4a78ddcbe8"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0023",
+      "work_item_id": "WORK-APP-0023",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified committed SQL backend artifacts in commit 4e83d4c0618db0dc0b1b9b80940d979a7586c19e.",
+      "commits": [
+        "4e83d4c0618db0dc0b1b9b80940d979a7586c19e"
       ]
     }
   ],
@@ -2519,6 +2566,30 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for backend mutation service extraction.",
       "timestamp": "2026-06-20T21:25:28Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0023",
+        "wc -l docs/backend/schema-v1.sql docs/backend/seed-demo-v1.sql"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0023/technical-report.md",
+        "docs/backend/schema-v1.sql",
+        "docs/backend/seed-demo-v1.sql",
+        "src/__tests__/sqlArtifacts.test.ts",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0023",
+      "work_item_id": "WORK-APP-0023",
+      "attempt_id": "ATTEMPT-APP-0023",
+      "head_sha": "4e83d4c0618db0dc0b1b9b80940d979a7586c19e",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for committed SQL backend artifacts.",
+      "timestamp": "2026-06-20T21:28:43Z"
     }
   ],
   "review_verdicts": [
@@ -2843,6 +2914,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:25:28Z"
+    },
+    {
+      "id": "REVIEW-APP-0023",
+      "work_item_id": "WORK-APP-0023",
+      "reviewed_head": "4e83d4c0618db0dc0b1b9b80940d979a7586c19e",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:28:43Z"
     }
   ],
   "human_decisions": [],
@@ -3685,6 +3764,38 @@
       "attempt_id": "ATTEMPT-APP-0022",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:25:28Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0023",
+        "generated schema-v1.sql",
+        "generated seed-demo-v1.sql",
+        "added artifact drift tests",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "docs/backend/schema-v1.sql",
+        "docs/backend/seed-demo-v1.sql",
+        "src/__tests__/sqlArtifacts.test.ts",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0023"
+      ],
+      "not_done": [
+        "production database",
+        "migration runner",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0023",
+      "work_item_id": "WORK-APP-0023",
+      "attempt_id": "ATTEMPT-APP-0023",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:28:43Z"
     }
   ],
   "decisions": [
@@ -4088,6 +4199,15 @@
       "what_happened": "Extracted create group, add member, add expense, and mark settlement paid into pure mutation functions with deterministic tests.",
       "what_changed": "Future local database or hosted backend adapters can reuse the same write behavior without depending on React state.",
       "timestamp": "2026-06-20T21:25:28Z"
+    },
+    {
+      "id": "OUTCOME-APP-0023",
+      "work_item_id": "WORK-APP-0023",
+      "summary": "SQL backend artifacts are committed and drift-tested.",
+      "status": "captured",
+      "what_happened": "Added schema and demo seed SQL files generated from the provider-neutral backend contract plus tests that compare artifacts to generator output.",
+      "what_changed": "Backend handoff can inspect concrete SQL files while tests prevent the artifacts from drifting from TypeScript source of truth.",
+      "timestamp": "2026-06-20T21:28:43Z"
     }
   ]
 }
