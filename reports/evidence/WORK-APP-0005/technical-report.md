@@ -15,6 +15,7 @@ Implemented premium local-only account and data controls in Perfil. The app now 
   - `Reiniciar demo`,
   - `Borrar datos locales` with confirmation.
 - Local deletion clears app data, sync state, and account state, then restores a clean local demo for continued testing.
+- Added error handling and visible failure copy for the local deletion flow after code review.
 - Updated security/deletion docs to reflect that the local helper is now wired to UI.
 - Recorded the product decision in `docs/product/decisions.md`.
 
@@ -27,6 +28,13 @@ Implemented premium local-only account and data controls in Perfil. The app now 
 - `./bin/company-os validate` passed.
 - `./bin/company-os scope WORK-APP-0005 ...` passed.
 - Added unit coverage for `localAccountAdapter.clearLocalAccount()`.
+- GLM 5.2 code-only review initially requested deletion error handling; follow-up review returned `accept-ready`.
+
+## Evidence Notes
+
+- GLM review artifacts:
+  - `reports/evidence/WORK-APP-0005/glm52-code-review.md`
+  - `reports/evidence/WORK-APP-0005/glm52-followup-review.md`
 
 ## Limits
 

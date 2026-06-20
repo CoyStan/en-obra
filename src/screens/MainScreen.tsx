@@ -336,6 +336,7 @@ export function MainScreen() {
   const [accountName, setAccountName] = useState("");
   const [accountEmail, setAccountEmail] = useState("");
   const [dataControlMessage, setDataControlMessage] = useState("");
+  const [dataControlTone, setDataControlTone] = useState<"success" | "error">("success");
   const [pendingSettlement, setPendingSettlement] = useState<SettlementSuggestion | null>(null);
 
   const selectedMembers = useMemo(
@@ -532,18 +533,29 @@ export function MainScreen() {
   };
 
   const resetLocalDemo = () => {
+    setDataControlTone("success");
     resetDemo();
     setDataControlMessage("Demo local restaurado en este dispositivo.");
   };
 
   const confirmDeleteLocalData = async () => {
-    const result = await deleteLocalUserData();
-    await clearLocalAccount();
-    resetDemo();
-    setShowDeleteLocalDataConfirm(false);
-    setDataControlMessage(
-      `Datos locales borrados. ${result.remoteDeletion.reason} Se cargó un demo limpio para seguir probando.`,
-    );
+    setDataControlMessage("");
+    try {
+      const result = await deleteLocalUserData();
+      const accountCleared = await clearLocalAccount();
+      resetDemo();
+      setShowDeleteLocalDataConfirm(false);
+      setDataControlTone(accountCleared ? "success" : "error");
+      setDataControlMessage(
+        accountCleared
+          ? `Datos locales borrados. ${result.remoteDeletion.reason} Se cargó un demo limpio para seguir probando.`
+          : "Se borraron los datos locales, pero no se pudo refrescar el perfil en pantalla. Cierra y abre la app para confirmar.",
+      );
+    } catch {
+      setShowDeleteLocalDataConfirm(false);
+      setDataControlTone("error");
+      setDataControlMessage("No se pudieron borrar los datos locales. Intenta de nuevo desde Perfil.");
+    }
   };
 
   const renderGroups = () => (
@@ -866,9 +878,15 @@ export function MainScreen() {
         <Pill label="Local" tone="neutral" />
       </View>
       {dataControlMessage ? (
-        <View style={styles.dataStatus}>
-          <MaterialCommunityIcons color={colors.primary} name="check-circle-outline" size={17} />
-          <Text style={styles.dataStatusText}>{dataControlMessage}</Text>
+        <View style={[styles.dataStatus, dataControlTone === "error" && styles.dataStatusError]}>
+          <MaterialCommunityIcons
+            color={dataControlTone === "error" ? colors.due : colors.primary}
+            name={dataControlTone === "error" ? "alert-circle-outline" : "check-circle-outline"}
+            size={17}
+          />
+          <Text style={[styles.dataStatusText, dataControlTone === "error" && styles.dataStatusTextError]}>
+            {dataControlMessage}
+          </Text>
         </View>
       ) : null}
       <View style={styles.dataInventory}>
@@ -892,7 +910,10 @@ export function MainScreen() {
         <ActionButton
           icon="delete-outline"
           label="Borrar datos locales"
-          onPress={() => setShowDeleteLocalDataConfirm(true)}
+          onPress={() => {
+            setDataControlMessage("");
+            setShowDeleteLocalDataConfirm(true);
+          }}
           tone="danger"
         />
       </View>
@@ -1956,12 +1977,18 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     padding: spacing.sm,
   },
+  dataStatusError: {
+    backgroundColor: colors.dueWash,
+  },
   dataStatusText: {
     color: colors.primaryDark,
     flex: 1,
     fontSize: typography.small,
     fontWeight: "600",
     lineHeight: 18,
+  },
+  dataStatusTextError: {
+    color: colors.due,
   },
   groupCard: {
     backgroundColor: colors.surface,
