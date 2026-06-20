@@ -341,3 +341,14 @@ Rationale: The premium goal calls for lower visual weight without hiding core
 content. Removing the extra action rail reduces decision fatigue on narrow
 Android screens, while keeping `Agregar gasto`, `Liquidar`, `Siguiente paso`,
 MXN, identity, group, and `Sin pagos reales` visible in the first viewport.
+
+### Move To A Cooler Slate And Deep Agave Palette
+
+Decision: Replace the warmer sand-heavy palette with cool slate neutrals, deep
+agave teal, restrained indigo, muted terracotta/marigold, and deep rose for debt
+states.
+
+Rationale: The previous colors still felt too beige/green-heavy and less
+premium. A slate-white foundation gives the app a cleaner fintech base, while
+deep agave and indigo keep the Mexico/LATAM trust signal without making the
+interface feel one-note or harsh.

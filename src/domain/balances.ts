@@ -41,7 +41,7 @@ export function getGroupMembers(data: AppData, groupId: string) {
         id: member.id,
         userId: member.userId,
         name: member.displayNameSnapshot || user?.displayName || "Integrante",
-        avatarColor: user?.avatarColor ?? "#0F766E",
+        avatarColor: user?.avatarColor ?? "#0E7C66",
         role: member.role,
         joinedAt: member.joinedAt,
         leftAt: member.leftAt,

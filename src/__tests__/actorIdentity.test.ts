@@ -7,14 +7,14 @@ const data = {
     {
       id: "user-ana",
       displayName: "Ana",
-      avatarColor: "#0F766E",
+      avatarColor: "#0E7C66",
       createdAt: "2026-06-10T00:00:00Z",
       updatedAt: "2026-06-10T00:00:00Z",
     },
     {
       id: "user-diego",
       displayName: "Diego",
-      avatarColor: "#1D5FD6",
+      avatarColor: "#2A4FD4",
       createdAt: "2026-06-10T00:00:00Z",
       updatedAt: "2026-06-10T00:00:00Z",
     },

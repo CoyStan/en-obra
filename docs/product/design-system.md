@@ -14,35 +14,35 @@
 - Direction: Style 1 trustworthy fintech minimal as the base, warmed by Style 2
   Mexico/LATAM accents, and structured through Style 3 Android-native Material
   patterns.
-- Background: cool near-white neutral canvas with white cards and hairline
-  borders.
-- Primary: agave/teal for brand, navigation, receive states, and primary
+- Background: cool slate-white canvas with white cards and slate hairline
+  borders. Avoid beige dominance.
+- Primary: deep agave teal for brand, navigation, receive states, and primary
   actions.
-- Secondary interaction: restrained Android blue for selected controls and
-  small affordances.
-- Warmth: terracotta and marigold appear only in small context accents, chips,
-  icons, or debt-related scan points. They should never turn the app into a
-  beige/brown or folk-art theme.
-- Debt/error: restrained red only for negative balances and validation errors.
+- Secondary interaction: restrained indigo/Android blue for selected controls
+  and small affordances.
+- Warmth: muted terracotta and marigold appear only in small context accents,
+  chips, icons, or debt-related scan points. They should never turn the app into
+  a beige/brown or folk-art theme.
+- Debt/error: deep rose-red only for negative balances and validation errors.
 - Demo/legal disclaimers: neutral gray chips, not highlight colors.
 - Avoid decorative accent rotation. Color should clarify state, trust, or
   localized context.
 
 Suggested palette:
 
-- Ink: `#102A2F`
-- Muted ink: `#62717C`
-- Canvas: `#F4F7F6`
+- Ink: `#0E1B22`
+- Muted ink: `#5A6B75`
+- Canvas: `#F4F6F8`
 - Surface: `#FFFFFF`
-- Surface strong: `#F8FAF9`
-- Surface tinted: `#EAF7F3`
-- Primary agave: `#0F766E`
-- Primary deep: `#0B4F4A`
-- Android blue accent: `#1D5FD6`
-- Warm terracotta: `#C9552D`
-- Warm marigold: `#E4A11B`
-- Due red: `#C83A3A`
-- Border: `#DCE6E3`
+- Surface strong: `#F0F3F6`
+- Surface tinted: `#E8EFF1`
+- Primary agave: `#0E7C66`
+- Primary deep: `#0A5A4A`
+- Android indigo accent: `#2A4FD4`
+- Warm terracotta: `#B85A3D`
+- Warm marigold: `#D98E21`
+- Due rose: `#B23A48`
+- Border: `#DCE3E8`
 
 ## Typography
 

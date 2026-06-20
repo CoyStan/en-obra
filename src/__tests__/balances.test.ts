@@ -134,7 +134,7 @@ describe("group balances", () => {
         {
           id: "user-ana",
           displayName: "Ana",
-          avatarColor: "#0F766E",
+          avatarColor: "#0E7C66",
           createdAt: "2026-06-10T00:00:00Z",
           updatedAt: "2026-06-10T00:00:00Z",
         },
@@ -173,7 +173,7 @@ describe("group balances", () => {
         {
           id: "user-ana",
           displayName: "Ana",
-          avatarColor: "#0F766E",
+          avatarColor: "#0E7C66",
           createdAt: "2026-06-10T00:00:00Z",
           updatedAt: "2026-06-10T00:00:00Z",
         },

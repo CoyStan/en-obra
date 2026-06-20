@@ -42,8 +42,8 @@ describe("SQL-ready local model", () => {
         },
       ],
       members: [
-        { id: "member-ana", name: "Ana", avatarColor: "#0F766E", joinedAt: "2026-06-10T00:00:00Z" },
-        { id: "member-luis", name: "Luis", avatarColor: "#1D5FD6", joinedAt: "2026-06-10T00:00:00Z" },
+        { id: "member-ana", name: "Ana", avatarColor: "#0E7C66", joinedAt: "2026-06-10T00:00:00Z" },
+        { id: "member-luis", name: "Luis", avatarColor: "#2A4FD4", joinedAt: "2026-06-10T00:00:00Z" },
       ],
       expenses: [
         {

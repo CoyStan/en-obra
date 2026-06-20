@@ -12,14 +12,14 @@ import type {
 const now = "2026-06-10T12:00:00Z";
 
 const users: User[] = [
-  { id: "user-ana", displayName: "Ana", phoneOrEmail: "ana@demo.local", avatarColor: "#1F9ED6", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
-  { id: "user-luis", displayName: "Luis", phoneOrEmail: "luis@demo.local", avatarColor: "#168AC0", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
-  { id: "user-maru", displayName: "Maru", phoneOrEmail: "maru@demo.local", avatarColor: "#4F9BC7", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
-  { id: "user-diego", displayName: "Diego", phoneOrEmail: "diego@demo.local", avatarColor: "#6B7C93", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
-  { id: "user-sofia", displayName: "Sofía", phoneOrEmail: "sofia@demo.local", avatarColor: "#3B82B8", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
-  { id: "user-fer", displayName: "Fer", phoneOrEmail: "fer@demo.local", avatarColor: "#7C8DA1", createdAt: "2026-06-01T12:00:00Z", updatedAt: now },
-  { id: "user-paola", displayName: "Paola", phoneOrEmail: "paola@demo.local", avatarColor: "#5B8FAE", createdAt: "2026-06-01T12:00:00Z", updatedAt: now },
-  { id: "user-rene", displayName: "René", phoneOrEmail: "rene@demo.local", avatarColor: "#536D83", createdAt: "2026-06-02T12:00:00Z", updatedAt: now },
+  { id: "user-ana", displayName: "Ana", phoneOrEmail: "ana@demo.local", avatarColor: "#0E7C66", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
+  { id: "user-luis", displayName: "Luis", phoneOrEmail: "luis@demo.local", avatarColor: "#2A4FD4", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
+  { id: "user-maru", displayName: "Maru", phoneOrEmail: "maru@demo.local", avatarColor: "#B85A3D", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
+  { id: "user-diego", displayName: "Diego", phoneOrEmail: "diego@demo.local", avatarColor: "#536D83", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
+  { id: "user-sofia", displayName: "Sofía", phoneOrEmail: "sofia@demo.local", avatarColor: "#0A5A4A", createdAt: "2026-05-28T14:00:00Z", updatedAt: now },
+  { id: "user-fer", displayName: "Fer", phoneOrEmail: "fer@demo.local", avatarColor: "#6B5FA8", createdAt: "2026-06-01T12:00:00Z", updatedAt: now },
+  { id: "user-paola", displayName: "Paola", phoneOrEmail: "paola@demo.local", avatarColor: "#8A5D12", createdAt: "2026-06-01T12:00:00Z", updatedAt: now },
+  { id: "user-rene", displayName: "René", phoneOrEmail: "rene@demo.local", avatarColor: "#445666", createdAt: "2026-06-02T12:00:00Z", updatedAt: now },
 ];
 
 const userById = new Map(users.map((user) => [user.id, user]));
@@ -43,7 +43,7 @@ const members: Member[] = groupMembers.map((member) => ({
   id: member.id,
   userId: member.userId,
   name: member.displayNameSnapshot,
-  avatarColor: userById.get(member.userId)?.avatarColor ?? "#0F766E",
+  avatarColor: userById.get(member.userId)?.avatarColor ?? "#0E7C66",
   role: member.role,
   joinedAt: member.joinedAt,
   leftAt: member.leftAt,

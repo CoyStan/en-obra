@@ -24,28 +24,28 @@ a generic dashboard and not a decorative travel app.
 
 ## Palette
 
-Use a quiet white/neutral fintech base with warm accents in small doses.
+Use a cool slate-white fintech base with warm accents in small doses.
 
-- Ink: `#102A2F`
-- Muted ink: `#62717C`
-- Canvas: `#F4F7F6`
+- Ink: `#0E1B22`
+- Muted ink: `#5A6B75`
+- Canvas: `#F4F6F8`
 - Surface: `#FFFFFF`
-- Surface strong: `#F8FAF9`
-- Surface tinted: `#EAF7F3`
-- Primary agave: `#0F766E`
-- Primary deep: `#0B4F4A`
-- Android blue accent: `#1D5FD6`
-- Warm terracotta: `#C9552D`
-- Warm marigold: `#E4A11B`
-- Due red: `#C83A3A`
-- Border: `#DCE6E3`
+- Surface strong: `#F0F3F6`
+- Surface tinted: `#E8EFF1`
+- Primary agave: `#0E7C66`
+- Primary deep: `#0A5A4A`
+- Android indigo accent: `#2A4FD4`
+- Warm terracotta: `#B85A3D`
+- Warm marigold: `#D98E21`
+- Due rose: `#B23A48`
+- Border: `#DCE3E8`
 
 Rules:
 
 - Use agave/teal for primary navigation, receive states, and trustworthy
   confirmation.
-- Use Android blue only for selected interactive emphasis or small affordances,
-  never as the whole brand.
+- Use Android indigo only for selected interactive emphasis or small
+  affordances, never as the whole brand.
 - Use terracotta for debt and local context accents only when it improves
   scanning.
 - Use marigold for tiny secondary icons/chips, not large panels.
@@ -139,4 +139,3 @@ A future visual implementation is close to the selected direction when:
 - Text remains readable at 360 px and 412 px wide screenshots.
 - No generated-reference concept has to be copied literally; the real app must
   remain data-driven and usable.
-
