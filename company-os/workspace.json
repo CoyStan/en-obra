@@ -1892,6 +1892,40 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0033"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0034",
+      "title": "Local export import restore validator",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add a provider-neutral local export import/restore validator that verifies export checksums, app boundaries, schema compatibility, and sanitized backend snapshots. Forbidden: production backend restore, secrets, paid services, real payments, deployment.",
+      "acceptance_target": "Import module validates local export packages, rejects tampered/wrong-app/wrong-schema packages, returns sanitized BackendSnapshot data, preserves account/sync state, is covered by tests, and is included in backend release gate/docs.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0034"
     }
   ],
   "attempts": [
@@ -2491,6 +2525,21 @@
       "result": "Implemented and verified committed backend release manifest artifact in commit 56d272e952daa3f6078e15c8dd982ad3d9420b51.",
       "commits": [
         "56d272e952daa3f6078e15c8dd982ad3d9420b51"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0034",
+      "work_item_id": "WORK-APP-0034",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T22:50:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified local export import restore validator in commit ada6bdb173bfdee5f6603e700af849fe09cf9c93.",
+      "commits": [
+        "ada6bdb173bfdee5f6603e700af849fe09cf9c93"
       ]
     }
   ],
@@ -3295,6 +3344,27 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for committed backend release manifest artifact.",
       "timestamp": "2026-06-20T22:37:50Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0034"
+      ],
+      "artifacts": [
+        "src/backend/dataImport.ts",
+        "src/__tests__/dataImport.test.ts",
+        "reports/evidence/WORK-APP-0034/technical-report.md",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0034",
+      "work_item_id": "WORK-APP-0034",
+      "attempt_id": "ATTEMPT-APP-0034",
+      "head_sha": "ada6bdb173bfdee5f6603e700af849fe09cf9c93",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for local export import restore validator.",
+      "timestamp": "2026-06-20T22:43:08Z"
     }
   ],
   "review_verdicts": [
@@ -3707,6 +3777,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T22:37:50Z"
+    },
+    {
+      "id": "REVIEW-APP-0034",
+      "work_item_id": "WORK-APP-0034",
+      "reviewed_head": "ada6bdb173bfdee5f6603e700af849fe09cf9c93",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T22:43:08Z"
     }
   ],
   "human_decisions": [],
@@ -4941,6 +5019,48 @@
       "attempt_id": "ATTEMPT-APP-0033",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T22:37:50Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0034",
+        "added local import validator",
+        "added import validator tests",
+        "updated backend release gate",
+        "updated backend readiness report",
+        "updated release manifest artifact",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/dataImport.ts",
+        "src/__tests__/dataImport.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "src/backend/backendReleaseGate.ts",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md",
+        "reports/evidence/WORK-APP-0034/technical-report.md"
+      ],
+      "not_done": [
+        "cloud restore",
+        "production backend provider",
+        "auth provider",
+        "storage provider",
+        "remote endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "legal approval",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0034",
+      "work_item_id": "WORK-APP-0034",
+      "attempt_id": "ATTEMPT-APP-0034",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T22:43:08Z"
     }
   ],
   "decisions": [
@@ -5443,6 +5563,15 @@
       "what_happened": "Added docs/backend/release-manifest-v1.json and tests that compare it exactly to the manifest generator.",
       "what_changed": "The backend handoff now includes a stable manifest artifact with checksums for schema, seed, gate, blockers, and commands.",
       "timestamp": "2026-06-20T22:37:50Z"
+    },
+    {
+      "id": "OUTCOME-APP-0034",
+      "work_item_id": "WORK-APP-0034",
+      "summary": "Local exports can now be validated and restored into sanitized backend snapshots.",
+      "status": "captured",
+      "what_happened": "Added import validator for checksum, app boundary, real-payment boundary, schema compatibility, and repaired BackendSnapshot output.",
+      "what_changed": "The backend handoff now supports export and local restore/migration validation without choosing a production provider.",
+      "timestamp": "2026-06-20T22:43:08Z"
     }
   ]
 }
