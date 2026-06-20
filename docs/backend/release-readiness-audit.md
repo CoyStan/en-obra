@@ -16,6 +16,7 @@ deployment approval.
 - Sync outbox lifecycle: `src/backend/syncOutbox.ts`
 - Provider-neutral sync engine: `src/backend/syncEngine.ts`
 - Provider-neutral conflict policy: `src/backend/syncConflictPolicy.ts`
+- Backend release manifest: `src/backend/backendReleaseManifest.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -38,6 +39,8 @@ deployment approval.
   immutable repository snapshots.
 - Sync conflict policy for append-only rows, duplicate settlement protection,
   stale revisions, deletes, and remote deletion handling.
+- Deterministic release manifest checksums for schema SQL, seed SQL, backend
+  gate status, required capabilities, known blockers, and evidence commands.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.

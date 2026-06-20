@@ -234,6 +234,7 @@ to stay ready before Play internal testing:
 - sync outbox lifecycle
 - sync engine
 - conflict policy
+- backend release manifest
 - local export package
 - migration planner
 

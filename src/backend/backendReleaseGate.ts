@@ -25,6 +25,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "outbox",
   "sync-engine",
   "conflict-policy",
+  "release-manifest",
   "export",
   "migrations",
 ] as const;

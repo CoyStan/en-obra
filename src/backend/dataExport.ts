@@ -28,7 +28,7 @@ export type LocalDataExportPackage = {
   checksum: string;
 };
 
-function checksum(input: string) {
+export function deterministicChecksum(input: string) {
   let hash = 2166136261;
   for (let index = 0; index < input.length; index += 1) {
     hash ^= input.charCodeAt(index);
@@ -73,11 +73,11 @@ export function createLocalDataExportPackage({
 
   return {
     ...body,
-    checksum: checksum(stablePayloadJson(body)),
+    checksum: deterministicChecksum(stablePayloadJson(body)),
   };
 }
 
 export function verifyLocalDataExportPackage(exportPackage: LocalDataExportPackage) {
   const { checksum: expectedChecksum, ...body } = exportPackage;
-  return checksum(stablePayloadJson(body)) === expectedChecksum;
+  return deterministicChecksum(stablePayloadJson(body)) === expectedChecksum;
 }

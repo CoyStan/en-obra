@@ -76,6 +76,10 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/syncConflictPolicy.ts",
       "src/__tests__/syncConflictPolicy.test.ts",
     ]),
+    item("release-manifest", "Backend release manifest", "ready", [
+      "src/backend/backendReleaseManifest.ts",
+      "src/__tests__/backendReleaseManifest.test.ts",
+    ]),
     item("export", "Local data export package", "ready", [
       "src/backend/dataExport.ts",
       "src/__tests__/dataExport.test.ts",
