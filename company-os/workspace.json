@@ -1418,6 +1418,39 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "id": "WORK-APP-0020",
+      "title": "Sync outbox lifecycle utilities",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add reusable local sync_outbox lifecycle utilities for creating, reading, marking attempts, sent, and failed records so a future backend adapter can replace mock sync without changing app mutations. Preserve local-first demo behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "The app has tested sync_outbox helpers for deterministic payload JSON, pending order, attempts, success/failure state transitions, and useAppData mutation creation uses the shared helper.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -1814,6 +1847,20 @@
       "result": "Implemented and verified backend data integrity repair in commit c6cd821dced0dd6e0404d948b1eda010ba0bc43d.",
       "commits": [
         "c6cd821dced0dd6e0404d948b1eda010ba0bc43d"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0020",
+      "work_item_id": "WORK-APP-0020",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified sync outbox lifecycle utilities in commit d6912e173b75e208540be66dccc9f14575450285.",
+      "commits": [
+        "d6912e173b75e208540be66dccc9f14575450285"
       ]
     }
   ],
@@ -2312,6 +2359,28 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for backend data integrity repair.",
       "timestamp": "2026-06-20T21:16:28Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0020"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0020/technical-report.md",
+        "src/backend/syncOutbox.ts",
+        "src/__tests__/syncOutbox.test.ts",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0020",
+      "work_item_id": "WORK-APP-0020",
+      "attempt_id": "ATTEMPT-APP-0020",
+      "head_sha": "d6912e173b75e208540be66dccc9f14575450285",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for sync outbox lifecycle utilities.",
+      "timestamp": "2026-06-20T21:19:11Z"
     }
   ],
   "review_verdicts": [
@@ -2612,6 +2681,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:16:28Z"
+    },
+    {
+      "id": "REVIEW-APP-0020",
+      "work_item_id": "WORK-APP-0020",
+      "reviewed_head": "d6912e173b75e208540be66dccc9f14575450285",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:19:11Z"
     }
   ],
   "human_decisions": [],
@@ -3357,6 +3434,38 @@
       "attempt_id": "ATTEMPT-APP-0019",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:16:28Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0020",
+        "added sync outbox utilities",
+        "refactored useAppData to shared outbox helper",
+        "added outbox lifecycle tests",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/syncOutbox.ts",
+        "src/state/useAppData.ts",
+        "src/__tests__/syncOutbox.test.ts",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0020"
+      ],
+      "not_done": [
+        "production sync service",
+        "network replay worker",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0020",
+      "work_item_id": "WORK-APP-0020",
+      "attempt_id": "ATTEMPT-APP-0020",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:19:11Z"
     }
   ],
   "decisions": [
@@ -3733,6 +3842,15 @@
       "what_happened": "Added audit and repair for stale selected group, references, participant shares, settlements, activity events, and outbox rows.",
       "what_changed": "Release-candidate local snapshots are safer to load and align with the SQL-ready model before future backend sync/storage is chosen.",
       "timestamp": "2026-06-20T21:16:28Z"
+    },
+    {
+      "id": "OUTCOME-APP-0020",
+      "work_item_id": "WORK-APP-0020",
+      "summary": "Sync outbox now has reusable lifecycle utilities.",
+      "status": "captured",
+      "what_happened": "Added deterministic payload serialization, pending reads, attempt tracking, sent/failed transitions, and payload parsing; app mutations now use the shared outbox helper.",
+      "what_changed": "A future backend adapter can process the same local queue without changing group, member, expense, settlement, or activity mutations.",
+      "timestamp": "2026-06-20T21:19:11Z"
     }
   ]
 }
