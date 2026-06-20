@@ -12,6 +12,7 @@ Data Safety answers, and Company OS human approval gates before upload.
 - `npm run typecheck` passed.
 - `npm test` passed with 6 files and 19 tests.
 - `npx expo config --type public` resolved Android config.
+- `npm run release:android:check` passed.
 - `npm run export:web` passed.
 - `./bin/company-os validate` passed.
 - Android package: `com.cuentasclaras.app`.

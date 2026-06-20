@@ -27,6 +27,7 @@ Updated Android internal testing readiness documentation for the Company OS era.
 - `npm run release:android:check` passed.
 - `npm run export:web` passed.
 - `./bin/company-os validate` passed.
+- GLM 5.2 text-only release-readiness review returned `accept-ready`.
 - Asset dimensions verified with `file`:
   - `assets/icon.png`: 1024x1024 PNG.
   - `assets/adaptive-icon.png`: 1024x1024 PNG.
