@@ -1550,6 +1550,39 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "id": "WORK-APP-0024",
+      "title": "Backend repository contract",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add a provider-neutral backend repository contract and in-memory implementation for load/save/mutate/export/delete semantics so future AsyncStorage, SQLite, or hosted backend adapters share one shape. Preserve local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "The repo exposes a tested repository interface that can load/save app/account/sync snapshots, apply backend mutations, create export packages, and delete local data without selecting production storage.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -2002,6 +2035,20 @@
       "result": "Implemented and verified committed SQL backend artifacts in commit 4e83d4c0618db0dc0b1b9b80940d979a7586c19e.",
       "commits": [
         "4e83d4c0618db0dc0b1b9b80940d979a7586c19e"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0024",
+      "work_item_id": "WORK-APP-0024",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified backend repository contract in commit ce978d5ac54a159854d58f67d401472c7567a317.",
+      "commits": [
+        "ce978d5ac54a159854d58f67d401472c7567a317"
       ]
     }
   ],
@@ -2590,6 +2637,28 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for committed SQL backend artifacts.",
       "timestamp": "2026-06-20T21:28:43Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0024"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0024/technical-report.md",
+        "src/backend/repository.ts",
+        "src/__tests__/repository.test.ts",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0024",
+      "work_item_id": "WORK-APP-0024",
+      "attempt_id": "ATTEMPT-APP-0024",
+      "head_sha": "ce978d5ac54a159854d58f67d401472c7567a317",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for backend repository contract.",
+      "timestamp": "2026-06-20T21:31:28Z"
     }
   ],
   "review_verdicts": [
@@ -2922,6 +2991,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:28:43Z"
+    },
+    {
+      "id": "REVIEW-APP-0024",
+      "work_item_id": "WORK-APP-0024",
+      "reviewed_head": "ce978d5ac54a159854d58f67d401472c7567a317",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:31:28Z"
     }
   ],
   "human_decisions": [],
@@ -3796,6 +3873,38 @@
       "attempt_id": "ATTEMPT-APP-0023",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:28:43Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0024",
+        "added backend repository contract",
+        "added in-memory repository",
+        "added repository tests",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/repository.ts",
+        "src/__tests__/repository.test.ts",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0024"
+      ],
+      "not_done": [
+        "production backend",
+        "native SQLite adapter",
+        "hosted API adapter",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0024",
+      "work_item_id": "WORK-APP-0024",
+      "attempt_id": "ATTEMPT-APP-0024",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:31:28Z"
     }
   ],
   "decisions": [
@@ -4208,6 +4317,15 @@
       "what_happened": "Added schema and demo seed SQL files generated from the provider-neutral backend contract plus tests that compare artifacts to generator output.",
       "what_changed": "Backend handoff can inspect concrete SQL files while tests prevent the artifacts from drifting from TypeScript source of truth.",
       "timestamp": "2026-06-20T21:28:43Z"
+    },
+    {
+      "id": "OUTCOME-APP-0024",
+      "work_item_id": "WORK-APP-0024",
+      "summary": "Backend storage now has a provider-neutral repository boundary.",
+      "status": "captured",
+      "what_happened": "Added BackendRepository and InMemoryBackendRepository with tests for load, save, mutate, export, and local delete semantics.",
+      "what_changed": "Future storage choices can plug into one shared contract without changing backend mutation, export, or integrity behavior.",
+      "timestamp": "2026-06-20T21:31:28Z"
     }
   ]
 }
