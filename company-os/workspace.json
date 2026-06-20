@@ -1451,6 +1451,39 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "id": "WORK-APP-0021",
+      "title": "Local data export readiness",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add local-only data export/package utilities for app data, sync state, account summary, SQL snapshot metadata, and deterministic checksum to support migration/support/deletion readiness without production storage. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "The repo can build a deterministic local data export package from current local state, tests cover checksum stability and contents, and docs explain that it is local-only until access/storage decisions are made.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -1861,6 +1894,20 @@
       "result": "Implemented and verified sync outbox lifecycle utilities in commit d6912e173b75e208540be66dccc9f14575450285.",
       "commits": [
         "d6912e173b75e208540be66dccc9f14575450285"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0021",
+      "work_item_id": "WORK-APP-0021",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified local data export package in commit f264e03d3f1c99ee6370e196436888fff7b52d28.",
+      "commits": [
+        "f264e03d3f1c99ee6370e196436888fff7b52d28"
       ]
     }
   ],
@@ -2381,6 +2428,28 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for sync outbox lifecycle utilities.",
       "timestamp": "2026-06-20T21:19:11Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0021"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0021/technical-report.md",
+        "src/backend/dataExport.ts",
+        "src/__tests__/dataExport.test.ts",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0021",
+      "work_item_id": "WORK-APP-0021",
+      "attempt_id": "ATTEMPT-APP-0021",
+      "head_sha": "f264e03d3f1c99ee6370e196436888fff7b52d28",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for local data export readiness.",
+      "timestamp": "2026-06-20T21:21:16Z"
     }
   ],
   "review_verdicts": [
@@ -2689,6 +2758,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:19:11Z"
+    },
+    {
+      "id": "REVIEW-APP-0021",
+      "work_item_id": "WORK-APP-0021",
+      "reviewed_head": "f264e03d3f1c99ee6370e196436888fff7b52d28",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:21:16Z"
     }
   ],
   "human_decisions": [],
@@ -3466,6 +3543,38 @@
       "attempt_id": "ATTEMPT-APP-0020",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:19:11Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0021",
+        "added local data export package",
+        "added deterministic checksum",
+        "added export package tests",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/dataExport.ts",
+        "src/__tests__/dataExport.test.ts",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0021"
+      ],
+      "not_done": [
+        "UI export/share flow",
+        "cloud backup",
+        "production backend",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0021",
+      "work_item_id": "WORK-APP-0021",
+      "attempt_id": "ATTEMPT-APP-0021",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:21:16Z"
     }
   ],
   "decisions": [
@@ -3851,6 +3960,15 @@
       "what_happened": "Added deterministic payload serialization, pending reads, attempt tracking, sent/failed transitions, and payload parsing; app mutations now use the shared outbox helper.",
       "what_changed": "A future backend adapter can process the same local queue without changing group, member, expense, settlement, or activity mutations.",
       "timestamp": "2026-06-20T21:19:11Z"
+    },
+    {
+      "id": "OUTCOME-APP-0021",
+      "work_item_id": "WORK-APP-0021",
+      "summary": "Local data export package is available for backend readiness.",
+      "status": "captured",
+      "what_happened": "Added a local-only export package with inventory, account state, sync state, app data, SQL snapshot, and checksum.",
+      "what_changed": "The app now has a provider-neutral portability primitive for support, migration, and deletion-readiness workflows before production storage is selected.",
+      "timestamp": "2026-06-20T21:21:16Z"
     }
   ]
 }
