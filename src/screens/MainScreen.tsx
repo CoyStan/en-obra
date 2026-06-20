@@ -810,6 +810,9 @@ export function MainScreen() {
   const identityMeta = account.profile && account.mode === "signed-in" ? "Perfil local" : "Demo local";
   const activeTabConfig = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
   const workspaceSectionLabel = activeTabConfig.groupScoped ? activeTabConfig.label : "Grupos";
+  const workspaceHint = selectedGroup
+    ? `${workspaceSectionLabel} de ${selectedGroup.name}`
+    : "Primero elige un grupo";
   const expenseAmountCents = useMemo(() => parseMoneyInput(expenseAmount), [expenseAmount]);
   const participantShares = useMemo(() => {
     if (!expenseAmountCents || participantIds.length === 0) {
@@ -1051,7 +1054,7 @@ export function MainScreen() {
             {selectedGroup ? "Cambia el grupo activo" : "Elige un grupo para empezar"}
           </Text>
           <Text style={styles.groupSelectorText}>
-            Actividad, Balance y Perfil se actualizan con el grupo que selecciones.
+            Al seleccionar uno, se abre su Actividad. Balance y Perfil quedan ligados a ese grupo.
           </Text>
         </View>
       </View>
@@ -1939,8 +1942,9 @@ export function MainScreen() {
               <View style={styles.workspaceBarCopy}>
                 <Text style={styles.workspaceBarKicker}>Grupo activo</Text>
                 <Text numberOfLines={1} style={styles.workspaceBarTitle}>
-                  {selectedGroup ? `${selectedGroup.name} · ${workspaceSectionLabel}` : "Elige un grupo"}
+                  {selectedGroup ? selectedGroup.name : "Elige un grupo"}
                 </Text>
+                <Text numberOfLines={1} style={styles.workspaceBarSubtitle}>{workspaceHint}</Text>
               </View>
               <Pressable
                 accessibilityLabel={selectedGroup ? "Cambiar grupo activo" : "Elegir grupo"}
@@ -2086,8 +2090,10 @@ export function MainScreen() {
           {tabs.map((tab) => {
             const active = activeTab === tab.id;
             const disabledByContext = Boolean(tab.groupScoped && !selectedGroup);
+            const isGroupSwitcher = tab.id === "groups";
+            const displayLabel = isGroupSwitcher && selectedGroup ? "Cambiar" : tab.label;
             const accessibilityLabel =
-              tab.id === "groups"
+              isGroupSwitcher
                 ? selectedGroup
                   ? `Grupos. Cambiar grupo activo. Ahora estás en ${selectedGroup.name}`
                   : "Elegir grupo"
@@ -2102,13 +2108,20 @@ export function MainScreen() {
                 hitSlop={4}
                 key={tab.id}
                 onPress={() => openTab(tab.id)}
-                style={[styles.navItem, active && styles.navItemActive, disabledByContext && styles.navItemDisabled]}
+                style={[
+                  styles.navItem,
+                  isGroupSwitcher && styles.navGroupSwitcher,
+                  !isGroupSwitcher && selectedGroup && styles.navWorkspaceItem,
+                  active && styles.navItemActive,
+                  disabledByContext && styles.navItemDisabled,
+                ]}
               >
                 <MaterialCommunityIcons
                   color={disabledByContext ? colors.mutedInk : colors.primaryDark}
                   name={tab.icon}
                   size={20}
                 />
+                {!isGroupSwitcher && selectedGroup ? <View style={styles.navScopedDot} /> : null}
                 <Text
                   style={[
                     styles.navLabel,
@@ -2117,7 +2130,7 @@ export function MainScreen() {
                     disabledByContext && styles.navLabelDisabled,
                   ]}
                 >
-                  {tab.label}
+                  {displayLabel}
                 </Text>
               </Pressable>
             );
@@ -2756,7 +2769,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderTopWidth: 1,
     flexDirection: "row",
-    gap: spacing.sm,
+    gap: spacing.xs,
     padding: spacing.sm,
     paddingBottom: Platform.select({ android: spacing.sm, default: spacing.md }),
   },
@@ -3220,6 +3233,12 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     lineHeight: 18,
   },
+  workspaceBarSubtitle: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "600",
+    lineHeight: 14,
+  },
   workspaceSwitchButton: {
     alignItems: "center",
     backgroundColor: colors.surface,
@@ -3435,11 +3454,26 @@ const styles = StyleSheet.create({
     minHeight: 48,
     paddingVertical: spacing.sm,
   },
+  navGroupSwitcher: {
+    backgroundColor: colors.surfaceStrong,
+    flex: 0.88,
+  },
   navItemActive: {
     backgroundColor: colors.surfaceTinted,
   },
   navItemDisabled: {
     opacity: 0.5,
+  },
+  navScopedDot: {
+    backgroundColor: colors.primary,
+    borderRadius: 2,
+    height: 3,
+    marginTop: -2,
+    width: 14,
+  },
+  navWorkspaceItem: {
+    borderColor: "rgba(8, 128, 101, 0.08)",
+    borderWidth: 1,
   },
   navLabel: {
     color: colors.primaryDark,
