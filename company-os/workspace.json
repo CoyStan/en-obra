@@ -1995,6 +1995,20 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0036"
+    },
+    {
+      "id": "WORK-APP-0037",
+      "title": "Follow-up group selector tab clarity",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, reports/evidence, company-os. Sources: premium visual goal, design system, visual direction, decisions. Actions: local_write, local_validation. Clarify that Groups selects the active group and that Activity, Balance, and Profile follow that active group. Preserve existing content, local demo behavior, and no-real-payments language. Forbidden: real payments, production backend, secrets, paid services, removing group functionality.",
+      "acceptance_target": "Groups stays a stable tab label, group selection opens the group workspace, group-scoped tabs are clearly tied to the selected group, and verification passes.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0037"
     }
   ],
   "attempts": [
@@ -2639,6 +2653,21 @@
       "result": "Implemented and verified provider-neutral deletion workflow model in commit 0f12c3ae05b76afc27b54ca9be0e607b4400360d.",
       "commits": [
         "0f12c3ae05b76afc27b54ca9be0e607b4400360d"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0037",
+      "work_item_id": "WORK-APP-0037",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T22:58:00Z",
+      "cleanliness": "clean-after-implementation",
+      "result": "Clarified group selector tab flow in commit 8bfb6bce40507f3206ea132a766f554cf4a507d6.",
+      "commits": [
+        "8bfb6bce40507f3206ea132a766f554cf4a507d6"
       ]
     }
   ],
@@ -3506,6 +3535,24 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for provider-neutral deletion workflow model.",
       "timestamp": "2026-06-20T22:57:22Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0037"
+      ],
+      "artifacts": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0037/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0037",
+      "work_item_id": "WORK-APP-0037",
+      "attempt_id": "ATTEMPT-APP-0037",
+      "head_sha": "8bfb6bce40507f3206ea132a766f554cf4a507d6",
+      "status": "passed",
+      "summary": "Typecheck, Company OS validate, and Company OS scope passed for the group selector tab clarity follow-up.",
+      "timestamp": "2026-06-20T23:00:48Z"
     }
   ],
   "review_verdicts": [
@@ -3942,6 +3989,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T22:57:22Z"
+    },
+    {
+      "id": "REVIEW-APP-0037",
+      "work_item_id": "WORK-APP-0037",
+      "reviewed_head": "8bfb6bce40507f3206ea132a766f554cf4a507d6",
+      "reviewer": "PALARI-DESIGN",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:00:48Z"
     }
   ],
   "human_decisions": [],
@@ -5304,6 +5359,33 @@
       "attempt_id": "ATTEMPT-APP-0036",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T22:57:22Z"
+    },
+    {
+      "actions_taken": [
+        "created WORK-APP-0037",
+        "clarified Groups as stable selector",
+        "kept Activity Balance Profile scoped to selected group",
+        "added selector intro",
+        "muted group-scoped tabs without selection",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0037/technical-report.md"
+      ],
+      "not_done": [
+        "native Android emulator QA",
+        "real group invites",
+        "real payments",
+        "production backend",
+        "secrets",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0037",
+      "work_item_id": "WORK-APP-0037",
+      "attempt_id": "ATTEMPT-APP-0037",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-20T23:00:48Z"
     }
   ],
   "decisions": [
@@ -5833,6 +5915,15 @@
       "what_happened": "Added deletion request lifecycle states, transition validation, failure reason handling, and support-safe summaries while leaving remoteEndpointConfigured false.",
       "what_changed": "The backend is better prepared for Play account deletion requirements without crossing provider/legal decision gates.",
       "timestamp": "2026-06-20T22:57:22Z"
+    },
+    {
+      "id": "OUTCOME-APP-0037",
+      "work_item_id": "WORK-APP-0037",
+      "summary": "Group tabs now communicate a clearer selected-group workspace.",
+      "status": "captured",
+      "what_happened": "Kept Grupos as the stable selector tab, opened the workspace after selection, and made Activity, Balance, and Profile visibly depend on the active group.",
+      "what_changed": "The tab model now better matches the user expectation that choosing a group changes all group-scoped views.",
+      "timestamp": "2026-06-20T23:00:48Z"
     }
   ]
 }
