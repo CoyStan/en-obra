@@ -1649,6 +1649,43 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "remove_core_content"
+      ],
+      "id": "WORK-APP-0027",
+      "title": "Make tabs a selected-group workspace",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Strengthen the group-first navigation model: Groups is the switcher, and Activity, Balance, and Perfil are clearly scoped to the selected group. Preserve content and local-only behavior. Forbidden: real payments, production backend, secrets, paid services, removing group functionality.",
+      "acceptance_target": "Bottom navigation and scoped tabs make it obvious that selecting a group changes Activity, Balance, and Perfil; scoped tabs route users through group selection when no group exists; selected group context remains visible in scoped tabs.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0027"
     }
   ],
   "attempts": [
@@ -2143,6 +2180,21 @@
       "result": "Implemented and verified backend release readiness audit in commit b008e5570e25ed52a30be8b52234ecf8e377765b.",
       "commits": [
         "b008e5570e25ed52a30be8b52234ecf8e377765b"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0027",
+      "work_item_id": "WORK-APP-0027",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified selected-group workspace navigation in commit f49b8f1210110866c2fa4d30dae32c9ee4cf1228.",
+      "commits": [
+        "f49b8f1210110866c2fa4d30dae32c9ee4cf1228"
       ]
     }
   ],
@@ -2797,6 +2849,26 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for backend release readiness audit.",
       "timestamp": "2026-06-20T21:37:10Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0027"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0027/technical-report.md",
+        "src/screens/MainScreen.tsx"
+      ],
+      "id": "EVIDENCE-APP-0027",
+      "work_item_id": "WORK-APP-0027",
+      "attempt_id": "ATTEMPT-APP-0027",
+      "head_sha": "f49b8f1210110866c2fa4d30dae32c9ee4cf1228",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for selected-group workspace navigation.",
+      "timestamp": "2026-06-20T21:42:46Z"
     }
   ],
   "review_verdicts": [
@@ -3153,6 +3225,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:37:10Z"
+    },
+    {
+      "id": "REVIEW-APP-0027",
+      "work_item_id": "WORK-APP-0027",
+      "reviewed_head": "f49b8f1210110866c2fa4d30dae32c9ee4cf1228",
+      "reviewer": "PALARI-DESIGN",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:42:46Z"
     }
   ],
   "human_decisions": [],
@@ -4125,6 +4205,39 @@
       "attempt_id": "ATTEMPT-APP-0026",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:37:10Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0027",
+        "added selected-group workspace header",
+        "changed group tab into switcher action",
+        "guarded scoped tab routing",
+        "updated accessibility labels",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0027/technical-report.md"
+      ],
+      "not_done": [
+        "native Android emulator QA",
+        "real group invites",
+        "real payments",
+        "production backend",
+        "secrets",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0027",
+      "work_item_id": "WORK-APP-0027",
+      "attempt_id": "ATTEMPT-APP-0027",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-20T21:42:46Z"
     }
   ],
   "decisions": [
@@ -4564,6 +4677,15 @@
       "what_happened": "Added a readiness report covering SQL, seed, integrity, mutations, repository, outbox, export, migrations, and remaining blockers.",
       "what_changed": "The app can distinguish local/provider-neutral backend readiness from external access, storage, deletion, and legal blockers before Play internal testing.",
       "timestamp": "2026-06-20T21:37:10Z"
+    },
+    {
+      "id": "OUTCOME-APP-0027",
+      "work_item_id": "WORK-APP-0027",
+      "summary": "Tabs now read as a selected-group workspace.",
+      "status": "captured",
+      "what_happened": "Groups now behaves as the switcher while Activity, Balance, and Perfil show a compact active-group workspace header and are guarded when no group is selected.",
+      "what_changed": "Changing the selected group is now visibly the action that changes the context of the other tabs.",
+      "timestamp": "2026-06-20T21:42:46Z"
     }
   ]
 }
