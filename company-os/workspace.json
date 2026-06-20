@@ -967,7 +967,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Polish settlement suggestions and confirmation so users can immediately understand who pays whom, whether the action involves the active identity, MXN amount, and that marking paid is only a local record outside the app. No real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
       "acceptance_target": "Settlement rows and confirmation use personal Spanish copy, clear payer/receiver structure, MXN amount, no-real-payments cues, and local-only action language without removing existing content.",
       "required_approval_capability": "design",
@@ -1179,13 +1179,21 @@
       "id": "ATTEMPT-APP-0008",
       "work_item_id": "WORK-APP-0008",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean; prior app work items are reviewed and waiting on human approval",
-      "result": "in progress"
+      "cleanliness": "implementation and evidence committed on main; Company OS record pending commit",
+      "result": "Polished settlement suggestions and confirmation for active identity clarity",
+      "commits": [
+        "9884aae"
+      ],
+      "changed_files": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0008"
+      ]
     }
   ],
   "evidence_runs": [
@@ -1387,6 +1395,32 @@
       "summary": "Active identity recording checks passed: typecheck, 25 tests, Expo config, web export, Company OS validate/scope, and GLM follow-up review accept-ready.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T15:07:36Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0008",
+        "playwright screenshots"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0008/technical-report.md",
+        "reports/evidence/WORK-APP-0008/glm52-code-review.md",
+        "reports/evidence/WORK-APP-0008/screenshots/balance-360x740.png",
+        "reports/evidence/WORK-APP-0008/screenshots/balance-390x844.png",
+        "reports/evidence/WORK-APP-0008/screenshots/balance-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0008",
+      "work_item_id": "WORK-APP-0008",
+      "attempt_id": "ATTEMPT-APP-0008",
+      "head_sha": "9884aae",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "Settlement clarity checks passed after final simplification: typecheck, 25 tests, Expo config, web export, Company OS validate/scope, Android-size screenshots, and GLM 5.2 code-only review trail with actionable findings addressed.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -1534,6 +1568,28 @@
       "reviewer": "GLM-5.2-code-review",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T15:07:36Z"
+    },
+    {
+      "checks_inspected": [
+        "settlementPerspective helper",
+        "hero settlement cue",
+        "settlement card copy",
+        "MXN amount treatment",
+        "confirmation modal copy",
+        "technical report",
+        "Android viewport screenshots"
+      ],
+      "residual_risks": [
+        "human approval still required",
+        "no native Android emulator/device QA",
+        "long member names may wrap but layout is constrained",
+        "no real payment integration by design"
+      ],
+      "id": "REVIEW-APP-0008",
+      "work_item_id": "WORK-APP-0008",
+      "reviewed_head": "9884aae",
+      "reviewer": "GLM-5.2-code-review-plus-local-followup",
+      "verdict": "accept-ready"
     }
   ],
   "human_decisions": [],
@@ -1838,6 +1894,44 @@
       "attempt_id": "ATTEMPT-APP-0007",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T15:07:36Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added settlement perspective helper",
+        "updated hero settlement cue",
+        "polished settlement card copy",
+        "added MXN amount emphasis",
+        "polished confirmation modal",
+        "recorded product decision",
+        "ran verification",
+        "captured screenshots",
+        "used GLM 5.2 code review"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0008"
+      ],
+      "not_done": [
+        "real payments",
+        "backend services",
+        "secrets",
+        "paid APIs",
+        "push services",
+        "Play Store submission",
+        "native Android emulator QA",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0008",
+      "work_item_id": "WORK-APP-0008",
+      "attempt_id": "ATTEMPT-APP-0008",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -2059,6 +2153,26 @@
       "what_happened": "Expenses and local settlement records now accept active group actor user IDs, with safe fallback to selected demo user.",
       "what_changed": "The audit trail better reflects who is currently acting in a group, reinforcing the multi-user model.",
       "timestamp": "2026-06-20T15:07:44Z"
+    },
+    {
+      "useful": [
+        "perspective-aware copy",
+        "Monto MXN label",
+        "short Android action labels",
+        "Sin pagos reales guardrail",
+        "confirmation no-money-moved copy"
+      ],
+      "follow_up_needed": [
+        "human approval",
+        "native Android emulator/device QA",
+        "future settlement interaction testing"
+      ],
+      "id": "OUTCOME-APP-0008",
+      "work_item_id": "WORK-APP-0008",
+      "summary": "Settlement suggestions now show active-user payment perspective.",
+      "status": "captured",
+      "what_happened": "The balance screen settlement card and confirmation modal now distinguish payer, receiver, and group-observer states while keeping settlement actions local-only.",
+      "what_changed": "Users can see who pays whom, the active identity relationship, the MXN amount, and the no-real-payments boundary with less visual density."
     }
   ]
 }
