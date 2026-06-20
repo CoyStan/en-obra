@@ -68,6 +68,21 @@ adapters:
 backend adapter can process the same rows without changing group, member,
 expense, settlement, or activity mutations.
 
+## Mutation Service
+
+`src/backend/appMutations.ts` owns pure write operations for:
+
+- creating groups
+- adding members
+- adding expenses with equal participant shares
+- recording local paid settlements
+
+The React hook remains responsible for loading, setting state, and persisting
+the returned data. The mutation service owns validation, created records,
+activity events, and sync outbox rows. Tests inject deterministic clocks and ids
+so future SQLite or hosted backend adapters can reuse the same behavior without
+depending on React.
+
 ## Integrity Guard
 
 `src/backend/dataIntegrity.ts` audits and safely repairs persisted local
