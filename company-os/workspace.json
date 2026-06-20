@@ -1926,6 +1926,40 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0034"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0035",
+      "title": "Backend health diagnostics report",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add a safe backend diagnostics report for local/internal testing that summarizes integrity, sync queue state, account mode, storage mode, release gate status, and known blockers without exposing raw financial rows. Forbidden: production backend diagnostics, secrets, paid services, real payments, deployment.",
+      "acceptance_target": "Diagnostics module returns deterministic support-safe status for healthy and unhealthy snapshots, is covered by tests, is included in backend release gate/readiness docs, and does not serialize raw expense titles or personal contact fields.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0035"
     }
   ],
   "attempts": [
@@ -2540,6 +2574,21 @@
       "result": "Implemented and verified local export import restore validator in commit ada6bdb173bfdee5f6603e700af849fe09cf9c93.",
       "commits": [
         "ada6bdb173bfdee5f6603e700af849fe09cf9c93"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0035",
+      "work_item_id": "WORK-APP-0035",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T22:55:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified support-safe backend diagnostics report in commit 36985025ec6de37c95030c9e739d54e9d0fc781e.",
+      "commits": [
+        "36985025ec6de37c95030c9e739d54e9d0fc781e"
       ]
     }
   ],
@@ -3365,6 +3414,27 @@
       "status": "passed",
       "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for local export import restore validator.",
       "timestamp": "2026-06-20T22:43:08Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0035"
+      ],
+      "artifacts": [
+        "src/backend/backendDiagnostics.ts",
+        "src/__tests__/backendDiagnostics.test.ts",
+        "reports/evidence/WORK-APP-0035/technical-report.md",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0035",
+      "work_item_id": "WORK-APP-0035",
+      "attempt_id": "ATTEMPT-APP-0035",
+      "head_sha": "36985025ec6de37c95030c9e739d54e9d0fc781e",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for backend diagnostics report.",
+      "timestamp": "2026-06-20T22:48:03Z"
     }
   ],
   "review_verdicts": [
@@ -3785,6 +3855,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T22:43:08Z"
+    },
+    {
+      "id": "REVIEW-APP-0035",
+      "work_item_id": "WORK-APP-0035",
+      "reviewed_head": "36985025ec6de37c95030c9e739d54e9d0fc781e",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T22:48:03Z"
     }
   ],
   "human_decisions": [],
@@ -5061,6 +5139,49 @@
       "attempt_id": "ATTEMPT-APP-0034",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T22:43:08Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0035",
+        "added backend diagnostics report",
+        "added diagnostics tests",
+        "updated backend release gate",
+        "updated backend readiness report",
+        "updated release manifest artifact",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/backendDiagnostics.ts",
+        "src/__tests__/backendDiagnostics.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "src/backend/backendReleaseGate.ts",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/sql-readiness.md",
+        "docs/backend/release-readiness-audit.md",
+        "reports/evidence/WORK-APP-0035/technical-report.md"
+      ],
+      "not_done": [
+        "production telemetry",
+        "cloud diagnostics",
+        "production backend provider",
+        "auth provider",
+        "storage provider",
+        "remote endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "legal approval",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0035",
+      "work_item_id": "WORK-APP-0035",
+      "attempt_id": "ATTEMPT-APP-0035",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T22:48:03Z"
     }
   ],
   "decisions": [
@@ -5572,6 +5693,15 @@
       "what_happened": "Added import validator for checksum, app boundary, real-payment boundary, schema compatibility, and repaired BackendSnapshot output.",
       "what_changed": "The backend handoff now supports export and local restore/migration validation without choosing a production provider.",
       "timestamp": "2026-06-20T22:43:08Z"
+    },
+    {
+      "id": "OUTCOME-APP-0035",
+      "work_item_id": "WORK-APP-0035",
+      "summary": "Backend health can now be summarized safely for internal testing.",
+      "status": "captured",
+      "what_happened": "Added diagnostics that report integrity, sync queue, entity count, account/sync mode, release gate, and blockers without raw financial/contact data.",
+      "what_changed": "Support/internal testing has a safe backend health artifact path before production provider decisions.",
+      "timestamp": "2026-06-20T22:48:03Z"
     }
   ]
 }
