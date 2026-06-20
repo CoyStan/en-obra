@@ -233,6 +233,7 @@ to stay ready before Play internal testing:
 - AsyncStorage repository adapter
 - sync outbox lifecycle
 - sync engine
+- conflict policy
 - local export package
 - migration planner
 

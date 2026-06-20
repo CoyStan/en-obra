@@ -15,6 +15,7 @@ deployment approval.
 - Backend mutation service: `src/backend/appMutations.ts`
 - Sync outbox lifecycle: `src/backend/syncOutbox.ts`
 - Provider-neutral sync engine: `src/backend/syncEngine.ts`
+- Provider-neutral conflict policy: `src/backend/syncConflictPolicy.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -35,6 +36,8 @@ deployment approval.
   sync storage keys.
 - Outbox processing order, limits, sent/failed states, retryable errors, and
   immutable repository snapshots.
+- Sync conflict policy for append-only rows, duplicate settlement protection,
+  stale revisions, deletes, and remote deletion handling.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.
@@ -70,6 +73,6 @@ and the only remaining blockers are the expected human/provider decisions:
 The backend is now close to provider-ready for internal testing. The app still
 runs local-first with demo/mock adapters, but the data model, mutation behavior,
 SQL handoff, integrity guard, export package, repository boundary, and sync
-engine are in place for the access/storage discussion. The real local storage
+engine/conflict policy are in place for the access/storage discussion. The real local storage
 keys now also have a tested repository adapter, so replacing local storage with
 a selected production provider can happen behind the same contract.

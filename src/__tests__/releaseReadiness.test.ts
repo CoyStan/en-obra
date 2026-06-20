@@ -15,6 +15,7 @@ describe("backend release readiness audit", () => {
     expect(byId.get("local-storage-adapter")?.status).toBe("ready");
     expect(byId.get("outbox")?.status).toBe("ready");
     expect(byId.get("sync-engine")?.status).toBe("ready");
+    expect(byId.get("conflict-policy")?.status).toBe("ready");
     expect(byId.get("export")?.status).toBe("ready");
     expect(byId.get("migrations")?.status).toBe("ready");
     expect(report.readinessPercent).toBeGreaterThanOrEqual(70);

@@ -28,13 +28,21 @@ Replaceable production shape:
 
 ## Sync Conflict Policy
 
-MVP production policy should be:
+The provider-neutral policy lives in `src/backend/syncConflictPolicy.ts`.
+Current tested behavior:
 
-- Append-only expenses and settlements are safest.
-- Edits and deletes require explicit revision checks.
-- If a conflict occurs, keep the local copy, show a recoverable error, and let
-  the user retry after refresh.
-- Never silently duplicate settlements.
+- append-only support rows can be sent safely,
+- duplicate non-settlement creates can be skipped,
+- duplicate settlements require refresh before retry,
+- stale local revisions require refresh,
+- newer local revisions can be sent,
+- remote deletions win until restore semantics are designed,
+- deletes without revision context require explicit refresh.
+
+Future production adapters should call this policy before applying local or
+remote changes. They should preserve the user-facing rule: keep the local app
+recoverable, never silently duplicate settlements, and surface retry-after-
+refresh conflicts as controlled errors.
 
 ## Data Safety Implications
 

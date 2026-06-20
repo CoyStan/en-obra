@@ -24,6 +24,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "local-storage-adapter",
   "outbox",
   "sync-engine",
+  "conflict-policy",
   "export",
   "migrations",
 ] as const;
