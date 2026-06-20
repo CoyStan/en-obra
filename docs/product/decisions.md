@@ -352,3 +352,13 @@ Rationale: The previous colors still felt too beige/green-heavy and less
 premium. A slate-white foundation gives the app a cleaner fintech base, while
 deep agave and indigo keep the Mexico/LATAM trust signal without making the
 interface feel one-note or harsh.
+
+### Add Motion Only When It Explains Money Flow
+
+Decision: Use lightweight built-in React Native animation for the settlement
+money-flow figure, with reduced-motion support and static visual fallbacks.
+
+Rationale: The app was becoming too text-led. A small animated object showing
+who pays whom helps everyday users understand settlement direction faster, while
+the reduced-motion path and `Sin pagos reales` semantics prevent the animation
+from feeling like real payment processing or inaccessible decoration.

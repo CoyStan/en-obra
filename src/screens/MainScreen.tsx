@@ -1,6 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  AccessibilityInfo,
+  Animated,
+  Easing,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -35,6 +38,10 @@ import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
 
 type TabId = "groups" | "balance" | "activity" | "account";
+
+const MONEY_FLOW_TRACK_WIDTH = 120;
+const MONEY_FLOW_DOT_SIZE = 24;
+const MONEY_FLOW_TRAVEL = MONEY_FLOW_TRACK_WIDTH - MONEY_FLOW_DOT_SIZE;
 
 const tabs: { id: TabId; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap }[] = [
   { id: "groups", label: "Grupos", icon: "account-group" },
@@ -283,6 +290,9 @@ function ActivityRow({ item }: { item: ActivityItem }) {
   const hasAmount = item.amountCents > 0;
   return (
     <View style={styles.activityRow}>
+      <View style={styles.activityRail}>
+        <View style={[styles.activityRailDot, item.type === "settlement" && styles.activityRailDotSettlement]} />
+      </View>
       <View style={[styles.activityIcon, activityTone(item)]}>
         <MaterialCommunityIcons
           color={item.type === "settlement" ? colors.primary : colors.mutedInk}
@@ -301,6 +311,69 @@ function ActivityRow({ item }: { item: ActivityItem }) {
       <View style={styles.activityAmount}>
         <Text style={styles.activityDate}>{formatDate(item.createdAt)}</Text>
         {hasAmount ? <Amount cents={item.amountCents} tone={item.type === "settlement" ? "success" : "neutral"} /> : null}
+      </View>
+    </View>
+  );
+}
+
+function MoneyFlowFigure({
+  amountCents,
+  from,
+  progress,
+  reduceMotion,
+  to,
+}: {
+  amountCents: number;
+  from?: Member | null;
+  progress: Animated.Value;
+  reduceMotion: boolean;
+  to?: Member | null;
+}) {
+  const dotTranslate = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, MONEY_FLOW_TRAVEL],
+  });
+  const dotOpacity = progress.interpolate({
+    inputRange: [0, 0.12, 0.88, 1],
+    outputRange: [0.35, 1, 1, 0.35],
+  });
+  return (
+    <View
+      accessibilityLabel={`Flujo visual: ${from?.name ?? "Alguien"} paga ${formatMoney(amountCents)} a ${to?.name ?? "alguien"}. Registro local, sin pagos reales.`}
+      style={styles.moneyFlowFigure}
+    >
+      <View style={styles.moneyFlowPeople}>
+        <View style={styles.moneyFlowPerson}>
+          <Avatar color={from?.avatarColor ?? colors.primary} label={from?.name ?? "A"} />
+          <Text numberOfLines={1} style={styles.moneyFlowName}>{from?.name ?? "Alguien"}</Text>
+        </View>
+        <View style={styles.moneyFlowTrackWrap}>
+          <Text style={styles.moneyFlowAmount}>{formatMoney(amountCents)}</Text>
+          <View style={styles.moneyFlowTrack}>
+            {reduceMotion ? (
+              <View pointerEvents="none" style={[styles.moneyFlowDot, styles.moneyFlowDotStatic]}>
+                <MaterialCommunityIcons color={colors.surface} name="cash" size={12} />
+              </View>
+            ) : (
+              <Animated.View
+                pointerEvents="none"
+                style={[
+                  styles.moneyFlowDot,
+                  {
+                    opacity: dotOpacity,
+                    transform: [{ translateX: dotTranslate }],
+                  },
+                ]}
+              >
+                <MaterialCommunityIcons color={colors.surface} name="cash" size={12} />
+              </Animated.View>
+            )}
+          </View>
+        </View>
+        <View style={styles.moneyFlowPerson}>
+          <Avatar color={to?.avatarColor ?? colors.accentBlue} label={to?.name ?? "B"} />
+          <Text numberOfLines={1} style={styles.moneyFlowName}>{to?.name ?? "Alguien"}</Text>
+        </View>
       </View>
     </View>
   );
@@ -399,6 +472,8 @@ export function MainScreen() {
   const [dataControlMessage, setDataControlMessage] = useState("");
   const [dataControlTone, setDataControlTone] = useState<"success" | "error">("success");
   const [pendingSettlement, setPendingSettlement] = useState<SettlementSuggestion | null>(null);
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const moneyFlowProgress = useRef(new Animated.Value(0)).current;
 
   const selectedMembers = useMemo(
     () => (selectedGroup ? getGroupMembers(data, selectedGroup.id) : []),
@@ -497,6 +572,38 @@ export function MainScreen() {
       return filtered.length ? filtered : selectedMembers.map((member) => member.id);
     });
   }, [selectedMembers, showExpenseForm]);
+
+  useEffect(() => {
+    let mounted = true;
+    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+      if (mounted) {
+        setReduceMotion(enabled);
+      }
+    });
+    const subscription = AccessibilityInfo.addEventListener("reduceMotionChanged", setReduceMotion);
+    return () => {
+      mounted = false;
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      moneyFlowProgress.stopAnimation();
+      moneyFlowProgress.setValue(0);
+      return;
+    }
+    const loop = Animated.loop(
+      Animated.timing(moneyFlowProgress, {
+        duration: 2800,
+        easing: Easing.inOut(Easing.quad),
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [moneyFlowProgress, reduceMotion]);
 
   const openActiveMemberPicker = () => {
     if (!account.profile || account.mode !== "signed-in" || !selectedGroup) {
@@ -1390,6 +1497,28 @@ export function MainScreen() {
                 </View>
               </View>
 
+              {personalSettlement ? (
+                <MoneyFlowFigure
+                  amountCents={personalSettlement.amountCents}
+                  from={personalSettlementFrom}
+                  progress={moneyFlowProgress}
+                  reduceMotion={reduceMotion}
+                  to={personalSettlementTo}
+                />
+              ) : (
+                <View accessibilityLabel="Todo en paz por ahora. Registro local." style={styles.moneyFlowFigure}>
+                  <View style={styles.calmFigure}>
+                    <View style={styles.calmFigureIcon}>
+                      <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={22} />
+                    </View>
+                    <View style={styles.calmFigureCopy}>
+                      <Text style={styles.moneyFlowAmount}>Todo en paz</Text>
+                      <Text style={styles.calmFigureText}>Sin pagos pendientes en este grupo.</Text>
+                    </View>
+                  </View>
+                </View>
+              )}
+
               <View style={styles.heroCue}>
                 <View style={styles.heroCueIcon}>
                   <MaterialCommunityIcons color={colors.accentBlue} name="lightbulb-on-outline" size={17} />
@@ -1554,6 +1683,30 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     lineHeight: 31,
   },
+  calmFigure: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  calmFigureCopy: {
+    flex: 1,
+    gap: 2,
+    minWidth: 0,
+  },
+  calmFigureIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 18,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  calmFigureText: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "600",
+    lineHeight: 15,
+  },
   externalPayAction: {
     alignItems: "center",
     backgroundColor: colors.successWash,
@@ -1658,6 +1811,69 @@ const styles = StyleSheet.create({
     minWidth: 0,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
+  },
+  moneyFlowAmount: {
+    color: colors.primaryDark,
+    fontSize: typography.small,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  moneyFlowDot: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderColor: colors.surface,
+    borderRadius: 12,
+    borderWidth: 2,
+    height: MONEY_FLOW_DOT_SIZE,
+    justifyContent: "center",
+    left: 0,
+    position: "absolute",
+    top: -9,
+    width: MONEY_FLOW_DOT_SIZE,
+  },
+  moneyFlowDotStatic: {
+    left: (MONEY_FLOW_TRACK_WIDTH - MONEY_FLOW_DOT_SIZE) / 2,
+  },
+  moneyFlowFigure: {
+    backgroundColor: colors.surfaceStrong,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    overflow: "hidden",
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  moneyFlowName: {
+    color: colors.ink,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    maxWidth: 62,
+    textAlign: "center",
+  },
+  moneyFlowPeople: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  moneyFlowPerson: {
+    alignItems: "center",
+    gap: spacing.xs,
+    minWidth: 50,
+  },
+  moneyFlowTrack: {
+    backgroundColor: colors.border,
+    borderRadius: 999,
+    height: 6,
+    overflow: "visible",
+    width: MONEY_FLOW_TRACK_WIDTH,
+  },
+  moneyFlowTrackWrap: {
+    alignItems: "center",
+    flex: 1,
+    gap: spacing.sm,
+    minWidth: 118,
   },
   myBalanceAmount: {
     color: colors.primary,
@@ -1832,6 +2048,24 @@ const styles = StyleSheet.create({
     height: 32,
     justifyContent: "center",
     width: 32,
+  },
+  activityRail: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    justifyContent: "center",
+    width: 12,
+  },
+  activityRailDot: {
+    backgroundColor: colors.mutedInk,
+    borderColor: colors.surface,
+    borderRadius: 5,
+    borderWidth: 2,
+    height: 10,
+    width: 10,
+    zIndex: 1,
+  },
+  activityRailDotSettlement: {
+    backgroundColor: colors.primary,
   },
   activityMember: {
     backgroundColor: colors.blueWash,
