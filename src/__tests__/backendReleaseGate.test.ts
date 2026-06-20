@@ -18,6 +18,7 @@ describe("backend release gate", () => {
     expect(report.readyCapabilities).toEqual([...REQUIRED_BACKEND_CAPABILITIES].sort());
     expect(report.knownBlockers).toEqual([...ALLOWED_PRE_RELEASE_BLOCKERS].sort());
     expect(report.evidence).toContain("src/backend/asyncStorageRepository.ts");
+    expect(report.evidence).toContain("src/backend/storageReadiness.ts");
     expect(report.evidence).toContain("src/backend/syncEngine.ts");
     expect(report.evidence).toContain("src/backend/accessReadiness.ts");
     expect(report.evidence).toContain("docs/backend/seed-demo-v1.sql");

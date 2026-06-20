@@ -26,6 +26,8 @@ deployment approval.
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
+- Provider-neutral storage readiness contract:
+  `src/backend/storageReadiness.ts`
 - Backend release gate verifier: `src/backend/backendReleaseGate.ts`
 
 ## Tested Coverage
@@ -41,6 +43,9 @@ deployment approval.
 - Repository load/save/mutate/export/delete semantics.
 - AsyncStorage load/save/mutate/export/delete behavior across app, account, and
   sync storage keys.
+- Storage readiness model that marks local AsyncStorage safe for internal
+  testing while keeping production storage blocked until provider, region,
+  endpoint, remote deletion fulfillment, and security review decisions exist.
 - Outbox processing order, limits, sent/failed states, retryable errors, and
   immutable repository snapshots.
 - Sync conflict policy for append-only rows, duplicate settlement protection,

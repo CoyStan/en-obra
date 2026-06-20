@@ -15,6 +15,24 @@ client without changing the domain data model.
 
 Current implementation: `local-mock-sync`.
 
+## Storage Readiness Contract
+
+`src/backend/storageReadiness.ts` defines the provider-neutral storage/backend
+readiness contract. It does not choose where production data will live and does
+not configure secrets.
+
+Current status:
+
+- internal testing storage: ready with local AsyncStorage and the repository
+  adapter
+- production storage/backend: blocked until the founder chooses provider,
+  region, endpoint, deletion fulfillment, security review, and secret handling
+
+The local release candidate is considered safe for internal testing only because
+it already has durable local cache behavior, schema versioning, integrity
+repair, offline mutation queue, export/import validation, local deletion, and a
+conflict policy.
+
 ## Planned Backend Model
 
 Replaceable production shape:

@@ -13,6 +13,7 @@ describe("backend release readiness audit", () => {
     expect(byId.get("mutations")?.status).toBe("ready");
     expect(byId.get("repository")?.status).toBe("ready");
     expect(byId.get("local-storage-adapter")?.status).toBe("ready");
+    expect(byId.get("storage-readiness")?.status).toBe("ready");
     expect(byId.get("outbox")?.status).toBe("ready");
     expect(byId.get("sync-engine")?.status).toBe("ready");
     expect(byId.get("conflict-policy")?.status).toBe("ready");

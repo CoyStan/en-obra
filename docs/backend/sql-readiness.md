@@ -167,6 +167,26 @@ exports the same deterministic local package, and deletes all current local
 keys. It gives the release candidate a tested storage boundary while preserving
 the future option to replace AsyncStorage with SQLite or a hosted API.
 
+## Storage Readiness
+
+`src/backend/storageReadiness.ts` defines the provider-neutral storage/backend
+readiness contract.
+
+The current local storage path is ready for internal testing because it covers:
+
+- durable local cache
+- schema versioning
+- integrity repair
+- offline mutation queue
+- local export package
+- import validation
+- local data deletion
+- conflict policy
+
+Production storage remains blocked until a human provider decision adds remote
+persistence, server-side backup/recovery process, data region decision, remote
+deletion fulfillment, endpoint/secrets handling, and security review.
+
 ## Integrity Guard
 
 `src/backend/dataIntegrity.ts` audits and safely repairs persisted local
@@ -303,6 +323,7 @@ to stay ready before Play internal testing:
 - mutation service
 - repository contract
 - AsyncStorage repository adapter
+- storage readiness contract
 - sync outbox lifecycle
 - sync engine
 - conflict policy

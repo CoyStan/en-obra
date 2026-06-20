@@ -22,6 +22,7 @@ export const REQUIRED_BACKEND_CAPABILITIES = [
   "mutations",
   "repository",
   "local-storage-adapter",
+  "storage-readiness",
   "outbox",
   "sync-engine",
   "conflict-policy",

@@ -4,6 +4,7 @@ import { SQL_MIGRATIONS, planSqlMigrations } from "./sqlMigrations";
 import { demoData } from "../data/demoData";
 import { auditAppDataIntegrity } from "./dataIntegrity";
 import { createAccessReadinessReport } from "./accessReadiness";
+import { createStorageReadinessReport } from "./storageReadiness";
 
 export type BackendReadinessItem = {
   id: string;
@@ -37,6 +38,7 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
   const integrityIssues = auditAppDataIntegrity(demoData);
   const migrationPlan = planSqlMigrations(SQL_SCHEMA_VERSION);
   const accessReadiness = createAccessReadinessReport();
+  const storageReadiness = createStorageReadinessReport();
 
   const items: BackendReadinessItem[] = [
     item("sql-schema", "SQL schema contract", "ready", [
@@ -66,6 +68,19 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/backend/asyncStorageRepository.ts",
       "src/__tests__/asyncStorageRepository.test.ts",
     ]),
+    item(
+      "storage-readiness",
+      "Provider-neutral storage readiness contract",
+      storageReadiness.internalTestingStatus,
+      [
+        "src/backend/storageReadiness.ts",
+        "src/__tests__/storageReadiness.test.ts",
+        ...storageReadiness.evidence,
+      ],
+      storageReadiness.internalTestingStatus === "ready"
+        ? undefined
+        : "Local/internal testing storage requirements are incomplete.",
+    ),
     item("outbox", "Sync outbox lifecycle", "ready", [
       "src/backend/syncOutbox.ts",
       "src/__tests__/syncOutbox.test.ts",

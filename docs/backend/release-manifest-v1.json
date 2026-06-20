@@ -20,8 +20,8 @@
   "checksums": {
     "schemaSql": "fnv1a32:153b4aad",
     "seedSql": "fnv1a32:93e2272c",
-    "gate": "fnv1a32:078aa354",
-    "manifestBody": "fnv1a32:a5c0d8cf"
+    "gate": "fnv1a32:f253dc30",
+    "manifestBody": "fnv1a32:22c8322e"
   },
   "requiredCapabilities": [
     "sql-schema",
@@ -30,6 +30,7 @@
     "mutations",
     "repository",
     "local-storage-adapter",
+    "storage-readiness",
     "outbox",
     "sync-engine",
     "conflict-policy",
@@ -57,6 +58,7 @@
     "repository",
     "sql-schema",
     "sql-seed",
+    "storage-readiness",
     "sync-engine"
   ],
   "knownBlockers": [
