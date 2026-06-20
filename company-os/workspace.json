@@ -2093,6 +2093,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0043"
+    },
+    {
+      "id": "WORK-APP-0044",
+      "title": "Redacted backend support bundle",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested redacted backend support bundle for internal testing triage, aggregating diagnostics, preflight, release manifest summary, privacy scan, and Data Safety posture without raw user rows, emails, expense titles, notes, or outbox payload JSON. Forbidden: uploading data, production backend deployment, secrets, paid services, legal commitments, final Play submission, real payments.",
+      "acceptance_target": "Backend exposes a tested support bundle that is useful for internal testing support, redacts sensitive/demo row content, docs mention it, release gates pass, and blockers remain explicit.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0044"
     }
   ],
   "attempts": [
@@ -2842,6 +2856,21 @@
       "result": "Implemented and verified release privacy dependency scan in commit d2be42920880a9f39a06a98ca94076f3ed81ea9d.",
       "commits": [
         "d2be42920880a9f39a06a98ca94076f3ed81ea9d"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0044",
+      "work_item_id": "WORK-APP-0044",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:27:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified redacted backend support bundle in commit fe3370f6c2bc3c2700ac91252a820be9d0a3fce7.",
+      "commits": [
+        "fe3370f6c2bc3c2700ac91252a820be9d0a3fce7"
       ]
     }
   ],
@@ -3855,6 +3884,28 @@
       "status": "passed",
       "summary": "Focused privacy scan tests, Android release check, backend release gate, Company OS validate, and Company OS scope passed.",
       "timestamp": "2026-06-20T23:22:49Z"
+    },
+    {
+      "commands": [
+        "npm test -- src/__tests__/supportBundle.test.ts src/__tests__/backendReleaseGate.test.ts src/__tests__/backendReleaseManifest.test.ts src/__tests__/playPreflight.test.ts src/__tests__/releaseReadiness.test.ts",
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0044"
+      ],
+      "artifacts": [
+        "src/backend/supportBundle.ts",
+        "src/__tests__/supportBundle.test.ts",
+        "reports/evidence/WORK-APP-0044/technical-report.md",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/play-preflight-v1.json"
+      ],
+      "id": "EVIDENCE-APP-0044",
+      "work_item_id": "WORK-APP-0044",
+      "attempt_id": "ATTEMPT-APP-0044",
+      "head_sha": "fe3370f6c2bc3c2700ac91252a820be9d0a3fce7",
+      "status": "passed",
+      "summary": "Focused support bundle tests, Android release check, backend release gate, Company OS validate, and Company OS scope passed.",
+      "timestamp": "2026-06-20T23:27:11Z"
     }
   ],
   "review_verdicts": [
@@ -4347,6 +4398,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:22:49Z"
+    },
+    {
+      "id": "REVIEW-APP-0044",
+      "work_item_id": "WORK-APP-0044",
+      "reviewed_head": "fe3370f6c2bc3c2700ac91252a820be9d0a3fce7",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T23:27:11Z"
     }
   ],
   "human_decisions": [],
@@ -5958,6 +6017,43 @@
       "attempt_id": "ATTEMPT-APP-0043",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:22:49Z"
+    },
+    {
+      "actions_taken": [
+        "created WORK-APP-0044",
+        "added redacted support bundle",
+        "added redaction tests",
+        "updated backend release gate",
+        "regenerated release artifacts",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/supportBundle.ts",
+        "src/__tests__/supportBundle.test.ts",
+        "src/backend/releaseReadiness.ts",
+        "src/backend/backendReleaseGate.ts",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/play-preflight-v1.json",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0044/technical-report.md"
+      ],
+      "not_done": [
+        "support upload",
+        "production backend deployment",
+        "secrets",
+        "paid services",
+        "legal commitments",
+        "final Play submission",
+        "real payments",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0044",
+      "work_item_id": "WORK-APP-0044",
+      "attempt_id": "ATTEMPT-APP-0044",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T23:27:11Z"
     }
   ],
   "decisions": [
@@ -6550,6 +6646,15 @@
       "what_happened": "Added a scan for ads, analytics, payment, location/contact SDK signals and Android permissions, then wired it into backend readiness and artifacts.",
       "what_changed": "Future risky SDK or permission additions now fail tests unless intentionally handled.",
       "timestamp": "2026-06-20T23:22:49Z"
+    },
+    {
+      "id": "OUTCOME-APP-0044",
+      "work_item_id": "WORK-APP-0044",
+      "summary": "Internal-testing support triage now has a redacted backend bundle.",
+      "status": "captured",
+      "what_happened": "Added a support bundle with diagnostics, preflight, release manifest summary, privacy scan, and Data Safety posture while excluding raw rows and payloads.",
+      "what_changed": "Backend support evidence is safer to share during internal testing without exposing demo/user content.",
+      "timestamp": "2026-06-20T23:27:11Z"
     }
   ]
 }
