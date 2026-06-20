@@ -13,6 +13,7 @@ import type {
   User,
 } from "../domain/types";
 import { createId } from "../utils/id";
+import { resolveActorUserId } from "./actorIdentity";
 import { validateExpenseInput, validateGroupInput, validateMemberInput } from "./flowValidation";
 import { cloneDemoData, loadPersistedData, persistData } from "./storage";
 
@@ -23,6 +24,7 @@ type AddExpenseInput = {
   amount: string;
   payerId: string;
   participantIds?: string[];
+  actorUserId?: string;
   note?: string;
 };
 
@@ -34,8 +36,8 @@ function pickAvatarColor(index: number) {
   return avatarColors[index % avatarColors.length];
 }
 
-function selectedUserId(data: AppData) {
-  return data.selectedUserId ?? data.users?.[0]?.id ?? "user-local-demo";
+function defaultActorUserId(data: AppData) {
+  return resolveActorUserId(data);
 }
 
 function outboxItem(
@@ -141,7 +143,7 @@ export function useAppData() {
     }
 
     updateData((current) => {
-      const actorUserId = selectedUserId(current);
+      const actorUserId = defaultActorUserId(current);
       const ownerMemberId = createId("member");
       const ownerUser = current.users?.find((user) => user.id === actorUserId);
       const ownerMember: GroupMember | null = ownerUser
@@ -242,7 +244,7 @@ export function useAppData() {
       };
       const event = activityEvent(
         groupId,
-        selectedUserId(current),
+        defaultActorUserId(current),
         "member_added",
         "member",
         memberId,
@@ -297,7 +299,7 @@ export function useAppData() {
       }
       const createdAt = now();
       const participantIds = validation.value.participantIds;
-      const actorUserId = selectedUserId(current);
+      const actorUserId = resolveActorUserId(current, input.actorUserId);
       const expense: Expense = {
         id: createId("expense"),
         groupId,
@@ -351,12 +353,12 @@ export function useAppData() {
     });
     setError(null);
     return true;
-  }, [data.groups, updateData]);
+  }, [data, updateData]);
 
-  const markSettlementPaid = useCallback((groupId: string, suggestion: SettlementSuggestion) => {
+  const markSettlementPaid = useCallback((groupId: string, suggestion: SettlementSuggestion, actorUserId?: string) => {
     updateData((current) => {
       const createdAt = now();
-      const actorUserId = selectedUserId(current);
+      const resolvedActorUserId = resolveActorUserId(current, actorUserId);
       const settlement: Settlement = {
         id: createId("settlement"),
         groupId,
@@ -365,14 +367,14 @@ export function useAppData() {
         amountCents: suggestion.amountCents,
         currency: "MXN" as const,
         status: "paid" as const,
-        recordedByUserId: actorUserId,
+        recordedByUserId: resolvedActorUserId,
         recordedAt: createdAt,
         createdAt,
         note: "Registro local de pago externo.",
       };
       const event = activityEvent(
         groupId,
-        actorUserId,
+        resolvedActorUserId,
         "settlement_recorded",
         "settlement",
         settlement.id,

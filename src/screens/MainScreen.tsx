@@ -389,6 +389,7 @@ export function MainScreen() {
   );
   const displayMember = activeGroupMember ?? selectedMembers[0] ?? null;
   const displayMemberId = displayMember?.id ?? "";
+  const activeActorUserId = activeGroupMember?.userId ?? displayMember?.userId ?? data.selectedUserId;
   const personalBalance = useMemo(
     () => selectedSummary?.balances.find((balance) => balance.member.id === displayMemberId),
     [displayMemberId, selectedSummary?.balances],
@@ -507,6 +508,7 @@ export function MainScreen() {
       return;
     }
     const added = addExpense(selectedGroup.id, {
+      actorUserId: activeActorUserId,
       amount: expenseAmount,
       note: expenseNote,
       participantIds,
@@ -555,7 +557,7 @@ export function MainScreen() {
     if (!selectedGroup || !pendingSettlement) {
       return;
     }
-    markSettlementPaid(selectedGroup.id, pendingSettlement);
+    markSettlementPaid(selectedGroup.id, pendingSettlement, activeActorUserId);
     setPendingSettlement(null);
   };
 

@@ -308,3 +308,14 @@ Rationale: The premium app should feel multi-user and trustworthy, not like a
 passive receipt list. A local audit trail helps people understand who recorded a
 gasto, who marked a settlement, and what changed, while keeping backend sync and
 real payment claims out of scope.
+
+### Record Money Actions With The Active Group Identity
+
+Decision: Expense and settlement writes should use the active group member's
+`userId` as `createdByUserId`, `recordedByUserId`, and activity actor when that
+identity exists locally.
+
+Rationale: The app must not feel like one person manages everyone else's money.
+If a tester switches to Diego in a group, new gastos and local settlement
+records should be attributed to Diego in the audit trail. If that identity is
+stale or missing, the app falls back to the selected demo user.
