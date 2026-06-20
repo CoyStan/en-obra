@@ -18,6 +18,7 @@ deployment approval.
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
+- Backend release gate verifier: `src/backend/backendReleaseGate.ts`
 
 ## Tested Coverage
 
@@ -34,7 +35,26 @@ deployment approval.
   sync storage keys.
 - Outbox processing order, limits, sent/failed states, retryable errors, and
   immutable repository snapshots.
+- Machine-readable backend gate semantics:
+  `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.
+
+## Local Release Gate
+
+Run:
+
+```bash
+npm run release:backend:gate
+```
+
+The gate passes only when all provider-neutral backend capabilities are ready
+and the only remaining blockers are the expected human/provider decisions:
+
+- production auth/access provider
+- production storage/backend provider
+- remote deletion endpoint/process
+
+`npm run release:android:check` also includes this backend gate.
 
 ## Remaining Human/External Blockers
 

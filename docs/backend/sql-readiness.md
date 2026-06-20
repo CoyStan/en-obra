@@ -221,3 +221,20 @@ or migration into a hosted backend.
 - deterministic SQL insert generation
 - provider-neutral snapshot packaging
 - local snapshot integrity audit and repair
+
+`src/backend/backendReleaseGate.ts` provides the backend release gate used by
+`npm run release:backend:gate`. It requires these provider-neutral capabilities
+to stay ready before Play internal testing:
+
+- SQL schema and demo seed
+- integrity guard
+- mutation service
+- repository contract
+- AsyncStorage repository adapter
+- sync outbox lifecycle
+- sync engine
+- local export package
+- migration planner
+
+The gate intentionally allows only the known human/provider blockers:
+production auth, production storage/backend, and remote deletion.
