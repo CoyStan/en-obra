@@ -1754,6 +1754,41 @@
       "required_approval_capability": "founder",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0029"
+    },
+    {
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs/backend",
+        "reports/evidence",
+        "company-os",
+        "package.json"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ],
+      "id": "WORK-APP-0030",
+      "title": "Backend release gate verifier",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add a machine-readable backend release gate that verifies provider-neutral backend readiness for Play internal testing and preserves explicit human/provider blockers. Forbidden: choosing production auth/storage, secrets, paid services, real payments, deployment.",
+      "acceptance_target": "Backend release gate reports pass/fail status, ready capability coverage, known blockers, and testable evidence for SQL schema/seed, integrity, mutations, repository adapters, sync engine, export, and migrations; package check script includes the gate; tests cover pass and blocker semantics.",
+      "required_approval_capability": "founder",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0030"
     }
   ],
   "attempts": [
@@ -2293,6 +2328,21 @@
       "result": "Implemented and verified AsyncStorage backend repository adapter in commit cde226c946bfb12ae14103bac12a378cc9c4a5e9.",
       "commits": [
         "cde226c946bfb12ae14103bac12a378cc9c4a5e9"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0030",
+      "work_item_id": "WORK-APP-0030",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T22:00:00Z",
+      "cleanliness": "clean",
+      "result": "Implemented and verified backend release gate in commit dd9afe9a1ceafdf81c20ae9f842de4f12f770c61.",
+      "commits": [
+        "dd9afe9a1ceafdf81c20ae9f842de4f12f770c61"
       ]
     }
   ],
@@ -3013,6 +3063,28 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for AsyncStorage backend repository adapter.",
       "timestamp": "2026-06-20T21:50:16Z"
+    },
+    {
+      "commands": [
+        "npm run release:android:check",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0030"
+      ],
+      "artifacts": [
+        "src/backend/backendReleaseGate.ts",
+        "src/__tests__/backendReleaseGate.test.ts",
+        "reports/evidence/WORK-APP-0030/technical-report.md",
+        "package.json",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0030",
+      "work_item_id": "WORK-APP-0030",
+      "attempt_id": "ATTEMPT-APP-0030",
+      "head_sha": "dd9afe9a1ceafdf81c20ae9f842de4f12f770c61",
+      "status": "passed",
+      "summary": "Android release check, backend release gate, Company OS validate, and Company OS scope passed for backend release gate verifier.",
+      "timestamp": "2026-06-20T22:26:02Z"
     }
   ],
   "review_verdicts": [
@@ -3393,6 +3465,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:50:16Z"
+    },
+    {
+      "id": "REVIEW-APP-0030",
+      "work_item_id": "WORK-APP-0030",
+      "reviewed_head": "dd9afe9a1ceafdf81c20ae9f842de4f12f770c61",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T22:26:02Z"
     }
   ],
   "human_decisions": [],
@@ -4471,6 +4551,43 @@
       "attempt_id": "ATTEMPT-APP-0029",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:50:16Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0030",
+        "added backend release gate",
+        "added gate tests",
+        "added backend gate npm script",
+        "updated Android release check",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/backendReleaseGate.ts",
+        "src/__tests__/backendReleaseGate.test.ts",
+        "package.json",
+        "docs/backend/release-readiness-audit.md",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0030/technical-report.md"
+      ],
+      "not_done": [
+        "production auth decision",
+        "production storage decision",
+        "remote deletion endpoint",
+        "secrets",
+        "paid services",
+        "real payments",
+        "legal approval",
+        "human acceptance"
+      ],
+      "id": "RECEIPT-APP-0030",
+      "work_item_id": "WORK-APP-0030",
+      "attempt_id": "ATTEMPT-APP-0030",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T22:26:02Z"
     }
   ],
   "decisions": [
@@ -4937,6 +5054,15 @@
       "what_happened": "Added local storage repository implementation across app data, account state, and sync state with tested load, save, mutate, export, and delete behavior.",
       "what_changed": "The current local-first app storage can now be exercised behind the same backend repository contract future providers should replace.",
       "timestamp": "2026-06-20T21:50:16Z"
+    },
+    {
+      "id": "OUTCOME-APP-0030",
+      "work_item_id": "WORK-APP-0030",
+      "summary": "Backend release readiness now has a machine-readable gate.",
+      "status": "captured",
+      "what_happened": "Added release gate that fails on missing provider-neutral backend capabilities or unexpected blockers, and wired it into Android release checks.",
+      "what_changed": "Backend readiness is now verifiable with npm run release:backend:gate and npm run release:android:check.",
+      "timestamp": "2026-06-20T22:26:02Z"
     }
   ]
 }
