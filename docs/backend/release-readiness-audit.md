@@ -24,6 +24,7 @@ deployment approval.
 - Provider-neutral account access readiness contract:
   `src/backend/accessReadiness.ts`
 - Technical Data Safety inventory: `src/backend/dataSafetyInventory.ts`
+- Backend Play preflight report: `src/backend/playPreflight.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -68,6 +69,9 @@ deployment approval.
 - Technical Data Safety inventory showing the current build is local-first,
   has no real payments, no ads/analytics SDK, no backend sharing, and still
   requires human legal/Play Console submission.
+- Backend Play preflight report that summarizes release gate state, local
+  backend readiness, no-real-payment posture, and remaining human/provider
+  blockers for internal testing handoff.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.
@@ -88,6 +92,10 @@ and the only remaining blockers are the expected human/provider decisions:
 - remote deletion endpoint/process
 
 `npm run release:android:check` also includes this backend gate.
+
+`src/backend/playPreflight.ts` is intentionally downstream from the release
+gate. It aggregates the gate plus access, storage, deletion, and Data Safety
+readiness into one handoff report without becoming part of the gate itself.
 
 ## Remaining Human/External Blockers
 

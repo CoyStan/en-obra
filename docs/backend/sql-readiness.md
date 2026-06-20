@@ -320,6 +320,22 @@ location, advertising, device contacts, and payments. It is technical evidence
 only; final Play Console answers, privacy URL, and legal approval remain human
 blockers.
 
+## Backend Play Preflight
+
+`src/backend/playPreflight.ts` aggregates backend readiness into one
+internal-testing handoff report. It summarizes:
+
+- backend release gate status
+- local/internal access readiness
+- local/internal storage readiness
+- technical Data Safety posture
+- deletion workflow readiness without remote endpoint
+- remaining human/provider blockers
+
+The preflight report is intentionally downstream from the release gate. It does
+not choose providers, configure secrets, submit Play Console answers, or make
+legal commitments.
+
 ## Verification
 
 `src/__tests__/sqlDataset.test.ts` verifies:
