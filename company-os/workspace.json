@@ -1583,6 +1583,39 @@
         "real_payments",
         "legal_decisions"
       ]
+    },
+    {
+      "id": "WORK-APP-0025",
+      "title": "Backend schema migration planner",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add provider-neutral backend schema migration manifest/planner for SQL schema versions so future app/backend releases have explicit upgrade paths from local metadata to current schema. Preserve current v1 schema and local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
+      "acceptance_target": "The repo exposes current schema version metadata, migration planning helpers, tests for no-op/current/unsupported/future plans, and docs explaining how future migrations are added.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "allowed_sources": [
+        "SOURCE-DECISIONS"
+      ],
+      "allowed_resources": [
+        "src",
+        "docs",
+        "reports/evidence",
+        "company-os"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation"
+      ],
+      "forbidden_actions": [
+        "secrets",
+        "paid_services",
+        "production_backend_deployment",
+        "real_payments",
+        "legal_decisions"
+      ]
     }
   ],
   "attempts": [
@@ -2049,6 +2082,20 @@
       "result": "Implemented and verified backend repository contract in commit ce978d5ac54a159854d58f67d401472c7567a317.",
       "commits": [
         "ce978d5ac54a159854d58f67d401472c7567a317"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0025",
+      "work_item_id": "WORK-APP-0025",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented and verified SQL migration planner in commit ff1ea07d1d16d7aff030357d7aa4138c2ed6215d.",
+      "commits": [
+        "ff1ea07d1d16d7aff030357d7aa4138c2ed6215d"
       ]
     }
   ],
@@ -2659,6 +2706,28 @@
       "status": "passed",
       "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for backend repository contract.",
       "timestamp": "2026-06-20T21:31:28Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0025"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0025/technical-report.md",
+        "src/backend/sqlMigrations.ts",
+        "src/__tests__/sqlMigrations.test.ts",
+        "docs/backend/sql-readiness.md"
+      ],
+      "id": "EVIDENCE-APP-0025",
+      "work_item_id": "WORK-APP-0025",
+      "attempt_id": "ATTEMPT-APP-0025",
+      "head_sha": "ff1ea07d1d16d7aff030357d7aa4138c2ed6215d",
+      "status": "passed",
+      "summary": "Typecheck, tests, Expo config, Company OS validate, and Company OS scope passed for SQL migration planner.",
+      "timestamp": "2026-06-20T21:34:41Z"
     }
   ],
   "review_verdicts": [
@@ -2999,6 +3068,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T21:31:28Z"
+    },
+    {
+      "id": "REVIEW-APP-0025",
+      "work_item_id": "WORK-APP-0025",
+      "reviewed_head": "ff1ea07d1d16d7aff030357d7aa4138c2ed6215d",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T21:34:41Z"
     }
   ],
   "human_decisions": [],
@@ -3905,6 +3982,39 @@
       "attempt_id": "ATTEMPT-APP-0024",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T21:31:28Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created WORK-APP-0025",
+        "added SQL migration planner",
+        "added schema version metadata tests",
+        "tightened SQL dataset type",
+        "updated backend docs",
+        "ran verification"
+      ],
+      "outputs_created": [
+        "src/backend/sqlMigrations.ts",
+        "src/backend/sqlDataset.ts",
+        "src/__tests__/sqlMigrations.test.ts",
+        "docs/backend/sql-readiness.md",
+        "reports/evidence/WORK-APP-0025"
+      ],
+      "not_done": [
+        "v2 migration",
+        "production migration runner",
+        "backend provider",
+        "secrets",
+        "paid services",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0025",
+      "work_item_id": "WORK-APP-0025",
+      "attempt_id": "ATTEMPT-APP-0025",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T21:34:41Z"
     }
   ],
   "decisions": [
@@ -4326,6 +4436,15 @@
       "what_happened": "Added BackendRepository and InMemoryBackendRepository with tests for load, save, mutate, export, and local delete semantics.",
       "what_changed": "Future storage choices can plug into one shared contract without changing backend mutation, export, or integrity behavior.",
       "timestamp": "2026-06-20T21:31:28Z"
+    },
+    {
+      "id": "OUTCOME-APP-0025",
+      "work_item_id": "WORK-APP-0025",
+      "summary": "SQL schema versioning now has an explicit migration planner.",
+      "status": "captured",
+      "what_happened": "Added migration planning for current, missing, unsupported, and future schema states.",
+      "what_changed": "Future backend/storage schema changes now have a tested path for version detection and controlled failure instead of silent guessing.",
+      "timestamp": "2026-06-20T21:34:41Z"
     }
   ]
 }
