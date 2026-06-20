@@ -4,6 +4,7 @@ export type AccountProfile = {
   id: string;
   displayName: string;
   email: string;
+  activeMemberByGroupId?: Record<string, string>;
   provider: AccountProvider;
   createdAt: string;
   lastSignedInAt: string;

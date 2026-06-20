@@ -47,8 +47,10 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
   month: "short",
 });
 
-const shortMoneyFormatter = new Intl.NumberFormat("es-MX", {
+const heroMoneyFormatter = new Intl.NumberFormat("es-MX", {
   currency: "MXN",
+  currencyDisplay: "code",
+  maximumFractionDigits: 0,
   style: "currency",
 });
 
@@ -60,8 +62,8 @@ function formatDate(value: string) {
   return dateFormatter.format(new Date(value));
 }
 
-function formatShortMoney(cents: number) {
-  return shortMoneyFormatter.format(cents / 100);
+function formatHeroMoney(cents: number) {
+  return heroMoneyFormatter.format(cents / 100);
 }
 
 function activityIconForTitle(title: string): keyof typeof MaterialCommunityIcons.glyphMap {
@@ -91,6 +93,39 @@ function balanceLabel(balance: MemberBalance) {
     return { label: "Debe pagar", tone: "due" as const };
   }
   return { label: "En paz", tone: "neutral" as const };
+}
+
+function personalBalanceLabel(balance?: MemberBalance) {
+  if (!balance || balance.netCents === 0) {
+    return { label: "Estás en paz", amountCents: 0, tone: "success" as const };
+  }
+  if (balance.netCents > 0) {
+    return { label: "Te deben", amountCents: balance.netCents, tone: "success" as const };
+  }
+  return { label: "Debes", amountCents: Math.abs(balance.netCents), tone: "due" as const };
+}
+
+function settlementCue(
+  settlement: SettlementSuggestion | null,
+  activeMemberId: string,
+  from?: Member | null,
+  to?: Member | null,
+) {
+  if (!settlement) {
+    return "Todo en paz · Registro local";
+  }
+
+  if (activeMemberId && settlement.toMemberId === activeMemberId) {
+    return `${from?.name ?? "Alguien"} te debe ${formatMoney(settlement.amountCents)}`;
+  }
+
+  if (activeMemberId && settlement.fromMemberId === activeMemberId) {
+    return `Debes a ${to?.name ?? "alguien"} ${formatMoney(settlement.amountCents)}`;
+  }
+
+  return `${from?.name ?? "Alguien"} le debe a ${to?.name ?? "alguien"} ${formatMoney(
+    settlement.amountCents,
+  )}`;
 }
 
 function GroupCard({
@@ -263,6 +298,7 @@ export function MainScreen() {
     clearAccountError,
     createAccount,
     isAccountLoading,
+    setActiveGroupMember,
     signOut,
   } = useAccount();
 
@@ -292,8 +328,9 @@ export function MainScreen() {
   const [expenseAmount, setExpenseAmount] = useState("");
   const [expenseNote, setExpenseNote] = useState("");
   const [payerId, setPayerId] = useState("");
-  const [accountName, setAccountName] = useState("Ana Martínez");
-  const [accountEmail, setAccountEmail] = useState("ana@example.com");
+  const [showActiveMemberSheet, setShowActiveMemberSheet] = useState(false);
+  const [accountName, setAccountName] = useState("");
+  const [accountEmail, setAccountEmail] = useState("");
   const [pendingSettlement, setPendingSettlement] = useState<SettlementSuggestion | null>(null);
 
   const selectedMembers = useMemo(
@@ -306,26 +343,89 @@ export function MainScreen() {
     [data, selectedGroup],
   );
 
-  const selectedPreview = useMemo(
-    () => (selectedGroup ? getBalancePreview(data, selectedGroup.id) : { creditor: null, debtor: null }),
-    [data, selectedGroup],
-  );
-
   const primarySettlement = selectedSummary?.settlements[0] ?? null;
-  const primarySettlementFrom = primarySettlement
-    ? findMember(data.members, primarySettlement.fromMemberId)
+  const activeMemberIdForGroup = useMemo(
+    () => account.profile?.activeMemberByGroupId?.[selectedGroup?.id ?? ""] ?? "",
+    [account.profile?.activeMemberByGroupId, selectedGroup?.id],
+  );
+  const activeGroupMember = useMemo(
+    () => findMember(selectedMembers, activeMemberIdForGroup),
+    [activeMemberIdForGroup, selectedMembers],
+  );
+  const displayMember = activeGroupMember ?? selectedMembers[0] ?? null;
+  const displayMemberId = displayMember?.id ?? "";
+  const personalBalance = useMemo(
+    () => selectedSummary?.balances.find((balance) => balance.member.id === displayMemberId),
+    [displayMemberId, selectedSummary?.balances],
+  );
+  const personalBalanceState = personalBalanceLabel(personalBalance);
+  const personalSettlement = useMemo(
+    () =>
+      selectedSummary?.settlements.find(
+        (settlement) =>
+          settlement.fromMemberId === displayMemberId || settlement.toMemberId === displayMemberId,
+      ) ??
+      primarySettlement ??
+      null,
+    [displayMemberId, primarySettlement, selectedSummary?.settlements],
+  );
+  const personalSettlementFrom = personalSettlement
+    ? findMember(data.members, personalSettlement.fromMemberId)
     : null;
-  const primarySettlementTo = primarySettlement
-    ? findMember(data.members, primarySettlement.toMemberId)
+  const personalSettlementTo = personalSettlement
+    ? findMember(data.members, personalSettlement.toMemberId)
     : null;
-  const highlightedMembers = selectedMembers.slice(0, 5);
-  const extraMembers = Math.max(selectedMembers.length - highlightedMembers.length, 0);
+  const personalCue = settlementCue(
+    personalSettlement,
+    displayMemberId,
+    personalSettlementFrom,
+    personalSettlementTo,
+  );
+  const identityLabel = displayMember
+    ? `Tú eres ${displayMember.name}`
+    : account.profile
+      ? `Tú eres ${account.profile.displayName}`
+      : "Elige tu persona";
+  const identityMeta = account.profile && account.mode === "signed-in" ? "Perfil local" : "Demo local";
+  const openIdentity = () => {
+    if (account.profile && account.mode === "signed-in" && selectedGroup) {
+      openActiveMemberPicker();
+      return;
+    }
+    setActiveTab("account");
+  };
 
   useEffect(() => {
-    if (!selectedMembers.some((member) => member.id === payerId)) {
-      setPayerId(selectedMembers[0]?.id ?? "");
+    if (!showExpenseForm) {
+      return;
     }
-  }, [payerId, selectedMembers]);
+    const targetPayerId = activeGroupMember?.id ?? selectedMembers[0]?.id;
+    if (payerId && selectedMembers.some((member) => member.id === payerId)) {
+      return;
+    }
+    if (targetPayerId) {
+      setPayerId(targetPayerId);
+    } else if (payerId) {
+      setPayerId("");
+    }
+  }, [activeGroupMember?.id, payerId, selectedMembers, showExpenseForm]);
+
+  const openActiveMemberPicker = () => {
+    if (!account.profile || account.mode !== "signed-in" || !selectedGroup) {
+      return;
+    }
+    setShowActiveMemberSheet(true);
+  };
+
+  const saveActiveGroupMember = async (memberId: string) => {
+    if (!selectedGroup) {
+      return;
+    }
+    const saved = await setActiveGroupMember(selectedGroup.id, memberId);
+    if (saved) {
+      setShowActiveMemberSheet(false);
+    }
+  };
 
   const submitGroup = () => {
     const created = createGroup(groupName, groupDescription);
@@ -498,12 +598,6 @@ export function MainScreen() {
         <>
           <View style={styles.quickActionRail}>
             <QuickActionTile
-              icon="plus"
-              label="Agregar gasto"
-              onPress={() => setShowExpenseForm(true)}
-              primary
-            />
-            <QuickActionTile
               icon="account-plus-outline"
               label="Integrante"
               onPress={() => setShowMemberForm(true)}
@@ -518,6 +612,11 @@ export function MainScreen() {
                   setPendingSettlement(primarySettlement);
                 }
               }}
+            />
+            <QuickActionTile
+              icon="history"
+              label="Actividad"
+              onPress={() => setActiveTab("activity")}
             />
           </View>
 
@@ -650,6 +749,22 @@ export function MainScreen() {
                 Este perfil no sube datos. Un proveedor real requiere decisión de privacidad e infraestructura.
               </Text>
             </View>
+            {selectedGroup ? (
+              <View style={styles.accountMemberSection}>
+                <Text style={styles.fieldLabel}>¿Quién eres en este grupo?</Text>
+                <Text style={styles.accountSectionText}>
+                  {activeGroupMember
+                    ? `${activeGroupMember.name} · Puedes cambiarlo para registrar gastos.`
+                    : "Selecciona tu persona en el grupo para registrar gastos con tu identidad."}
+                </Text>
+                <ActionButton
+                  disabled={!selectedGroup || selectedMembers.length === 0}
+                  icon="account-switch"
+                  label={activeGroupMember ? "Cambiar integrante" : "Elegir integrante"}
+                  onPress={openActiveMemberPicker}
+                />
+              </View>
+            ) : null}
             <ActionButton icon="logout" label="Salir del perfil" onPress={signOut} tone="secondary" />
           </View>
         ) : (
@@ -713,6 +828,51 @@ export function MainScreen() {
     </Modal>
   );
 
+  const renderActiveGroupMemberSheet = () => (
+    <Modal
+      animationType="slide"
+      onRequestClose={() => setShowActiveMemberSheet(false)}
+      transparent
+      visible={showActiveMemberSheet}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={styles.sheet}>
+          <View style={styles.sheetHandle} />
+          <View style={styles.sheetHeader}>
+            <View>
+              <Text style={styles.sheetTitle}>Selecciona tu integrante</Text>
+              <Text style={styles.sheetSubtitle}>Vincula tu sesión a este grupo.</Text>
+            </View>
+            <ActionButton icon="close" label="Cerrar" onPress={() => setShowActiveMemberSheet(false)} tone="ghost" />
+          </View>
+          <Text style={styles.accountSectionText}>Con esto, al abrir un gasto empezará con tu integrante.</Text>
+          <View style={styles.payerOptions}>
+            {selectedMembers.map((member) => (
+              <Pressable
+                accessibilityHint="Selecciona quién eres en este grupo."
+                accessibilityLabel={`Eres ${member.name}`}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: activeGroupMember?.id === member.id }}
+                hitSlop={4}
+                key={member.id}
+                onPress={() => {
+                  void saveActiveGroupMember(member.id);
+                }}
+                style={[styles.payerOption, activeGroupMember?.id === member.id && styles.payerOptionActive]}
+              >
+                <Avatar color={member.avatarColor} label={member.name} />
+                <Text style={styles.payerName}>{member.name}</Text>
+                {activeGroupMember?.id === member.id ? (
+                  <MaterialCommunityIcons color={colors.primary} name="check-circle" size={18} />
+                ) : null}
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+
   const renderExpenseSheet = () => (
     <Modal
       animationType="slide"
@@ -751,6 +911,11 @@ export function MainScreen() {
             value={expenseNote}
           />
           <Text style={styles.fieldLabel}>¿Quién pagó?</Text>
+          <Text style={styles.accountSectionText}>
+            {activeGroupMember
+              ? `Tu sesión está como ${activeGroupMember.name}. Puedes ajustar si otro miembro pagó.`
+              : "Selecciona un integrante para registrar este gasto."}
+          </Text>
           <View style={styles.payerOptions}>
             {selectedMembers.map((member) => (
               <Pressable
@@ -885,72 +1050,74 @@ export function MainScreen() {
           ) : null}
 
           {selectedGroup && selectedSummary ? (
-            <View style={styles.activeGroupCard}>
-              <View style={styles.warmAccentLine} />
-              <View style={styles.activeGroupTop}>
-                <View style={styles.groupBadge}>
-                  <MaterialCommunityIcons color={colors.primaryDark} name="home-city-outline" size={24} />
-                </View>
-                <View style={styles.activeGroupCopy}>
-                  <Text style={styles.summaryTitle}>{selectedGroup.name}</Text>
-                  <Text style={styles.summaryDescription}>
-                    {selectedMembers.length} integrantes · {selectedGroup.description}
-                  </Text>
-                </View>
-                <Pill label="MXN local" tone="gold" />
-              </View>
-
-              <View style={styles.memberStrip}>
-                {highlightedMembers.map((member) => (
-                  <Avatar color={member.avatarColor} key={member.id} label={member.name} />
-                ))}
-                {extraMembers > 0 ? (
-                  <View style={styles.extraMembersBadge}>
-                    <Text style={styles.extraMembersText}>+{extraMembers}</Text>
+            <View style={styles.heroCard}>
+              <View style={styles.heroTop}>
+                <Pressable
+                  accessibilityHint="Abre perfil o cambia tu integrante del grupo."
+                  accessibilityLabel={identityLabel}
+                  accessibilityRole="button"
+                  hitSlop={4}
+                  onPress={openIdentity}
+                  style={({ pressed }) => [styles.identityPill, pressed && styles.pressed]}
+                >
+                  <Avatar color={displayMember?.avatarColor ?? colors.primary} label={displayMember?.name ?? "Yo"} />
+                  <View style={styles.identityCopy}>
+                    <Text numberOfLines={1} style={styles.identityLabel}>{identityLabel}</Text>
+                    <Text numberOfLines={1} style={styles.identityMeta}>{identityMeta}</Text>
                   </View>
-                ) : null}
-              </View>
-
-              <View style={styles.balancePanel}>
-                <View style={styles.balanceColumn}>
-                  <View style={styles.balanceIconSuccess}>
-                    <MaterialCommunityIcons color={colors.primaryDark} name="arrow-down" size={18} />
-                  </View>
-                  <Text style={styles.balanceKicker}>Recibe</Text>
-                  <Text style={styles.balancePerson}>
-                    {selectedPreview.creditor?.member.name ?? "Grupo"}
-                  </Text>
-                  <Text style={[styles.balanceAmount, styles.balanceAmountSuccess]}>
-                    {formatShortMoney(selectedPreview.creditor?.netCents ?? 0)}
-                  </Text>
-                  <Text style={styles.balanceCaption}>MXN por cobrar</Text>
-                </View>
-                <View style={styles.balanceDivider} />
-                <View style={styles.balanceColumn}>
-                  <View style={styles.balanceIconDue}>
-                    <MaterialCommunityIcons color={colors.terracotta} name="arrow-up" size={18} />
-                  </View>
-                  <Text style={styles.balanceKicker}>Debe</Text>
-                  <Text style={styles.balancePerson}>
-                    {selectedPreview.debtor?.member.name ?? "Nadie"}
-                  </Text>
-                  <Text style={[styles.balanceAmount, selectedPreview.debtor ? styles.balanceAmountDue : styles.balanceAmountSuccess]}>
-                    {formatShortMoney(Math.abs(selectedPreview.debtor?.netCents ?? 0))}
-                  </Text>
-                  <Text style={styles.balanceCaption}>MXN por pagar</Text>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={18} />
+                </Pressable>
+                <View style={styles.noPaymentChip}>
+                  <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
+                  <Text style={styles.noPaymentText}>Sin pagos reales</Text>
                 </View>
               </View>
 
-              <View style={styles.summaryInsight}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={18} />
-                <Text style={styles.summaryInsightText}>
-                  {primarySettlement
-                    ? `${primarySettlementFrom?.name ?? "Alguien"} le debe a ${
-                        primarySettlementTo?.name ?? "alguien"
-                      } ${formatMoney(primarySettlement.amountCents)} · Sin pagos reales`
-                    : "Todo en paz · Datos guardados en este dispositivo"}
-                </Text>
+              <View style={styles.heroGroupLine}>
+                <Text numberOfLines={1} style={styles.heroGroupName}>{selectedGroup.name}</Text>
+                <Text style={styles.heroGroupMeta}>MXN · {selectedMembers.length} integrantes</Text>
               </View>
+
+              <View style={styles.myBalancePanel}>
+                <View style={styles.myBalanceIcon}>
+                  <MaterialCommunityIcons
+                    color={personalBalanceState.tone === "due" ? colors.terracotta : colors.primaryDark}
+                    name={personalBalanceState.tone === "due" ? "wallet-outline" : "cash-multiple"}
+                    size={25}
+                  />
+                </View>
+                <View style={styles.myBalanceCopy}>
+                  <Text style={styles.myBalanceKicker}>Tu balance</Text>
+                  <Text style={[styles.myBalanceState, personalBalanceState.tone === "due" && styles.myBalanceDue]}>
+                    {personalBalanceState.label}
+                  </Text>
+                  <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={[styles.myBalanceAmount, personalBalanceState.tone === "due" && styles.myBalanceAmountDue]}
+                  >
+                    {formatHeroMoney(personalBalanceState.amountCents)}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.heroCue}>
+                <View style={styles.heroCueIcon}>
+                  <MaterialCommunityIcons color={colors.accentBlue} name="lightbulb-on-outline" size={17} />
+                </View>
+                <View style={styles.heroCueCopy}>
+                  <Text style={styles.heroCueLabel}>Siguiente paso</Text>
+                  <Text numberOfLines={2} style={styles.heroCueText}>{personalCue}</Text>
+                </View>
+                {personalSettlement ? <Text style={styles.externalPayBadge}>Paga fuera</Text> : null}
+              </View>
+
+              <ActionButton
+                disabled={selectedMembers.length === 0}
+                icon="plus"
+                label="Agregar gasto"
+                onPress={() => setShowExpenseForm(true)}
+              />
             </View>
           ) : null}
 
@@ -985,6 +1152,7 @@ export function MainScreen() {
         </View>
         {renderMemberSheet()}
         {renderExpenseSheet()}
+        {renderActiveGroupMemberSheet()}
         {renderSettlementConfirmation()}
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -1041,6 +1209,15 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     lineHeight: 19,
   },
+  accountMemberSection: {
+    gap: spacing.sm,
+  },
+  accountSectionText: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "400",
+    lineHeight: 19,
+  },
   accountPanel: {
     backgroundColor: colors.surface,
     borderColor: colors.border,
@@ -1075,6 +1252,171 @@ const styles = StyleSheet.create({
     fontSize: typography.title,
     fontWeight: "700",
     lineHeight: 31,
+  },
+  externalPayBadge: {
+    backgroundColor: colors.successWash,
+    borderRadius: radius.sm,
+    color: colors.primaryDark,
+    flexShrink: 0,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    overflow: "hidden",
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  heroCard: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  heroCue: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceStrong,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderStyle: "dashed",
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 58,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  heroCueCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  heroCueIcon: {
+    alignItems: "center",
+    backgroundColor: colors.blueWash,
+    borderRadius: 17,
+    height: 34,
+    justifyContent: "center",
+    width: 34,
+  },
+  heroCueLabel: {
+    color: colors.accentBlue,
+    fontSize: typography.micro,
+    fontWeight: "700",
+  },
+  heroCueText: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "600",
+    lineHeight: 18,
+  },
+  heroGroupLine: {
+    gap: spacing.xs,
+  },
+  heroGroupMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "500",
+  },
+  heroGroupName: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "800",
+  },
+  heroTop: {
+    alignItems: "stretch",
+    flexDirection: "column",
+    gap: spacing.sm,
+  },
+  identityCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  identityLabel: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "800",
+  },
+  identityMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "600",
+  },
+  identityPill: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceStrong,
+    borderRadius: radius.md,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 48,
+    minWidth: 0,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  myBalanceAmount: {
+    color: colors.primary,
+    fontSize: 31,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "800",
+    letterSpacing: 0,
+    lineHeight: 36,
+  },
+  myBalanceAmountDue: {
+    color: colors.due,
+  },
+  myBalanceCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  myBalanceDue: {
+    color: colors.due,
+  },
+  myBalanceIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 34,
+    height: 68,
+    justifyContent: "center",
+    width: 68,
+  },
+  myBalanceKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "600",
+  },
+  myBalancePanel: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.md,
+    minHeight: 118,
+    padding: spacing.md,
+  },
+  myBalanceState: {
+    color: colors.primaryDark,
+    fontSize: typography.heading,
+    fontWeight: "800",
+  },
+  noPaymentChip: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    backgroundColor: colors.warmWash,
+    borderRadius: radius.sm,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 30,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  noPaymentText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "700",
   },
   actionGrid: {
     flexWrap: "wrap",
@@ -1521,15 +1863,15 @@ const styles = StyleSheet.create({
   },
   quickAction: {
     alignItems: "center",
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
+    backgroundColor: "transparent",
+    borderColor: "transparent",
     borderRadius: radius.md,
-    borderWidth: 1,
+    borderWidth: 0,
     flex: 1,
     flexDirection: "column",
-    gap: spacing.sm,
+    gap: spacing.xs,
     justifyContent: "center",
-    minHeight: 78,
+    minHeight: 62,
     minWidth: 0,
     paddingHorizontal: spacing.xs,
     paddingVertical: spacing.sm,
@@ -1552,10 +1894,10 @@ const styles = StyleSheet.create({
   quickActionIcon: {
     alignItems: "center",
     backgroundColor: colors.surfaceTinted,
-    borderRadius: 17,
-    height: 34,
+    borderRadius: 16,
+    height: 32,
     justifyContent: "center",
-    width: 34,
+    width: 32,
   },
   quickActionIconPrimary: {
     backgroundColor: "rgba(255, 255, 255, 0.18)",
@@ -1571,12 +1913,17 @@ const styles = StyleSheet.create({
     color: colors.surface,
   },
   quickActionPrimary: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: colors.surfaceTinted,
+    borderColor: "transparent",
   },
   quickActionRail: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
     flexDirection: "row",
-    gap: spacing.sm,
+    gap: 0,
+    padding: spacing.xs,
   },
   confirmBody: {
     color: colors.mutedInk,
@@ -1635,12 +1982,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   settlementCard: {
-    backgroundColor: colors.surface,
+    backgroundColor: "transparent",
     borderColor: colors.border,
-    borderRadius: radius.md,
-    borderWidth: 1,
+    borderRadius: 0,
+    borderBottomWidth: 1,
     gap: spacing.sm,
-    padding: spacing.md,
+    paddingHorizontal: 0,
+    paddingVertical: spacing.md,
   },
   settlementActions: {
     alignItems: "flex-start",
@@ -1686,10 +2034,10 @@ const styles = StyleSheet.create({
   settlementRouteIcon: {
     alignItems: "center",
     backgroundColor: colors.surfaceTinted,
-    borderRadius: 17,
-    height: 34,
+    borderRadius: 16,
+    height: 32,
     justifyContent: "center",
-    width: 34,
+    width: 32,
   },
   settlementTitle: {
     color: colors.ink,

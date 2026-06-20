@@ -50,6 +50,18 @@ export function useAccount() {
     }
   }, []);
 
+  const setActiveGroupMember = useCallback(async (groupId: string, memberId: string) => {
+    try {
+      const state = await localAccountAdapter.setActiveGroupMember(groupId, memberId);
+      setAccount(state);
+      setAccountError(null);
+      return true;
+    } catch {
+      setAccountError("No se pudo guardar tu integrante activo.");
+      return false;
+    }
+  }, []);
+
   const signOut = useCallback(async () => {
     try {
       const state = await localAccountAdapter.signOut();
@@ -70,6 +82,7 @@ export function useAccount() {
     clearAccountError,
     createAccount,
     isAccountLoading,
+    setActiveGroupMember,
     signOut,
   };
 }

@@ -104,6 +104,15 @@ auth requires provider, privacy, deletion, and infrastructure decisions. A
 replaceable local adapter lets the UI and model mature without secrets or paid
 services.
 
+### Default Expense Payer To Logged-In Member Identity
+
+Decision: Store a per-group mapping between local account profiles and group
+members, and use that mapping as the default payer in expense entry.
+
+Rationale: Multiple users should be able to use the same shared group with their
+own identity. The expense form should start with who is logged in, not always the
+first member.
+
 ### Use Local Mock Sync Adapter Before Backend
 
 Decision: Add a `SyncAdapter` contract and local mock implementation instead of
@@ -241,3 +250,16 @@ preview in the first viewport.
 Rationale: The selected visual direction is balance-first. Internal testers
 should immediately see who receives, who pays, the next local action, and the
 audit trail without first navigating away from a generic list.
+
+### Use An Identity-First Personal Balance Hero
+
+Decision: Replace the first-screen group-wide receive/debt split with a lighter
+personal balance hero that shows the active demo user, selected group, MXN cue,
+personal balance, one settlement cue, one primary `Agregar gasto` action, and
+`Sin pagos reales` in the first viewport.
+
+Rationale: The premium goal requires the app to stop feeling like one person is
+managing everyone else's finances. Leading with `Tú eres Ana` and `Tu balance`
+makes the experience personal and easier to understand on 360 px Android
+screens. The hero rounds to whole pesos for scanning, while detailed rows keep
+exact cent values.

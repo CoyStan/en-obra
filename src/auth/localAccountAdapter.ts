@@ -32,6 +32,28 @@ async function saveAccountState(state: AccountState) {
 }
 
 export const localAccountAdapter = {
+  async setActiveGroupMember(groupId: string, memberId: string): Promise<AccountState> {
+    const current = await this.load();
+    if (!current.profile) {
+      return current;
+    }
+
+    const activeMemberByGroupId = {
+      ...current.profile.activeMemberByGroupId,
+      [groupId]: memberId,
+    };
+
+    const state: AccountState = {
+      ...current,
+      profile: {
+        ...current.profile,
+        activeMemberByGroupId,
+      },
+    };
+    await saveAccountState(state);
+    return state;
+  },
+
   async createAccount(input: CreateAccountInput): Promise<AccountState> {
     const validation = validateAccountInput(input);
     if (!validation.ok) {
@@ -42,6 +64,7 @@ export const localAccountAdapter = {
     const profile: AccountProfile = {
       id: createId("account"),
       displayName: validation.value.displayName,
+      activeMemberByGroupId: {},
       email: validation.value.email,
       provider: "local-mock",
       createdAt,
