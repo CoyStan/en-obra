@@ -30,6 +30,7 @@ import type {
   SettlementSuggestion,
 } from "../domain/types";
 import { useAppData } from "../state/useAppData";
+import { deleteLocalUserData, getLocalDataInventory, getRemoteDeletionStatus } from "../security/dataDeletion";
 import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
 
@@ -295,6 +296,7 @@ export function MainScreen() {
   const {
     account,
     accountError,
+    clearLocalAccount,
     clearAccountError,
     createAccount,
     isAccountLoading,
@@ -330,8 +332,10 @@ export function MainScreen() {
   const [payerId, setPayerId] = useState("");
   const [participantIds, setParticipantIds] = useState<string[]>([]);
   const [showActiveMemberSheet, setShowActiveMemberSheet] = useState(false);
+  const [showDeleteLocalDataConfirm, setShowDeleteLocalDataConfirm] = useState(false);
   const [accountName, setAccountName] = useState("");
   const [accountEmail, setAccountEmail] = useState("");
+  const [dataControlMessage, setDataControlMessage] = useState("");
   const [pendingSettlement, setPendingSettlement] = useState<SettlementSuggestion | null>(null);
 
   const selectedMembers = useMemo(
@@ -343,6 +347,8 @@ export function MainScreen() {
     () => (selectedGroup ? buildActivity(data, selectedGroup.id) : []),
     [data, selectedGroup],
   );
+  const localDataInventory = useMemo(() => getLocalDataInventory(), []);
+  const remoteDeletionStatus = useMemo(() => getRemoteDeletionStatus(), []);
 
   const primarySettlement = selectedSummary?.settlements[0] ?? null;
   const activeMemberIdForGroup = useMemo(
@@ -523,6 +529,21 @@ export function MainScreen() {
     }
     markSettlementPaid(selectedGroup.id, pendingSettlement);
     setPendingSettlement(null);
+  };
+
+  const resetLocalDemo = () => {
+    resetDemo();
+    setDataControlMessage("Demo local restaurado en este dispositivo.");
+  };
+
+  const confirmDeleteLocalData = async () => {
+    const result = await deleteLocalUserData();
+    await clearLocalAccount();
+    resetDemo();
+    setShowDeleteLocalDataConfirm(false);
+    setDataControlMessage(
+      `Datos locales borrados. ${result.remoteDeletion.reason} Se cargó un demo limpio para seguir probando.`,
+    );
   };
 
   const renderGroups = () => (
@@ -787,6 +808,7 @@ export function MainScreen() {
                 Este perfil no sube datos. Un proveedor real requiere decisión de privacidad e infraestructura.
               </Text>
             </View>
+            {renderLocalDataControls()}
             {selectedGroup ? (
               <View style={styles.accountMemberSection}>
                 <Text style={styles.fieldLabel}>¿Quién eres en este grupo?</Text>
@@ -825,9 +847,55 @@ export function MainScreen() {
               value={accountEmail}
             />
             <ActionButton icon="account-plus" label="Crear perfil de prueba" onPress={submitAccount} />
+            {renderLocalDataControls()}
           </View>
         )}
       </Section>
+    </View>
+  );
+
+  const renderLocalDataControls = () => (
+    <View style={styles.dataControls}>
+      <View style={styles.sheetSectionHeader}>
+        <View style={styles.dataControlsTitleWrap}>
+          <Text style={styles.fieldLabel}>Datos en este dispositivo</Text>
+          <Text style={styles.accountSectionText}>
+            Control local para pruebas. No hay backend ni eliminación remota configurada.
+          </Text>
+        </View>
+        <Pill label="Local" tone="neutral" />
+      </View>
+      {dataControlMessage ? (
+        <View style={styles.dataStatus}>
+          <MaterialCommunityIcons color={colors.primary} name="check-circle-outline" size={17} />
+          <Text style={styles.dataStatusText}>{dataControlMessage}</Text>
+        </View>
+      ) : null}
+      <View style={styles.dataInventory}>
+        {localDataInventory.map((target) => (
+          <View key={target.id} style={styles.dataInventoryRow}>
+            <MaterialCommunityIcons
+              color={target.containsUserInput ? colors.primaryDark : colors.mutedInk}
+              name={target.containsUserInput ? "database-lock-outline" : "database-outline"}
+              size={17}
+            />
+            <Text style={styles.dataInventoryText}>{target.label}</Text>
+          </View>
+        ))}
+      </View>
+      <View style={styles.dataRemoteNote}>
+        <MaterialCommunityIcons color={colors.mutedInk} name="cloud-off-outline" size={17} />
+        <Text style={styles.dataRemoteText}>{remoteDeletionStatus.reason}</Text>
+      </View>
+      <View style={styles.dataActions}>
+        <ActionButton icon="restore" label="Reiniciar demo" onPress={resetLocalDemo} tone="secondary" />
+        <ActionButton
+          icon="delete-outline"
+          label="Borrar datos locales"
+          onPress={() => setShowDeleteLocalDataConfirm(true)}
+          tone="danger"
+        />
+      </View>
     </View>
   );
 
@@ -1109,6 +1177,40 @@ export function MainScreen() {
     );
   };
 
+  const renderDeleteLocalDataConfirmation = () => (
+    <Modal
+      animationType="fade"
+      onRequestClose={() => setShowDeleteLocalDataConfirm(false)}
+      transparent
+      visible={showDeleteLocalDataConfirm}
+    >
+      <View style={styles.confirmOverlay}>
+        <View style={styles.confirmCard}>
+          <View style={styles.confirmIconDanger}>
+            <MaterialCommunityIcons color={colors.due} name="delete-alert-outline" size={19} />
+          </View>
+          <Text style={styles.confirmTitle}>Borrar datos locales</Text>
+          <Text style={styles.confirmBody}>
+            Esto borra grupos, gastos, actividad, perfil demo y cola local en este dispositivo. No borra datos remotos porque no existe backend de producción.
+          </Text>
+          <View style={styles.demoChipStrong}>
+            <MaterialCommunityIcons color={colors.mutedInk} name="cloud-off-outline" size={14} />
+            <Text style={styles.demoOnlyStrong}>Eliminación local solamente</Text>
+          </View>
+          <View style={styles.sheetActions}>
+            <ActionButton
+              icon="close"
+              label="Cancelar"
+              onPress={() => setShowDeleteLocalDataConfirm(false)}
+              tone="ghost"
+            />
+            <ActionButton icon="delete" label="Borrar local" onPress={confirmDeleteLocalData} tone="danger" />
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -1269,6 +1371,7 @@ export function MainScreen() {
         {renderExpenseSheet()}
         {renderActiveGroupMemberSheet()}
         {renderSettlementConfirmation()}
+        {renderDeleteLocalDataConfirmation()}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -1796,6 +1899,70 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
+  dataActions: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  dataControls: {
+    backgroundColor: colors.surfaceStrong,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  dataControlsTitleWrap: {
+    flex: 1,
+    gap: spacing.xs,
+  },
+  dataInventory: {
+    gap: spacing.sm,
+  },
+  dataInventoryRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  dataInventoryText: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "500",
+    lineHeight: 18,
+  },
+  dataRemoteNote: {
+    alignItems: "flex-start",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  dataRemoteText: {
+    color: colors.mutedInk,
+    flex: 1,
+    fontSize: typography.micro,
+    fontWeight: "500",
+    lineHeight: 16,
+  },
+  dataStatus: {
+    alignItems: "flex-start",
+    backgroundColor: colors.successWash,
+    borderRadius: radius.sm,
+    flexDirection: "row",
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  dataStatusText: {
+    color: colors.primaryDark,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "600",
+    lineHeight: 18,
+  },
   groupCard: {
     backgroundColor: colors.surface,
     borderColor: colors.border,
@@ -2087,6 +2254,14 @@ const styles = StyleSheet.create({
   confirmIcon: {
     alignItems: "center",
     backgroundColor: colors.surfaceStrong,
+    borderRadius: 16,
+    height: 32,
+    justifyContent: "center",
+    width: 32,
+  },
+  confirmIconDanger: {
+    alignItems: "center",
+    backgroundColor: colors.dueWash,
     borderRadius: 16,
     height: 32,
     justifyContent: "center",

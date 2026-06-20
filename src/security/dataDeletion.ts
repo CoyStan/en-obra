@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ACCOUNT_STORAGE_KEY } from "../auth/localAccountAdapter";
 import { clearPersistedData, APP_DATA_STORAGE_KEY } from "../state/storage";
 import { clearSyncState, SYNC_STORAGE_KEY } from "../state/syncStorage";
 
-export const LOCAL_ACCOUNT_STORAGE_KEY = "cuentas-claras:account:v1";
+export const LOCAL_ACCOUNT_STORAGE_KEY = ACCOUNT_STORAGE_KEY;
 
 export type LocalDataTargetId = "app-data" | "sync-state" | "account-state";
 

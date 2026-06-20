@@ -62,6 +62,18 @@ export function useAccount() {
     }
   }, []);
 
+  const clearLocalAccount = useCallback(async () => {
+    try {
+      const state = await localAccountAdapter.clearLocalAccount();
+      setAccount(state);
+      setAccountError(null);
+      return true;
+    } catch {
+      setAccountError("No se pudo borrar la cuenta local.");
+      return false;
+    }
+  }, []);
+
   const signOut = useCallback(async () => {
     try {
       const state = await localAccountAdapter.signOut();
@@ -79,6 +91,7 @@ export function useAccount() {
   return {
     account,
     accountError,
+    clearLocalAccount,
     clearAccountError,
     createAccount,
     isAccountLoading,

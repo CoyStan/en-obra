@@ -3,7 +3,7 @@ import { createId } from "../utils/id";
 import { validateAccountInput } from "./accountValidation";
 import type { AccountProfile, AccountState, CreateAccountInput } from "./types";
 
-const ACCOUNT_STORAGE_KEY = "cuentas-claras:account:v1";
+export const ACCOUNT_STORAGE_KEY = "cuentas-claras:account:v1";
 
 const emptyAccountState: AccountState = {
   version: 1,
@@ -32,6 +32,11 @@ async function saveAccountState(state: AccountState) {
 }
 
 export const localAccountAdapter = {
+  async clearLocalAccount(): Promise<AccountState> {
+    await AsyncStorage.removeItem(ACCOUNT_STORAGE_KEY);
+    return emptyAccountState;
+  },
+
   async setActiveGroupMember(groupId: string, memberId: string): Promise<AccountState> {
     const current = await this.load();
     if (!current.profile) {

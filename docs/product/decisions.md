@@ -286,3 +286,14 @@ accounting for everyone. Showing `Quién participa` and the per-person split
 aligns the UI with the SQL-ready `expenseParticipants` model, keeps low-IQ
 everyday users from guessing how the split works, and preserves the no-payments
 boundary at the moment money is discussed.
+
+### Expose Local Data Controls In Perfil
+
+Decision: Perfil should include local-only data controls that show what is kept
+on the device, allow a clean demo reset, and allow deleting local app/account
+data behind a confirmation.
+
+Rationale: Internal testers need a trustworthy settings surface before Play
+testing. Local deletion can be implemented safely now, while remote deletion,
+legal language, backend retention, and account recovery remain explicit human
+and infrastructure gates.

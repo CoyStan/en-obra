@@ -52,8 +52,9 @@ Current local-only deletion path:
 3. The helper removes app data, mock sync state, and local mock account state.
 4. On next launch, empty storage loads demo data and no local account profile.
 
-The helper is not wired to UI yet. A future Company OS work item should expose
-this behind a deliberate, high-friction confirmation action.
+The helper is exposed in Perfil behind a deliberate confirmation action. The UI
+also restores a clean local demo after deletion so internal testers can keep
+using the app without creating backend data.
 
 ## Remote Deletion
 
