@@ -748,6 +748,51 @@
       "required_approval_count": 1,
       "required_approval_capability": "release",
       "current_attempt": "ATTEMPT-APP-0003"
+    },
+    {
+      "allowed_resources": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-DECISIONS",
+        "SOURCE-ARCHITECTURE"
+      ],
+      "allowed_actions": [
+        "local_write",
+        "local_validation",
+        "ai_design_review"
+      ],
+      "output_targets": [
+        "src",
+        "docs/product",
+        "reports/evidence",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "real payments",
+        "production backend",
+        "secrets",
+        "paid APIs",
+        "Play Store submission"
+      ],
+      "id": "WORK-APP-0004",
+      "title": "Premium add-expense participant flow",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "active",
+      "scope": "Redesign and implement the add-expense flow so it feels premium, light, Android-first, and multi-user: active identity, payer, participant selection, equal MXN split preview, no-real-payments cue, keyboard-safe sheet behavior, and clear empty/error states. No real payments, backend services, secrets, or production deployment.",
+      "acceptance_target": "Add-expense flow lets a user choose payer and participants, previews equal MXN shares, preserves selected participant IDs in local data, and passes visual/code checks.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0004"
     }
   ],
   "attempts": [
@@ -857,6 +902,18 @@
         "reports/evidence/WORK-APP-0003/technical-report.md",
         "company-os/workspace.json"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0004",
+      "work_item_id": "WORK-APP-0004",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T00:00:00Z",
+      "cleanliness": "main clean; prior app work items are reviewed and waiting on human approval",
+      "result": "in progress"
     }
   ],
   "evidence_runs": [
