@@ -47,8 +47,8 @@ const MONEY_FLOW_TRAVEL = MONEY_FLOW_TRACK_WIDTH - MONEY_FLOW_DOT_SIZE;
 
 const tabs: { id: TabId; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap }[] = [
   { id: "groups", label: "Grupos", icon: "account-group" },
-  { id: "balance", label: "Balance", icon: "scale-balance" },
   { id: "activity", label: "Actividad", icon: "history" },
+  { id: "balance", label: "Balance", icon: "scale-balance" },
   { id: "account", label: "Perfil", icon: "account-circle" },
 ];
 
@@ -458,7 +458,7 @@ function GroupCard({
 
   return (
     <Pressable
-      accessibilityHint="Selecciona este grupo y abre su balance."
+      accessibilityHint="Selecciona este grupo y abre su actividad."
       accessibilityLabel={`${group.name}. Gastado ${formatMoney(
         summary.totalSpentCents,
       )}. Balance abierto ${formatMoney(summary.openBalanceCents)}. ${members.length} integrantes.`}
@@ -708,7 +708,7 @@ export function MainScreen() {
     selectedSummary,
   } = useAppData();
 
-  const [activeTab, setActiveTab] = useState<TabId>("balance");
+  const [activeTab, setActiveTab] = useState<TabId>("groups");
   const [showGroupForm, setShowGroupForm] = useState(false);
   const [showMemberForm, setShowMemberForm] = useState(false);
   const [showExpenseForm, setShowExpenseForm] = useState(false);
@@ -833,6 +833,9 @@ export function MainScreen() {
       return;
     }
     setActiveTab("account");
+  };
+  const openTab = (tab: TabId) => {
+    setActiveTab(tab);
   };
 
   useEffect(() => {
@@ -1072,7 +1075,7 @@ export function MainScreen() {
               key={group.id}
               onPress={() => {
                 selectGroup(group.id);
-                setActiveTab("balance");
+                setActiveTab("activity");
               }}
             />
           ))
@@ -1133,6 +1136,7 @@ export function MainScreen() {
     <View style={styles.tabContent}>
       {!selectedGroup || !selectedSummary ? (
         <EmptyState
+          action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
           body="Crea o selecciona un grupo para ver quién debe pagar."
           icon="scale-balance"
           title="Selecciona un grupo"
@@ -1232,6 +1236,7 @@ export function MainScreen() {
       >
         {!selectedGroup ? (
           <EmptyState
+            action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
             body="Selecciona un grupo para ver la actividad."
             icon="history"
             title="Sin grupo activo"
@@ -1256,6 +1261,44 @@ export function MainScreen() {
 
   const renderAccount = () => (
     <View style={styles.tabContent}>
+      {selectedGroup ? (
+        <Section title="Grupo activo">
+          <View style={styles.groupContextPanel}>
+            <View style={styles.groupContextTop}>
+              <GroupObject group={selectedGroup} />
+              <View style={styles.groupContextCopy}>
+                <Text style={styles.groupContextName}>{selectedGroup.name}</Text>
+                <Text style={styles.groupContextMeta}>
+                  {selectedMembers.length} integrantes · Perfil usado para este grupo
+                </Text>
+              </View>
+              <ActionButton icon="swap-horizontal" label="Cambiar" onPress={() => openTab("groups")} tone="ghost" />
+            </View>
+            <View style={styles.groupContextPeople}>
+              {selectedMembers.map((member) => (
+                <View
+                  key={member.id}
+                  style={[
+                    styles.groupContextPerson,
+                    activeGroupMember?.id === member.id && styles.groupContextPersonActive,
+                  ]}
+                >
+                  <Avatar color={member.avatarColor} label={member.name} />
+                  <Text style={styles.groupContextPersonName}>{member.name}</Text>
+                  {activeGroupMember?.id === member.id ? <Pill label="Tú" tone="success" /> : null}
+                </View>
+              ))}
+            </View>
+          </View>
+        </Section>
+      ) : (
+        <EmptyState
+          action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
+          body="Primero elige un grupo. Después este perfil se usará dentro de ese grupo."
+          icon="account-circle"
+          title="Perfil sin grupo"
+        />
+      )}
       <Section title="Perfil">
         {isAccountLoading ? (
           <View style={styles.loadingBand}>
@@ -1820,7 +1863,7 @@ export function MainScreen() {
                 accessibilityLabel="Ver actividad"
                 accessibilityRole="button"
                 hitSlop={4}
-                onPress={() => setActiveTab("activity")}
+                onPress={() => openTab("activity")}
                 style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
               >
                 <MaterialCommunityIcons color={colors.primaryDark} name="bell-outline" size={22} />
@@ -1829,7 +1872,7 @@ export function MainScreen() {
                 accessibilityLabel="Abrir perfil"
                 accessibilityRole="button"
                 hitSlop={4}
-                onPress={() => setActiveTab("account")}
+                onPress={() => openTab("account")}
                 style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
               >
                 <MaterialCommunityIcons color={colors.primaryDark} name="dots-vertical" size={22} />
@@ -1861,7 +1904,7 @@ export function MainScreen() {
             </View>
           ) : null}
 
-          {selectedGroup && selectedSummary ? (
+          {activeTab !== "groups" && selectedGroup && selectedSummary ? (
             <View style={[styles.heroCard, compact && styles.heroCardCompact, roomy && styles.heroCardRoomy]}>
               <View style={styles.heroTop}>
                 <Pressable
@@ -1998,7 +2041,7 @@ export function MainScreen() {
                 accessibilityState={{ selected: active }}
                 hitSlop={4}
                 key={tab.id}
-                onPress={() => setActiveTab(tab.id)}
+                onPress={() => openTab(tab.id)}
                 style={[styles.navItem, active && styles.navItemActive]}
               >
                 <MaterialCommunityIcons
@@ -3091,6 +3134,56 @@ const styles = StyleSheet.create({
     height: 48,
     justifyContent: "center",
     width: 48,
+  },
+  groupContextCopy: {
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
+  },
+  groupContextMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "600",
+    lineHeight: 15,
+  },
+  groupContextName: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "700",
+  },
+  groupContextPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  groupContextPeople: {
+    gap: spacing.xs,
+  },
+  groupContextPerson: {
+    alignItems: "center",
+    borderRadius: radius.sm,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 44,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  groupContextPersonActive: {
+    backgroundColor: colors.surfaceTinted,
+  },
+  groupContextPersonName: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "600",
+  },
+  groupContextTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
   },
   iconButton: {
     alignItems: "center",

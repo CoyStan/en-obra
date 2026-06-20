@@ -422,3 +422,15 @@ Rationale: Balance rows are scanned like a financial table, even when presented
 as mobile cards. A reserved amount rail makes pesos line up predictably, while
 the identity/status/detail cluster can wrap naturally on narrow Android screens
 without crowding the amount or leaving the right side visually empty.
+
+### Make Groups The Parent Navigation Context
+
+Decision: The app should start on `Grupos`. Selecting a group opens that
+group's `Actividad`, while `Balance` and `Perfil` remain scoped to the same
+selected group until the user returns to `Grupos` and switches context.
+
+Rationale: Shared expenses are group-first. Treating groups as one peer tab made
+the rest of the app feel disconnected: users could be in Balance or Profile
+without understanding which group they were editing. A parent group switcher
+keeps the model simple for everyday users: choose a group, then inspect activity,
+balances, or profile/person settings for that group.
