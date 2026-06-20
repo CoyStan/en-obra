@@ -91,6 +91,22 @@ activity events, and sync outbox rows. Tests inject deterministic clocks and ids
 so future SQLite or hosted backend adapters can reuse the same behavior without
 depending on React.
 
+## Repository Boundary
+
+`src/backend/repository.ts` defines a provider-neutral `BackendRepository`
+contract:
+
+- `load`
+- `save`
+- `mutate`
+- `exportData`
+- `deleteLocalData`
+
+The included `InMemoryBackendRepository` is for tests and adapter development.
+It proves the shape needed by future storage providers without selecting one.
+Concrete adapters can be added later for AsyncStorage, SQLite, or a hosted API
+while preserving the same mutation/export/delete semantics.
+
 ## Integrity Guard
 
 `src/backend/dataIntegrity.ts` audits and safely repairs persisted local
