@@ -834,7 +834,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Expose account/settings local data controls for the premium MVP: clear local account state, reset demo/local data, show what local data exists, and reinforce no backend/no remote deletion. Use only local adapters and docs; no production auth, backend, legal approval, secrets, or payments.",
       "acceptance_target": "Perfil provides clear local-only account/data controls with safe confirmation, local deletion/reset behavior, Spanish copy, tests/docs/evidence, and no production service claims.",
       "required_approval_capability": "security",
@@ -974,13 +974,27 @@
       "id": "ATTEMPT-APP-0005",
       "work_item_id": "WORK-APP-0005",
       "actor": "PALARI-ENGINEERING",
-      "status": "active",
+      "status": "complete",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T00:00:00Z",
-      "cleanliness": "main clean; previous app work items are reviewed and waiting on human approval",
-      "result": "in progress"
+      "cleanliness": "implementation, fix, and evidence committed on main; Company OS record pending commit",
+      "result": "Implemented premium local account and data controls",
+      "commits": [
+        "837b0fa",
+        "5b8485e"
+      ],
+      "changed_files": [
+        "src/screens/MainScreen.tsx",
+        "src/auth/localAccountAdapter.ts",
+        "src/auth/useAccount.ts",
+        "src/security/dataDeletion.ts",
+        "src/__tests__/localAccountAdapter.test.ts",
+        "docs/product/decisions.md",
+        "docs/production/security-data-deletion.md",
+        "reports/evidence/WORK-APP-0005"
+      ]
     }
   ],
   "evidence_runs": [
@@ -1106,6 +1120,30 @@
       "summary": "Premium add-expense participant flow checks passed: typecheck, tests, Expo config, web export, Company OS validate/scope, static Android viewport screenshots, and GLM final code review accept-ready.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T14:49:10Z"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os validate",
+        "./bin/company-os scope WORK-APP-0005"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0005/technical-report.md",
+        "reports/evidence/WORK-APP-0005/glm52-code-review.md",
+        "reports/evidence/WORK-APP-0005/glm52-followup-review.md"
+      ],
+      "id": "EVIDENCE-APP-0005",
+      "work_item_id": "WORK-APP-0005",
+      "attempt_id": "ATTEMPT-APP-0005",
+      "head_sha": "5b8485e",
+      "status": "passed",
+      "base_ref": "main",
+      "summary": "Account/local data controls checks passed: typecheck, 20 tests, Expo config, web export, Company OS validate/scope, and GLM follow-up review accept-ready.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-20T14:55:50Z"
     }
   ],
   "review_verdicts": [
@@ -1192,6 +1230,27 @@
       "reviewer": "GLM-5.2-code-design-review",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T14:49:10Z"
+    },
+    {
+      "checks_inspected": [
+        "local data controls diff",
+        "deleteLocalUserData flow",
+        "localAccountAdapter clear path",
+        "security docs",
+        "technical report",
+        "post-fix error handling"
+      ],
+      "residual_risks": [
+        "human security/privacy approval still required",
+        "no backend deletion",
+        "no Android emulator/device QA"
+      ],
+      "id": "REVIEW-APP-0005",
+      "work_item_id": "WORK-APP-0005",
+      "reviewed_head": "5b8485e",
+      "reviewer": "GLM-5.2-code-review",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-20T14:55:50Z"
     }
   ],
   "human_decisions": [],
@@ -1383,6 +1442,47 @@
       "attempt_id": "ATTEMPT-APP-0004",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-20T14:49:21Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-PRD",
+        "SOURCE-SECURITY-DELETION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "exposed local data inventory in Perfil",
+        "added demo reset control",
+        "added confirmed local deletion flow",
+        "cleared local account state",
+        "updated security docs",
+        "added adapter test",
+        "ran checks",
+        "used GLM code review"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "src/auth/localAccountAdapter.ts",
+        "src/auth/useAccount.ts",
+        "src/security/dataDeletion.ts",
+        "src/__tests__/localAccountAdapter.test.ts",
+        "docs/product/decisions.md",
+        "docs/production/security-data-deletion.md",
+        "reports/evidence/WORK-APP-0005"
+      ],
+      "not_done": [
+        "production auth",
+        "backend deletion",
+        "legal approval",
+        "remote deletion URL",
+        "Android emulator/device QA",
+        "human approval"
+      ],
+      "id": "RECEIPT-APP-0005",
+      "work_item_id": "WORK-APP-0005",
+      "attempt_id": "ATTEMPT-APP-0005",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-20T14:56:02Z"
     }
   ],
   "decisions": [
@@ -1540,6 +1640,27 @@
       "what_happened": "The sheet now shows identity, payer, participants, equal MXN split preview, and no-real-payments cue; payer remains included in the split.",
       "what_changed": "Expense creation better matches the multi-user premium goal and the SQL-ready expenseParticipants model.",
       "timestamp": "2026-06-20T14:49:10Z"
+    },
+    {
+      "useful": [
+        "local data inventory",
+        "confirmed local deletion",
+        "demo reset",
+        "account clear adapter",
+        "GLM accept-ready review"
+      ],
+      "follow_up_needed": [
+        "human approval",
+        "Android device QA",
+        "production deletion design when backend exists"
+      ],
+      "id": "OUTCOME-APP-0005",
+      "work_item_id": "WORK-APP-0005",
+      "summary": "Perfil now exposes local account and data controls.",
+      "status": "captured",
+      "what_happened": "Added local inventory, demo reset, confirmed local deletion, account state clearing, docs, tests, and evidence.",
+      "what_changed": "Internal testers can now understand and clear local-only data without implying remote deletion or production accounts.",
+      "timestamp": "2026-06-20T14:55:50Z"
     }
   ]
 }
