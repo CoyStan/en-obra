@@ -2460,6 +2460,41 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0057"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "docs/product",
+        "reports/evidence/WORK-APP-0058",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "legal_payment_decisions",
+        "destructive_cleanup"
+      ],
+      "id": "WORK-APP-0058",
+      "title": "Visual split impact preview",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0058/**, company-os/workspace.json. Replace the simple expense split preview list with a premium visual split-impact object: show total amount, participant count, equal-share logic, per-person share bars/chips, payer distinction, and local/no-real-payments save boundary. Preserve current add-expense behavior, equal split math, Spanish copy, MXN, and accessibility. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
+      "acceptance_target": "Before saving a gasto, users can visually understand how the receipt amount becomes each participant share and who paid, without reading a dense list or accounting explanation.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0058"
     }
   ],
   "attempts": [
@@ -3413,6 +3448,21 @@
       "result": "Redesigned the add-expense sheet into a guided receipt-capture flow with Android-width screenshot evidence.",
       "commits": [
         "dc05440fc303872bb97a84cb78214704208733cf"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0058",
+      "work_item_id": "WORK-APP-0058",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-21T12:45:00Z",
+      "cleanliness": "clean",
+      "result": "Replaced the simple split preview list with a visual split-impact object and Android-width screenshot evidence.",
+      "commits": [
+        "208970972fbfb07c7335dc621e038973708f85e7"
       ]
     }
   ],
@@ -4578,6 +4628,16 @@
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width receipt-capture screenshots passed for the composer redesign.",
       "freshness": "fresh",
       "timestamp": "2026-06-21T12:35:00Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0058",
+      "work_item_id": "WORK-APP-0058",
+      "attempt_id": "ATTEMPT-APP-0058",
+      "head_sha": "208970972fbfb07c7335dc621e038973708f85e7",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width split-impact screenshots passed for the visual preview redesign.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-21T12:55:00Z"
     }
   ],
   "review_verdicts": [
@@ -5182,6 +5242,14 @@
       "reviewer": "PALARI-DESIGN-REVIEW",
       "verdict": "accept-ready",
       "timestamp": "2026-06-21T12:35:00Z"
+    },
+    {
+      "id": "REVIEW-APP-0058",
+      "work_item_id": "WORK-APP-0058",
+      "reviewed_head": "208970972fbfb07c7335dc621e038973708f85e7",
+      "reviewer": "PALARI-DESIGN-REVIEW",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-21T12:55:00Z"
     }
   ],
   "human_decisions": [
@@ -7760,6 +7828,40 @@
       "attempt_id": "ATTEMPT-APP-0057",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-21T12:35:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added-total-split-summary",
+        "added-equal-share-rule-chip",
+        "added-segmented-split-bar",
+        "added-per-person-share-bars",
+        "added-payer-badge",
+        "captured-android-width-screenshots",
+        "ran-typecheck-tests-expo-config-scope"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0058/technical-report.md",
+        "reports/evidence/WORK-APP-0058/split-impact-390x844.png"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions"
+      ],
+      "id": "RECEIPT-APP-0058",
+      "work_item_id": "WORK-APP-0058",
+      "attempt_id": "ATTEMPT-APP-0058",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-21T12:55:00Z"
     }
   ],
   "decisions": [
@@ -8478,6 +8580,15 @@
       "what_happened": "Replaced form-like composer structure with capture header, receipt object, step rail, money route stage, and review/save dock.",
       "what_changed": "Users can understand category, amount, payer, participants, split preview, local-only boundary, and save action in a more premium flow.",
       "timestamp": "2026-06-21T12:35:00Z"
+    },
+    {
+      "id": "OUTCOME-APP-0058",
+      "work_item_id": "WORK-APP-0058",
+      "summary": "Expense split preview is now a visual impact object.",
+      "status": "completed",
+      "what_happened": "Replaced the simple list with total, equal-parts chip, segmented bar, payer badge, and per-person share bars.",
+      "what_changed": "Users can see how the receipt amount becomes each participant share before saving.",
+      "timestamp": "2026-06-21T12:55:00Z"
     }
   ]
 }
