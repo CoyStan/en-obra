@@ -814,7 +814,7 @@ export function MainScreen() {
     .map((member) => member.name);
   const participantSummary =
     participantNames.length === selectedMembers.length
-      ? "Todos los integrantes"
+      ? "Todo el grupo"
       : participantNames.length
         ? participantNames.join(", ")
         : "Selecciona participantes";
@@ -1728,12 +1728,14 @@ export function MainScreen() {
       visible={showExpenseForm}
     >
       <View style={styles.modalOverlay}>
-        <ScrollView contentContainerStyle={styles.sheet} keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerStyle={styles.composerSheet} keyboardShouldPersistTaps="handled">
           <View style={styles.sheetHandle} />
-          <View style={styles.sheetHeader}>
-            <View>
-              <Text style={styles.sheetTitle}>Agregar gasto</Text>
-              <Text style={styles.sheetSubtitle}>Quién pagó, quién participa y cuánto toca.</Text>
+          <View style={styles.composerHeader}>
+            <View style={styles.composerTitleBlock}>
+              <Text style={styles.sheetTitle}>Nuevo gasto</Text>
+              <Text style={styles.sheetSubtitle}>
+                {selectedGroup?.name ?? "Grupo"} · Registro local en MXN
+              </Text>
             </View>
             <ActionButton
               icon="close"
@@ -1745,114 +1747,120 @@ export function MainScreen() {
               tone="ghost"
             />
           </View>
-          <View style={styles.expenseIdentityBand}>
-            <Avatar color={displayMember?.avatarColor ?? colors.primary} label={displayMember?.name ?? "Yo"} />
-            <View style={styles.expenseIdentityCopy}>
-              <Text style={styles.expenseIdentityLabel}>{identityLabel}</Text>
-              <Text style={styles.expenseIdentityMeta}>
-                Registro local en {selectedGroup?.name ?? "tu grupo"} · MXN
-              </Text>
-            </View>
-            <View style={styles.sheetTrustChip}>
-              <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
-              <Text style={styles.sheetTrustText}>Sin pagos reales</Text>
-            </View>
-          </View>
+
           {error ? <Text style={styles.formError}>{error}</Text> : null}
-          <View style={styles.amountFirstPanel}>
-            <View style={styles.amountFirstTop}>
-              <CategoryObject categoryId={expenseCategoryId} />
-              <View style={styles.amountFirstCopy}>
-                <Text style={styles.fieldLabel}>Monto MXN</Text>
+
+          <View style={styles.receiptComposer}>
+            <View style={styles.receiptTopLine}>
+              <Pressable
+                accessibilityLabel={`Categoría ${selectedCategory.label}`}
+                accessibilityRole="button"
+                accessibilityState={{ expanded: openExpenseMenu === "category" }}
+                hitSlop={4}
+                onPress={() => toggleExpenseMenu("category")}
+                style={({ pressed }) => [styles.receiptCategoryButton, pressed && styles.pressed]}
+              >
+                <CategoryObject categoryId={expenseCategoryId} />
+                <View style={styles.receiptCategoryCopy}>
+                  <Text style={styles.receiptKicker}>Categoría</Text>
+                  <Text numberOfLines={1} style={styles.receiptCategoryLabel}>{selectedCategory.label}</Text>
+                </View>
+                <MaterialCommunityIcons
+                  color={colors.primaryDark}
+                  name={openExpenseMenu === "category" ? "chevron-up" : "chevron-down"}
+                  size={20}
+                />
+              </Pressable>
+              <View style={styles.sheetTrustChip}>
+                <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
+                <Text style={styles.sheetTrustText}>Sin pagos reales</Text>
+              </View>
+            </View>
+
+            <AnimatedDropdown open={openExpenseMenu === "category"}>
+              <View style={styles.categoryMatrix}>
+                {expenseCategories.map((category) => {
+                  const selected = category.id === expenseCategoryId;
+                  return (
+                    <Pressable
+                      accessibilityLabel={`Categoría ${category.label}`}
+                      accessibilityRole="radio"
+                      accessibilityState={{ checked: selected }}
+                      hitSlop={4}
+                      key={category.id}
+                      onPress={() => {
+                        setExpenseCategoryId(category.id);
+                        setOpenExpenseMenu(null);
+                      }}
+                      style={({ pressed }) => [
+                        styles.categoryChoice,
+                        selected && styles.categoryChoiceActive,
+                        pressed && styles.pressed,
+                      ]}
+                    >
+                      <CategoryObject categoryId={category.id} size="small" />
+                      <Text numberOfLines={1} style={[styles.categoryChoiceText, selected && styles.categoryChoiceTextActive]}>
+                        {category.label}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </AnimatedDropdown>
+
+            <View style={styles.receiptAmountBlock}>
+              <Text style={styles.receiptKicker}>Monto MXN</Text>
+              <View style={styles.receiptAmountLine}>
+                <Text style={styles.receiptCurrency}>$</Text>
                 <TextInput
                   accessibilityLabel="Monto MXN"
                   keyboardType="decimal-pad"
                   onChangeText={setExpenseAmount}
-                  placeholder="850.00"
+                  placeholder="0.00"
                   placeholderTextColor={colors.mutedInk}
-                  style={styles.amountInput}
+                  style={styles.receiptAmountInput}
                   value={expenseAmount}
                 />
               </View>
             </View>
-            <Field
-              label="Concepto"
+
+            <TextInput
+              accessibilityLabel="Concepto del gasto"
               onChangeText={setExpenseTitle}
-              placeholder="Ej. Tacos después del cine"
+              placeholder="¿Qué se pagó? Ej. Tacos después del cine"
+              placeholderTextColor={colors.mutedInk}
+              style={styles.receiptTitleInput}
               value={expenseTitle}
             />
           </View>
-          <View style={styles.sheetSectionHeader}>
-            <View>
-              <Text style={styles.fieldLabel}>Categoría</Text>
-              <Text style={styles.accountSectionText}>Más opciones, sin llenar la pantalla.</Text>
+
+          <View style={styles.composerPathPanel}>
+            <View style={styles.composerPathHeader}>
+              <Text style={styles.composerSectionTitle}>Ruta del dinero</Text>
+              <Pill label="Partes iguales" tone="neutral" />
             </View>
-          </View>
-          <SelectTrigger
-            icon={<CategoryObject categoryId={expenseCategoryId} size="small" />}
-            label="Categoría"
-            meta={`${expenseCategories.length} categorías disponibles`}
-            onPress={() => toggleExpenseMenu("category")}
-            open={openExpenseMenu === "category"}
-            value={selectedCategory.label}
-          />
-          <AnimatedDropdown open={openExpenseMenu === "category"}>
-            {expenseCategories.map((category) => {
-              const selected = category.id === expenseCategoryId;
-              return (
-                <Pressable
-                  accessibilityLabel={`Categoría ${category.label}`}
-                  accessibilityRole="radio"
-                  accessibilityState={{ checked: selected }}
-                  hitSlop={4}
-                  key={category.id}
-                  onPress={() => {
-                    setExpenseCategoryId(category.id);
-                    setOpenExpenseMenu(null);
-                  }}
-                  style={({ pressed }) => [
-                    styles.dropdownRow,
-                    selected && styles.dropdownRowActive,
-                    pressed && styles.pressed,
-                  ]}
-                >
-                  <CategoryObject categoryId={category.id} size="small" />
-                  <View style={styles.dropdownRowCopy}>
-                    <Text style={styles.dropdownRowTitle}>{category.label}</Text>
-                    <Text style={styles.dropdownRowMeta}>Para ordenar el historial</Text>
-                  </View>
-                  {selected ? (
-                    <MaterialCommunityIcons color={colors.primary} name="check-circle" size={20} />
-                  ) : null}
-                </Pressable>
-              );
-            })}
-          </AnimatedDropdown>
-          <Field
-            label="Nota"
-            onChangeText={setExpenseNote}
-            placeholder="Opcional"
-            value={expenseNote}
-          />
-          <View style={styles.sheetSectionHeader}>
-            <View>
-              <Text style={styles.fieldLabel}>¿Quién pagó?</Text>
-              <Text style={styles.accountSectionText}>
-                {activeGroupMember
-                  ? `Tu sesión empieza como ${activeGroupMember.name}.`
-                  : "Selecciona un integrante para registrar este gasto."}
-              </Text>
-            </View>
-            {payerId ? <Pill label="Pagó" tone="success" /> : null}
-          </View>
-          <SelectTrigger
-            icon={payer ? <Avatar color={payer.avatarColor} label={payer.name} /> : undefined}
-            label="Pagó"
-            meta={activeGroupMember ? `Tu sesión empieza como ${activeGroupMember.name}` : "Elige una persona"}
-            onPress={() => toggleExpenseMenu("payer")}
-            open={openExpenseMenu === "payer"}
-            value={payer?.name ?? "Selecciona quién pagó"}
-          />
+
+            <Pressable
+              accessibilityLabel={`Pagó ${payer?.name ?? "selecciona persona"}`}
+              accessibilityRole="button"
+              accessibilityState={{ expanded: openExpenseMenu === "payer" }}
+              hitSlop={4}
+              onPress={() => toggleExpenseMenu("payer")}
+              style={({ pressed }) => [styles.moneyPathRow, pressed && styles.pressed]}
+            >
+              <View style={styles.moneyPathIcon}>
+                <MaterialCommunityIcons color={colors.primaryDark} name="cash-plus" size={19} />
+              </View>
+              {payer ? <Avatar color={payer.avatarColor} label={payer.name} /> : null}
+              <View style={styles.moneyPathCopy}>
+                <Text style={styles.moneyPathLabel}>Pagó</Text>
+                <Text numberOfLines={1} style={styles.moneyPathValue}>
+                  {payer?.name ?? "Selecciona quién pagó"}
+                </Text>
+              </View>
+              <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={20} />
+            </Pressable>
+
           <AnimatedDropdown open={openExpenseMenu === "payer"}>
             {selectedMembers.map((member) => (
               <Pressable
@@ -1882,20 +1890,35 @@ export function MainScreen() {
               </Pressable>
             ))}
           </AnimatedDropdown>
-          <View style={styles.sheetSectionHeader}>
-            <View>
-              <Text style={styles.fieldLabel}>Quién participa</Text>
-              <Text style={styles.accountSectionText}>Dividido en partes iguales.</Text>
-            </View>
-            <Pill label={`${participantIds.length}/${selectedMembers.length}`} tone="neutral" />
-          </View>
-          <SelectTrigger
-            label="Participan"
-            meta={`${participantIds.length} de ${selectedMembers.length} integrantes`}
-            onPress={() => toggleExpenseMenu("participants")}
-            open={openExpenseMenu === "participants"}
-            value={participantSummary}
-          />
+
+            <Pressable
+              accessibilityLabel={`Participan ${participantSummary}`}
+              accessibilityRole="button"
+              accessibilityState={{ expanded: openExpenseMenu === "participants" }}
+              hitSlop={4}
+              onPress={() => toggleExpenseMenu("participants")}
+              style={({ pressed }) => [styles.moneyPathRow, pressed && styles.pressed]}
+            >
+              <View style={styles.moneyPathIcon}>
+                <MaterialCommunityIcons color={colors.primaryDark} name="account-multiple-check-outline" size={19} />
+              </View>
+              <View style={styles.participantMiniStack}>
+                {selectedMembers
+                  .filter((member) => participantIds.includes(member.id))
+                  .slice(0, 3)
+                  .map((member, index) => (
+                    <View key={member.id} style={index > 0 && styles.participantMiniOverlap}>
+                      <Avatar color={member.avatarColor} label={member.name} />
+                    </View>
+                  ))}
+              </View>
+              <View style={styles.moneyPathCopy}>
+                <Text style={styles.moneyPathLabel}>Participan</Text>
+                <Text numberOfLines={1} style={styles.moneyPathValue}>{participantSummary}</Text>
+              </View>
+              <Pill label={`${participantIds.length}/${selectedMembers.length}`} tone="neutral" />
+            </Pressable>
+
           <AnimatedDropdown open={openExpenseMenu === "participants"}>
             {selectedMembers.map((member) => {
               const selected = participantIds.includes(member.id);
@@ -1939,32 +1962,64 @@ export function MainScreen() {
               );
             })}
           </AnimatedDropdown>
-          <View style={styles.splitPreview}>
-            <View style={styles.splitPreviewIcon}>
-              <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
-            </View>
-            <View style={styles.splitPreviewCopy}>
-              <Text style={styles.splitPreviewTitle}>Resumen de división</Text>
-              <Text style={styles.splitPreviewText}>
-                {participantShares.length
-                  ? `${participantShares.length} participan · ${formatMoney(expenseAmountCents ?? 0)} dividido en MXN`
-                  : "Elige participantes y monto para ver cuánto toca."}
-              </Text>
-            </View>
+
+            <TextInput
+              accessibilityLabel="Nota opcional"
+              onChangeText={setExpenseNote}
+              placeholder="Nota opcional"
+              placeholderTextColor={colors.mutedInk}
+              style={styles.composerNoteInput}
+              value={expenseNote}
+            />
           </View>
-          <ActionButton
-            disabled={
-              selectedMembers.length === 0 ||
-              !expenseTitle.trim() ||
-              !expenseAmount.trim() ||
-              !payerId ||
-              participantIds.length === 0 ||
-              !participantIds.includes(payerId)
-            }
-            icon="receipt-text-plus"
-            label="Guardar gasto"
-            onPress={submitExpense}
-          />
+
+          <View style={styles.composerReview}>
+            <View style={styles.composerReviewTop}>
+              <View style={styles.splitPreviewIcon}>
+                <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
+              </View>
+              <View style={styles.splitPreviewCopy}>
+                <Text style={styles.splitPreviewTitle}>Vista previa</Text>
+                <Text style={styles.splitPreviewText}>
+                  {participantShares.length
+                    ? `${participantShares.length} participantes · ${formatMoney(expenseAmountCents ?? 0)} dividido en MXN`
+                    : "Elige monto y participantes para ver cuánto toca."}
+                </Text>
+              </View>
+            </View>
+
+            {participantShares.length ? (
+              <View style={styles.sharePreviewGrid}>
+                {participantShares.slice(0, 4).map((share) => {
+                  const member = findMember(selectedMembers, share.memberId);
+                  if (!member) {
+                    return null;
+                  }
+                  return (
+                    <View key={share.memberId} style={styles.sharePreviewRow}>
+                      <Avatar color={member.avatarColor} label={member.name} />
+                      <Text numberOfLines={1} style={styles.sharePreviewName}>{member.name}</Text>
+                      <Text style={styles.sharePreviewAmount}>{formatMoney(share.amountCents)}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+            ) : null}
+
+            <ActionButton
+              disabled={
+                selectedMembers.length === 0 ||
+                !expenseTitle.trim() ||
+                !expenseAmount.trim() ||
+                !payerId ||
+                participantIds.length === 0 ||
+                !participantIds.includes(payerId)
+              }
+              icon="receipt-text-plus"
+              label="Guardar gasto"
+              onPress={submitExpense}
+            />
+          </View>
         </ScrollView>
       </View>
     </Modal>
@@ -2583,6 +2638,100 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontWeight: "800",
     lineHeight: 17,
+  },
+  categoryChoice: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flexBasis: "31%",
+    flexGrow: 1,
+    gap: spacing.xs,
+    minHeight: 74,
+    minWidth: 92,
+    padding: spacing.sm,
+  },
+  categoryChoiceActive: {
+    backgroundColor: colors.successWash,
+    borderColor: colors.primary,
+  },
+  categoryChoiceText: {
+    color: colors.ink,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+    textAlign: "center",
+  },
+  categoryChoiceTextActive: {
+    color: colors.primaryDark,
+    fontWeight: "900",
+  },
+  categoryMatrix: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  composerHeader: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+  },
+  composerNoteInput: {
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "600",
+    minHeight: 48,
+    paddingHorizontal: spacing.md,
+  },
+  composerPathHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  composerPathPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  composerReview: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  composerReviewTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  composerSectionTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+  },
+  composerSheet: {
+    backgroundColor: colors.canvas,
+    borderTopLeftRadius: radius.lg,
+    borderTopRightRadius: radius.lg,
+    gap: spacing.md,
+    maxHeight: "92%",
+    padding: spacing.md,
+  },
+  composerTitleBlock: {
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
   },
   externalPayAction: {
     alignItems: "center",
@@ -4230,10 +4379,55 @@ const styles = StyleSheet.create({
   payerOptions: {
     gap: spacing.sm,
   },
+  moneyPathCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  moneyPathIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 18,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  moneyPathLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  moneyPathRow: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 64,
+    padding: spacing.sm,
+  },
+  moneyPathValue: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 19,
+  },
   participantCopy: {
     flex: 1,
     gap: 1,
     minWidth: 0,
+  },
+  participantMiniOverlap: {
+    marginLeft: -20,
+  },
+  participantMiniStack: {
+    alignItems: "center",
+    flexDirection: "row",
+    minWidth: 52,
   },
   participantOption: {
     alignItems: "center",
@@ -4277,6 +4471,114 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceTinted,
     borderColor: colors.primary,
     borderWidth: 2,
+  },
+  receiptAmountBlock: {
+    backgroundColor: colors.successWash,
+    borderRadius: radius.lg,
+    gap: spacing.xs,
+    padding: spacing.md,
+  },
+  receiptAmountInput: {
+    color: colors.primary,
+    flex: 1,
+    fontSize: 42,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 48,
+    minHeight: 52,
+    padding: 0,
+  },
+  receiptAmountLine: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.xs,
+  },
+  receiptCategoryButton: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 58,
+    minWidth: 0,
+    padding: spacing.sm,
+  },
+  receiptCategoryCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  receiptCategoryLabel: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 19,
+  },
+  receiptComposer: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  receiptCurrency: {
+    color: colors.primaryDark,
+    fontSize: 26,
+    fontWeight: "900",
+    lineHeight: 32,
+  },
+  receiptKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  receiptTitleInput: {
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "800",
+    minHeight: 52,
+    paddingHorizontal: spacing.md,
+  },
+  receiptTopLine: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  sharePreviewAmount: {
+    color: colors.primaryDark,
+    fontSize: typography.small,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+  },
+  sharePreviewGrid: {
+    gap: spacing.xs,
+  },
+  sharePreviewName: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "800",
+  },
+  sharePreviewRow: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 48,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
   },
   sheet: {
     backgroundColor: colors.surface,
