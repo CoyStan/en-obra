@@ -631,6 +631,97 @@ function MoneyFlowFigure({
   );
 }
 
+function SettlementRouteCard({
+  activeMemberId,
+  compact = false,
+  data,
+  onPress,
+  settlement,
+}: {
+  activeMemberId: string;
+  compact?: boolean;
+  data: AppData;
+  onPress: () => void;
+  settlement: SettlementSuggestion;
+}) {
+  const from = findMember(data.members, settlement.fromMemberId);
+  const to = findMember(data.members, settlement.toMemberId);
+  const perspective = settlementPerspective(settlement, activeMemberId, from, to);
+
+  return (
+    <Pressable
+      accessibilityLabel={`${perspective.title}. ${formatMoney(settlement.amountCents)}. Registro local sin pagos reales.`}
+      accessibilityRole="button"
+      hitSlop={4}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.settlementRouteCard,
+        compact && styles.settlementRouteCardCompact,
+        pressed && styles.pressed,
+      ]}
+    >
+      <View style={styles.settlementRouteTop}>
+        <View style={styles.settlementRouteAvatarBlock}>
+          <Avatar color={from?.avatarColor ?? colors.due} label={from?.name ?? "A"} />
+          <Text numberOfLines={1} style={styles.settlementRouteName}>{from?.name ?? "Integrante"}</Text>
+        </View>
+        <View style={styles.settlementRouteMiddle}>
+          <Text style={styles.settlementRouteAmount}>{formatMoney(settlement.amountCents)}</Text>
+          <View style={styles.settlementRouteTrack}>
+            <View style={styles.settlementRouteDot}>
+              <MaterialCommunityIcons color={colors.surface} name="cash" size={12} />
+            </View>
+          </View>
+          <Text style={styles.settlementRouteVerb}>arreglo local</Text>
+        </View>
+        <View style={styles.settlementRouteAvatarBlock}>
+          <Avatar color={to?.avatarColor ?? colors.primary} label={to?.name ?? "B"} />
+          <Text numberOfLines={1} style={styles.settlementRouteName}>{to?.name ?? "Integrante"}</Text>
+        </View>
+      </View>
+      <View style={styles.settlementRouteFooter}>
+        <View style={styles.settlementPerspectiveBadge}>
+          <Text style={styles.settlementPerspectiveText}>{perspective.badge}</Text>
+        </View>
+        <Text numberOfLines={1} style={styles.settlementRouteTitle}>{perspective.title}</Text>
+        <MaterialCommunityIcons color={colors.primaryDark} name="chevron-right" size={18} />
+      </View>
+    </Pressable>
+  );
+}
+
+function MemberLedgerRow({ balance }: { balance: MemberBalance }) {
+  const status = balanceLabel(balance);
+  const amountTone = balance.netCents < 0 ? "due" : balance.netCents > 0 ? "success" : "neutral";
+
+  return (
+    <View style={styles.ledgerRow}>
+      <Avatar color={balance.member.avatarColor} label={balance.member.name} />
+      <View style={styles.ledgerCopy}>
+        <View style={styles.ledgerNameLine}>
+          <Text numberOfLines={1} style={styles.ledgerName}>{balance.member.name}</Text>
+          <Pill label={status.label} tone={status.tone} />
+        </View>
+        <Text numberOfLines={2} style={styles.ledgerExplanation}>{describeBalance(balance)}</Text>
+      </View>
+      <View style={styles.ledgerAmountBlock}>
+        <Text style={styles.ledgerCurrency}>MXN</Text>
+        <Text
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={[
+            styles.ledgerAmount,
+            amountTone === "due" && styles.ledgerAmountDue,
+            amountTone === "success" && styles.ledgerAmountSuccess,
+          ]}
+        >
+          {formatHeroMoney(Math.abs(balance.netCents))}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
 function QuickActionTile({
   disabled = false,
   detail,
@@ -1353,48 +1444,83 @@ export function MainScreen() {
           title="Selecciona un grupo"
         />
       ) : (
-        <>
-          <Section
-            action={
-              selectedSummary.settlements.length > 1 ? (
-                <Pill label={`+${selectedSummary.settlements.length - 1} más`} tone="neutral" />
-              ) : undefined
-            }
-            title="Quién le debe a quién"
-          >
-            {selectedSummary.settlements.length === 0 ? (
-              <EmptyState
-                body="No hay pagos pendientes para este grupo."
-                icon="check-decagram"
-                title="Todo en paz por ahora"
-              />
-            ) : (
-              selectedSummary.settlements.slice(0, 1).map(renderSettlementCard)
-            )}
-          </Section>
+        <View style={styles.balanceCockpit}>
+          <View style={styles.balanceHero}>
+            <View style={styles.balanceHeroTop}>
+              <View>
+                <Text style={styles.balanceHeroKicker}>Balance de grupo</Text>
+                <Text style={styles.balanceHeroTitle}>{selectedGroup.name}</Text>
+              </View>
+              <View style={styles.noPaymentChip}>
+                <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
+                <Text style={styles.noPaymentText}>Sin pagos reales</Text>
+              </View>
+            </View>
+            <View style={styles.balanceHeroStats}>
+              <View style={styles.balanceHeroStat}>
+                <Text style={styles.commandMetricLabel}>Abierto</Text>
+                <Text style={[styles.balanceHeroAmount, selectedSummary.openBalanceCents ? styles.balanceHeroAmountDue : styles.balanceHeroAmountOk]}>
+                  {formatMoney(selectedSummary.openBalanceCents)}
+                </Text>
+              </View>
+              <View style={styles.balanceHeroStat}>
+                <Text style={styles.commandMetricLabel}>Arreglos</Text>
+                <Text style={styles.balanceHeroAmount}>{selectedSummary.settlements.length}</Text>
+              </View>
+            </View>
+          </View>
 
-          <Section
-            action={<ActionButton icon="history" label="Ver todo" onPress={() => setActiveTab("activity")} tone="ghost" />}
-            title="Actividad reciente"
-          >
-            {activity.length === 0 ? (
-              <EmptyState
-                body="Los gastos y arreglos aparecerán aquí."
-                icon="receipt-text-plus"
-                title="Sin movimientos"
+          {selectedSummary.settlements.length === 0 ? (
+            <View style={styles.routePanel}>
+              <View style={styles.calmFigure}>
+                <View style={styles.calmFigureIcon}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={22} />
+                </View>
+                <View style={styles.calmFigureCopy}>
+                  <Text style={styles.moneyFlowAmount}>Todo en paz</Text>
+                  <Text style={styles.calmFigureText}>No hay pagos pendientes para este grupo.</Text>
+                </View>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.balanceRouteStage}>
+              <View style={styles.routePanelHeader}>
+                <Text style={styles.routePanelKicker}>Ruta principal</Text>
+                <Pill label={`${selectedSummary.settlements.length} pendientes`} tone="gold" />
+              </View>
+              <SettlementRouteCard
+                activeMemberId={displayMemberId}
+                data={data}
+                onPress={() => setPendingSettlement(selectedSummary.settlements[0])}
+                settlement={selectedSummary.settlements[0]}
               />
-            ) : (
-              activity.slice(0, 3).map((item) => <ActivityRow item={item} key={item.id} />)
-            )}
-          </Section>
+              <ActionButton
+                icon="check"
+                label="Registrar arreglo local"
+                onPress={() => setPendingSettlement(selectedSummary.settlements[0])}
+                tone="secondary"
+              />
+            </View>
+          )}
 
           {selectedSummary.settlements.length > 1 ? (
-            <Section title="Otros arreglos">
-              {selectedSummary.settlements.slice(1).map(renderSettlementCard)}
+            <Section title="Escalera de pagos">
+              <View style={styles.settlementLadder}>
+                {selectedSummary.settlements.slice(1).map((settlement) => (
+                  <SettlementRouteCard
+                    activeMemberId={displayMemberId}
+                    compact
+                    data={data}
+                    key={`${settlement.fromMemberId}-${settlement.toMemberId}`}
+                    onPress={() => setPendingSettlement(settlement)}
+                    settlement={settlement}
+                  />
+                ))}
+              </View>
             </Section>
           ) : null}
 
-          <Section title="Balances por integrante">
+          <Section title="Libro de integrantes">
             {selectedMembers.length === 0 ? (
               <EmptyState
                 action={<ActionButton icon="account-plus" label="Agregar" onPress={() => setShowMemberForm(true)} />}
@@ -1403,38 +1529,14 @@ export function MainScreen() {
                 title="Aún no hay integrantes"
               />
             ) : (
-              selectedSummary.balances.map((balance) => {
-                const status = balanceLabel(balance);
-                const amountTone = balance.netCents < 0 ? "due" : "success";
-                return (
-                  <View key={balance.member.id} style={[styles.memberRow, compact && styles.memberRowCompact]}>
-                    <Avatar color={balance.member.avatarColor} label={balance.member.name} />
-                    <View style={styles.memberBody}>
-                      <View style={styles.memberHeaderLine}>
-                        <View style={styles.memberIdentity}>
-                          <Text style={styles.memberName}>{balance.member.name}</Text>
-                          <Pill label={status.label} tone={status.tone} />
-                        </View>
-                        <View style={[styles.memberAmountRail, compact && styles.memberAmountRailCompact]}>
-                          <Text
-                            style={[
-                              styles.memberAmountText,
-                              amountTone === "due" ? styles.memberAmountDue : styles.memberAmountSuccess,
-                              compact && styles.memberAmountTextCompact,
-                            ]}
-                          >
-                            {formatMoney(Math.abs(balance.netCents))}
-                          </Text>
-                        </View>
-                      </View>
-                      <Text style={styles.balanceExplanation}>{describeBalance(balance)}</Text>
-                    </View>
-                  </View>
-                );
-              })
+              <View style={styles.ledgerList}>
+                {selectedSummary.balances.map((balance) => (
+                  <MemberLedgerRow balance={balance} key={balance.member.id} />
+                ))}
+              </View>
             )}
           </Section>
-        </>
+        </View>
       )}
     </View>
   );
@@ -3018,6 +3120,69 @@ const styles = StyleSheet.create({
     fontSize: typography.micro,
     fontWeight: "600",
   },
+  balanceCockpit: {
+    gap: spacing.md,
+  },
+  balanceHero: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  balanceHeroAmount: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  balanceHeroAmountDue: {
+    color: colors.due,
+  },
+  balanceHeroAmountOk: {
+    color: colors.primaryDark,
+  },
+  balanceHeroKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  balanceHeroStat: {
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flex: 1,
+    gap: spacing.xs,
+    minHeight: 70,
+    padding: spacing.md,
+  },
+  balanceHeroStats: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  balanceHeroTitle: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  balanceHeroTop: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  balanceRouteStage: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
   balanceAmount: {
     fontSize: 20,
     fontVariant: ["tabular-nums"],
@@ -3702,6 +3867,70 @@ const styles = StyleSheet.create({
   keyboard: {
     flex: 1,
   },
+  ledgerAmount: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 22,
+    textAlign: "right",
+  },
+  ledgerAmountBlock: {
+    alignItems: "flex-end",
+    flexShrink: 0,
+    minWidth: 106,
+  },
+  ledgerAmountDue: {
+    color: colors.due,
+  },
+  ledgerAmountSuccess: {
+    color: colors.primary,
+  },
+  ledgerCopy: {
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
+  },
+  ledgerCurrency: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
+  ledgerExplanation: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "600",
+    lineHeight: 18,
+  },
+  ledgerList: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    overflow: "hidden",
+  },
+  ledgerName: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 19,
+  },
+  ledgerNameLine: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  ledgerRow: {
+    alignItems: "center",
+    borderBottomColor: colors.border,
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 78,
+    padding: spacing.md,
+  },
   loadingBand: {
     alignItems: "center",
     backgroundColor: colors.surfaceStrong,
@@ -4261,6 +4490,88 @@ const styles = StyleSheet.create({
     height: 32,
     justifyContent: "center",
     width: 32,
+  },
+  settlementLadder: {
+    gap: spacing.sm,
+  },
+  settlementRouteAmount: {
+    color: colors.primaryDark,
+    fontSize: typography.body,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 19,
+    textAlign: "center",
+  },
+  settlementRouteAvatarBlock: {
+    alignItems: "center",
+    gap: spacing.xs,
+    width: 58,
+  },
+  settlementRouteCard: {
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  settlementRouteCardCompact: {
+    backgroundColor: colors.surface,
+    padding: spacing.sm,
+  },
+  settlementRouteDot: {
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: colors.primary,
+    borderColor: colors.canvas,
+    borderRadius: 13,
+    borderWidth: 2,
+    height: 26,
+    justifyContent: "center",
+    marginTop: -10,
+    width: 26,
+  },
+  settlementRouteFooter: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  settlementRouteMiddle: {
+    alignItems: "center",
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
+  },
+  settlementRouteName: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "900",
+    lineHeight: 16,
+    textAlign: "center",
+  },
+  settlementRouteTitle: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "800",
+    lineHeight: 17,
+  },
+  settlementRouteTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  settlementRouteTrack: {
+    backgroundColor: colors.border,
+    borderRadius: 999,
+    height: 6,
+    width: "100%",
+  },
+  settlementRouteVerb: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
   },
   settlementRoutePeople: {
     alignItems: "center",
