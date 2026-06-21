@@ -38,7 +38,7 @@ import { deleteLocalUserData, getLocalDataInventory, getRemoteDeletionStatus } f
 import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
 
-type TabId = "groups" | "balance" | "activity" | "account";
+type TabId = "groups" | "home" | "balance" | "activity" | "account";
 type ExpenseMenuId = "category" | "payer" | "participants";
 
 const MONEY_FLOW_TRACK_WIDTH = 120;
@@ -47,12 +47,13 @@ const MONEY_FLOW_TRAVEL = MONEY_FLOW_TRACK_WIDTH - MONEY_FLOW_DOT_SIZE;
 
 const tabs: { id: TabId; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap; groupScoped?: boolean }[] = [
   { id: "groups", label: "Grupos", icon: "account-switch" },
+  { id: "home", label: "Inicio", icon: "view-dashboard-outline", groupScoped: true },
   { id: "activity", label: "Actividad", icon: "history", groupScoped: true },
   { id: "balance", label: "Balance", icon: "scale-balance", groupScoped: true },
   { id: "account", label: "Perfil", icon: "account-circle", groupScoped: true },
 ];
 
-const firstGroupWorkspaceTab: TabId = "activity";
+const firstGroupWorkspaceTab: TabId = "home";
 
 const dateFormatter = new Intl.DateTimeFormat("es-MX", {
   day: "2-digit",
@@ -456,7 +457,7 @@ function GroupCard({
 
   return (
     <Pressable
-      accessibilityHint="Selecciona este grupo y abre su actividad."
+      accessibilityHint="Selecciona este grupo y abre su inicio."
       accessibilityLabel={`${group.name}. Gastado ${formatMoney(
         summary.totalSpentCents,
       )}. Balance abierto ${formatMoney(summary.openBalanceCents)}. ${members.length} integrantes.`}
@@ -1462,7 +1463,7 @@ export function MainScreen() {
               accessibilityLabel={`Entrar a ${selectedGroup.name}`}
               accessibilityRole="button"
               hitSlop={4}
-              onPress={() => openTab("activity")}
+              onPress={() => openTab("home")}
               style={({ pressed }) => [styles.groupLobbyEnter, pressed && styles.pressed]}
             >
               <MaterialCommunityIcons color={colors.surface} name="arrow-right-circle" size={20} />
@@ -2649,7 +2650,7 @@ export function MainScreen() {
             </View>
           ) : null}
 
-          {activeTab !== "groups" && activeTab !== "activity" ? (
+          {activeTab !== "groups" && activeTab !== "home" ? (
             <View style={[styles.workspaceBar, compact && styles.workspaceBarCompact]}>
               <View style={styles.workspaceBarIcon}>
                 <MaterialCommunityIcons color={colors.primaryDark} name="account-group" size={18} />
@@ -2675,6 +2676,7 @@ export function MainScreen() {
           ) : null}
 
           {activeTab === "groups" ? renderGroups() : null}
+          {activeTab === "home" ? renderWorkspaceHome() : null}
           {activeTab === "balance" ? renderBalance() : null}
           {activeTab === "activity" ? renderActivity() : null}
           {activeTab === "account" ? renderAccount() : null}
