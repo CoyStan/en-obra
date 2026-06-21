@@ -2854,7 +2854,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "active",
+      "status": "in-review",
       "scope": "Redesign the Perfil tab into a premium identity and trust center using Open Design fintech/mobile patterns. Allowed paths: src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0068/**, company-os/workspace.json.",
       "acceptance_target": "Perfil shows active local user, selected group persona, member identity switcher, local-only trust cues, and data controls in a lighter premium Android-first structure without real payments, backend, secrets, or paid services.",
       "required_approval_capability": "design",
@@ -3963,12 +3963,15 @@
       "id": "ATTEMPT-APP-0068",
       "work_item_id": "WORK-APP-0068",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started Open Design profile identity vault redesign."
+      "result": "Redesigned Perfil as a premium local identity vault with group persona selection, local trust cues, data controls, screenshots, and checks.",
+      "commits": [
+        "99bc3ab"
+      ]
     }
   ],
   "evidence_runs": [
@@ -5226,6 +5229,15 @@
       "status": "passed",
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width Grupos screenshots passed for the workspace row refinement.",
       "freshness": "fresh"
+    },
+    {
+      "id": "EVIDENCE-APP-0068",
+      "work_item_id": "WORK-APP-0068",
+      "attempt_id": "ATTEMPT-APP-0068",
+      "head_sha": "99bc3ab",
+      "status": "passed",
+      "summary": "Verified profile identity vault with typecheck, tests, Expo config, web export, Company OS scope/validate, and Android-width screenshots.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -6006,6 +6018,27 @@
       "id": "REVIEW-APP-0067",
       "work_item_id": "WORK-APP-0067",
       "reviewed_head": "153dfa4",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "Company OS scope WORK-APP-0068",
+        "Company OS validate",
+        "Android-width screenshots at 360x740 390x844 412x915"
+      ],
+      "residual_risks": [
+        "human visual taste approval still required",
+        "physical Android emulator/device QA still pending",
+        "broader premium app goal remains incomplete"
+      ],
+      "id": "REVIEW-APP-0068",
+      "work_item_id": "WORK-APP-0068",
+      "reviewed_head": "99bc3ab",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -8932,6 +8965,44 @@
       "work_item_id": "WORK-APP-0067",
       "attempt_id": "ATTEMPT-APP-0067",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "read Open Design Stripe Wise Revolut and mobile profile templates",
+        "redesigned Perfil into identity vault",
+        "replaced persona chips with compact selectable rows",
+        "kept local no-sync no-payment trust cues visible",
+        "recorded product decision",
+        "captured Android-width screenshots",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0068/technical-report.md",
+        "reports/evidence/WORK-APP-0068/profile-vault-final-360x740.png",
+        "reports/evidence/WORK-APP-0068/profile-vault-final-390x844.png",
+        "reports/evidence/WORK-APP-0068/profile-vault-final-412x915.png"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "physical-android-device-run"
+      ],
+      "id": "RECEIPT-APP-0068",
+      "work_item_id": "WORK-APP-0068",
+      "attempt_id": "ATTEMPT-APP-0068",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -9733,6 +9804,14 @@
       "status": "completed",
       "what_happened": "Group cards were restructured into scan-friendly workspace rows with route preview, open amount rail, member stack, and active state.",
       "what_changed": "The parent group-switching surface is lighter and better supports the group-controls-tabs mental model."
+    },
+    {
+      "id": "OUTCOME-APP-0068",
+      "work_item_id": "WORK-APP-0068",
+      "summary": "Perfil now reads as a premium selected-group identity vault.",
+      "status": "completed",
+      "what_happened": "Converted the account screen from stacked settings panels into a local identity/trust vault with active group context, persona selection rows, and visible demo/local safeguards.",
+      "what_changed": "Updated MainScreen profile rendering and styles, recorded the product decision, and added screenshot/report evidence."
     }
   ]
 }
