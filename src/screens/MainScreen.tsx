@@ -469,36 +469,31 @@ function GroupCard({
       <View style={styles.groupCardTop}>
         <GroupObject group={group} />
         <View style={styles.groupTitleWrap}>
-          <Text style={styles.groupName}>{group.name}</Text>
-          <Text style={styles.groupDescription} numberOfLines={2}>
+          <View style={styles.groupNameLine}>
+            <Text numberOfLines={1} style={styles.groupName}>{group.name}</Text>
+            {isSelected ? <Pill label="Activo" tone="success" /> : null}
+          </View>
+          <Text style={styles.groupDescription} numberOfLines={1}>
             {group.description || "Grupo local"}
           </Text>
         </View>
-        {isSelected ? <Pill label="Activo" tone="success" /> : null}
+        <View style={styles.groupEnterIcon}>
+          <MaterialCommunityIcons color={colors.primaryDark} name="chevron-right" size={19} />
+        </View>
       </View>
       <View style={styles.groupPreview}>
         <MaterialCommunityIcons color={summary.openBalanceCents ? colors.due : colors.primary} name="swap-horizontal" size={16} />
-        <Text style={styles.groupPreviewText}>{previewCopy}</Text>
+        <Text numberOfLines={1} style={styles.groupPreviewText}>{previewCopy}</Text>
       </View>
       <View style={styles.groupPeopleRow}>
         <AvatarStack members={members} />
-        <Text style={styles.groupPeopleText}>
-          {members.map((member) => member.name).slice(0, 3).join(", ")}
-          {members.length > 3 ? ` y ${members.length - 3} más` : ""}
-        </Text>
-      </View>
-      <View style={styles.groupStats}>
-        <View>
-          <Text style={styles.statLabel}>Gastado</Text>
-          <Amount cents={summary.totalSpentCents} />
+        <View style={styles.groupPeopleBadge}>
+          <Text style={styles.groupPeopleBadgeCount}>{members.length}</Text>
+          <Text style={styles.groupPeopleBadgeText}>pers.</Text>
         </View>
-        <View>
-          <Text style={styles.statLabel}>Abierto</Text>
+        <View style={styles.groupOpenAmount}>
+          <Text style={styles.groupOpenLabel}>Abierto</Text>
           <Amount cents={summary.openBalanceCents} tone={summary.openBalanceCents ? "due" : "success"} />
-        </View>
-        <View>
-          <Text style={styles.statLabel}>Integrantes</Text>
-          <Text style={styles.statValue}>{members.length}</Text>
         </View>
       </View>
     </Pressable>
@@ -1397,33 +1392,99 @@ export function MainScreen() {
   };
 
   const renderGroups = () => (
-    <View style={styles.tabContent}>
-      <View style={styles.groupSelectorIntro}>
-        <View style={styles.groupSelectorIcon}>
-          <MaterialCommunityIcons color={colors.primaryDark} name="account-switch-outline" size={18} />
+    <View style={styles.groupLobby}>
+      <View style={styles.groupLobbyHero}>
+        <View style={styles.groupLobbyTop}>
+          <View style={styles.groupSelectorIcon}>
+            <MaterialCommunityIcons color={colors.primaryDark} name="account-switch-outline" size={18} />
+          </View>
+          <View style={styles.groupSelectorCopy}>
+            <Text style={styles.groupLobbyKicker}>Tus espacios</Text>
+            <Text style={styles.groupLobbyTitle}>
+              {selectedGroup ? "Elige dónde dividir gastos" : "Abre un grupo para empezar"}
+            </Text>
+            <Text style={styles.groupLobbyText}>
+              Cada grupo mantiene su propio balance, integrantes, actividad y perfil local.
+            </Text>
+          </View>
         </View>
-        <View style={styles.groupSelectorCopy}>
-          <Text style={styles.groupSelectorTitle}>
-            {selectedGroup ? "Cambia el grupo activo" : "Elige un grupo para empezar"}
-          </Text>
-          <Text style={styles.groupSelectorText}>
-            Al seleccionar uno, se abre su Actividad. Balance y Perfil quedan ligados a ese grupo.
-          </Text>
-        </View>
+
+        {selectedGroup && selectedSummary ? (
+          <View style={styles.groupLobbyActive}>
+            <View style={styles.groupLobbyActiveTop}>
+              <GroupObject group={selectedGroup} size="large" />
+              <View style={styles.groupLobbyActiveCopy}>
+                <Text style={styles.groupLobbyKicker}>Grupo activo</Text>
+                <Text numberOfLines={1} style={styles.groupLobbyActiveName}>{selectedGroup.name}</Text>
+                <Text numberOfLines={1} style={styles.groupLobbyActiveMeta}>
+                  {selectedMembers.length} integrantes · MXN · registro local
+                </Text>
+              </View>
+            </View>
+            <View style={styles.groupLobbyTrustRow}>
+              <View style={styles.noPaymentChip}>
+                <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
+                <Text style={styles.noPaymentText}>Sin pagos reales</Text>
+              </View>
+              <Text numberOfLines={1} style={styles.groupLobbyTrustText}>Registro local, sin transferencias dentro de la app</Text>
+            </View>
+            <View style={styles.groupLobbyBalanceLine}>
+              <View>
+                <Text style={styles.moneySceneLabel}>Tu balance</Text>
+                <Text style={[styles.moneySceneState, personalBalanceState.tone === "due" && styles.moneySceneDue]}>
+                  {personalBalanceState.label}
+                </Text>
+              </View>
+              <View style={styles.groupLobbyAmountWrap}>
+                <Text style={styles.moneySceneCurrency}>MXN</Text>
+                <Text
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.7}
+                  numberOfLines={1}
+                  style={[
+                    styles.groupLobbyAmount,
+                    personalBalanceState.tone === "due" && styles.moneySceneAmountDue,
+                  ]}
+                >
+                  {heroAmountText}
+                </Text>
+              </View>
+            </View>
+            <Pressable
+              accessibilityLabel={`Entrar a ${selectedGroup.name}`}
+              accessibilityRole="button"
+              hitSlop={4}
+              onPress={() => openTab("activity")}
+              style={({ pressed }) => [styles.groupLobbyEnter, pressed && styles.pressed]}
+            >
+              <MaterialCommunityIcons color={colors.surface} name="arrow-right-circle" size={20} />
+              <Text style={styles.groupLobbyEnterText}>Entrar al espacio</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <View style={styles.groupLobbyEmpty}>
+            <MaterialCommunityIcons color={colors.primaryDark} name="account-group-outline" size={24} />
+            <Text style={styles.groupLobbyEmptyText}>Selecciona un grupo para ver tu balance y actividad.</Text>
+          </View>
+        )}
       </View>
-      <Section
-        action={
+
+      <View style={styles.groupLobbyList}>
+        <View style={styles.groupLobbyListHeader}>
+          <View>
+            <Text style={styles.groupLobbyKicker}>Cambiar espacio</Text>
+            <Text style={styles.groupLobbyListTitle}>Grupos disponibles</Text>
+          </View>
           <ActionButton
             icon={showGroupForm ? "close" : "plus"}
             label={showGroupForm ? "Cerrar" : "Nuevo"}
             onPress={() => setShowGroupForm((current) => !current)}
             tone="secondary"
           />
-        }
-        title="Tus grupos"
-      >
+        </View>
+
         {showGroupForm ? (
-          <View style={styles.formPanel}>
+          <View style={styles.groupLobbyForm}>
             <Field
               label="Nombre del grupo"
               onChangeText={setGroupName}
@@ -1463,7 +1524,7 @@ export function MainScreen() {
             />
           ))
         )}
-      </Section>
+      </View>
     </View>
   );
 
@@ -4200,19 +4261,188 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: radius.lg,
     borderWidth: 1,
-    gap: spacing.sm,
-    minHeight: 108,
+    gap: spacing.md,
+    minHeight: 126,
     padding: spacing.md,
   },
   groupCardSelected: {
-    backgroundColor: colors.successWash,
+    backgroundColor: colors.surfaceTinted,
     borderColor: "rgba(8, 127, 106, 0.24)",
   },
   groupCardTop: {
-    alignItems: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  groupEnterIcon: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: 16,
+    borderWidth: 1,
+    height: 32,
+    justifyContent: "center",
+    width: 32,
+  },
+  groupLobby: {
+    gap: spacing.md,
+  },
+  groupLobbyActive: {
+    backgroundColor: colors.successWash,
+    borderRadius: radius.lg,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  groupLobbyActiveCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  groupLobbyActiveMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  groupLobbyActiveName: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  groupLobbyActiveTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  groupLobbyAmount: {
+    color: colors.primary,
+    fontSize: 30,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 35,
+    textAlign: "right",
+  },
+  groupLobbyAmountWrap: {
+    alignItems: "flex-end",
+    flex: 1,
+    minWidth: 0,
+  },
+  groupLobbyBalanceLine: {
+    alignItems: "flex-end",
     flexDirection: "row",
     gap: spacing.md,
     justifyContent: "space-between",
+  },
+  groupLobbyEmpty: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 64,
+    padding: spacing.md,
+  },
+  groupLobbyEmptyText: {
+    color: colors.mutedInk,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "700",
+    lineHeight: 18,
+  },
+  groupLobbyEnter: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    backgroundColor: colors.primary,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "center",
+    minHeight: 50,
+    paddingHorizontal: spacing.md,
+  },
+  groupLobbyEnterText: {
+    color: colors.surface,
+    fontSize: typography.small,
+    fontWeight: "900",
+  },
+  groupLobbyForm: {
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  groupLobbyHero: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+    shadowColor: colors.ink,
+    shadowOffset: { height: 14, width: 0 },
+    shadowOpacity: 0.06,
+    shadowRadius: 24,
+    elevation: 3,
+  },
+  groupLobbyKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  groupLobbyList: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  groupLobbyListHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+    paddingBottom: spacing.xs,
+  },
+  groupLobbyListTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+  },
+  groupLobbyText: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "600",
+    lineHeight: 18,
+  },
+  groupLobbyTitle: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  groupLobbyTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  groupLobbyTrustRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  groupLobbyTrustText: {
+    color: colors.mutedInk,
+    flex: 1,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
   },
   groupObject: {
     alignItems: "center",
@@ -4233,11 +4463,43 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     minHeight: 38,
   },
+  groupPeopleBadge: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.sm,
+    flexShrink: 0,
+    gap: 0,
+    justifyContent: "center",
+    minHeight: 38,
+    paddingHorizontal: spacing.sm,
+  },
+  groupPeopleBadgeCount: {
+    color: colors.primaryDark,
+    fontSize: typography.small,
+    fontWeight: "900",
+    lineHeight: 16,
+  },
+  groupPeopleBadgeText: {
+    color: colors.mutedInk,
+    fontSize: 10,
+    fontWeight: "800",
+    lineHeight: 12,
+  },
+  groupPeopleCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  groupPeopleMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
   groupPeopleText: {
     color: colors.mutedInk,
-    flex: 1,
     fontSize: typography.micro,
-    fontWeight: "600",
+    fontWeight: "800",
     lineHeight: 15,
   },
   groupDescription: {
@@ -4248,26 +4510,39 @@ const styles = StyleSheet.create({
   },
   groupName: {
     color: colors.ink,
-    fontSize: typography.heading,
-    fontWeight: "700",
+    flex: 1,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
   },
-  groupStats: {
-    flexWrap: "wrap",
+  groupNameLine: {
+    alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-between",
-    gap: spacing.md,
+    gap: spacing.sm,
+  },
+  groupOpenAmount: {
+    alignItems: "flex-end",
+    flexShrink: 0,
+    gap: 1,
+  },
+  groupOpenLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
   },
   groupTitleWrap: {
     flex: 1,
-    gap: spacing.xs,
+    gap: 1,
+    minWidth: 0,
   },
   groupPreview: {
     alignItems: "center",
     backgroundColor: colors.canvas,
-    borderRadius: radius.sm,
+    borderRadius: radius.lg,
     flexDirection: "row",
     gap: spacing.sm,
-    minHeight: 42,
+    minHeight: 38,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
   },
