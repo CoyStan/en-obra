@@ -2354,6 +2354,42 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0054"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "src/components/ui.tsx",
+        "docs/product",
+        "reports/evidence/WORK-APP-0055",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "legal_payment_decisions",
+        "destructive_cleanup"
+      ],
+      "id": "WORK-APP-0055",
+      "title": "Radical mobile money workspace redesign",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, src/components/ui.tsx, docs/product/**, reports/evidence/WORK-APP-0055/**, company-os/workspace.json. Replace the same-old tab/card feeling with a more ambitious Android money workspace: stronger app shell, selected group cockpit, action dock, visual money objects, clearer activity/balance/profile relationships, lighter surfaces, and lower cognitive load. Preserve local-first behavior, Spanish copy, multi-user identity, MXN, no-real-payments boundary, tests, and existing data model. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
+      "acceptance_target": "The app no longer feels like a styled dashboard; the first viewport and core navigation feel like a premium consumer money workspace with clear identity, group, personal balance, next action, settlement cue, and no-real-payments cue across Android widths.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0055"
     }
   ],
   "attempts": [
@@ -3262,6 +3298,21 @@
       "result": "Restructured Profile into a premium identity and trust center with Android-width screenshot evidence.",
       "commits": [
         "b03b695bcb37e50556e9e93d91eb68d351e9b9ab"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0055",
+      "work_item_id": "WORK-APP-0055",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-21T11:30:00Z",
+      "cleanliness": "clean",
+      "result": "Rebuilt the selected-group Activity surface into a premium money workspace with Android-width screenshot evidence.",
+      "commits": [
+        "57b794580d3642d21b24766ca81c013e9be08ae5"
       ]
     }
   ],
@@ -4397,6 +4448,16 @@
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, static preview, and Android-width Profile screenshots passed for the identity/trust center restructure.",
       "freshness": "fresh",
       "timestamp": "2026-06-21T11:15:00Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0055",
+      "work_item_id": "WORK-APP-0055",
+      "attempt_id": "ATTEMPT-APP-0055",
+      "head_sha": "57b794580d3642d21b24766ca81c013e9be08ae5",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width money-room screenshots passed for the radical workspace redesign.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-21T11:45:00Z"
     }
   ],
   "review_verdicts": [
@@ -4977,6 +5038,14 @@
       "reviewer": "PALARI-DESIGN-REVIEW",
       "verdict": "accept-ready",
       "timestamp": "2026-06-21T11:15:00Z"
+    },
+    {
+      "id": "REVIEW-APP-0055",
+      "work_item_id": "WORK-APP-0055",
+      "reviewed_head": "57b794580d3642d21b24766ca81c013e9be08ae5",
+      "reviewer": "PALARI-DESIGN-REVIEW",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-21T11:45:00Z"
     }
   ],
   "human_decisions": [
@@ -7453,6 +7522,41 @@
       "attempt_id": "ATTEMPT-APP-0054",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-21T11:15:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created-money-room-layout",
+        "rebuilt-first-viewport-balance-scene",
+        "added-people-orbit",
+        "added-route-stage",
+        "added-action-dock",
+        "lightened-activity-stream",
+        "captured-android-width-screenshots",
+        "ran-typecheck-tests-expo-config-scope"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0055/technical-report.md",
+        "reports/evidence/WORK-APP-0055/money-room-360x740.png"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions"
+      ],
+      "id": "RECEIPT-APP-0055",
+      "work_item_id": "WORK-APP-0055",
+      "attempt_id": "ATTEMPT-APP-0055",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-21T11:45:00Z"
     }
   ],
   "decisions": [
@@ -8144,6 +8248,15 @@
       "what_happened": "Replaced settings-style Profile sections with local identity hero, group persona center, and trust/data controls.",
       "what_changed": "Users can scan account identity, selected group persona, local-only status, and data controls in one polished account surface.",
       "timestamp": "2026-06-21T11:15:00Z"
+    },
+    {
+      "id": "OUTCOME-APP-0055",
+      "work_item_id": "WORK-APP-0055",
+      "summary": "Selected-group Activity is now a premium money workspace.",
+      "status": "completed",
+      "what_happened": "Replaced a section/card Activity home with a money-room hero, member orbit, settlement route stage, action dock, and lighter activity stream.",
+      "what_changed": "The first viewport now communicates identity, group, personal balance, next action, settlement cue, MXN, and no-real-payments boundary with a more ambitious app structure.",
+      "timestamp": "2026-06-21T11:45:00Z"
     }
   ]
 }
