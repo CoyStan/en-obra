@@ -1135,16 +1135,32 @@ export function MainScreen() {
       );
     }
 
+    const visibleMembers = selectedMembers.slice(0, 4);
+    const hiddenMemberCount = Math.max(selectedMembers.length - visibleMembers.length, 0);
+    const nextActionLabel = personalSettlement
+      ? personalSettlement.fromMemberId === activeGroupMember?.id
+        ? "Registrar arreglo"
+        : "Revisar quién te debe"
+      : "Agregar gasto";
+    const nextActionIcon = personalSettlement ? "check-circle-outline" : "receipt-text-plus";
+    const nextActionPress = () => {
+      if (personalSettlement) {
+        setPendingSettlement(personalSettlement);
+        return;
+      }
+      setShowExpenseForm(true);
+    };
+
     return (
-      <View style={styles.workspaceHome}>
-        <View style={styles.commandCenter}>
-          <View style={styles.commandTop}>
-            <View style={styles.commandGroup}>
+      <View style={styles.moneyRoom}>
+        <View style={styles.moneyRoomHero}>
+          <View style={styles.moneyRoomHeader}>
+            <View style={styles.moneyRoomGroup}>
               <GroupObject group={selectedGroup} size="large" />
-              <View style={styles.commandGroupCopy}>
-                <Text numberOfLines={1} style={styles.commandKicker}>Grupo activo</Text>
-                <Text numberOfLines={1} style={styles.commandTitle}>{selectedGroup.name}</Text>
-                <Text style={styles.commandMeta}>MXN · {selectedMembers.length} integrantes · Demo local</Text>
+              <View style={styles.moneyRoomGroupCopy}>
+                <Text numberOfLines={1} style={styles.moneyRoomKicker}>Espacio activo</Text>
+                <Text numberOfLines={1} style={styles.moneyRoomTitle}>{selectedGroup.name}</Text>
+                <Text style={styles.moneyRoomMeta}>MXN · {selectedMembers.length} integrantes · registro local</Text>
               </View>
             </View>
             <Pressable
@@ -1152,21 +1168,21 @@ export function MainScreen() {
               accessibilityRole="button"
               hitSlop={4}
               onPress={() => openTab("groups")}
-              style={({ pressed }) => [styles.commandSwitch, pressed && styles.pressed]}
+              style={({ pressed }) => [styles.moneyRoomSwitch, pressed && styles.pressed]}
             >
-              <MaterialCommunityIcons color={colors.primaryDark} name="swap-horizontal" size={16} />
+              <MaterialCommunityIcons color={colors.primaryDark} name="swap-horizontal" size={17} />
             </Pressable>
           </View>
 
-          <View style={styles.commandBalanceGrid}>
-            <View style={styles.commandBalanceMain}>
+          <View style={styles.moneyScene}>
+            <View style={styles.moneySceneTop}>
               <Pressable
                 accessibilityHint="Abre perfil o cambia tu integrante del grupo."
                 accessibilityLabel={identityLabel}
                 accessibilityRole="button"
                 hitSlop={4}
                 onPress={openIdentity}
-                style={({ pressed }) => [styles.commandIdentity, pressed && styles.pressed]}
+                style={({ pressed }) => [styles.moneySceneIdentity, pressed && styles.pressed]}
               >
                 <Avatar color={displayMember?.avatarColor ?? colors.primary} label={displayMember?.name ?? "Yo"} />
                 <View style={styles.identityCopy}>
@@ -1176,14 +1192,29 @@ export function MainScreen() {
                 <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={18} />
               </Pressable>
 
-              <Text style={styles.commandBalanceLabel}>{personalBalanceState.label}</Text>
-              <View style={styles.commandAmountLine}>
-                <Text style={styles.commandCurrency}>MXN</Text>
+              <View style={styles.noPaymentChip}>
+                <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
+                <Text style={styles.noPaymentText}>Sin pagos reales</Text>
+              </View>
+            </View>
+
+            <View style={styles.moneySceneBalance}>
+              <View style={[styles.moneySceneCopy, compact && styles.moneySceneCopyCompact]}>
+                <Text style={styles.moneySceneLabel}>Tu balance</Text>
+                <Text style={[styles.moneySceneState, personalBalanceState.tone === "due" && styles.moneySceneDue]}>
+                  {personalBalanceState.label}
+                </Text>
+              </View>
+              <View style={[styles.moneySceneAmountWrap, compact && styles.moneySceneAmountWrapCompact]}>
+                <Text style={styles.moneySceneCurrency}>MXN</Text>
                 <Text
                   numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.62}
                   style={[
-                    styles.commandAmount,
-                    personalBalanceState.tone === "due" && styles.commandAmountDue,
+                    styles.moneySceneAmount,
+                    compact && styles.moneySceneAmountCompact,
+                    personalBalanceState.tone === "due" && styles.moneySceneAmountDue,
                   ]}
                 >
                   {heroAmountText}
@@ -1191,22 +1222,17 @@ export function MainScreen() {
               </View>
             </View>
 
-            <View style={styles.commandMetricStack}>
-              <View style={styles.commandMetric}>
-                <Text style={styles.commandMetricLabel}>Gastado</Text>
-                <Text numberOfLines={1} adjustsFontSizeToFit style={styles.commandMetricValue}>
-                  {formatMoney(activeGroupSummary.totalSpentCents)}
-                </Text>
+            <View style={styles.moneySceneFooter}>
+              <View style={styles.moneyMetricPill}>
+                <Text style={styles.moneyMetricLabel}>Gastado</Text>
+                <Text numberOfLines={1} adjustsFontSizeToFit style={styles.moneyMetricValue}>{formatMoney(activeGroupSummary.totalSpentCents)}</Text>
               </View>
-              <View style={styles.commandMetric}>
-                <Text style={styles.commandMetricLabel}>Abierto</Text>
+              <View style={styles.moneyMetricPill}>
+                <Text style={styles.moneyMetricLabel}>Abierto</Text>
                 <Text
                   numberOfLines={1}
                   adjustsFontSizeToFit
-                  style={[
-                    styles.commandMetricValue,
-                    activeGroupSummary.openBalanceCents ? styles.commandMetricDue : styles.commandMetricOk,
-                  ]}
+                  style={[styles.moneyMetricValue, activeGroupSummary.openBalanceCents ? styles.moneyMetricDue : styles.moneyMetricOk]}
                 >
                   {formatMoney(activeGroupSummary.openBalanceCents)}
                 </Text>
@@ -1214,93 +1240,148 @@ export function MainScreen() {
             </View>
           </View>
 
-          <View style={styles.commandTrustRow}>
-            <View style={styles.commandTrustLine}>
-              <AvatarStack members={selectedMembers} limit={4} />
-              <View style={styles.noPaymentChip}>
-                <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
-                <Text style={styles.noPaymentText}>Sin pagos reales</Text>
-              </View>
+          <View style={styles.peopleOrbit}>
+            <View style={styles.peopleOrbitHeader}>
+              <Text style={styles.peopleOrbitTitle}>En este gasto compartido</Text>
+              <Text style={styles.peopleOrbitMeta}>
+                {hiddenMemberCount ? `+${hiddenMemberCount} más` : "Todos visibles"}
+              </Text>
             </View>
-            <View style={styles.commandTrustCopy}>
-              <Text style={styles.commandTrustTitle}>Registro local para ponerse de acuerdo</Text>
-              <Text style={styles.commandTrustText}>No mueve dinero, no usa backend y no cobra pagos.</Text>
+            <View style={styles.peopleOrbitRow}>
+              {visibleMembers.map((member, index) => (
+                <Pressable
+                  accessibilityLabel={`Usar ${member.name} en este grupo`}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: activeGroupMember?.id === member.id }}
+                  hitSlop={4}
+                  key={member.id}
+                  onPress={() => {
+                    void saveActiveGroupMember(member.id);
+                  }}
+                  style={[
+                    styles.peopleOrbitPerson,
+                    index === 0 && styles.peopleOrbitPersonFirst,
+                    activeGroupMember?.id === member.id && styles.peopleOrbitPersonActive,
+                  ]}
+                >
+                  <Avatar color={member.avatarColor} label={member.name} />
+                  <Text numberOfLines={1} style={styles.peopleOrbitName}>{member.name}</Text>
+                  {activeGroupMember?.id === member.id ? (
+                    <View style={styles.peopleOrbitCheck}>
+                      <MaterialCommunityIcons color={colors.surface} name="check" size={12} />
+                    </View>
+                  ) : null}
+                </Pressable>
+              ))}
             </View>
           </View>
         </View>
 
-        {personalSettlement ? (
-          <View style={styles.routePanel}>
-            <View style={styles.routePanelHeader}>
-              <Text style={styles.routePanelKicker}>Siguiente arreglo</Text>
-              <Pressable
-                accessibilityLabel="Ver balance completo"
-                accessibilityRole="button"
-                hitSlop={4}
-                onPress={() => setActiveTab("balance")}
-                style={({ pressed }) => [styles.routePanelLink, pressed && styles.pressed]}
-              >
-                <Text style={styles.routePanelLinkText}>Ver todo</Text>
-                <MaterialCommunityIcons color={colors.primaryDark} name="arrow-right" size={14} />
-              </Pressable>
+        <View style={styles.moneyRouteStage}>
+          <View style={styles.moneyRouteHeader}>
+            <View>
+              <Text style={styles.moneyRouteKicker}>Qué sigue</Text>
+              <Text style={styles.moneyRouteTitle}>{personalSettlement ? "Ruta de arreglo" : "Grupo en paz"}</Text>
             </View>
-            <MoneyFlowFigure
-              amountCents={personalSettlement.amountCents}
-              from={personalSettlementFrom}
-              progress={moneyFlowProgress}
-              reduceMotion={reduceMotion}
-              to={personalSettlementTo}
-            />
-            <View style={styles.routeActionRow}>
-              <Text numberOfLines={2} style={styles.routeActionText}>{personalCue}</Text>
-              <ActionButton
-                icon="check"
-                label="Liquidar"
-                onPress={() => setPendingSettlement(personalSettlement)}
-                tone="secondary"
-              />
-            </View>
+            <Pressable
+              accessibilityLabel="Ver balance completo"
+              accessibilityRole="button"
+              hitSlop={4}
+              onPress={() => setActiveTab("balance")}
+              style={({ pressed }) => [styles.moneyRouteLink, pressed && styles.pressed]}
+            >
+              <Text style={styles.moneyRouteLinkText}>Balance</Text>
+              <MaterialCommunityIcons color={colors.primaryDark} name="arrow-right" size={14} />
+            </Pressable>
           </View>
-        ) : (
-          <View style={styles.routePanel}>
-            <View style={styles.calmFigure}>
-              <View style={styles.calmFigureIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={22} />
+
+          {personalSettlement ? (
+            <>
+              <MoneyFlowFigure
+                amountCents={personalSettlement.amountCents}
+                from={personalSettlementFrom}
+                progress={moneyFlowProgress}
+                reduceMotion={reduceMotion}
+                to={personalSettlementTo}
+              />
+              <Text numberOfLines={2} style={styles.moneyRouteCue}>{personalCue}</Text>
+            </>
+          ) : (
+            <View style={styles.moneyPeaceState}>
+              <View style={styles.moneyPeaceIcon}>
+                <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={24} />
               </View>
               <View style={styles.calmFigureCopy}>
-                <Text style={styles.moneyFlowAmount}>Todo en paz</Text>
+                <Text style={styles.moneyRouteCue}>Todo en paz</Text>
                 <Text style={styles.calmFigureText}>Sin pagos pendientes en este grupo.</Text>
               </View>
             </View>
-          </View>
-        )}
-
-        <View style={styles.quickActionRail}>
-          <QuickActionTile
-            disabled={selectedMembers.length === 0}
-            icon="receipt-text-plus"
-            label="Agregar gasto"
-            onPress={() => setShowExpenseForm(true)}
-            primary
-          />
-          <QuickActionTile
-            detail={selectedSummary.settlements.length ? `${selectedSummary.settlements.length} abiertos` : "En paz"}
-            icon="scale-balance"
-            label="Balance"
-            onPress={() => setActiveTab("balance")}
-          />
-          <QuickActionTile
-            detail={`${activity.length} movimientos`}
-            icon="history"
-            label="Historial"
-            onPress={() => setActiveTab("activity")}
-          />
+          )}
         </View>
 
-        <Section
-          action={<ActionButton icon="restore" label="Demo" onPress={resetDemo} tone="ghost" />}
-          title="Actividad reciente"
-        >
+        <View style={styles.actionDock}>
+          <Pressable
+            accessibilityLabel={nextActionLabel}
+            accessibilityRole="button"
+            hitSlop={4}
+            onPress={nextActionPress}
+            style={({ pressed }) => [styles.actionDockPrimary, pressed && styles.pressed]}
+          >
+            <View style={styles.actionDockIcon}>
+              <MaterialCommunityIcons color={colors.surface} name={nextActionIcon} size={20} />
+            </View>
+            <View style={styles.actionDockCopy}>
+              <Text style={styles.actionDockLabel}>{nextActionLabel}</Text>
+              <Text style={styles.actionDockMeta}>{personalSettlement ? "Registro local, no pago real" : "Dividir en partes iguales"}</Text>
+            </View>
+            <MaterialCommunityIcons color={colors.surface} name="arrow-right" size={18} />
+          </Pressable>
+          <View style={styles.actionDockSecondaryRow}>
+            <Pressable
+              accessibilityLabel="Agregar gasto"
+              accessibilityRole="button"
+              disabled={selectedMembers.length === 0}
+              hitSlop={4}
+              onPress={() => setShowExpenseForm(true)}
+              style={({ pressed }) => [
+                styles.actionDockSecondary,
+                selectedMembers.length === 0 && styles.quickActionDisabled,
+                pressed && selectedMembers.length > 0 && styles.pressed,
+              ]}
+            >
+              <MaterialCommunityIcons color={colors.primaryDark} name="receipt-text-plus" size={18} />
+              <Text style={styles.actionDockSecondaryText}>Gasto</Text>
+            </Pressable>
+            <Pressable
+              accessibilityLabel="Ver historial"
+              accessibilityRole="button"
+              hitSlop={4}
+              onPress={() => setActiveTab("activity")}
+              style={({ pressed }) => [styles.actionDockSecondary, pressed && styles.pressed]}
+            >
+              <MaterialCommunityIcons color={colors.primaryDark} name="history" size={18} />
+              <Text style={styles.actionDockSecondaryText}>{activity.length} movimientos</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        <View style={styles.activityStream}>
+          <View style={styles.activityStreamHeader}>
+            <View>
+              <Text style={styles.activityStreamKicker}>Historial</Text>
+              <Text style={styles.activityStreamTitle}>Últimos movimientos</Text>
+            </View>
+            <Pressable
+              accessibilityLabel="Reiniciar datos demo"
+              accessibilityRole="button"
+              hitSlop={4}
+              onPress={resetDemo}
+              style={({ pressed }) => [styles.activityStreamReset, pressed && styles.pressed]}
+            >
+              <MaterialCommunityIcons color={colors.primaryDark} name="restore" size={15} />
+              <Text style={styles.activityStreamResetText}>Demo</Text>
+            </Pressable>
+          </View>
           {activity.length === 0 ? (
             <EmptyState
               body="Cuando agregues gastos o marques arreglos, aparecerán aquí."
@@ -1310,7 +1391,7 @@ export function MainScreen() {
           ) : (
             activity.slice(0, 5).map((item) => <ActivityRow item={item} key={item.id} />)
           )}
-        </Section>
+        </View>
       </View>
     );
   };
@@ -3054,6 +3135,249 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     minWidth: 118,
   },
+  moneyMetricDue: {
+    color: colors.due,
+  },
+  moneyMetricLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  moneyMetricOk: {
+    color: colors.primaryDark,
+  },
+  moneyMetricPill: {
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    borderRadius: radius.lg,
+    flex: 1,
+    gap: 2,
+    minHeight: 58,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.sm,
+  },
+  moneyMetricValue: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 17,
+  },
+  moneyPeaceIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 20,
+    height: 40,
+    justifyContent: "center",
+    width: 40,
+  },
+  moneyPeaceState: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  moneyRoom: {
+    gap: spacing.md,
+  },
+  moneyRoomGroup: {
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minWidth: 0,
+  },
+  moneyRoomGroupCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  moneyRoomHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  moneyRoomHero: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    overflow: "hidden",
+    padding: spacing.md,
+    shadowColor: colors.ink,
+    shadowOffset: { height: 18, width: 0 },
+    shadowOpacity: 0.08,
+    shadowRadius: 28,
+    elevation: 4,
+  },
+  moneyRoomKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  moneyRoomMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  moneyRoomSwitch: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: 18,
+    borderWidth: 1,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  moneyRoomTitle: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  moneyRouteCue: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "800",
+    lineHeight: 18,
+  },
+  moneyRouteHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+  },
+  moneyRouteKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  moneyRouteLink: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 999,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 32,
+    paddingHorizontal: spacing.sm,
+  },
+  moneyRouteLinkText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "900",
+  },
+  moneyRouteStage: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  moneyRouteTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+  },
+  moneyScene: {
+    backgroundColor: colors.successWash,
+    borderRadius: radius.lg,
+    gap: spacing.md,
+    overflow: "hidden",
+    padding: spacing.md,
+  },
+  moneySceneAmount: {
+    color: colors.primary,
+    flexShrink: 1,
+    fontSize: 36,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 41,
+    textAlign: "right",
+  },
+  moneySceneAmountCompact: {
+    fontSize: 32,
+    lineHeight: 37,
+  },
+  moneySceneAmountDue: {
+    color: colors.due,
+  },
+  moneySceneAmountWrap: {
+    alignItems: "flex-end",
+    flex: 1,
+    minWidth: 0,
+  },
+  moneySceneAmountWrapCompact: {
+    flex: 1.2,
+  },
+  moneySceneBalance: {
+    alignItems: "flex-end",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+  },
+  moneySceneCopy: {
+    flexShrink: 0,
+    gap: 1,
+    width: 104,
+  },
+  moneySceneCopyCompact: {
+    width: 82,
+  },
+  moneySceneCurrency: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
+  moneySceneDue: {
+    color: colors.due,
+  },
+  moneySceneFooter: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  moneySceneIdentity: {
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.76)",
+    borderRadius: 999,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 46,
+    minWidth: 0,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  moneySceneLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
+  },
+  moneySceneState: {
+    color: colors.primaryDark,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+  },
+  moneySceneTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
   myBalanceAmount: {
     color: colors.primary,
     fontSize: 25,
@@ -3138,6 +3462,144 @@ const styles = StyleSheet.create({
     color: colors.primaryDark,
     fontSize: typography.micro,
     fontWeight: "700",
+  },
+  peopleOrbit: {
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  peopleOrbitCheck: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderColor: colors.surface,
+    borderRadius: 10,
+    borderWidth: 2,
+    height: 20,
+    justifyContent: "center",
+    position: "absolute",
+    right: 8,
+    top: 8,
+    width: 20,
+  },
+  peopleOrbitHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: spacing.xs,
+  },
+  peopleOrbitMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+  },
+  peopleOrbitName: {
+    color: colors.ink,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
+    maxWidth: 64,
+    textAlign: "center",
+  },
+  peopleOrbitPerson: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flex: 1,
+    gap: spacing.xs,
+    minHeight: 76,
+    minWidth: 0,
+    padding: spacing.xs,
+  },
+  peopleOrbitPersonActive: {
+    backgroundColor: colors.successWash,
+    borderColor: colors.primary,
+  },
+  peopleOrbitPersonFirst: {
+    marginLeft: 0,
+  },
+  peopleOrbitRow: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  peopleOrbitTitle: {
+    color: colors.ink,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    textTransform: "uppercase",
+  },
+  actionDock: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.sm,
+    shadowColor: colors.ink,
+    shadowOffset: { height: 10, width: 0 },
+    shadowOpacity: 0.06,
+    shadowRadius: 22,
+    elevation: 2,
+  },
+  actionDockCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  actionDockIcon: {
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.18)",
+    borderRadius: 17,
+    height: 34,
+    justifyContent: "center",
+    width: 34,
+  },
+  actionDockLabel: {
+    color: colors.surface,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 19,
+  },
+  actionDockMeta: {
+    color: "rgba(255, 255, 255, 0.82)",
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  actionDockPrimary: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 62,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  actionDockSecondary: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    justifyContent: "center",
+    minHeight: 46,
+    paddingHorizontal: spacing.sm,
+  },
+  actionDockSecondaryRow: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  actionDockSecondaryText: {
+    color: colors.primaryDark,
+    fontSize: typography.small,
+    fontWeight: "900",
+    lineHeight: 17,
   },
   actionGrid: {
     flexWrap: "wrap",
@@ -3368,6 +3830,50 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontWeight: "400",
     lineHeight: 18,
+  },
+  activityStream: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.xs,
+    padding: spacing.md,
+  },
+  activityStreamHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: spacing.md,
+    paddingBottom: spacing.xs,
+  },
+  activityStreamKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  activityStreamReset: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: 999,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 32,
+    paddingHorizontal: spacing.sm,
+  },
+  activityStreamResetText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "900",
+  },
+  activityStreamTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
   },
   activityTitle: {
     color: colors.ink,
