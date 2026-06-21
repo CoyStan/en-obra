@@ -2177,6 +2177,20 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0049"
+    },
+    {
+      "id": "WORK-APP-0050",
+      "title": "Release blocker classification model",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-ENGINEERING",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: src/backend/releaseBlockers.ts, src/backend/releaseHandoff.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/releaseBlockers.test.ts, src/__tests__/releaseHandoff.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0050/**, company-os/workspace.json. Add typed release blocker classification for handoff and backend release evidence. Forbidden: provider choice, secrets, production deployment, legal/Play decisions, app UI work.",
+      "acceptance_target": "Backend handoff groups remaining blockers by owner/category, flags unknown blockers, and tests known access/storage/legal/Play/deletion/secret blockers so release review can separate code-ready state from human/provider gates.",
+      "required_approval_capability": "engineering",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0050"
     }
   ],
   "attempts": [
@@ -2996,6 +3010,17 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:52:51Z",
+      "cleanliness": "clean"
+    },
+    {
+      "id": "ATTEMPT-APP-0050",
+      "work_item_id": "WORK-APP-0050",
+      "actor": "PALARI-ENGINEERING",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-20T23:59:00Z",
       "cleanliness": "clean"
     }
   ],
@@ -4081,6 +4106,16 @@
       "summary": "Added deterministic backend release handoff artifact. npm run release:android:check passed: typecheck, 35 test files / 141 tests, backend release gate, and Expo public config.",
       "freshness": "fresh",
       "timestamp": "2026-06-20T23:56:36Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0050",
+      "work_item_id": "WORK-APP-0050",
+      "attempt_id": "ATTEMPT-APP-0050",
+      "head_sha": "f343c598f527d6ed654cbabe3dcad1fbcab45d2c",
+      "status": "passed",
+      "summary": "Added release blocker classification. npm run release:android:check passed: typecheck, 36 test files / 144 tests, backend release gate, and Expo public config.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-21T00:02:04Z"
     }
   ],
   "review_verdicts": [
@@ -4621,6 +4656,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-20T23:56:36Z"
+    },
+    {
+      "id": "REVIEW-APP-0050",
+      "work_item_id": "WORK-APP-0050",
+      "reviewed_head": "f343c598f527d6ed654cbabe3dcad1fbcab45d2c",
+      "reviewer": "PALARI-ENGINEERING",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-21T00:02:04Z"
     }
   ],
   "human_decisions": [],
@@ -6304,6 +6347,13 @@
       "attempt_id": "ATTEMPT-APP-0049",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-20T23:56:36Z"
+    },
+    {
+      "id": "RECEIPT-APP-0050",
+      "work_item_id": "WORK-APP-0050",
+      "attempt_id": "ATTEMPT-APP-0050",
+      "actor": "PALARI-ENGINEERING",
+      "timestamp": "2026-06-21T00:02:04Z"
     }
   ],
   "decisions": [
@@ -6950,6 +7000,15 @@
       "what_happened": "Added releaseHandoff module, drift-tested JSON artifact, backend gate/preflight/support bundle integration, docs, and evidence.",
       "what_changed": "Release review now has one deterministic artifact summarizing local readiness, demo-only boundaries, no-go guarantees, blockers, evidence, commands, and next human actions.",
       "timestamp": "2026-06-20T23:56:36Z"
+    },
+    {
+      "id": "OUTCOME-APP-0050",
+      "work_item_id": "WORK-APP-0050",
+      "summary": "Release blockers are now classified by owner and category.",
+      "status": "completed",
+      "what_happened": "Added releaseBlockers module, tests, release gate/preflight/handoff/support bundle integration, regenerated artifacts, and docs.",
+      "what_changed": "Handoff now separates founder access/storage decisions, legal/privacy, Play Console, build signing, remote deletion, storage operations, secret/security, and unknown blockers.",
+      "timestamp": "2026-06-21T00:02:04Z"
     }
   ]
 }
