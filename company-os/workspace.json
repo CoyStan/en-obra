@@ -2789,6 +2789,42 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0066"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "docs/product",
+        "reports/evidence/WORK-APP-0067",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup"
+      ],
+      "id": "WORK-APP-0067",
+      "title": "Open Design workspace switcher refinement",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0067/**, company-os/workspace.json. Use Open Design finance/mobile guidance to refine Grupos into a lighter premium workspace switcher: active group object, clear balance/status preview, compact group list, MXN/no-real-payments trust cues, and group selection controlling scoped tabs. Preserve local-first behavior, create-group form, existing data model, tabs, and no-real-payments constraints. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
+      "acceptance_target": "Grupos feels like a polished shared-money workspace switcher rather than a card-heavy lobby, with active group preview, compact group rows, clear next action, and Android-width screenshot evidence at 360/390/412.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0067"
     }
   ],
   "attempts": [
@@ -3872,6 +3908,20 @@
       "result": "Redesigned Activity as a local audit trail with Android-width evidence.",
       "commits": [
         "c16845b"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0067",
+      "work_item_id": "WORK-APP-0067",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Refined Grupos into compact workspace rows with Android-width evidence.",
+      "commits": [
+        "153dfa4"
       ]
     }
   ],
@@ -5121,6 +5171,15 @@
       "status": "passed",
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width Activity screenshots passed for the audit trail redesign.",
       "freshness": "fresh"
+    },
+    {
+      "id": "EVIDENCE-APP-0067",
+      "work_item_id": "WORK-APP-0067",
+      "attempt_id": "ATTEMPT-APP-0067",
+      "head_sha": "153dfa4",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width Grupos screenshots passed for the workspace row refinement.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -5878,6 +5937,29 @@
       "id": "REVIEW-APP-0066",
       "work_item_id": "WORK-APP-0066",
       "reviewed_head": "c16845b",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff 153dfa4",
+        "Open Design references",
+        "technical report",
+        "Android-width screenshots",
+        "typecheck",
+        "tests",
+        "Expo config",
+        "web export",
+        "Company OS scope"
+      ],
+      "residual_risks": [
+        "human visual taste approval still required",
+        "physical Android emulator/device QA still pending",
+        "broader premium goal remains incomplete"
+      ],
+      "id": "REVIEW-APP-0067",
+      "work_item_id": "WORK-APP-0067",
+      "reviewed_head": "153dfa4",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -8769,6 +8851,41 @@
       "work_item_id": "WORK-APP-0066",
       "attempt_id": "ATTEMPT-APP-0066",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "restructured-group-card-as-workspace-row",
+        "added-open-amount-rail",
+        "simplified-route-preview",
+        "preserved-group-entry",
+        "captured-android-width-screenshots",
+        "ran-verification-checks"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0067/technical-report.md",
+        "reports/evidence/WORK-APP-0067"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "android-device-run"
+      ],
+      "id": "RECEIPT-APP-0067",
+      "work_item_id": "WORK-APP-0067",
+      "attempt_id": "ATTEMPT-APP-0067",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -9562,6 +9679,14 @@
       "status": "completed",
       "what_happened": "The Activity tab was restructured around group context, local audit status, movement/settlement counts, open amount, latest proof, and daily timeline.",
       "what_changed": "Activity is less like a plain feed and more like a premium finance bit\u00e1cora while preserving local-first no-real-payments behavior."
+    },
+    {
+      "id": "OUTCOME-APP-0067",
+      "work_item_id": "WORK-APP-0067",
+      "summary": "Grupos now uses compact workspace rows and is ready for founder review.",
+      "status": "completed",
+      "what_happened": "Group cards were restructured into scan-friendly workspace rows with route preview, open amount rail, member stack, and active state.",
+      "what_changed": "The parent group-switching surface is lighter and better supports the group-controls-tabs mental model."
     }
   ]
 }
