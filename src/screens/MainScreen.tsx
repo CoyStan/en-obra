@@ -2196,7 +2196,7 @@ export function MainScreen() {
               </View>
 
               <AnimatedDropdown open={openExpenseMenu === "category"}>
-                <View style={styles.categoryMatrix}>
+                <View style={styles.categoryListMenu}>
                   {expenseCategories.map((category) => {
                     const selected = category.id === expenseCategoryId;
                     return (
@@ -2211,15 +2211,19 @@ export function MainScreen() {
                           setOpenExpenseMenu(null);
                         }}
                         style={({ pressed }) => [
-                          styles.categoryChoice,
-                          selected && styles.categoryChoiceActive,
+                          styles.dropdownRow,
+                          selected && styles.dropdownRowActive,
                           pressed && styles.pressed,
                         ]}
                       >
                         <CategoryObject categoryId={category.id} size="small" />
-                        <Text numberOfLines={1} style={[styles.categoryChoiceText, selected && styles.categoryChoiceTextActive]}>
-                          {category.label}
-                        </Text>
+                        <View style={styles.dropdownRowCopy}>
+                          <Text style={styles.dropdownRowTitle}>{category.label}</Text>
+                          <Text style={styles.dropdownRowMeta}>Clasifica el historial</Text>
+                        </View>
+                        {selected ? (
+                          <MaterialCommunityIcons color={colors.primary} name="check-circle" size={20} />
+                        ) : null}
                       </Pressable>
                     );
                   })}
@@ -3198,6 +3202,10 @@ const styles = StyleSheet.create({
   categoryChoiceTextActive: {
     color: colors.primaryDark,
     fontWeight: "900",
+  },
+  categoryListMenu: {
+    gap: spacing.xs,
+    maxHeight: 360,
   },
   categoryMatrix: {
     flexDirection: "row",
