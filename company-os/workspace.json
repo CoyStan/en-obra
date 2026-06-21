@@ -2207,6 +2207,43 @@
       "required_approval_capability": "engineering",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0050"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "src/components/ui.tsx",
+        "docs/product",
+        "reports/evidence/WORK-APP-0051",
+        "metro.config.js",
+        "company-os/workspace.json"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "legal_decisions",
+        "destructive_cleanup"
+      ],
+      "id": "WORK-APP-0051",
+      "title": "Mobbin-benchmark premium finance visual pass",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, src/components/ui.tsx, docs/product/**, reports/evidence/WORK-APP-0051/**, metro.config.js, company-os/workspace.json. Use public Mobbin finance-pattern benchmarking and Material Android structure to make the app feel lighter, more professional, more visual, and less card-heavy without removing core content. Forbidden: real payments, production backend, secrets, paid services, legal decisions, destructive cleanup.",
+      "acceptance_target": "The first group workspace and balance/activity surfaces read like a premium mobile finance app: lighter canvas, clearer hierarchy, fewer heavy boxes, stronger money-flow object, obvious active group/user/MXN/no-real-payments cues, and readable Android widths.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0051",
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ]
     }
   ],
   "attempts": [
@@ -3055,6 +3092,21 @@
       "cleanliness": "clean",
       "commits": [
         "361e467b07d7070393537a2938b768bb2394ad7a"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0051",
+      "work_item_id": "WORK-APP-0051",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-21T10:03:00Z",
+      "cleanliness": "dirty-preexisting",
+      "result": "Restructured selected-group Activity into a premium finance command center with verified Android-width screenshots.",
+      "commits": [
+        "39b0aaba3c1d94d8b44ab81a6712080d0e5f8fcb"
       ]
     }
   ],
@@ -4150,6 +4202,16 @@
       "summary": "Evidence reference refreshed after founder approval sweep; current main contains the reviewed implementation and governance history.",
       "freshness": "fresh",
       "timestamp": "2026-06-21T00:18:00Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0051",
+      "work_item_id": "WORK-APP-0051",
+      "attempt_id": "ATTEMPT-APP-0051",
+      "head_sha": "39b0aaba3c1d94d8b44ab81a6712080d0e5f8fcb",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, static preview, and Android-width screenshots passed for the Mobbin-benchmark workspace restructure.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-21T10:38:00Z"
     }
   ],
   "review_verdicts": [
@@ -4698,6 +4760,14 @@
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
       "timestamp": "2026-06-21T00:18:00Z"
+    },
+    {
+      "id": "REVIEW-APP-0051",
+      "work_item_id": "WORK-APP-0051",
+      "reviewed_head": "39b0aaba3c1d94d8b44ab81a6712080d0e5f8fcb",
+      "reviewer": "PALARI-DESIGN-REVIEW",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-21T10:38:00Z"
     }
   ],
   "human_decisions": [
@@ -7039,6 +7109,40 @@
       "attempt_id": "ATTEMPT-APP-0050",
       "actor": "PALARI-ENGINEERING",
       "timestamp": "2026-06-21T00:02:04Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created-mobbin-benchmark-plan",
+        "restructured-selected-group-workspace",
+        "refined-theme-tokens",
+        "captured-android-width-screenshots",
+        "ran-typecheck-tests-expo-config-scope"
+      ],
+      "outputs_created": [
+        "docs/product/mobbin-benchmark-plan.md",
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "reports/evidence/WORK-APP-0051/technical-report.md",
+        "reports/evidence/WORK-APP-0051/screenshots/final-workspace-390x844.png"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "full-add-expense-redesign"
+      ],
+      "id": "RECEIPT-APP-0051",
+      "work_item_id": "WORK-APP-0051",
+      "attempt_id": "ATTEMPT-APP-0051",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-21T10:38:00Z"
     }
   ],
   "decisions": [
@@ -7694,6 +7798,15 @@
       "what_happened": "Added releaseBlockers module, tests, release gate/preflight/handoff/support bundle integration, regenerated artifacts, and docs.",
       "what_changed": "Handoff now separates founder access/storage decisions, legal/privacy, Play Console, build signing, remote deletion, storage operations, secret/security, and unknown blockers.",
       "timestamp": "2026-06-21T00:02:04Z"
+    },
+    {
+      "id": "OUTCOME-APP-0051",
+      "work_item_id": "WORK-APP-0051",
+      "summary": "Selected group now opens as a premium finance workspace.",
+      "status": "completed",
+      "what_happened": "Replaced the repeated shared hero model with an Activity command center benchmarked against mobile finance patterns.",
+      "what_changed": "The workspace now combines group identity, active user, personal balance, totals, local trust cues, settlement route, quick actions, and recent activity in a more professional structure.",
+      "timestamp": "2026-06-21T10:38:00Z"
     }
   ]
 }
