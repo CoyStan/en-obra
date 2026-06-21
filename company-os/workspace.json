@@ -2280,6 +2280,42 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0052"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "src/components/ui.tsx",
+        "docs/product",
+        "reports/evidence/WORK-APP-0053",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "backend_provider_decisions",
+        "secrets",
+        "paid_services",
+        "legal_decisions",
+        "destructive_cleanup"
+      ],
+      "id": "WORK-APP-0053",
+      "title": "Premium balance settlement cockpit",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, src/components/ui.tsx, docs/product/**, reports/evidence/WORK-APP-0053/**, company-os/workspace.json. Rebuild the Balance tab into a premium settlement cockpit: route-first debt map, compact settlement ladder, member ledger, MXN totals, local-only trust cues, and clear actions. Preserve behavior and local-first model. Forbidden: real payments, backend/provider decisions, secrets, paid services, legal decisions, destructive cleanup.",
+      "acceptance_target": "Balance tab no longer feels like stacked generic cards; it shows a high-confidence money control room with debt routes, settlement actions, member ledger, readable Android widths, and screenshot evidence.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0053"
     }
   ],
   "attempts": [
@@ -3158,6 +3194,21 @@
       "result": "Restructured add-expense into a premium receipt composer with Android-width screenshot evidence.",
       "commits": [
         "cec480f38561a8d57dfae0f9ef2647007451bc55"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0053",
+      "work_item_id": "WORK-APP-0053",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-21T10:59:00Z",
+      "cleanliness": "clean",
+      "result": "Restructured Balance into a premium settlement cockpit with route-first screenshot evidence.",
+      "commits": [
+        "2709f0cf048339d3046439378eb04885c50c1340"
       ]
     }
   ],
@@ -4273,6 +4324,16 @@
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, static preview, and Android-width add-expense screenshots passed for the composer restructure.",
       "freshness": "fresh",
       "timestamp": "2026-06-21T10:55:00Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0053",
+      "work_item_id": "WORK-APP-0053",
+      "attempt_id": "ATTEMPT-APP-0053",
+      "head_sha": "2709f0cf048339d3046439378eb04885c50c1340",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, static preview, and Android-width Balance screenshots passed for the settlement cockpit restructure.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-21T11:05:00Z"
     }
   ],
   "review_verdicts": [
@@ -4837,6 +4898,14 @@
       "reviewer": "PALARI-DESIGN-REVIEW",
       "verdict": "accept-ready",
       "timestamp": "2026-06-21T10:55:00Z"
+    },
+    {
+      "id": "REVIEW-APP-0053",
+      "work_item_id": "WORK-APP-0053",
+      "reviewed_head": "2709f0cf048339d3046439378eb04885c50c1340",
+      "reviewer": "PALARI-DESIGN-REVIEW",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-21T11:05:00Z"
     }
   ],
   "human_decisions": [
@@ -7246,6 +7315,40 @@
       "attempt_id": "ATTEMPT-APP-0052",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-21T10:55:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "restructured-balance-tab",
+        "added-settlement-route-cards",
+        "added-balance-hero",
+        "added-payment-ladder",
+        "added-member-ledger",
+        "captured-android-width-screenshots",
+        "ran-typecheck-tests-expo-config-scope"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0053/technical-report.md",
+        "reports/evidence/WORK-APP-0053/final-balance-cockpit-top-390x844.png"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "profile-tab-restructure"
+      ],
+      "id": "RECEIPT-APP-0053",
+      "work_item_id": "WORK-APP-0053",
+      "attempt_id": "ATTEMPT-APP-0053",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-21T11:05:00Z"
     }
   ],
   "decisions": [
@@ -7919,6 +8022,15 @@
       "what_happened": "Replaced the long settings-style expense form with a receipt-first composer, money path panel, and split preview.",
       "what_changed": "Users now see amount/category first, then payer and participants, then a live MXN equal-split preview, all with local-only trust cues.",
       "timestamp": "2026-06-21T10:55:00Z"
+    },
+    {
+      "id": "OUTCOME-APP-0053",
+      "work_item_id": "WORK-APP-0053",
+      "summary": "Balance now behaves like a premium settlement cockpit.",
+      "status": "completed",
+      "what_happened": "Replaced stacked balance sections with route-first settlement map, payment ladder, and member ledger.",
+      "what_changed": "Users can scan open MXN amount, pending route count, primary settlement action, secondary routes, and member positions in a clearer control-room layout.",
+      "timestamp": "2026-06-21T11:05:00Z"
     }
   ]
 }
