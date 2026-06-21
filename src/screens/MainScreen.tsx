@@ -2296,20 +2296,76 @@ export function MainScreen() {
             </View>
 
             {participantShares.length ? (
-              <View style={styles.sharePreviewGrid}>
-                {participantShares.slice(0, 4).map((share) => {
+              <View style={styles.splitImpactPanel}>
+                <View style={[styles.splitImpactTop, compact && styles.splitImpactTopCompact]}>
+                  <View style={styles.splitImpactTotal}>
+                    <Text style={styles.splitImpactLabel}>Total a dividir</Text>
+                    <Text adjustsFontSizeToFit minimumFontScale={0.72} numberOfLines={1} style={styles.splitImpactAmount}>
+                      {formatMoney(expenseAmountCents ?? 0)}
+                    </Text>
+                  </View>
+                  <View style={[styles.splitImpactRule, compact && styles.splitImpactRuleCompact]}>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="equal" size={17} />
+                    <Text style={styles.splitImpactRuleText}>{participantShares.length} partes iguales</Text>
+                  </View>
+                </View>
+
+                <View style={styles.splitImpactTrack}>
+                  {participantShares.slice(0, 6).map((share) => {
+                    const member = findMember(selectedMembers, share.memberId);
+                    if (!member) {
+                      return null;
+                    }
+                    return (
+                      <View
+                        key={share.memberId}
+                        style={[
+                          styles.splitImpactSegment,
+                          { backgroundColor: member.avatarColor },
+                        ]}
+                      />
+                    );
+                  })}
+                </View>
+
+                <View style={styles.sharePreviewGrid}>
+                  {participantShares.slice(0, 5).map((share) => {
                   const member = findMember(selectedMembers, share.memberId);
                   if (!member) {
                     return null;
                   }
+                  const paid = member.id === payerId;
                   return (
                     <View key={share.memberId} style={styles.sharePreviewRow}>
                       <Avatar color={member.avatarColor} label={member.name} />
-                      <Text numberOfLines={1} style={styles.sharePreviewName}>{member.name}</Text>
-                      <Text style={styles.sharePreviewAmount}>{formatMoney(share.amountCents)}</Text>
+                      <View style={styles.sharePreviewCopy}>
+                        <View style={styles.sharePreviewNameLine}>
+                          <Text numberOfLines={1} style={styles.sharePreviewName}>{member.name}</Text>
+                          {paid ? <Pill label="Pagó" tone="success" /> : null}
+                        </View>
+                        <View style={styles.sharePreviewBarTrack}>
+                          <View
+                            style={[
+                              styles.sharePreviewBarFill,
+                              { backgroundColor: member.avatarColor },
+                            ]}
+                          />
+                        </View>
+                      </View>
+                      <View style={styles.sharePreviewAmountBlock}>
+                        <Text style={styles.sharePreviewAmountLabel}>Le toca</Text>
+                        <Text style={styles.sharePreviewAmount}>{formatMoney(share.amountCents)}</Text>
+                      </View>
                     </View>
                   );
-                })}
+                  })}
+                </View>
+
+                {participantShares.length > 5 ? (
+                  <Text style={styles.splitImpactMore}>
+                    +{participantShares.length - 5} participantes más en el reparto
+                  </Text>
+                ) : null}
               </View>
             ) : null}
 
@@ -6035,6 +6091,33 @@ const styles = StyleSheet.create({
     fontVariant: ["tabular-nums"],
     fontWeight: "900",
   },
+  sharePreviewAmountBlock: {
+    alignItems: "flex-end",
+    flexShrink: 0,
+    gap: 1,
+  },
+  sharePreviewAmountLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
+  },
+  sharePreviewBarFill: {
+    borderRadius: 999,
+    height: 7,
+    width: "100%",
+  },
+  sharePreviewBarTrack: {
+    backgroundColor: colors.border,
+    borderRadius: 999,
+    height: 7,
+    overflow: "hidden",
+  },
+  sharePreviewCopy: {
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
+  },
   sharePreviewGrid: {
     gap: spacing.xs,
   },
@@ -6043,6 +6126,11 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: typography.small,
     fontWeight: "800",
+  },
+  sharePreviewNameLine: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.xs,
   },
   sharePreviewRow: {
     alignItems: "center",
@@ -6149,6 +6237,77 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: typography.small,
     fontWeight: "800",
+  },
+  splitImpactAmount: {
+    color: colors.primaryDark,
+    fontSize: typography.heading,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  splitImpactLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  splitImpactMore: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+    textAlign: "center",
+  },
+  splitImpactPanel: {
+    backgroundColor: colors.surfaceTinted,
+    borderRadius: radius.lg,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  splitImpactRule: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderRadius: 999,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 32,
+    paddingHorizontal: spacing.sm,
+  },
+  splitImpactRuleCompact: {
+    alignSelf: "flex-start",
+  },
+  splitImpactRuleText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "900",
+  },
+  splitImpactSegment: {
+    flex: 1,
+    minWidth: 10,
+  },
+  splitImpactTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  splitImpactTopCompact: {
+    alignItems: "stretch",
+    flexDirection: "column",
+    gap: spacing.xs,
+  },
+  splitImpactTotal: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  splitImpactTrack: {
+    borderRadius: 999,
+    flexDirection: "row",
+    gap: 2,
+    height: 12,
+    overflow: "hidden",
   },
   title: {
     color: colors.ink,
