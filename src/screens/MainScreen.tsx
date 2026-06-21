@@ -2194,7 +2194,7 @@ export function MainScreen() {
             <View style={styles.composerTitleBlock}>
               <Text style={styles.captureKicker}>Captura de recibo</Text>
               <Text style={styles.captureTitle}>Nuevo gasto</Text>
-              <Text style={styles.captureSubtitle}>{selectedGroup?.name ?? "Grupo"} · MXN · registro local</Text>
+              <Text style={styles.captureSubtitle}>{selectedGroup?.name ?? "Grupo"} · MXN</Text>
             </View>
             <ActionButton
               icon="close"
@@ -2209,29 +2209,48 @@ export function MainScreen() {
 
           {error ? <Text style={styles.formError}>{error}</Text> : null}
 
-          <View style={styles.captureShell}>
-            <View style={styles.captureStepRail}>
-              <View style={styles.captureStepActive}>
-                <Text style={styles.captureStepNumber}>1</Text>
-              </View>
-              <View style={styles.captureStepLine} />
-              <View style={styles.captureStep}>
-                <Text style={styles.captureStepNumberMuted}>2</Text>
-              </View>
-              <View style={styles.captureStepLine} />
-              <View style={styles.captureStep}>
-                <Text style={styles.captureStepNumberMuted}>3</Text>
-              </View>
+          <View style={styles.captureContextRail}>
+            <View style={styles.captureContextChip}>
+              <MaterialCommunityIcons
+                color={colors.primaryDark}
+                name={selectedGroup ? groupGlyph(selectedGroup) : "account-group-outline"}
+                size={15}
+              />
+              <Text numberOfLines={1} style={styles.captureContextText}>{selectedGroup?.name ?? "Grupo"}</Text>
             </View>
+            <View style={styles.captureContextChip}>
+              <MaterialCommunityIcons color={colors.primaryDark} name="account-circle-outline" size={15} />
+              <Text numberOfLines={1} style={styles.captureContextText}>
+                {activeGroupMember?.name ?? displayMember?.name ?? "Persona"}
+              </Text>
+            </View>
+            <View style={styles.captureContextChip}>
+              <MaterialCommunityIcons color={colors.primaryDark} name="cash-remove" size={15} />
+              <Text style={styles.captureContextText}>Sin pagos reales</Text>
+            </View>
+          </View>
 
+          <View style={styles.captureShell}>
             <View style={styles.receiptComposer}>
+              <View style={styles.captureProgressPills}>
+                <View style={styles.captureProgressPillActive}>
+                  <Text style={styles.captureProgressPillTextActive}>Recibo</Text>
+                </View>
+                <View style={styles.captureProgressPill}>
+                  <Text style={styles.captureProgressPillText}>Ruta</Text>
+                </View>
+                <View style={styles.captureProgressPill}>
+                  <Text style={styles.captureProgressPillText}>Split</Text>
+                </View>
+              </View>
+
               <View style={styles.receiptObjectTop}>
                 <View style={styles.receiptObjectIcon}>
                   <MaterialCommunityIcons color={colors.primaryDark} name="receipt-text-plus-outline" size={22} />
                 </View>
                 <View style={styles.receiptObjectCopy}>
                   <Text style={styles.receiptObjectTitle}>Recibo del gasto</Text>
-                  <Text style={styles.receiptObjectMeta}>Primero captura qué fue y cuánto costó.</Text>
+                  <Text style={styles.receiptObjectMeta}>Qué fue, cuánto costó y cómo se reparte.</Text>
                 </View>
               </View>
 
@@ -2255,10 +2274,6 @@ export function MainScreen() {
                     size={20}
                   />
                 </Pressable>
-              <View style={styles.sheetTrustChip}>
-                <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
-                <Text style={styles.sheetTrustText}>Sin pagos reales</Text>
-              </View>
               </View>
 
               <AnimatedDropdown open={openExpenseMenu === "category"}>
@@ -2325,12 +2340,9 @@ export function MainScreen() {
 
           <View style={styles.captureRouteShell}>
             <View style={styles.captureRouteHeader}>
-              <View style={styles.captureStepActive}>
-                <Text style={styles.captureStepNumber}>2</Text>
-              </View>
               <View style={styles.composerTitleBlock}>
-                <Text style={styles.composerSectionTitle}>Quién movió dinero</Text>
-                <Text style={styles.captureRouteText}>Elige quién pagó y quién participa. Todo se divide igual por ahora.</Text>
+                <Text style={styles.composerSectionTitle}>Ruta del dinero</Text>
+                <Text style={styles.captureRouteText}>Pagador, participantes y reparto igual.</Text>
               </View>
               <Pill label="Partes iguales" tone="neutral" />
             </View>
@@ -2355,6 +2367,14 @@ export function MainScreen() {
               </View>
               <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={20} />
             </Pressable>
+
+            <View style={styles.moneyPathBridge}>
+              <View style={styles.moneyPathBridgeLine} />
+              <View style={styles.moneyPathBridgeDot}>
+                <MaterialCommunityIcons color={colors.surface} name="arrow-down" size={13} />
+              </View>
+              <View style={styles.moneyPathBridgeLine} />
+            </View>
 
           <AnimatedDropdown open={openExpenseMenu === "payer"}>
             {selectedMembers.map((member) => (
@@ -2470,17 +2490,14 @@ export function MainScreen() {
 
           <View style={styles.composerReview}>
             <View style={styles.composerReviewTop}>
-              <View style={styles.captureStepActive}>
-                <Text style={styles.captureStepNumber}>3</Text>
-              </View>
               <View style={styles.splitPreviewIcon}>
                 <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
               </View>
               <View style={styles.splitPreviewCopy}>
-                <Text style={styles.splitPreviewTitle}>Vista previa</Text>
+                <Text style={styles.splitPreviewTitle}>Split antes de guardar</Text>
                 <Text style={styles.splitPreviewText}>
                   {participantShares.length
-                    ? `${participantShares.length} participantes · ${formatMoney(expenseAmountCents ?? 0)} dividido en MXN`
+                    ? `${participantShares.length} participantes · ${formatMoney(expenseAmountCents ?? 0)} en MXN`
                     : "Elige monto y participantes para ver cuánto toca."}
                 </Text>
               </View>
@@ -3345,6 +3362,28 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     justifyContent: "space-between",
   },
+  captureContextChip: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 36,
+    paddingHorizontal: spacing.sm,
+  },
+  captureContextRail: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  captureContextText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
   captureKicker: {
     color: colors.mutedInk,
     fontSize: typography.micro,
@@ -3397,8 +3436,45 @@ const styles = StyleSheet.create({
     lineHeight: 17,
   },
   captureShell: {
-    flexDirection: "row",
+    flexDirection: "column",
     gap: spacing.sm,
+  },
+  captureProgressPill: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: 999,
+    flex: 1,
+    minHeight: 30,
+    justifyContent: "center",
+    paddingHorizontal: spacing.sm,
+  },
+  captureProgressPillActive: {
+    alignItems: "center",
+    backgroundColor: colors.ink,
+    borderRadius: 999,
+    flex: 1,
+    minHeight: 30,
+    justifyContent: "center",
+    paddingHorizontal: spacing.sm,
+  },
+  captureProgressPills: {
+    backgroundColor: colors.canvas,
+    borderRadius: 999,
+    flexDirection: "row",
+    gap: spacing.xs,
+    padding: spacing.xs,
+  },
+  captureProgressPillText: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
+  captureProgressPillTextActive: {
+    color: colors.surface,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
   },
   captureStep: {
     alignItems: "center",
@@ -7370,6 +7446,25 @@ const styles = StyleSheet.create({
     height: 36,
     justifyContent: "center",
     width: 36,
+  },
+  moneyPathBridge: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.xs,
+    paddingHorizontal: spacing.md,
+  },
+  moneyPathBridgeDot: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    height: 24,
+    justifyContent: "center",
+    width: 24,
+  },
+  moneyPathBridgeLine: {
+    backgroundColor: colors.border,
+    flex: 1,
+    height: 1,
   },
   moneyPathLabel: {
     color: colors.mutedInk,

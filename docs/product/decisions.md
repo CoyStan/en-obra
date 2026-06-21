@@ -529,3 +529,16 @@ favor one primary identity object, compact stats/rails, and list rows over
 large repeated cards. A vault structure keeps the screen premium, clearer for
 mainstream users, and explicit that data and settlements are local-only demo
 records.
+
+### Make Add Expense A Receipt Composer
+
+Decision: The add-expense sheet should feel like a receipt-to-route composer:
+selected group and identity chips, a compact receipt object, a visible money
+route from payer to participants, and a split preview before saving.
+
+Rationale: A generic form makes users parse too much text while they are trying
+to enter a simple expense. Open Design's mobile and fintech references favor one
+job per surface, compact progress indicators, and financial objects that show
+state visually. A receipt composer makes category, amount, payer, participants,
+and split consequence easier to understand without introducing real payments or
+backend behavior.
