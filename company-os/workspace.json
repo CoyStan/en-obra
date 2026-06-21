@@ -2753,6 +2753,42 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0065"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "docs/product",
+        "reports/evidence/WORK-APP-0066",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup"
+      ],
+      "id": "WORK-APP-0066",
+      "title": "Open Design activity audit trail redesign",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0066/**, company-os/workspace.json. Use Open Design finance/mobile guidance to restructure Activity into a premium local audit trail: group context, event counts, latest proof, daily sections, stronger no-real-payments settlement proof cues, and reduced text-wall density. Preserve local-first behavior, existing activity data, tabs, Inicio, Balance, Profile, and no-real-payments constraints. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
+      "acceptance_target": "Activity screen feels like a trusted finance audit trail, not a plain feed, with visible group context, event summary, daily timeline, settlement proof cues, and Android-width screenshot evidence at 360/390/412.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0066"
     }
   ],
   "attempts": [
@@ -3822,6 +3858,20 @@
       "result": "Refined add-expense category selection into a dropdown list with Android-width evidence.",
       "commits": [
         "ae02cac"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0066",
+      "work_item_id": "WORK-APP-0066",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Redesigned Activity as a local audit trail with Android-width evidence.",
+      "commits": [
+        "c16845b"
       ]
     }
   ],
@@ -5062,6 +5112,15 @@
       "status": "passed",
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width category dropdown screenshots passed for the add-expense selector refinement.",
       "freshness": "fresh"
+    },
+    {
+      "id": "EVIDENCE-APP-0066",
+      "work_item_id": "WORK-APP-0066",
+      "attempt_id": "ATTEMPT-APP-0066",
+      "head_sha": "c16845b",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width Activity screenshots passed for the audit trail redesign.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -5796,6 +5855,29 @@
       "id": "REVIEW-APP-0065",
       "work_item_id": "WORK-APP-0065",
       "reviewed_head": "ae02cac",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff c16845b",
+        "Open Design references",
+        "technical report",
+        "Android-width screenshots",
+        "typecheck",
+        "tests",
+        "Expo config",
+        "web export",
+        "Company OS scope"
+      ],
+      "residual_risks": [
+        "human visual taste approval still required",
+        "physical Android emulator/device QA still pending",
+        "broader premium goal remains incomplete"
+      ],
+      "id": "REVIEW-APP-0066",
+      "work_item_id": "WORK-APP-0066",
+      "reviewed_head": "c16845b",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -8652,6 +8734,41 @@
       "work_item_id": "WORK-APP-0065",
       "attempt_id": "ATTEMPT-APP-0065",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "restructured-activity-as-audit-trail",
+        "added-latest-proof-card",
+        "added-summary-counts",
+        "preserved-daily-timeline",
+        "captured-android-width-screenshots",
+        "ran-verification-checks"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0066/technical-report.md",
+        "reports/evidence/WORK-APP-0066"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "android-device-run"
+      ],
+      "id": "RECEIPT-APP-0066",
+      "work_item_id": "WORK-APP-0066",
+      "attempt_id": "ATTEMPT-APP-0066",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -9437,6 +9554,14 @@
       "status": "completed",
       "what_happened": "The category grid was replaced with list rows matching payer and participant selectors.",
       "what_changed": "The add-expense sheet now has consistent dropdown/list selector behavior for category, payer, and participants."
+    },
+    {
+      "id": "OUTCOME-APP-0066",
+      "work_item_id": "WORK-APP-0066",
+      "summary": "Activity now reads as a trusted local audit trail and is ready for founder review.",
+      "status": "completed",
+      "what_happened": "The Activity tab was restructured around group context, local audit status, movement/settlement counts, open amount, latest proof, and daily timeline.",
+      "what_changed": "Activity is less like a plain feed and more like a premium finance bit\u00e1cora while preserving local-first no-real-payments behavior."
     }
   ]
 }
