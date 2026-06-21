@@ -2425,6 +2425,41 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0056"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "docs/product",
+        "reports/evidence/WORK-APP-0057",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "legal_payment_decisions",
+        "destructive_cleanup"
+      ],
+      "id": "WORK-APP-0057",
+      "title": "Guided receipt capture composer",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0057/**, company-os/workspace.json. Redesign the add-expense sheet into a guided receipt-capture flow: receipt object, step rail, payer/participant route, split preview dock, clearer save state, low cognitive load, Android-first touch targets, Spanish copy, MXN, local-first and no-real-payments cues. Preserve existing add expense behavior and equal split logic. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
+      "acceptance_target": "Adding an expense feels like a premium guided capture flow rather than a generic form; users can understand category, amount, payer, participants, split preview, local/demo boundary, and save action on Android widths.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0057"
     }
   ],
   "attempts": [
@@ -3363,6 +3398,21 @@
       "result": "Redesigned Grupos into a premium workspace switcher/lobby with Android-width screenshot evidence.",
       "commits": [
         "e7e6dd84524bfbc8884a17a780f95a7af5c063aa"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0057",
+      "work_item_id": "WORK-APP-0057",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-21T12:20:00Z",
+      "cleanliness": "clean",
+      "result": "Redesigned the add-expense sheet into a guided receipt-capture flow with Android-width screenshot evidence.",
+      "commits": [
+        "dc05440fc303872bb97a84cb78214704208733cf"
       ]
     }
   ],
@@ -4518,6 +4568,16 @@
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width group-lobby screenshots passed for the workspace switcher redesign.",
       "freshness": "fresh",
       "timestamp": "2026-06-21T12:10:00Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0057",
+      "work_item_id": "WORK-APP-0057",
+      "attempt_id": "ATTEMPT-APP-0057",
+      "head_sha": "dc05440fc303872bb97a84cb78214704208733cf",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width receipt-capture screenshots passed for the composer redesign.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-21T12:35:00Z"
     }
   ],
   "review_verdicts": [
@@ -5114,6 +5174,14 @@
       "reviewer": "PALARI-DESIGN-REVIEW",
       "verdict": "accept-ready",
       "timestamp": "2026-06-21T12:10:00Z"
+    },
+    {
+      "id": "REVIEW-APP-0057",
+      "work_item_id": "WORK-APP-0057",
+      "reviewed_head": "dc05440fc303872bb97a84cb78214704208733cf",
+      "reviewer": "PALARI-DESIGN-REVIEW",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-21T12:35:00Z"
     }
   ],
   "human_decisions": [
@@ -7658,6 +7726,40 @@
       "attempt_id": "ATTEMPT-APP-0056",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-21T12:10:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added-capture-header",
+        "added-step-rail",
+        "rebuilt-receipt-object",
+        "redesigned-money-route-stage",
+        "added-review-save-dock",
+        "captured-android-width-screenshots",
+        "ran-typecheck-tests-expo-config-scope"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0057/technical-report.md",
+        "reports/evidence/WORK-APP-0057/receipt-capture-390x844.png"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions"
+      ],
+      "id": "RECEIPT-APP-0057",
+      "work_item_id": "WORK-APP-0057",
+      "attempt_id": "ATTEMPT-APP-0057",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-21T12:35:00Z"
     }
   ],
   "decisions": [
@@ -8367,6 +8469,15 @@
       "what_happened": "Replaced the generic group list with an active group lobby, personal balance spotlight, direct entry action, and lighter comparison cards.",
       "what_changed": "Users can understand the selected-group model and switch workspaces with lower cognitive load.",
       "timestamp": "2026-06-21T12:10:00Z"
+    },
+    {
+      "id": "OUTCOME-APP-0057",
+      "work_item_id": "WORK-APP-0057",
+      "summary": "Add expense now behaves like guided receipt capture.",
+      "status": "completed",
+      "what_happened": "Replaced form-like composer structure with capture header, receipt object, step rail, money route stage, and review/save dock.",
+      "what_changed": "Users can understand category, amount, payer, participants, split preview, local-only boundary, and save action in a more premium flow.",
+      "timestamp": "2026-06-21T12:35:00Z"
     }
   ]
 }
