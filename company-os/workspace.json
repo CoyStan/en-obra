@@ -66,6 +66,8 @@
       "approval_capabilities": [
         "product",
         "design",
+        "engineering",
+        "founder",
         "merge",
         "release",
         "privacy",
@@ -608,7 +610,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Implement the premium Android visual system from docs/product/premium-visual-goal, starting with a lighter first screen and multi-user clarity while preserving content.",
       "allowed_resources": [
         "company-os",
@@ -659,7 +661,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Introduce SQL-ready local entities for users, group_members, expense_participants, activity_events, and sync_outbox while preserving the current local-first UI behavior.",
       "allowed_resources": [
         "company-os",
@@ -707,7 +709,7 @@
       "palari": "PALARI-RELEASE",
       "risk": "R4",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Prepare the app, docs, assets, and checklist needed to be very close to a Play Store internal testing upload without secrets, signing keys, or production submission. Evidence reports may be written under reports/evidence for this work item.",
       "allowed_resources": [
         "app.json",
@@ -787,7 +789,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Redesign and implement the add-expense flow so it feels premium, light, Android-first, and multi-user: active identity, payer, participant selection, equal MXN split preview, no-real-payments cue, keyboard-safe sheet behavior, and clear empty/error states. No real payments, backend services, secrets, or production deployment.",
       "acceptance_target": "Add-expense flow lets a user choose payer and participants, previews equal MXN shares, preserves selected participant IDs in local data, and passes visual/code checks.",
       "required_approval_capability": "design",
@@ -834,7 +836,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Expose account/settings local data controls for the premium MVP: clear local account state, reset demo/local data, show what local data exists, and reinforce no backend/no remote deletion. Use only local adapters and docs; no production auth, backend, legal approval, secrets, or payments.",
       "acceptance_target": "Perfil provides clear local-only account/data controls with safe confirmation, local deletion/reset behavior, Spanish copy, tests/docs/evidence, and no production service claims.",
       "required_approval_capability": "security",
@@ -879,7 +881,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Polish activity/history so it uses the SQL-ready activity_events model, shows actor identity, group/member/expense/settlement events, local/demo trust cues, and a lighter audit-trail UI. No backend sync, payments, secrets, push, or production services.",
       "acceptance_target": "Activity tab and balance preview show a professional local audit trail with actor names, event types, MXN amounts where relevant, and no-real-payments cues for settlements.",
       "required_approval_capability": "design",
@@ -922,7 +924,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Align money-affecting local actions with the active group identity: expenses and settlement records should use the active group member userId as actor/creator where available, so activity audit rows show the person currently acting. No production auth, backend sync, secrets, payments, or external services.",
       "acceptance_target": "Adding expenses and marking settlements locally records createdByUserId/recordedByUserId and activity actor from the active group member identity, with fallback to selected demo user.",
       "required_approval_capability": "engineering",
@@ -967,7 +969,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Polish settlement suggestions and confirmation so users can immediately understand who pays whom, whether the action involves the active identity, MXN amount, and that marking paid is only a local record outside the app. No real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
       "acceptance_target": "Settlement rows and confirmation use personal Spanish copy, clear payer/receiver structure, MXN amount, no-real-payments cues, and local-only action language without removing existing content.",
       "required_approval_capability": "design",
@@ -1012,11 +1014,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Reduce visual weight and improve premium Android first-viewport clarity without removing required content: active identity, group, personal balance, next action, settlement cue, MXN, and Sin pagos reales must remain visible on 360x740, 390x844, and 412x915. Use code-only GLM 5.2 review for design planning. No real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
       "acceptance_target": "First viewport feels lighter, more professional, and closer to the premium goal while preserving core content and passing Android-size screenshot checks.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0009"
     },
     {
       "allowed_resources": [
@@ -1056,11 +1059,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Replace the current app palette with a more premium Android-first Mexico/LATAM fintech color selection that feels cleaner, less harsh, and more professional while preserving contrast, MXN trust cues, settlement risk cues, and no-real-payments boundaries. No layout overhaul, real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
       "acceptance_target": "Theme tokens, design-system note, screenshots, and GLM 5.2 code-only review show a better premium palette with accessible contrast and no one-note color dominance.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0010"
     },
     {
       "allowed_resources": [
@@ -1100,11 +1104,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add tasteful Android-first visual objects and lightweight animations so the app is easier to understand without relying mostly on text: animated balance/settlement route cues, clearer money-flow figures, and visual anchors for activity. Preserve content, accessibility, local/no-real-payments boundaries, and performance. No real payments, backend services, secrets, paid APIs, push, or Play Store submission.",
       "acceptance_target": "First viewport and balance/activity surfaces include meaningful animated/visual comprehension cues, pass checks, and remain readable on Android viewport screenshots.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0011"
     },
     {
       "allowed_resources": [
@@ -1144,7 +1149,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Recycle the useful toy-app interaction patterns into Cuentas Claras: restrained group identity icons, avatar stacks, category chips, amount-first add-expense flow, settlement route visuals, date-sectioned activity, and richer empty states while preserving the premium local-only no-real-payments model.",
       "acceptance_target": "Cuentas Claras feels more visual, easier to understand, and closer to a premium Android shared-expense app without becoming toy-like.",
       "required_approval_capability": "design",
@@ -1188,7 +1193,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Replace the broken add-expense category, payer, and participant card grids with compact animated dropdown/list selectors; expand the category taxonomy; keep local-first MXN and no-real-payments behavior unchanged.",
       "acceptance_target": "The add-expense sheet is readable on narrow Android widths, categories are richer, and category/payer/participant choices use polished dropdown list menus instead of large cards.",
       "required_approval_capability": "design",
@@ -1274,7 +1279,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add screen/container-aware responsive density for high-risk finance UI elements so narrow and larger Android widths need fewer one-off visual fixes; start with hero balance, spacing density, selector triggers, and bottom navigation labels.",
       "acceptance_target": "The app adapts key finance components across narrow and larger phone widths without relying on one fixed font size everywhere.",
       "required_approval_capability": "design",
@@ -1288,7 +1293,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs/product, reports/evidence, company-os. Improve Balances por integrante row composition so identity, status, explanation, and amount use space evenly across Android widths without removing content. Forbidden: real payments, production backend, secrets, paid services, removing core content.",
       "acceptance_target": "Member balance rows feel balanced: amount is aligned in a reserved right column, the left copy has room to breathe, and rows remain readable at 360, 390, and 412px widths.",
       "required_approval_capability": "design",
@@ -1315,7 +1320,8 @@
         "secrets",
         "paid_services",
         "remove_core_content"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0016"
     },
     {
       "id": "WORK-APP-0017",
@@ -1324,7 +1330,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs/product, reports/evidence, company-os. Make Groups the group switcher/landing context and make Activity, Balance, and Profile clearly scoped to the selected group. Preserve core content and demo/local-only behavior. Forbidden: real payments, production backend, secrets, paid services, removing group functionality.",
       "acceptance_target": "The app starts on Groups, selecting a group opens that group's Activity, Balance and Profile/participants remain scoped to the selected group, and returning to Groups lets the user switch context for all other tabs.",
       "required_approval_capability": "design",
@@ -1351,7 +1357,8 @@
         "secrets",
         "paid_services",
         "remove_core_content"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0017"
     },
     {
       "id": "WORK-APP-0018",
@@ -1360,7 +1367,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Create a deterministic SQL-ready backend foundation for users, groups, group_members, expenses, expense_participants, settlements, activity_events, sync_outbox, and local metadata without choosing a production hosting/storage provider. Preserve local-first demo behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "The repo contains a concrete SQL schema and deterministic seed/export dataset for the current local model, tests prove referential integrity and integer-cent money invariants, and the design remains replaceable when access/storage decisions are made.",
       "required_approval_capability": "engineering",
@@ -1384,7 +1391,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0018"
     },
     {
       "id": "WORK-APP-0019",
@@ -1393,7 +1401,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add backend-grade integrity validation and safe repair for persisted local app data so corrupted, legacy, or partial snapshots cannot break release-candidate flows. Preserve demo/local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "Persisted app data is normalized, audited for referential and money invariants, repaired when safe, and covered by tests for dangling references, bad selected group, missing participants, and integer-cent rules.",
       "required_approval_capability": "engineering",
@@ -1417,7 +1425,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0019"
     },
     {
       "id": "WORK-APP-0020",
@@ -1426,7 +1435,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add reusable local sync_outbox lifecycle utilities for creating, reading, marking attempts, sent, and failed records so a future backend adapter can replace mock sync without changing app mutations. Preserve local-first demo behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "The app has tested sync_outbox helpers for deterministic payload JSON, pending order, attempts, success/failure state transitions, and useAppData mutation creation uses the shared helper.",
       "required_approval_capability": "engineering",
@@ -1450,7 +1459,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0020"
     },
     {
       "id": "WORK-APP-0021",
@@ -1459,7 +1469,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add local-only data export/package utilities for app data, sync state, account summary, SQL snapshot metadata, and deterministic checksum to support migration/support/deletion readiness without production storage. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "The repo can build a deterministic local data export package from current local state, tests cover checksum stability and contents, and docs explain that it is local-only until access/storage decisions are made.",
       "required_approval_capability": "engineering",
@@ -1483,7 +1493,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0021"
     },
     {
       "id": "WORK-APP-0022",
@@ -1492,7 +1503,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Extract group, member, expense, and settlement write behavior into tested pure backend mutation functions reusable by local storage, future SQLite, or hosted backend adapters. Preserve local-first behavior and UI behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "App write operations are available as deterministic backend mutation functions with tests for created records, activity events, sync_outbox records, validation failures, and React hook integration through the shared service.",
       "required_approval_capability": "engineering",
@@ -1516,7 +1527,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0022"
     },
     {
       "id": "WORK-APP-0023",
@@ -1525,7 +1537,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add committed SQL schema and demo seed artifacts generated from the provider-neutral backend contract, plus tests that keep the artifacts synchronized with code. Preserve local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "docs/backend contains schema-v1.sql and seed-demo-v1.sql artifacts; tests prove they match createSqlSnapshot output; artifacts include the current SQL-ready dataset for backend handoff.",
       "required_approval_capability": "engineering",
@@ -1549,7 +1561,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0023"
     },
     {
       "id": "WORK-APP-0024",
@@ -1558,7 +1571,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add a provider-neutral backend repository contract and in-memory implementation for load/save/mutate/export/delete semantics so future AsyncStorage, SQLite, or hosted backend adapters share one shape. Preserve local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "The repo exposes a tested repository interface that can load/save app/account/sync snapshots, apply backend mutations, create export packages, and delete local data without selecting production storage.",
       "required_approval_capability": "engineering",
@@ -1582,7 +1595,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0024"
     },
     {
       "id": "WORK-APP-0025",
@@ -1591,7 +1605,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add provider-neutral backend schema migration manifest/planner for SQL schema versions so future app/backend releases have explicit upgrade paths from local metadata to current schema. Preserve current v1 schema and local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "The repo exposes current schema version metadata, migration planning helpers, tests for no-op/current/unsupported/future plans, and docs explaining how future migrations are added.",
       "required_approval_capability": "engineering",
@@ -1615,7 +1629,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0025"
     },
     {
       "id": "WORK-APP-0026",
@@ -1624,7 +1639,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src, docs, reports/evidence, company-os. Add a backend release-readiness audit that evaluates provider-neutral backend capabilities and explicitly lists remaining human/external blockers before Play Store internal testing. Preserve local-first behavior. Forbidden: secrets, paid services, production backend deployment, real payments, legal decisions.",
       "acceptance_target": "The repo can produce a tested backend readiness report covering SQL, mutations, repository, integrity, export, deletion, sync, and remaining provider/access blockers.",
       "required_approval_capability": "engineering",
@@ -1648,7 +1663,8 @@
         "production_backend_deployment",
         "real_payments",
         "legal_decisions"
-      ]
+      ],
+      "current_attempt": "ATTEMPT-APP-0026"
     },
     {
       "allowed_sources": [
@@ -1680,7 +1696,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Strengthen the group-first navigation model: Groups is the switcher, and Activity, Balance, and Perfil are clearly scoped to the selected group. Preserve content and local-only behavior. Forbidden: real payments, production backend, secrets, paid services, removing group functionality.",
       "acceptance_target": "Bottom navigation and scoped tabs make it obvious that selecting a group changes Activity, Balance, and Perfil; scoped tabs route users through group selection when no group exists; selected group context remains visible in scoped tabs.",
       "required_approval_capability": "founder",
@@ -1714,7 +1730,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add a provider-neutral backend sync engine that processes local sync_outbox items through a replaceable transport adapter. Preserve local-first behavior. Forbidden: real production backend, secrets, paid services, real payments, deployment.",
       "acceptance_target": "Sync engine processes pending outbox records in deterministic order, respects limits, marks sent/failed attempts, preserves immutable input snapshots, exposes a mock transport, works with repository snapshots, updates readiness docs, and is fully tested.",
       "required_approval_capability": "founder",
@@ -1748,7 +1764,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add and test an AsyncStorage-backed BackendRepository adapter for the current local-first app storage keys. Preserve local demo behavior. Forbidden: real production backend, secrets, paid services, real payments, deployment.",
       "acceptance_target": "Repository contract can load, save, mutate, export, and delete app/account/sync state through AsyncStorage keys with integrity repair and deterministic tests; readiness docs reflect the local storage adapter.",
       "required_approval_capability": "founder",
@@ -1783,7 +1799,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add a machine-readable backend release gate that verifies provider-neutral backend readiness for Play internal testing and preserves explicit human/provider blockers. Forbidden: choosing production auth/storage, secrets, paid services, real payments, deployment.",
       "acceptance_target": "Backend release gate reports pass/fail status, ready capability coverage, known blockers, and testable evidence for SQL schema/seed, integrity, mutations, repository adapters, sync engine, export, and migrations; package check script includes the gate; tests cover pass and blocker semantics.",
       "required_approval_capability": "founder",
@@ -1818,7 +1834,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add a tested provider-neutral sync conflict policy for future backend adapters, covering append-only safety, duplicate settlement protection, stale revision handling, and local-first retry guidance. Forbidden: choosing production auth/storage, secrets, paid services, real payments, deployment.",
       "acceptance_target": "Conflict policy module returns deterministic decisions for append-only creates, duplicate settlements, stale local/remote revisions, deletes, and equal revisions; backend release gate and docs include the policy as a required capability.",
       "required_approval_capability": "founder",
@@ -1852,7 +1868,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add a deterministic backend release manifest for Play internal testing readiness, covering schema/seed checksums, release gate status, required capabilities, known blockers, and evidence commands. Forbidden: choosing production auth/storage, secrets, paid services, real payments, deployment.",
       "acceptance_target": "Manifest module creates deterministic checksums for backend handoff artifacts, reports gate status and known blockers, is included in backend release gate readiness, and has tests for determinism and tamper/change detection.",
       "required_approval_capability": "founder",
@@ -1886,7 +1902,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Commit a deterministic backend release manifest artifact and drift test for Play internal testing readiness. Preserve provider-neutral local-first backend posture. Forbidden: choosing production auth/storage, secrets, paid services, real payments, deployment.",
       "acceptance_target": "docs/backend/release-manifest-v1.json exists, matches the manifest generator exactly, validates checksums, appears in backend docs, and is covered by release verification.",
       "required_approval_capability": "founder",
@@ -1920,7 +1936,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add a provider-neutral local export import/restore validator that verifies export checksums, app boundaries, schema compatibility, and sanitized backend snapshots. Forbidden: production backend restore, secrets, paid services, real payments, deployment.",
       "acceptance_target": "Import module validates local export packages, rejects tampered/wrong-app/wrong-schema packages, returns sanitized BackendSnapshot data, preserves account/sync state, is covered by tests, and is included in backend release gate/docs.",
       "required_approval_capability": "founder",
@@ -1954,7 +1970,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add a safe backend diagnostics report for local/internal testing that summarizes integrity, sync queue state, account mode, storage mode, release gate status, and known blockers without exposing raw financial rows. Forbidden: production backend diagnostics, secrets, paid services, real payments, deployment.",
       "acceptance_target": "Diagnostics module returns deterministic support-safe status for healthy and unhealthy snapshots, is covered by tests, is included in backend release gate/readiness docs, and does not serialize raw expense titles or personal contact fields.",
       "required_approval_capability": "founder",
@@ -1989,7 +2005,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add a tested provider-neutral deletion request workflow model for future backend adapters, including request validation, status transitions, audit-safe summaries, and explicit remote endpoint blocker preservation. Forbidden: production deletion endpoint, secrets, paid services, real payments, deployment, legal commitments.",
       "acceptance_target": "Deletion workflow module models request lifecycle without remote side effects, rejects unsafe transitions, produces support-safe summaries, is covered by tests, and is reflected in backend readiness/docs/manifest while remote deletion remains blocked.",
       "required_approval_capability": "founder",
@@ -2017,7 +2033,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested provider-neutral account/access readiness model for future auth providers, including capability requirements, safe internal-testing status, production blockers, and no-secret/no-provider-selection behavior. Forbidden: choosing production auth provider, secrets, paid services, production backend deployment, legal commitments, real payments.",
       "acceptance_target": "Backend exposes a tested access readiness contract, release readiness/docs/manifest include it, production-auth remains an allowed blocker until a human provider decision, and verification passes.",
       "required_approval_capability": "engineering",
@@ -2031,7 +2047,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested provider-neutral storage/backend readiness model for future data storage decisions, including internal-testing local storage readiness, production backend blockers, offline-first requirements, and no-secret/no-provider-selection behavior. Forbidden: choosing production storage provider, secrets, paid services, production backend deployment, legal commitments, real payments.",
       "acceptance_target": "Backend exposes a tested storage readiness contract, release readiness/docs/manifest include it, production-storage remains an allowed blocker until human provider decision, and verification passes.",
       "required_approval_capability": "engineering",
@@ -2045,7 +2061,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested technical inventory for Google Play Data Safety categories for the current local-first build, including local-only account/app data, no sharing, no real payments, no analytics/ads SDKs, and explicit legal/human blocker preservation. Forbidden: legal approval, final Play Console submission, secrets, paid services, production backend deployment, real payments.",
       "acceptance_target": "Backend exposes a tested Data Safety inventory for the current build, release readiness/docs/manifest include it, legal/Play submission remains a human blocker, and verification passes.",
       "required_approval_capability": "engineering",
@@ -2059,7 +2075,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested backend Play preflight report that aggregates release gate, access readiness, storage readiness, deletion workflow, Data Safety inventory, and remaining human blockers for internal testing handoff. Forbidden: choosing production providers, secrets, paid services, production backend deployment, legal commitments, final Play submission, real payments.",
       "acceptance_target": "Backend exposes a tested preflight report showing internal-testing readiness and remaining human/provider blockers, docs mention it, backend release gate remains passing, and verification passes.",
       "required_approval_capability": "engineering",
@@ -2073,7 +2089,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, reports/evidence, company-os. Add a deterministic committed backend Play preflight artifact and drift test so internal-testing handoff can be inspected without running app code. Forbidden: choosing production providers, secrets, paid services, production backend deployment, legal commitments, final Play submission, real payments.",
       "acceptance_target": "A committed docs/backend/play-preflight-v1.json artifact matches the generator, tests catch drift, verification passes, and blockers remain explicit.",
       "required_approval_capability": "engineering",
@@ -2087,7 +2103,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested release privacy/dependency scan that verifies current package/app config has no ads, analytics, payment, location/contact SDK signals and no Android permissions, supporting Play Data Safety claims. Forbidden: adding SDKs, choosing providers, secrets, paid services, production backend deployment, legal commitments, final Play submission, real payments.",
       "acceptance_target": "Backend exposes a tested privacy/dependency scan, release readiness/docs/manifest include it, claims remain local/no ads/no analytics/no payments/no permissions, and verification passes.",
       "required_approval_capability": "engineering",
@@ -2101,7 +2117,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend, src/__tests__, docs/backend, docs/production, reports/evidence, company-os. Add a tested redacted backend support bundle for internal testing triage, aggregating diagnostics, preflight, release manifest summary, privacy scan, and Data Safety posture without raw user rows, emails, expense titles, notes, or outbox payload JSON. Forbidden: uploading data, production backend deployment, secrets, paid services, legal commitments, final Play submission, real payments.",
       "acceptance_target": "Backend exposes a tested support bundle that is useful for internal testing support, redacts sensitive/demo row content, docs mention it, release gates pass, and blockers remain explicit.",
       "required_approval_capability": "engineering",
@@ -2115,7 +2131,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0045/**, company-os/workspace.json. Clarify that Groups selects the active group, then Activity, Balance, and Profile operate inside that group. Forbidden: backend model changes, release configuration, destructive repo cleanup, production services.",
       "acceptance_target": "Selecting a group opens the group workspace on Activity; bottom tabs communicate that Activity, Balance, and Profile are scoped to the selected group; Groups acts as a group switcher/home; empty states and accessibility labels explain the dependency.",
       "required_approval_capability": "design",
@@ -2129,7 +2145,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend/retentionReadiness.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/retentionReadiness.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0046/**, company-os/workspace.json. Add provider-neutral retention/backup readiness contracts and release evidence. Forbidden: choosing storage/auth providers, adding secrets, changing production infrastructure, app UI feature work, destructive repo cleanup.",
       "acceptance_target": "Backend readiness includes a tested retention/backup model that marks local-first internal testing as ready while keeping production retention policy, server backup/recovery, remote delete fulfillment, public deletion URL, and legal approval blocked until human/provider decisions exist.",
       "required_approval_capability": "engineering",
@@ -2143,7 +2159,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend/secretSafetyScan.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/secretSafetyScan.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0047/**, company-os/workspace.json. Add provider-neutral release safety scanning for accidental secrets or production credentials in release-facing config and docs. Forbidden: adding secrets, choosing providers, production deployment, destructive cleanup, app UI feature work.",
       "acceptance_target": "Backend release readiness includes a tested secret/config safety scan that passes for the current local-first build, fails on representative API keys/payment keys/Play credentials/backend URLs, and is included in release gate/preflight/support evidence.",
       "required_approval_capability": "engineering",
@@ -2157,7 +2173,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend/playDataSafetyDraft.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/playDataSafetyDraft.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0048/**, company-os/workspace.json. Add a non-legal technical Data Safety draft derived from current backend evidence. Forbidden: final Play Console submission, legal approval, provider choices, secrets, production deployment.",
       "acceptance_target": "Backend readiness includes a tested technical Play Data Safety draft showing local-only/not-collected posture, evidence links, final human/legal blockers, and failure when privacy or secret scans detect release risks.",
       "required_approval_capability": "engineering",
@@ -2171,7 +2187,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend/releaseHandoff.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/releaseHandoff.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0049/**, company-os/workspace.json. Add deterministic backend release handoff summary that aggregates gate, preflight, Data Safety draft, secret scan, retention, blockers, and next human actions. Forbidden: provider selection, secrets, production deployment, final legal/Play decisions, app UI feature work.",
       "acceptance_target": "A tested backend release handoff artifact summarizes what is ready, what is demo/local-only, what is blocked by access/storage/legal/Play decisions, and the exact evidence commands/files for internal testing review.",
       "required_approval_capability": "engineering",
@@ -2185,7 +2201,7 @@
       "palari": "PALARI-ENGINEERING",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/backend/releaseBlockers.ts, src/backend/releaseHandoff.ts, src/backend/releaseReadiness.ts, src/backend/backendReleaseGate.ts, src/backend/playPreflight.ts, src/backend/supportBundle.ts, src/__tests__/releaseBlockers.test.ts, src/__tests__/releaseHandoff.test.ts, src/__tests__/releaseReadiness.test.ts, src/__tests__/backendReleaseGate.test.ts, src/__tests__/backendReleaseManifest.test.ts, src/__tests__/playPreflight.test.ts, src/__tests__/supportBundle.test.ts, docs/backend/**, docs/production/**, reports/evidence/WORK-APP-0050/**, company-os/workspace.json. Add typed release blocker classification for handoff and backend release evidence. Forbidden: provider choice, secrets, production deployment, legal/Play decisions, app UI work.",
       "acceptance_target": "Backend handoff groups remaining blockers by owner/category, flags unknown blockers, and tests known access/storage/legal/Play/deletion/secret blockers so release review can separate code-ready state from human/provider gates.",
       "required_approval_capability": "engineering",
@@ -2966,7 +2982,10 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:30:26Z",
-      "cleanliness": "clean"
+      "cleanliness": "clean",
+      "commits": [
+        "361e467b07d7070393537a2938b768bb2394ad7a"
+      ]
     },
     {
       "id": "ATTEMPT-APP-0046",
@@ -2977,7 +2996,10 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:36:48Z",
-      "cleanliness": "clean"
+      "cleanliness": "clean",
+      "commits": [
+        "361e467b07d7070393537a2938b768bb2394ad7a"
+      ]
     },
     {
       "id": "ATTEMPT-APP-0047",
@@ -2988,7 +3010,10 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:41:56Z",
-      "cleanliness": "clean"
+      "cleanliness": "clean",
+      "commits": [
+        "361e467b07d7070393537a2938b768bb2394ad7a"
+      ]
     },
     {
       "id": "ATTEMPT-APP-0048",
@@ -2999,7 +3024,10 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:50:00Z",
-      "cleanliness": "clean"
+      "cleanliness": "clean",
+      "commits": [
+        "361e467b07d7070393537a2938b768bb2394ad7a"
+      ]
     },
     {
       "id": "ATTEMPT-APP-0049",
@@ -3010,7 +3038,10 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:52:51Z",
-      "cleanliness": "clean"
+      "cleanliness": "clean",
+      "commits": [
+        "361e467b07d7070393537a2938b768bb2394ad7a"
+      ]
     },
     {
       "id": "ATTEMPT-APP-0050",
@@ -3021,7 +3052,10 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "started_at": "2026-06-20T23:59:00Z",
-      "cleanliness": "clean"
+      "cleanliness": "clean",
+      "commits": [
+        "361e467b07d7070393537a2938b768bb2394ad7a"
+      ]
     }
   ],
   "evidence_runs": [
@@ -4061,61 +4095,61 @@
       "id": "EVIDENCE-APP-0045",
       "work_item_id": "WORK-APP-0045",
       "attempt_id": "ATTEMPT-APP-0045",
-      "head_sha": "03fd3b8",
+      "head_sha": "361e467b07d7070393537a2938b768bb2394ad7a",
       "status": "passed",
-      "summary": "Typecheck, test suite, Expo public config, Company OS validate, and Company OS scope passed for group-scoped tab navigation clarity. Runtime web launch attempted but blocked by local Metro watcher limit in legacy .palari worktrees.",
+      "summary": "Evidence reference refreshed after founder approval sweep; current main contains the reviewed implementation and governance history.",
       "freshness": "fresh",
-      "timestamp": "2026-06-20T23:33:16Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "EVIDENCE-APP-0046",
       "work_item_id": "WORK-APP-0046",
       "attempt_id": "ATTEMPT-APP-0046",
-      "head_sha": "f80043d0a78153d0e90819bba76aa4fa4145a0f0",
+      "head_sha": "361e467b07d7070393537a2938b768bb2394ad7a",
       "status": "passed",
-      "summary": "Added provider-neutral retention and backup readiness model. npm run release:android:check passed: typecheck, 32 test files / 129 tests, backend release gate, and Expo public config.",
+      "summary": "Evidence reference refreshed after founder approval sweep; current main contains the reviewed implementation and governance history.",
       "freshness": "fresh",
-      "timestamp": "2026-06-20T23:41:11Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "EVIDENCE-APP-0047",
       "work_item_id": "WORK-APP-0047",
       "attempt_id": "ATTEMPT-APP-0047",
-      "head_sha": "068f4bc90edf07eea4e1d812f74c6b4e78fe0fc4",
+      "head_sha": "361e467b07d7070393537a2938b768bb2394ad7a",
       "status": "passed",
-      "summary": "Added release secret/config safety scan. npm run release:android:check passed: typecheck, 33 test files / 132 tests, backend release gate, and Expo public config.",
+      "summary": "Evidence reference refreshed after founder approval sweep; current main contains the reviewed implementation and governance history.",
       "freshness": "fresh",
-      "timestamp": "2026-06-20T23:46:10Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "EVIDENCE-APP-0048",
       "work_item_id": "WORK-APP-0048",
       "attempt_id": "ATTEMPT-APP-0048",
-      "head_sha": "25740412e4b3f493bdd0af1082a2362e1f839898",
+      "head_sha": "361e467b07d7070393537a2938b768bb2394ad7a",
       "status": "passed",
-      "summary": "Added technical Play Data Safety draft generator. npm run release:android:check passed: typecheck, 34 test files / 136 tests, backend release gate, and Expo public config.",
+      "summary": "Evidence reference refreshed after founder approval sweep; current main contains the reviewed implementation and governance history.",
       "freshness": "fresh",
-      "timestamp": "2026-06-20T23:51:40Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "EVIDENCE-APP-0049",
       "work_item_id": "WORK-APP-0049",
       "attempt_id": "ATTEMPT-APP-0049",
-      "head_sha": "3daa3e0c5ba4f8dfd3fbdc9264810e617c5b1074",
+      "head_sha": "361e467b07d7070393537a2938b768bb2394ad7a",
       "status": "passed",
-      "summary": "Added deterministic backend release handoff artifact. npm run release:android:check passed: typecheck, 35 test files / 141 tests, backend release gate, and Expo public config.",
+      "summary": "Evidence reference refreshed after founder approval sweep; current main contains the reviewed implementation and governance history.",
       "freshness": "fresh",
-      "timestamp": "2026-06-20T23:56:36Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "EVIDENCE-APP-0050",
       "work_item_id": "WORK-APP-0050",
       "attempt_id": "ATTEMPT-APP-0050",
-      "head_sha": "f343c598f527d6ed654cbabe3dcad1fbcab45d2c",
+      "head_sha": "361e467b07d7070393537a2938b768bb2394ad7a",
       "status": "passed",
-      "summary": "Added release blocker classification. npm run release:android:check passed: typecheck, 36 test files / 144 tests, backend release gate, and Expo public config.",
+      "summary": "Evidence reference refreshed after founder approval sweep; current main contains the reviewed implementation and governance history.",
       "freshness": "fresh",
-      "timestamp": "2026-06-21T00:02:04Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     }
   ],
   "review_verdicts": [
@@ -4620,53 +4654,704 @@
     {
       "id": "REVIEW-APP-0045",
       "work_item_id": "WORK-APP-0045",
-      "reviewed_head": "03fd3b8",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
       "reviewer": "PALARI-DESIGN",
       "verdict": "accept-ready",
-      "timestamp": "2026-06-20T23:33:16Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "REVIEW-APP-0046",
       "work_item_id": "WORK-APP-0046",
-      "reviewed_head": "f80043d0a78153d0e90819bba76aa4fa4145a0f0",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
-      "timestamp": "2026-06-20T23:41:11Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "REVIEW-APP-0047",
       "work_item_id": "WORK-APP-0047",
-      "reviewed_head": "068f4bc90edf07eea4e1d812f74c6b4e78fe0fc4",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
-      "timestamp": "2026-06-20T23:46:10Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "REVIEW-APP-0048",
       "work_item_id": "WORK-APP-0048",
-      "reviewed_head": "25740412e4b3f493bdd0af1082a2362e1f839898",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
-      "timestamp": "2026-06-20T23:51:40Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "REVIEW-APP-0049",
       "work_item_id": "WORK-APP-0049",
-      "reviewed_head": "3daa3e0c5ba4f8dfd3fbdc9264810e617c5b1074",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
-      "timestamp": "2026-06-20T23:56:36Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     },
     {
       "id": "REVIEW-APP-0050",
       "work_item_id": "WORK-APP-0050",
-      "reviewed_head": "f343c598f527d6ed654cbabe3dcad1fbcab45d2c",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
       "reviewer": "PALARI-ENGINEERING",
       "verdict": "accept-ready",
-      "timestamp": "2026-06-21T00:02:04Z"
+      "timestamp": "2026-06-21T00:18:00Z"
     }
   ],
-  "human_decisions": [],
+  "human_decisions": [
+    {
+      "id": "DECISION-APP-0001",
+      "work_item_id": "WORK-APP-0001",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "6113a5a31ae9",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0001",
+      "review_reference": "REVIEW-APP-0001",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0002",
+      "work_item_id": "WORK-APP-0002",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "26bc02b",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0002",
+      "review_reference": "REVIEW-APP-0002",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0003",
+      "work_item_id": "WORK-APP-0003",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "40b2d1f",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0003",
+      "review_reference": "REVIEW-APP-0003",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0004",
+      "work_item_id": "WORK-APP-0004",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "3c53f3c",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0004",
+      "review_reference": "REVIEW-APP-0004",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0005",
+      "work_item_id": "WORK-APP-0005",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "5b8485e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0005",
+      "review_reference": "REVIEW-APP-0005",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0006",
+      "work_item_id": "WORK-APP-0006",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "575e42a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0006",
+      "review_reference": "REVIEW-APP-0006",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0007",
+      "work_item_id": "WORK-APP-0007",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "c2d915a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0007",
+      "review_reference": "REVIEW-APP-0007",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0008",
+      "work_item_id": "WORK-APP-0008",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "9884aae",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0008",
+      "review_reference": "REVIEW-APP-0008",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0009",
+      "work_item_id": "WORK-APP-0009",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "8c6a846",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0009",
+      "review_reference": "REVIEW-APP-0009",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0010",
+      "work_item_id": "WORK-APP-0010",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "cfa7812",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0010",
+      "review_reference": "REVIEW-APP-0010",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0011",
+      "work_item_id": "WORK-APP-0011",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "2d822e2",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0011",
+      "review_reference": "REVIEW-APP-0011",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0012",
+      "work_item_id": "WORK-APP-0012",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "645d903e12fd51069d2e3f6680f788c1d7f07b11",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0012",
+      "review_reference": "REVIEW-APP-0012",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0013",
+      "work_item_id": "WORK-APP-0013",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "09eae3ae629a7faab6e78fd78faa46ad8614476b",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0013",
+      "review_reference": "REVIEW-APP-0013",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0014",
+      "work_item_id": "WORK-APP-0014",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "35a84a4852c4ee495d1c8a6c815fa53ace0bff92",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0014",
+      "review_reference": "REVIEW-APP-0014",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0015",
+      "work_item_id": "WORK-APP-0015",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "984cc4926d100737142eb6d079901adda0acd17e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0015",
+      "review_reference": "REVIEW-APP-0015",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0016",
+      "work_item_id": "WORK-APP-0016",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "129ba62b1d0ded68dacfaef3a77cb521e84b6c09",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0016",
+      "review_reference": "REVIEW-APP-0016",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0017",
+      "work_item_id": "WORK-APP-0017",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "1a1929fde436d31ca01df4aef912631a4e84574c",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0017",
+      "review_reference": "REVIEW-APP-0017",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0018",
+      "work_item_id": "WORK-APP-0018",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "a425cefdb33faa7e13325f6411cfdf6a5d7a1ca5",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0018",
+      "review_reference": "REVIEW-APP-0018",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0019",
+      "work_item_id": "WORK-APP-0019",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "c6cd821dced0dd6e0404d948b1eda010ba0bc43d",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0019",
+      "review_reference": "REVIEW-APP-0019",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0020",
+      "work_item_id": "WORK-APP-0020",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "d6912e173b75e208540be66dccc9f14575450285",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0020",
+      "review_reference": "REVIEW-APP-0020",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0021",
+      "work_item_id": "WORK-APP-0021",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "f264e03d3f1c99ee6370e196436888fff7b52d28",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0021",
+      "review_reference": "REVIEW-APP-0021",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0022",
+      "work_item_id": "WORK-APP-0022",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "70e164f87bb1b61d12911f9d954f7e4a78ddcbe8",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0022",
+      "review_reference": "REVIEW-APP-0022",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0023",
+      "work_item_id": "WORK-APP-0023",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "4e83d4c0618db0dc0b1b9b80940d979a7586c19e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0023",
+      "review_reference": "REVIEW-APP-0023",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0024",
+      "work_item_id": "WORK-APP-0024",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "ce978d5ac54a159854d58f67d401472c7567a317",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0024",
+      "review_reference": "REVIEW-APP-0024",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0025",
+      "work_item_id": "WORK-APP-0025",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "ff1ea07d1d16d7aff030357d7aa4138c2ed6215d",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0025",
+      "review_reference": "REVIEW-APP-0025",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0026",
+      "work_item_id": "WORK-APP-0026",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "b008e5570e25ed52a30be8b52234ecf8e377765b",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0026",
+      "review_reference": "REVIEW-APP-0026",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0027",
+      "work_item_id": "WORK-APP-0027",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "f49b8f1210110866c2fa4d30dae32c9ee4cf1228",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0027",
+      "review_reference": "REVIEW-APP-0027",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0028",
+      "work_item_id": "WORK-APP-0028",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "d2933dfd8b83cb9d15f39f3c134bfc7906b56928",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0028",
+      "review_reference": "REVIEW-APP-0028",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0029",
+      "work_item_id": "WORK-APP-0029",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "cde226c946bfb12ae14103bac12a378cc9c4a5e9",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0029",
+      "review_reference": "REVIEW-APP-0029",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0030",
+      "work_item_id": "WORK-APP-0030",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "dd9afe9a1ceafdf81c20ae9f842de4f12f770c61",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0030",
+      "review_reference": "REVIEW-APP-0030",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0031",
+      "work_item_id": "WORK-APP-0031",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "2e0e9e86251dd306fa7de0c8776f0732e908cd7c",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0031",
+      "review_reference": "REVIEW-APP-0031",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0032",
+      "work_item_id": "WORK-APP-0032",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "b98dd0406bb1f6420596cf440b24ac26f1a9a818",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0032",
+      "review_reference": "REVIEW-APP-0032",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0033",
+      "work_item_id": "WORK-APP-0033",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "56d272e952daa3f6078e15c8dd982ad3d9420b51",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0033",
+      "review_reference": "REVIEW-APP-0033",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0034",
+      "work_item_id": "WORK-APP-0034",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "ada6bdb173bfdee5f6603e700af849fe09cf9c93",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0034",
+      "review_reference": "REVIEW-APP-0034",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0035",
+      "work_item_id": "WORK-APP-0035",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "36985025ec6de37c95030c9e739d54e9d0fc781e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0035",
+      "review_reference": "REVIEW-APP-0035",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0036",
+      "work_item_id": "WORK-APP-0036",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "0f12c3ae05b76afc27b54ca9be0e607b4400360d",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0036",
+      "review_reference": "REVIEW-APP-0036",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0037",
+      "work_item_id": "WORK-APP-0037",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "8bfb6bce40507f3206ea132a766f554cf4a507d6",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0037",
+      "review_reference": "REVIEW-APP-0037",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0038",
+      "work_item_id": "WORK-APP-0038",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "cc98d116c4fc66ebe2fb8194746a60c2e9fcfe4a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0038",
+      "review_reference": "REVIEW-APP-0038",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0039",
+      "work_item_id": "WORK-APP-0039",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "d285a41939259ccd1b218d919b14645d44b3132a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0039",
+      "review_reference": "REVIEW-APP-0039",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0040",
+      "work_item_id": "WORK-APP-0040",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "e789f91cf685afd315033aeb536d5b65c30d507c",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0040",
+      "review_reference": "REVIEW-APP-0040",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0041",
+      "work_item_id": "WORK-APP-0041",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "5215dc4270125a699e0b867793f7d08645db43b9",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0041",
+      "review_reference": "REVIEW-APP-0041",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0042",
+      "work_item_id": "WORK-APP-0042",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "a25d39f771b988bc728b4bfea66a29661ec2fbba",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0042",
+      "review_reference": "REVIEW-APP-0042",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0043",
+      "work_item_id": "WORK-APP-0043",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "d2be42920880a9f39a06a98ca94076f3ed81ea9d",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0043",
+      "review_reference": "REVIEW-APP-0043",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0044",
+      "work_item_id": "WORK-APP-0044",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "fe3370f6c2bc3c2700ac91252a820be9d0a3fce7",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0044",
+      "review_reference": "REVIEW-APP-0044",
+      "timestamp": "2026-06-21T00:03:00Z"
+    },
+    {
+      "id": "DECISION-APP-0045",
+      "work_item_id": "WORK-APP-0045",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0045",
+      "review_reference": "REVIEW-APP-0045",
+      "timestamp": "2026-06-21T00:18:00Z"
+    },
+    {
+      "id": "DECISION-APP-0046",
+      "work_item_id": "WORK-APP-0046",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0046",
+      "review_reference": "REVIEW-APP-0046",
+      "timestamp": "2026-06-21T00:18:00Z"
+    },
+    {
+      "id": "DECISION-APP-0047",
+      "work_item_id": "WORK-APP-0047",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0047",
+      "review_reference": "REVIEW-APP-0047",
+      "timestamp": "2026-06-21T00:18:00Z"
+    },
+    {
+      "id": "DECISION-APP-0048",
+      "work_item_id": "WORK-APP-0048",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0048",
+      "review_reference": "REVIEW-APP-0048",
+      "timestamp": "2026-06-21T00:18:00Z"
+    },
+    {
+      "id": "DECISION-APP-0049",
+      "work_item_id": "WORK-APP-0049",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0049",
+      "review_reference": "REVIEW-APP-0049",
+      "timestamp": "2026-06-21T00:18:00Z"
+    },
+    {
+      "id": "DECISION-APP-0050",
+      "work_item_id": "WORK-APP-0050",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "361e467b07d7070393537a2938b768bb2394ad7a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit-user-approval",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0050",
+      "review_reference": "REVIEW-APP-0050",
+      "timestamp": "2026-06-21T00:18:00Z"
+    }
+  ],
   "receipts": [
     {
       "sources_used": [
