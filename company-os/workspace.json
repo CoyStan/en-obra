@@ -2390,6 +2390,41 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0055"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "docs/product",
+        "reports/evidence/WORK-APP-0056",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "production_backend",
+        "real_payments",
+        "secrets",
+        "paid_services",
+        "legal_payment_decisions",
+        "destructive_cleanup"
+      ],
+      "id": "WORK-APP-0056",
+      "title": "Premium workspace switcher lobby",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0056/**, company-os/workspace.json. Redesign Grupos into a premium workspace switcher/lobby: active group spotlight, local identity cue, group comparison list, clear enter action, lighter card weight, and create-group affordance. Preserve group creation, selected group behavior, local-first model, Spanish copy, MXN, and no-real-payments boundary. Forbidden: production backend, real payments, secrets, paid services, legal/payment decisions, destructive cleanup.",
+      "acceptance_target": "The Grupos tab feels like an intentional workspace switcher, not a generic list; users can quickly see the active group, compare groups, enter the workspace, and create a group with low cognitive load on Android widths.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0056"
     }
   ],
   "attempts": [
@@ -3313,6 +3348,21 @@
       "result": "Rebuilt the selected-group Activity surface into a premium money workspace with Android-width screenshot evidence.",
       "commits": [
         "57b794580d3642d21b24766ca81c013e9be08ae5"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0056",
+      "work_item_id": "WORK-APP-0056",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-21T12:00:00Z",
+      "cleanliness": "clean",
+      "result": "Redesigned Grupos into a premium workspace switcher/lobby with Android-width screenshot evidence.",
+      "commits": [
+        "e7e6dd84524bfbc8884a17a780f95a7af5c063aa"
       ]
     }
   ],
@@ -4458,6 +4508,16 @@
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width money-room screenshots passed for the radical workspace redesign.",
       "freshness": "fresh",
       "timestamp": "2026-06-21T11:45:00Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0056",
+      "work_item_id": "WORK-APP-0056",
+      "attempt_id": "ATTEMPT-APP-0056",
+      "head_sha": "e7e6dd84524bfbc8884a17a780f95a7af5c063aa",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width group-lobby screenshots passed for the workspace switcher redesign.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-21T12:10:00Z"
     }
   ],
   "review_verdicts": [
@@ -5046,6 +5106,14 @@
       "reviewer": "PALARI-DESIGN-REVIEW",
       "verdict": "accept-ready",
       "timestamp": "2026-06-21T11:45:00Z"
+    },
+    {
+      "id": "REVIEW-APP-0056",
+      "work_item_id": "WORK-APP-0056",
+      "reviewed_head": "e7e6dd84524bfbc8884a17a780f95a7af5c063aa",
+      "reviewer": "PALARI-DESIGN-REVIEW",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-21T12:10:00Z"
     }
   ],
   "human_decisions": [
@@ -7557,6 +7625,39 @@
       "attempt_id": "ATTEMPT-APP-0055",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-21T11:45:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created-workspace-lobby",
+        "added-active-group-spotlight",
+        "added-enter-workspace-action",
+        "slimmed-group-cards",
+        "captured-android-width-screenshots",
+        "ran-typecheck-tests-expo-config-scope"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0056/technical-report.md",
+        "reports/evidence/WORK-APP-0056/group-lobby-390x844.png"
+      ],
+      "not_done": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions"
+      ],
+      "id": "RECEIPT-APP-0056",
+      "work_item_id": "WORK-APP-0056",
+      "attempt_id": "ATTEMPT-APP-0056",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-21T12:10:00Z"
     }
   ],
   "decisions": [
@@ -8257,6 +8358,15 @@
       "what_happened": "Replaced a section/card Activity home with a money-room hero, member orbit, settlement route stage, action dock, and lighter activity stream.",
       "what_changed": "The first viewport now communicates identity, group, personal balance, next action, settlement cue, MXN, and no-real-payments boundary with a more ambitious app structure.",
       "timestamp": "2026-06-21T11:45:00Z"
+    },
+    {
+      "id": "OUTCOME-APP-0056",
+      "work_item_id": "WORK-APP-0056",
+      "summary": "Grupos now behaves like a premium workspace switcher.",
+      "status": "completed",
+      "what_happened": "Replaced the generic group list with an active group lobby, personal balance spotlight, direct entry action, and lighter comparison cards.",
+      "what_changed": "Users can understand the selected-group model and switch workspaces with lower cognitive load.",
+      "timestamp": "2026-06-21T12:10:00Z"
     }
   ]
 }
