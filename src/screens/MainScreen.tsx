@@ -1573,98 +1573,128 @@ export function MainScreen() {
   );
 
   const renderAccount = () => (
-    <View style={styles.tabContent}>
-      {selectedGroup ? (
-        <Section title="Grupo activo">
-          <View style={styles.groupContextPanel}>
-            <View style={styles.groupContextTop}>
-              <GroupObject group={selectedGroup} />
-              <View style={styles.groupContextCopy}>
-                <Text style={styles.groupContextName}>{selectedGroup.name}</Text>
-                <Text style={styles.groupContextMeta}>
-                  {selectedMembers.length} integrantes · Perfil usado para este grupo
-                </Text>
-              </View>
-              <ActionButton icon="swap-horizontal" label="Cambiar" onPress={() => openTab("groups")} tone="ghost" />
-            </View>
-            <View style={styles.groupContextPeople}>
-              {selectedMembers.map((member) => (
-                <View
-                  key={member.id}
-                  style={[
-                    styles.groupContextPerson,
-                    activeGroupMember?.id === member.id && styles.groupContextPersonActive,
-                  ]}
-                >
-                  <Avatar color={member.avatarColor} label={member.name} />
-                  <Text style={styles.groupContextPersonName}>{member.name}</Text>
-                  {activeGroupMember?.id === member.id ? <Pill label="Tú" tone="success" /> : null}
-                </View>
-              ))}
-            </View>
-          </View>
-        </Section>
-      ) : (
-        <EmptyState
-          action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
-          body="Primero elige un grupo. Después este perfil se usará dentro de ese grupo."
-          icon="account-circle"
-          title="Perfil sin grupo"
-        />
-      )}
-      <Section title="Perfil">
+    <View style={styles.profileCenter}>
         {isAccountLoading ? (
           <View style={styles.loadingBand}>
             <MaterialCommunityIcons color={colors.primary} name="progress-clock" size={18} />
             <Text style={styles.loadingText}>Cargando cuenta local...</Text>
           </View>
         ) : account.profile && account.mode === "signed-in" ? (
-          <View style={styles.accountPanel}>
-            <View style={styles.accountTop}>
-              <Avatar color={colors.primary} label={account.profile.displayName} />
-              <View style={styles.accountCopy}>
-                <Text style={styles.accountName}>{account.profile.displayName}</Text>
-                <Text style={styles.accountEmail}>{account.profile.email}</Text>
+          <>
+            <View style={styles.profileHero}>
+              <View style={styles.profileHeroTop}>
+                <View style={styles.profileAvatarRing}>
+                  <Avatar color={colors.primary} label={account.profile.displayName} />
+                </View>
+                <View style={styles.profileHeroCopy}>
+                  <Text style={styles.profileKicker}>Perfil local</Text>
+                  <Text numberOfLines={1} style={styles.profileHeroName}>{account.profile.displayName}</Text>
+                  <Text numberOfLines={1} style={styles.profileHeroEmail}>{account.profile.email}</Text>
+                </View>
+                <Pill label="Demo" tone="gold" />
               </View>
-              <Pill label="Demostración local" tone="gold" />
+
+              <View style={styles.profileStatusRail}>
+                <View style={styles.profileStatusTile}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="cellphone-lock" size={18} />
+                  <Text style={styles.profileStatusLabel}>Local</Text>
+                </View>
+                <View style={styles.profileStatusTile}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="cloud-off-outline" size={18} />
+                  <Text style={styles.profileStatusLabel}>Sin sync</Text>
+                </View>
+                <View style={styles.profileStatusTile}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={18} />
+                  <Text style={styles.profileStatusLabel}>Sin pagos</Text>
+                </View>
+              </View>
             </View>
-            <View style={styles.accountStatusGrid}>
-              <Pill label="Datos locales" tone="success" />
-              <Pill label="Sin sincronización" tone="neutral" />
-              <Pill label="Sin pagos reales" tone="gold" />
-            </View>
-            <View style={styles.accountNotice}>
-              <MaterialCommunityIcons color={colors.mutedInk} name="cloud-off-outline" size={18} />
-              <Text style={styles.accountNoticeText}>
-                Este perfil no sube datos. Un proveedor real requiere decisión de privacidad e infraestructura.
-              </Text>
-            </View>
-            {renderLocalDataControls()}
+
             {selectedGroup ? (
-              <View style={styles.accountMemberSection}>
-                <Text style={styles.fieldLabel}>¿Quién eres en este grupo?</Text>
-                <Text style={styles.accountSectionText}>
-                  {activeGroupMember
-                    ? `${activeGroupMember.name} · Puedes cambiarlo para registrar gastos.`
-                    : "Selecciona tu persona en el grupo para registrar gastos con tu identidad."}
-                </Text>
-                <ActionButton
-                  disabled={!selectedGroup || selectedMembers.length === 0}
-                  icon="account-switch"
-                  label={activeGroupMember ? "Cambiar integrante" : "Elegir integrante"}
-                  onPress={openActiveMemberPicker}
-                />
+              <View style={styles.profilePersonaPanel}>
+                <View style={styles.profilePersonaHeader}>
+                  <GroupObject group={selectedGroup} />
+                  <View style={styles.groupContextCopy}>
+                    <Text style={styles.profileKicker}>Persona en este grupo</Text>
+                    <Text style={styles.groupContextName}>{selectedGroup.name}</Text>
+                    <Text style={styles.groupContextMeta}>{selectedMembers.length} integrantes · identidad por grupo</Text>
+                  </View>
+                  <ActionButton icon="swap-horizontal" label="Grupo" onPress={() => openTab("groups")} tone="ghost" />
+                </View>
+
+                <View style={styles.profileActivePersona}>
+                  <Avatar color={activeGroupMember?.avatarColor ?? displayMember?.avatarColor ?? colors.primary} label={activeGroupMember?.name ?? displayMember?.name ?? "Yo"} />
+                  <View style={styles.profileActivePersonaCopy}>
+                    <Text style={styles.profileActivePersonaName}>
+                      {activeGroupMember ? activeGroupMember.name : "Elige tu integrante"}
+                    </Text>
+                    <Text style={styles.accountSectionText}>
+                      {activeGroupMember
+                        ? "Los gastos nuevos empiezan con esta persona."
+                        : "Vincula tu sesión a una persona del grupo."}
+                    </Text>
+                  </View>
+                  <ActionButton
+                    disabled={!selectedGroup || selectedMembers.length === 0}
+                    icon="account-switch"
+                    label="Cambiar"
+                    onPress={openActiveMemberPicker}
+                    tone="secondary"
+                  />
+                </View>
+
+                <View style={styles.profilePeopleStrip}>
+                  {selectedMembers.map((member) => (
+                    <Pressable
+                      accessibilityLabel={`Usar ${member.name} en este grupo`}
+                      accessibilityRole="button"
+                      accessibilityState={{ selected: activeGroupMember?.id === member.id }}
+                      hitSlop={4}
+                      key={member.id}
+                      onPress={() => {
+                        void saveActiveGroupMember(member.id);
+                      }}
+                      style={[
+                        styles.profilePersonChip,
+                        activeGroupMember?.id === member.id && styles.profilePersonChipActive,
+                      ]}
+                    >
+                      <Avatar color={member.avatarColor} label={member.name} />
+                      <Text numberOfLines={1} style={styles.profilePersonChipText}>{member.name}</Text>
+                    </Pressable>
+                  ))}
+                </View>
               </View>
-            ) : null}
-            <ActionButton icon="logout" label="Salir del perfil" onPress={signOut} tone="secondary" />
-          </View>
+            ) : (
+              <EmptyState
+                action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
+                body="Primero elige un grupo. Después este perfil se usará dentro de ese grupo."
+                icon="account-circle"
+                title="Perfil sin grupo"
+              />
+            )}
+
+            <View style={styles.profileTrustPanel}>
+              <View style={styles.profileTrustHeader}>
+                <View>
+                  <Text style={styles.profileTrustTitle}>Confianza y datos</Text>
+                  <Text style={styles.accountSectionText}>Demo local para pruebas. Sin backend, sin pagos reales.</Text>
+                </View>
+                <MaterialCommunityIcons color={colors.primaryDark} name="shield-lock-outline" size={22} />
+              </View>
+              {renderLocalDataControls()}
+              <ActionButton icon="logout" label="Salir del perfil" onPress={signOut} tone="secondary" />
+            </View>
+          </>
         ) : (
-          <View style={styles.formPanel}>
-            <EmptyState
-              body="Crea un perfil de prueba para validar identidad local y futura eliminación de datos."
-              icon="account-circle"
-              title="Perfil de demostración"
-            />
+          <View style={styles.profileOnboarding}>
+            <View style={styles.profileOnboardingIcon}>
+              <MaterialCommunityIcons color={colors.primaryDark} name="account-circle-outline" size={28} />
+            </View>
+            <Text style={styles.profileHeroName}>Crea tu perfil local</Text>
+            <Text style={styles.profileOnboardingText}>
+              Sirve para probar identidad por grupo, gastos y borrado local. No crea una cuenta real.
+            </Text>
             <Field
               label="Nombre"
               onChangeText={setAccountName}
@@ -1681,7 +1711,6 @@ export function MainScreen() {
             {renderLocalDataControls()}
           </View>
         )}
-      </Section>
     </View>
   );
 
@@ -4179,6 +4208,178 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.86,
+  },
+  profileActivePersona: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  profileActivePersonaCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  profileActivePersonaName: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 19,
+  },
+  profileAvatarRing: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 28,
+    height: 56,
+    justifyContent: "center",
+    width: 56,
+  },
+  profileCenter: {
+    gap: spacing.md,
+  },
+  profileHero: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  profileHeroCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  profileHeroEmail: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "600",
+    lineHeight: 18,
+  },
+  profileHeroName: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  profileHeroTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  profileKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  profileOnboarding: {
+    alignItems: "stretch",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  profileOnboardingIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 24,
+    height: 48,
+    justifyContent: "center",
+    width: 48,
+  },
+  profileOnboardingText: {
+    color: colors.mutedInk,
+    fontSize: typography.body,
+    fontWeight: "600",
+    lineHeight: 21,
+  },
+  profilePeopleStrip: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  profilePersonaHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  profilePersonaPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  profilePersonChip: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flexBasis: "30%",
+    flexGrow: 1,
+    gap: spacing.xs,
+    minHeight: 72,
+    minWidth: 88,
+    padding: spacing.sm,
+  },
+  profilePersonChipActive: {
+    backgroundColor: colors.successWash,
+    borderColor: colors.primary,
+  },
+  profilePersonChipText: {
+    color: colors.ink,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 15,
+    textAlign: "center",
+  },
+  profileStatusLabel: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 15,
+  },
+  profileStatusRail: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  profileStatusTile: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flex: 1,
+    gap: spacing.xs,
+    minHeight: 64,
+    justifyContent: "center",
+    padding: spacing.sm,
+  },
+  profileTrustHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+  },
+  profileTrustPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  profileTrustTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
   },
   quickAction: {
     alignItems: "center",
