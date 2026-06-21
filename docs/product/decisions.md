@@ -218,6 +218,27 @@ primitives already in the app.
 
 Rationale: The MVP can become materially more usable for screen reader and
 motor-access users without adding dependencies or changing navigation
+
+### Use Public Mobbin Finance Patterns As Benchmark
+
+Decision: Treat Mobbin's public mobile finance category as the benchmark for
+visual direction without depending on private screenshots or a paid account.
+
+Rationale: The app needs the discipline of shipped finance products: a
+balance-first hierarchy, shallow surfaces, compact tab bars, list rhythm, clear
+money-flow objects, and quiet trust cues. These patterns can be applied without
+copying a specific private design or adding a large template dependency.
+
+### Keep The First Mobbin-Benchmark Pass In Existing Components
+
+Decision: Improve the current React Native screen, theme, and local dev Metro
+config before adopting a large UI kit such as gluestack, Tamagui, or a paid
+template.
+
+Rationale: The product has custom shared-expense flows that generic templates
+will not model well. A focused pass preserves working behavior, reduces visual
+weight quickly, and leaves room to adopt a component library only if repeated
+manual polish becomes too slow.
 architecture.
 
 ### Treat Play Internal Testing As A Human-Owned Release Gate
