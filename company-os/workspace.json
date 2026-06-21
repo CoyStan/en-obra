@@ -546,6 +546,14 @@
       "owner_human": "HUMAN-FOUNDER",
       "last_seen_revision": "imported-from-CUE-0041",
       "last_read_at": "2026-06-20T00:00:00Z"
+    },
+    {
+      "id": "SOURCE-OPEN-DESIGN",
+      "label": "Open Design repo and v0.11.0 release",
+      "kind": "external-repo",
+      "provider": "github",
+      "uri": "https://github.com/nexu-io/open-design",
+      "access_mode": "read"
     }
   ],
   "work_items": [
@@ -2601,6 +2609,43 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0061"
+    },
+    {
+      "allowed_resources": [
+        "docs/product",
+        "docs/tools",
+        "tools/open-design",
+        "reports/evidence/WORK-APP-0062",
+        "bin/open-design",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "app-source-changes",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "destructive-cleanup"
+      ],
+      "id": "WORK-APP-0062",
+      "title": "Open Design design-tool integration",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Allowed paths: docs/product/**, docs/tools/**, tools/open-design/**, reports/evidence/WORK-APP-0062/**, bin/open-design*, company-os/workspace.json. Install or configure Open Design as an external design accelerator for Cuentas Claras without adding runtime app dependencies. Document how to use Open Design for mobile finance design critique/prototypes, especially stripe/fintech design systems and mobile-app skills. Forbidden: app source changes, real payments, production backend, secrets, paid services, destructive cleanup.",
+      "acceptance_target": "Repo has a clear, repeatable Open Design setup/use workflow and evidence showing whether Open Design can be invoked locally for Cuentas Claras design planning.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0062"
     }
   ],
   "attempts": [
@@ -3614,6 +3659,20 @@
       "result": "Added dedicated Inicio command center tab and verified mobile web evidence.",
       "commits": [
         "a52f983"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0062",
+      "work_item_id": "WORK-APP-0062",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Installed Open Design external checkout and added repo-local wrapper, docs, and design brief.",
+      "commits": [
+        "4392819"
       ]
     }
   ],
@@ -4818,6 +4877,15 @@
       "status": "passed",
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width Inicio/Activity screenshots passed for the dedicated command-center tab.",
       "freshness": "fresh"
+    },
+    {
+      "id": "EVIDENCE-APP-0062",
+      "work_item_id": "WORK-APP-0062",
+      "attempt_id": "ATTEMPT-APP-0062",
+      "head_sha": "4392819",
+      "status": "passed",
+      "summary": "Open Design checkout/dependency install, wrapper help, MCP dry-run, status, app typecheck, tests, Expo config, and Company OS scope passed; full web runtime is blocked by Open Design's Node 24 requirement.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -5463,6 +5531,27 @@
       "id": "REVIEW-APP-0061",
       "work_item_id": "WORK-APP-0061",
       "reviewed_head": "a52f983",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "Open Design checkout",
+        "Open Design dependency install",
+        "wrapper scripts",
+        "design brief",
+        "technical report",
+        "app verification",
+        "Company OS scope"
+      ],
+      "residual_risks": [
+        "Open Design web runtime needs Node 24",
+        "global MCP install requires explicit approval",
+        "node-pty build approval may be needed for desktop sidecar"
+      ],
+      "id": "REVIEW-APP-0062",
+      "work_item_id": "WORK-APP-0062",
+      "reviewed_head": "4392819",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -8177,6 +8266,45 @@
       "work_item_id": "WORK-APP-0061",
       "attempt_id": "ATTEMPT-APP-0061",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "cloned-open-design",
+        "installed-open-design-dependencies",
+        "added-wrapper",
+        "added-pnpm-shim",
+        "documented-design-workflow",
+        "added-design-brief",
+        "verified-cli-and-dry-run"
+      ],
+      "outputs_created": [
+        "bin/open-design",
+        "tools/open-design/bin/pnpm",
+        "docs/tools/open-design.md",
+        "docs/product/open-design-design-brief.md",
+        "reports/evidence/WORK-APP-0062/technical-report.md"
+      ],
+      "not_done": [
+        "global-codex-mcp-install",
+        "system-node-upgrade",
+        "open-design-web-runtime",
+        "app-source-changes",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services"
+      ],
+      "id": "RECEIPT-APP-0062",
+      "work_item_id": "WORK-APP-0062",
+      "attempt_id": "ATTEMPT-APP-0062",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -8930,6 +9058,14 @@
       "status": "completed",
       "what_happened": "A selected group now opens into Inicio as the command-center screen while Actividad remains a separate ledger tab.",
       "what_changed": "Navigation model now includes Grupos, Inicio, Actividad, Balance, and Perfil with group-scoped behavior preserved."
+    },
+    {
+      "id": "OUTCOME-APP-0062",
+      "work_item_id": "WORK-APP-0062",
+      "summary": "Open Design is available as an external design accelerator with repo-local Cuentas Claras docs and wrappers.",
+      "status": "completed",
+      "what_happened": "Cloned and installed Open Design, added wrappers and a design brief, verified CLI access and Codex MCP dry-run, and documented the Node 24 web-runtime blocker.",
+      "what_changed": "Future design work can use Open Design's Stripe/Wise/Revolut/Expo systems, mobile templates, and refine/code-migration plugins as planning inputs before React Native tickets."
     }
   ]
 }
