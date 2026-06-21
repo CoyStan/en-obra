@@ -467,3 +467,17 @@ still needs to decide access and storage. A provider-neutral SQL contract lets u
 test users, groups, memberships, expenses, participants, settlements, activity,
 and sync outbox behavior now without introducing secrets, paid services, or
 irreversible infrastructure choices.
+
+### Make Inicio A Single Money Instrument
+
+Decision: The selected-group `Inicio` screen should present the user's active
+money state as one integrated instrument: group context, identity, personal
+balance, who-owes-whom route, open-vs-spent progress, people strip, and next
+action. Avoid stacking separate hero, route, member, and metric cards above the
+fold.
+
+Rationale: Open Design's Stripe/Wise/Revolut references point toward precise
+financial hierarchy, consumer-money objects, and one-job mobile screens. A
+single instrument makes the first viewport easier to understand for mainstream
+users, reduces repeated chrome, keeps `Sin pagos reales` visible, and gives the
+app a more premium product shape without changing the local-first data model.

@@ -3,6 +3,7 @@ import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import {
   AccessibilityInfo,
   Animated,
+  type DimensionValue,
   Easing,
   KeyboardAvoidingView,
   Modal,
@@ -1139,8 +1140,23 @@ export function MainScreen() {
       );
     }
 
-    const visibleMembers = selectedMembers.slice(0, 4);
+    const visibleMembers = selectedMembers.slice(0, compact ? 3 : 4);
     const hiddenMemberCount = Math.max(selectedMembers.length - visibleMembers.length, 0);
+    const openRatio =
+      activeGroupSummary.totalSpentCents > 0
+        ? Math.min(1, activeGroupSummary.openBalanceCents / activeGroupSummary.totalSpentCents)
+        : 0;
+    const openPercent = `${Math.max(8, Math.round(openRatio * 100))}%` as DimensionValue;
+    const routeTitle = personalSettlement
+      ? personalSettlement.fromMemberId === displayMemberId
+        ? `Paga a ${personalSettlementTo?.name ?? "al grupo"}`
+        : personalSettlement.toMemberId === displayMemberId
+          ? `${personalSettlementFrom?.name ?? "Alguien"} te paga`
+          : "Acuerdo del grupo"
+      : "Grupo en paz";
+    const routeCaption = personalSettlement
+      ? "Acuerdo externo · solo registro local"
+      : "No hay pagos pendientes";
     const nextActionLabel = personalSettlement
       ? personalSettlement.fromMemberId === activeGroupMember?.id
         ? "Registrar arreglo"
@@ -1157,68 +1173,65 @@ export function MainScreen() {
 
     return (
       <View style={styles.moneyRoom}>
-        <View style={styles.moneyRoomHero}>
-          <View style={styles.moneyRoomHeader}>
-            <View style={styles.moneyRoomGroup}>
-              <GroupObject group={selectedGroup} size="large" />
-              <View style={styles.moneyRoomGroupCopy}>
-                <Text numberOfLines={1} style={styles.moneyRoomKicker}>Espacio activo</Text>
-                <Text numberOfLines={1} style={styles.moneyRoomTitle}>{selectedGroup.name}</Text>
-                <Text style={styles.moneyRoomMeta}>MXN · {selectedMembers.length} integrantes · registro local</Text>
-              </View>
-            </View>
+        <View style={styles.commandCanvas}>
+          <View style={styles.commandTopbar}>
             <Pressable
               accessibilityLabel="Cambiar grupo activo"
               accessibilityRole="button"
               hitSlop={4}
               onPress={() => openTab("groups")}
-              style={({ pressed }) => [styles.moneyRoomSwitch, pressed && styles.pressed]}
+              style={({ pressed }) => [styles.commandGroupSwitch, pressed && styles.pressed]}
             >
-              <MaterialCommunityIcons color={colors.primaryDark} name="swap-horizontal" size={17} />
+              <GroupObject group={selectedGroup} size="large" />
+              <View style={styles.odCommandGroupCopy}>
+                <Text numberOfLines={1} style={styles.odCommandKicker}>Grupo activo</Text>
+                <Text numberOfLines={1} style={styles.odCommandTitle}>{selectedGroup.name}</Text>
+                <Text numberOfLines={1} style={styles.odCommandMeta}>{selectedMembers.length} integrantes · MXN</Text>
+              </View>
+              <MaterialCommunityIcons color={colors.primaryDark} name="swap-horizontal" size={18} />
             </Pressable>
+            <View style={styles.commandTrustChip}>
+              <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={14} />
+              <Text style={styles.odCommandTrustText}>Sin pagos reales</Text>
+            </View>
           </View>
 
-          <View style={styles.moneyScene}>
-            <View style={styles.moneySceneTop}>
-              <Pressable
-                accessibilityHint="Abre perfil o cambia tu integrante del grupo."
-                accessibilityLabel={identityLabel}
-                accessibilityRole="button"
-                hitSlop={4}
-                onPress={openIdentity}
-                style={({ pressed }) => [styles.moneySceneIdentity, pressed && styles.pressed]}
-              >
-                <Avatar color={displayMember?.avatarColor ?? colors.primary} label={displayMember?.name ?? "Yo"} />
-                <View style={styles.identityCopy}>
-                  <Text numberOfLines={1} style={styles.identityLabel}>{identityLabel}</Text>
-                  <Text numberOfLines={1} style={styles.identityMeta}>{identityMeta}</Text>
+          <View style={[styles.moneyInstrument, personalBalanceState.tone === "due" && styles.moneyInstrumentDue]}>
+            <View style={styles.instrumentGrid}>
+              <View style={styles.instrumentLeft}>
+                <Pressable
+                  accessibilityHint="Abre perfil o cambia tu integrante del grupo."
+                  accessibilityLabel={identityLabel}
+                  accessibilityRole="button"
+                  hitSlop={4}
+                  onPress={openIdentity}
+                  style={({ pressed }) => [styles.instrumentIdentity, pressed && styles.pressed]}
+                >
+                  <Avatar color={displayMember?.avatarColor ?? colors.primary} label={displayMember?.name ?? "Yo"} />
+                  <View style={styles.identityCopy}>
+                    <Text numberOfLines={1} style={styles.identityLabel}>{displayMember?.name ?? "Elige persona"}</Text>
+                    <Text numberOfLines={1} style={styles.identityMeta}>{identityMeta}</Text>
+                  </View>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={18} />
+                </Pressable>
+                <View style={styles.instrumentStateBlock}>
+                  <Text style={styles.instrumentLabel}>Tu balance</Text>
+                  <Text style={[styles.instrumentState, personalBalanceState.tone === "due" && styles.instrumentStateDue]}>
+                    {personalBalanceState.label}
+                  </Text>
                 </View>
-                <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={18} />
-              </Pressable>
-
-              <View style={styles.noPaymentChip}>
-                <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
-                <Text style={styles.noPaymentText}>Sin pagos reales</Text>
               </View>
-            </View>
 
-            <View style={styles.moneySceneBalance}>
-              <View style={[styles.moneySceneCopy, compact && styles.moneySceneCopyCompact]}>
-                <Text style={styles.moneySceneLabel}>Tu balance</Text>
-                <Text style={[styles.moneySceneState, personalBalanceState.tone === "due" && styles.moneySceneDue]}>
-                  {personalBalanceState.label}
-                </Text>
-              </View>
-              <View style={[styles.moneySceneAmountWrap, compact && styles.moneySceneAmountWrapCompact]}>
-                <Text style={styles.moneySceneCurrency}>MXN</Text>
+              <View style={styles.instrumentAmountBlock}>
+                <Text style={styles.instrumentCurrency}>MXN</Text>
                 <Text
                   numberOfLines={1}
                   adjustsFontSizeToFit
-                  minimumFontScale={0.62}
+                  minimumFontScale={0.72}
                   style={[
-                    styles.moneySceneAmount,
-                    compact && styles.moneySceneAmountCompact,
-                    personalBalanceState.tone === "due" && styles.moneySceneAmountDue,
+                    styles.instrumentAmount,
+                    compact && styles.instrumentAmountCompact,
+                    personalBalanceState.tone === "due" && styles.instrumentAmountDue,
                   ]}
                 >
                   {heroAmountText}
@@ -1226,33 +1239,61 @@ export function MainScreen() {
               </View>
             </View>
 
-            <View style={styles.moneySceneFooter}>
-              <View style={styles.moneyMetricPill}>
-                <Text style={styles.moneyMetricLabel}>Gastado</Text>
-                <Text numberOfLines={1} adjustsFontSizeToFit style={styles.moneyMetricValue}>{formatMoney(activeGroupSummary.totalSpentCents)}</Text>
-              </View>
-              <View style={styles.moneyMetricPill}>
-                <Text style={styles.moneyMetricLabel}>Abierto</Text>
-                <Text
-                  numberOfLines={1}
-                  adjustsFontSizeToFit
-                  style={[styles.moneyMetricValue, activeGroupSummary.openBalanceCents ? styles.moneyMetricDue : styles.moneyMetricOk]}
-                >
-                  {formatMoney(activeGroupSummary.openBalanceCents)}
+            <View style={styles.instrumentFlowCard}>
+              <View style={styles.instrumentFlowHeader}>
+                <View>
+                  <Text style={styles.instrumentFlowKicker}>Quién le debe a quién</Text>
+                  <Text numberOfLines={1} style={styles.instrumentFlowTitle}>{routeTitle}</Text>
+                </View>
+                <Text numberOfLines={1} style={styles.instrumentFlowAmount}>
+                  {personalSettlement ? formatMoney(personalSettlement.amountCents) : "$0.00"}
                 </Text>
+              </View>
+              {personalSettlement ? (
+                <MoneyFlowFigure
+                  amountCents={personalSettlement.amountCents}
+                  from={personalSettlementFrom}
+                  progress={moneyFlowProgress}
+                  reduceMotion={reduceMotion}
+                  to={personalSettlementTo}
+                />
+              ) : (
+                <View style={styles.instrumentPeaceLine}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={20} />
+                  <Text style={styles.instrumentPeaceText}>Todo en paz · no hay arreglos pendientes</Text>
+                </View>
+              )}
+              <Text numberOfLines={2} style={styles.instrumentFlowCaption}>
+                {personalSettlement ? personalCue : routeCaption}
+              </Text>
+            </View>
+
+            <View style={styles.instrumentProgress}>
+              <View style={styles.instrumentProgressTop}>
+                <Text style={styles.instrumentMetricText}>Gastado {formatMoney(activeGroupSummary.totalSpentCents)}</Text>
+                <Text style={[styles.instrumentMetricText, activeGroupSummary.openBalanceCents ? styles.instrumentMetricDue : styles.instrumentMetricOk]}>
+                  Abierto {formatMoney(activeGroupSummary.openBalanceCents)}
+                </Text>
+              </View>
+              <View style={styles.instrumentTrack}>
+                <View
+                  style={[
+                    styles.instrumentTrackFill,
+                    activeGroupSummary.openBalanceCents ? styles.instrumentTrackFillDue : styles.instrumentTrackFillOk,
+                    { width: openPercent },
+                  ]}
+                />
               </View>
             </View>
           </View>
 
-          <View style={styles.peopleOrbit}>
-            <View style={styles.peopleOrbitHeader}>
-              <Text style={styles.peopleOrbitTitle}>En este gasto compartido</Text>
-              <Text style={styles.peopleOrbitMeta}>
-                {hiddenMemberCount ? `+${hiddenMemberCount} más` : "Todos visibles"}
-              </Text>
+          <View style={styles.peopleStrip}>
+            <View style={styles.peopleStripHeader}>
+              <Text style={styles.peopleStripTitle}>Personas del grupo</Text>
+              <Text style={styles.peopleStripMeta}>{hiddenMemberCount ? `+${hiddenMemberCount}` : "Todos"}</Text>
             </View>
-            <View style={styles.peopleOrbitRow}>
-              {visibleMembers.map((member, index) => (
+            <View style={styles.peopleStripRow}>
+              {visibleMembers.map((member) => (
                 <Pressable
                   accessibilityLabel={`Usar ${member.name} en este grupo`}
                   accessibilityRole="button"
@@ -1263,64 +1304,19 @@ export function MainScreen() {
                     void saveActiveGroupMember(member.id);
                   }}
                   style={[
-                    styles.peopleOrbitPerson,
-                    index === 0 && styles.peopleOrbitPersonFirst,
-                    activeGroupMember?.id === member.id && styles.peopleOrbitPersonActive,
+                    styles.peopleStripPerson,
+                    activeGroupMember?.id === member.id && styles.peopleStripPersonActive,
                   ]}
                 >
                   <Avatar color={member.avatarColor} label={member.name} />
-                  <Text numberOfLines={1} style={styles.peopleOrbitName}>{member.name}</Text>
+                  <Text numberOfLines={1} style={styles.peopleStripName}>{member.name}</Text>
                   {activeGroupMember?.id === member.id ? (
-                    <View style={styles.peopleOrbitCheck}>
-                      <MaterialCommunityIcons color={colors.surface} name="check" size={12} />
-                    </View>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="check-circle" size={16} />
                   ) : null}
                 </Pressable>
               ))}
             </View>
           </View>
-        </View>
-
-        <View style={styles.moneyRouteStage}>
-          <View style={styles.moneyRouteHeader}>
-            <View>
-              <Text style={styles.moneyRouteKicker}>Qué sigue</Text>
-              <Text style={styles.moneyRouteTitle}>{personalSettlement ? "Ruta de arreglo" : "Grupo en paz"}</Text>
-            </View>
-            <Pressable
-              accessibilityLabel="Ver balance completo"
-              accessibilityRole="button"
-              hitSlop={4}
-              onPress={() => setActiveTab("balance")}
-              style={({ pressed }) => [styles.moneyRouteLink, pressed && styles.pressed]}
-            >
-              <Text style={styles.moneyRouteLinkText}>Balance</Text>
-              <MaterialCommunityIcons color={colors.primaryDark} name="arrow-right" size={14} />
-            </Pressable>
-          </View>
-
-          {personalSettlement ? (
-            <>
-              <MoneyFlowFigure
-                amountCents={personalSettlement.amountCents}
-                from={personalSettlementFrom}
-                progress={moneyFlowProgress}
-                reduceMotion={reduceMotion}
-                to={personalSettlementTo}
-              />
-              <Text numberOfLines={2} style={styles.moneyRouteCue}>{personalCue}</Text>
-            </>
-          ) : (
-            <View style={styles.moneyPeaceState}>
-              <View style={styles.moneyPeaceIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={24} />
-              </View>
-              <View style={styles.calmFigureCopy}>
-                <Text style={styles.moneyRouteCue}>Todo en paz</Text>
-                <Text style={styles.calmFigureText}>Sin pagos pendientes en este grupo.</Text>
-              </View>
-            </View>
-          )}
         </View>
 
         <View style={styles.actionDock}>
@@ -3834,6 +3830,314 @@ const styles = StyleSheet.create({
     color: colors.primaryDark,
     fontSize: typography.micro,
     fontWeight: "700",
+  },
+  commandCanvas: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    overflow: "hidden",
+    padding: spacing.sm,
+    shadowColor: colors.ink,
+    shadowOffset: { height: 18, width: 0 },
+    shadowOpacity: 0.07,
+    shadowRadius: 28,
+    elevation: 4,
+  },
+  commandTopbar: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  commandGroupSwitch: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 58,
+    minWidth: 0,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  odCommandGroupCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  odCommandKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  odCommandTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 19,
+  },
+  odCommandMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 14,
+  },
+  commandTrustChip: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: radius.md,
+    flexShrink: 0,
+    gap: 2,
+    justifyContent: "center",
+    minHeight: 58,
+    paddingHorizontal: spacing.sm,
+    width: 76,
+  },
+  odCommandTrustText: {
+    color: colors.primaryDark,
+    fontSize: 10,
+    fontWeight: "900",
+    lineHeight: 12,
+    textAlign: "center",
+  },
+  moneyInstrument: {
+    backgroundColor: "#F5FBF9",
+    borderColor: "rgba(8, 127, 106, 0.16)",
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    overflow: "hidden",
+    padding: spacing.md,
+  },
+  moneyInstrumentDue: {
+    backgroundColor: "#FFF7F8",
+    borderColor: "rgba(184, 67, 82, 0.18)",
+  },
+  instrumentGrid: {
+    alignItems: "flex-end",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  instrumentLeft: {
+    flex: 1,
+    gap: spacing.sm,
+    minWidth: 0,
+  },
+  instrumentIdentity: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(255, 255, 255, 0.72)",
+    borderColor: "rgba(8, 127, 106, 0.12)",
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    maxWidth: "100%",
+    minHeight: 46,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  instrumentStateBlock: {
+    gap: 1,
+  },
+  instrumentLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  instrumentState: {
+    color: colors.primaryDark,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+  },
+  instrumentStateDue: {
+    color: colors.due,
+  },
+  instrumentAmountBlock: {
+    alignItems: "flex-end",
+    flex: 1.1,
+    minWidth: 0,
+  },
+  instrumentCurrency: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
+  instrumentAmount: {
+    color: colors.primary,
+    fontSize: 30,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 35,
+    textAlign: "right",
+  },
+  instrumentAmountCompact: {
+    fontSize: 28,
+    lineHeight: 33,
+  },
+  instrumentAmountDue: {
+    color: colors.due,
+  },
+  instrumentFlowCard: {
+    backgroundColor: "rgba(255, 255, 255, 0.78)",
+    borderColor: "rgba(16, 32, 39, 0.08)",
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  instrumentFlowHeader: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  instrumentFlowKicker: {
+    color: colors.mutedInk,
+    fontSize: 10,
+    fontWeight: "900",
+    lineHeight: 13,
+    textTransform: "uppercase",
+  },
+  instrumentFlowTitle: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "900",
+    lineHeight: 17,
+    maxWidth: 170,
+  },
+  instrumentFlowAmount: {
+    color: colors.primaryDark,
+    flexShrink: 1,
+    fontSize: typography.small,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 17,
+    textAlign: "right",
+  },
+  instrumentFlowCaption: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 15,
+  },
+  instrumentPeaceLine: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: radius.md,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 42,
+    paddingHorizontal: spacing.sm,
+  },
+  instrumentPeaceText: {
+    color: colors.primaryDark,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "900",
+    lineHeight: 17,
+  },
+  instrumentProgress: {
+    gap: spacing.xs,
+  },
+  instrumentProgressTop: {
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  instrumentMetricText: {
+    color: colors.mutedInk,
+    flexShrink: 1,
+    fontSize: 11,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 14,
+  },
+  instrumentMetricDue: {
+    color: colors.due,
+  },
+  instrumentMetricOk: {
+    color: colors.primaryDark,
+  },
+  instrumentTrack: {
+    backgroundColor: "rgba(16, 32, 39, 0.1)",
+    borderRadius: 999,
+    height: 7,
+    overflow: "hidden",
+  },
+  instrumentTrackFill: {
+    borderRadius: 999,
+    height: 7,
+  },
+  instrumentTrackFillDue: {
+    backgroundColor: colors.due,
+  },
+  instrumentTrackFillOk: {
+    backgroundColor: colors.primary,
+  },
+  peopleStrip: {
+    backgroundColor: colors.canvas,
+    borderRadius: radius.md,
+    gap: spacing.xs,
+    padding: spacing.sm,
+  },
+  peopleStripHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  peopleStripTitle: {
+    color: colors.ink,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  peopleStripMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
+  },
+  peopleStripRow: {
+    flexDirection: "row",
+    gap: spacing.xs,
+  },
+  peopleStripPerson: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 46,
+    minWidth: 0,
+    paddingHorizontal: spacing.xs,
+  },
+  peopleStripPersonActive: {
+    backgroundColor: colors.successWash,
+    borderColor: colors.primary,
+  },
+  peopleStripName: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
   },
   peopleOrbit: {
     backgroundColor: colors.canvas,
