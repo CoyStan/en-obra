@@ -1,0 +1,87 @@
+󰗑
+Cuentas Claras
+Gastos compartidos · MXN
+󰂜
+󰇙
+󰡉
+Grupo activo
+Viaje a Oaxaca
+Perfil de Viaje a Oaxaca
+󰓡
+Cambiar
+A
+󰕥
+PERFIL LOCAL ACTIVO
+Ana
+ana@cuentas.local
+Demo
+󱖌
+Grupo actual
+Viaje a Oaxaca
+󰓡
+Cambiar
+󰥏
+Local
+󰅤
+Sin sync
+󱉢
+Sin pagos reales
+PERSONA EN ESTE GRUPO
+Quién eres en Viaje a Oaxaca
+5 integrantes disponibles
+󰀙
+Elegir
+A
+Elige tu integrante
+Vincula tu sesión a una persona del grupo.
+󰈷
+A
+Ana
+Disponible para este grupo
+󰅂
+L
+Luis
+Disponible para este grupo
+󰅂
+M
+Maru
+Disponible para este grupo
+󰅂
+D
+Diego
+Disponible para este grupo
+󰅂
+S
+Sofía
+Disponible para este grupo
+󰅂
+Control de datos
+Todo vive en este dispositivo para la demo.
+󰳌
+Datos en este dispositivo
+Control local para pruebas. No hay backend ni eliminación remota configurada.
+Local
+󱘮
+Grupos, integrantes, gastos, liquidaciones e historial local
+󱘲
+Cola local de sincronizacion mock y estado de sync
+󱘮
+Cuenta demo local, nombre y correo capturados en el dispositivo
+󰅤
+La app actual no tiene backend de produccion; la eliminacion remota requiere proveedor, URL publica y proceso humano antes de lanzamiento.
+󰦛
+Reiniciar demo
+󰧧
+Borrar datos locales
+󰍃
+Salir del perfil
+󰀙
+Cambiar
+󰨝
+Inicio
+󰋚
+Actividad
+󰗑
+Balance
+󰀉
+Perfil

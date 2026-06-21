@@ -515,3 +515,17 @@ Rationale: Groups are the parent context for the rest of the app. Workspace
 rows make switching groups faster to scan, preserve the "group controls all
 other tabs" mental model, and reduce visual weight while keeping active group,
 member count, open balance, and `Sin pagos reales` cues visible.
+
+### Make Perfil An Identity Vault
+
+Decision: The `Perfil` tab should behave like a lightweight identity and trust
+vault for the selected group, not a generic settings page. It should lead with
+the local profile, group context, demo mode, local/sync/payment trust cues, and
+then show the active group persona as a selectable member list.
+
+Rationale: The multi-user model is one of the clearest ways to distinguish the
+app from a one-person finance manager. Open Design's mobile profile patterns
+favor one primary identity object, compact stats/rails, and list rows over
+large repeated cards. A vault structure keeps the screen premium, clearer for
+mainstream users, and explicit that data and settlements are local-only demo
+records.

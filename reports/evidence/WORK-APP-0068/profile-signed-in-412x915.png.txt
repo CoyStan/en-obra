@@ -1,0 +1,43 @@
+󰗑
+Cuentas Claras
+Gastos compartidos · MXN
+󰂜
+󰇙
+󰡉
+Grupo activo
+Viaje a Oaxaca
+Perfil de Viaje a Oaxaca
+󰓡
+Cambiar
+󰭕
+Crea tu perfil local
+Sirve para probar identidad por grupo, gastos y borrado local. No crea una cuenta real.
+Nombre
+Correo
+󰀔
+Crear perfil de prueba
+Datos en este dispositivo
+Control local para pruebas. No hay backend ni eliminación remota configurada.
+Local
+󱘮
+Grupos, integrantes, gastos, liquidaciones e historial local
+󱘲
+Cola local de sincronizacion mock y estado de sync
+󱘮
+Cuenta demo local, nombre y correo capturados en el dispositivo
+󰅤
+La app actual no tiene backend de produccion; la eliminacion remota requiere proveedor, URL publica y proceso humano antes de lanzamiento.
+󰦛
+Reiniciar demo
+󰧧
+Borrar datos locales
+󰀙
+Cambiar
+󰨝
+Inicio
+󰋚
+Actividad
+󰗑
+Balance
+󰀉
+Perfil

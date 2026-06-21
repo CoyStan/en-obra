@@ -1877,31 +1877,53 @@ export function MainScreen() {
           </View>
         ) : account.profile && account.mode === "signed-in" ? (
           <>
-            <View style={styles.profileHero}>
-              <View style={styles.profileHeroTop}>
-                <View style={styles.profileAvatarRing}>
-                  <Avatar color={colors.primary} label={account.profile.displayName} />
+            <View style={styles.profileVault}>
+              <View style={styles.profileVaultHeader}>
+                <View style={styles.profileAvatarPlate}>
+                  <Avatar color={activeGroupMember?.avatarColor ?? colors.primary} label={account.profile.displayName} />
+                  <View style={styles.profileAvatarBadge}>
+                    <MaterialCommunityIcons color={colors.surface} name="shield-check" size={12} />
+                  </View>
                 </View>
-                <View style={styles.profileHeroCopy}>
-                  <Text style={styles.profileKicker}>Perfil local</Text>
-                  <Text numberOfLines={1} style={styles.profileHeroName}>{account.profile.displayName}</Text>
-                  <Text numberOfLines={1} style={styles.profileHeroEmail}>{account.profile.email}</Text>
+                <View style={styles.profileVaultCopy}>
+                  <Text style={styles.profileKicker}>Perfil local activo</Text>
+                  <Text numberOfLines={1} style={styles.profileVaultName}>{account.profile.displayName}</Text>
+                  <Text numberOfLines={1} style={styles.profileVaultEmail}>{account.profile.email}</Text>
                 </View>
-                <Pill label="Demo" tone="gold" />
+                <View style={styles.profileModeBadge}>
+                  <Text style={styles.profileModeBadgeText}>Demo</Text>
+                </View>
               </View>
 
-              <View style={styles.profileStatusRail}>
-                <View style={styles.profileStatusTile}>
-                  <MaterialCommunityIcons color={colors.primaryDark} name="cellphone-lock" size={18} />
-                  <Text style={styles.profileStatusLabel}>Local</Text>
+              <View style={styles.profileVaultBody}>
+                <View style={styles.profileVaultGroup}>
+                  {selectedGroup ? <GroupObject group={selectedGroup} /> : (
+                    <View style={styles.profileVaultGroupIcon}>
+                      <MaterialCommunityIcons color={colors.primaryDark} name="account-group-outline" size={20} />
+                    </View>
+                  )}
+                  <View style={styles.profileVaultGroupCopy}>
+                    <Text style={styles.profileVaultMicro}>Grupo actual</Text>
+                    <Text numberOfLines={1} style={styles.profileVaultGroupName}>
+                      {selectedGroup ? selectedGroup.name : "Sin grupo seleccionado"}
+                    </Text>
+                  </View>
+                  <ActionButton icon="swap-horizontal" label="Cambiar" onPress={() => openTab("groups")} tone="ghost" />
                 </View>
-                <View style={styles.profileStatusTile}>
-                  <MaterialCommunityIcons color={colors.primaryDark} name="cloud-off-outline" size={18} />
-                  <Text style={styles.profileStatusLabel}>Sin sync</Text>
-                </View>
-                <View style={styles.profileStatusTile}>
-                  <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={18} />
-                  <Text style={styles.profileStatusLabel}>Sin pagos</Text>
+
+                <View style={styles.profileTrustRail}>
+                  <View style={styles.profileTrustRailItem}>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="cellphone-lock" size={16} />
+                    <Text style={styles.profileTrustRailText}>Local</Text>
+                  </View>
+                  <View style={styles.profileTrustRailItem}>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="cloud-off-outline" size={16} />
+                    <Text style={styles.profileTrustRailText}>Sin sync</Text>
+                  </View>
+                  <View style={styles.profileTrustRailItem}>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="cash-remove" size={16} />
+                    <Text style={styles.profileTrustRailText}>Sin pagos reales</Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -1909,37 +1931,38 @@ export function MainScreen() {
             {selectedGroup ? (
               <View style={styles.profilePersonaPanel}>
                 <View style={styles.profilePersonaHeader}>
-                  <GroupObject group={selectedGroup} />
-                  <View style={styles.groupContextCopy}>
+                  <View style={styles.profilePersonaTitleBlock}>
                     <Text style={styles.profileKicker}>Persona en este grupo</Text>
-                    <Text style={styles.groupContextName}>{selectedGroup.name}</Text>
-                    <Text style={styles.groupContextMeta}>{selectedMembers.length} integrantes · identidad por grupo</Text>
-                  </View>
-                  <ActionButton icon="swap-horizontal" label="Grupo" onPress={() => openTab("groups")} tone="ghost" />
-                </View>
-
-                <View style={styles.profileActivePersona}>
-                  <Avatar color={activeGroupMember?.avatarColor ?? displayMember?.avatarColor ?? colors.primary} label={activeGroupMember?.name ?? displayMember?.name ?? "Yo"} />
-                  <View style={styles.profileActivePersonaCopy}>
-                    <Text style={styles.profileActivePersonaName}>
-                      {activeGroupMember ? activeGroupMember.name : "Elige tu integrante"}
-                    </Text>
-                    <Text style={styles.accountSectionText}>
-                      {activeGroupMember
-                        ? "Los gastos nuevos empiezan con esta persona."
-                        : "Vincula tu sesión a una persona del grupo."}
-                    </Text>
+                    <Text style={styles.profilePanelTitle}>Tu identidad aquí</Text>
+                    <Text style={styles.accountSectionText}>{selectedMembers.length} integrantes disponibles</Text>
                   </View>
                   <ActionButton
                     disabled={!selectedGroup || selectedMembers.length === 0}
                     icon="account-switch"
-                    label="Cambiar"
+                    label="Elegir"
                     onPress={openActiveMemberPicker}
                     tone="secondary"
                   />
                 </View>
 
-                <View style={styles.profilePeopleStrip}>
+                <View style={styles.profileActivePersonaCard}>
+                  <View style={styles.profileActivePersona}>
+                    <Avatar color={activeGroupMember?.avatarColor ?? displayMember?.avatarColor ?? colors.primary} label={activeGroupMember?.name ?? displayMember?.name ?? "Yo"} />
+                    <View style={styles.profileActivePersonaCopy}>
+                      <Text style={styles.profileActivePersonaName}>
+                        {activeGroupMember ? activeGroupMember.name : "Elige tu integrante"}
+                      </Text>
+                      <Text style={styles.accountSectionText}>
+                        {activeGroupMember
+                          ? "Gastos nuevos y balances se leen desde esta identidad."
+                          : "Vincula tu sesión a una persona del grupo."}
+                      </Text>
+                    </View>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="fingerprint" size={22} />
+                  </View>
+                </View>
+
+                <View style={styles.profilePeopleList}>
                   {selectedMembers.map((member) => (
                     <Pressable
                       accessibilityLabel={`Usar ${member.name} en este grupo`}
@@ -1951,12 +1974,22 @@ export function MainScreen() {
                         void saveActiveGroupMember(member.id);
                       }}
                       style={[
-                        styles.profilePersonChip,
-                        activeGroupMember?.id === member.id && styles.profilePersonChipActive,
+                        styles.profilePersonRow,
+                        activeGroupMember?.id === member.id && styles.profilePersonRowActive,
                       ]}
                     >
                       <Avatar color={member.avatarColor} label={member.name} />
-                      <Text numberOfLines={1} style={styles.profilePersonChipText}>{member.name}</Text>
+                      <View style={styles.profilePersonRowCopy}>
+                        <Text numberOfLines={1} style={styles.profilePersonName}>{member.name}</Text>
+                        <Text style={styles.profilePersonMeta}>
+                          {activeGroupMember?.id === member.id ? "Identidad activa" : "Disponible para este grupo"}
+                        </Text>
+                      </View>
+                      {activeGroupMember?.id === member.id ? (
+                        <MaterialCommunityIcons color={colors.primary} name="check-circle" size={21} />
+                      ) : (
+                        <MaterialCommunityIcons color={colors.mutedInk} name="chevron-right" size={20} />
+                      )}
                     </Pressable>
                   ))}
                 </View>
@@ -1973,8 +2006,8 @@ export function MainScreen() {
             <View style={styles.profileTrustPanel}>
               <View style={styles.profileTrustHeader}>
                 <View>
-                  <Text style={styles.profileTrustTitle}>Confianza y datos</Text>
-                  <Text style={styles.accountSectionText}>Demo local para pruebas. Sin backend, sin pagos reales.</Text>
+                  <Text style={styles.profilePanelTitle}>Control de datos</Text>
+                  <Text style={styles.accountSectionText}>Todo vive en este dispositivo para la demo.</Text>
                 </View>
                 <MaterialCommunityIcons color={colors.primaryDark} name="shield-lock-outline" size={22} />
               </View>
@@ -6326,6 +6359,11 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     lineHeight: 19,
   },
+  profileActivePersonaCard: {
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    padding: spacing.sm,
+  },
   profileAvatarRing: {
     alignItems: "center",
     backgroundColor: colors.successWash,
@@ -6333,6 +6371,30 @@ const styles = StyleSheet.create({
     height: 56,
     justifyContent: "center",
     width: 56,
+  },
+  profileAvatarBadge: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderColor: colors.surface,
+    borderRadius: 9,
+    borderWidth: 2,
+    bottom: -1,
+    height: 18,
+    justifyContent: "center",
+    position: "absolute",
+    right: -1,
+    width: 18,
+  },
+  profileAvatarPlate: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: "rgba(8, 127, 106, 0.16)",
+    borderRadius: 30,
+    borderWidth: 1,
+    height: 60,
+    justifyContent: "center",
+    position: "relative",
+    width: 60,
   },
   profileCenter: {
     gap: spacing.md,
@@ -6374,6 +6436,18 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     textTransform: "uppercase",
   },
+  profileModeBadge: {
+    backgroundColor: colors.warmWash,
+    borderRadius: radius.sm,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  profileModeBadgeText: {
+    color: colors.terracotta,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
   profileOnboarding: {
     alignItems: "stretch",
     backgroundColor: colors.surface,
@@ -6402,10 +6476,25 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: spacing.sm,
   },
+  profilePanelTitle: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  profilePeopleList: {
+    gap: spacing.sm,
+  },
   profilePersonaHeader: {
     alignItems: "center",
     flexDirection: "row",
     gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  profilePersonaTitleBlock: {
+    flex: 1,
+    gap: 2,
+    minWidth: 0,
   },
   profilePersonaPanel: {
     backgroundColor: colors.surface,
@@ -6414,6 +6503,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     gap: spacing.md,
     padding: spacing.md,
+  },
+  profilePersonMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "600",
+    lineHeight: 15,
+  },
+  profilePersonName: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 19,
+  },
+  profilePersonRow: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 58,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.sm,
+  },
+  profilePersonRowActive: {
+    backgroundColor: colors.successWash,
+    borderColor: "rgba(8, 127, 106, 0.28)",
+  },
+  profilePersonRowCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
   },
   profilePersonChip: {
     alignItems: "center",
@@ -6473,11 +6595,102 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     padding: spacing.md,
   },
+  profileTrustRail: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  profileTrustRailItem: {
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.72)",
+    borderColor: "rgba(8, 127, 106, 0.13)",
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 36,
+    paddingHorizontal: spacing.sm,
+  },
+  profileTrustRailText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
   profileTrustTitle: {
     color: colors.ink,
     fontSize: typography.body,
     fontWeight: "900",
     lineHeight: 20,
+  },
+  profileVault: {
+    backgroundColor: colors.successWash,
+    borderColor: "rgba(8, 127, 106, 0.16)",
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    overflow: "hidden",
+    padding: spacing.md,
+  },
+  profileVaultBody: {
+    gap: spacing.sm,
+  },
+  profileVaultCopy: {
+    flex: 1,
+    gap: 2,
+    minWidth: 0,
+  },
+  profileVaultEmail: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "600",
+    lineHeight: 18,
+  },
+  profileVaultGroup: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 62,
+    padding: spacing.sm,
+  },
+  profileVaultGroupCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  profileVaultGroupIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 20,
+    height: 40,
+    justifyContent: "center",
+    width: 40,
+  },
+  profileVaultGroupName: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 19,
+  },
+  profileVaultHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  profileVaultMicro: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
+  },
+  profileVaultName: {
+    color: colors.ink,
+    fontSize: typography.title,
+    fontWeight: "900",
+    letterSpacing: -0.2,
+    lineHeight: 28,
   },
   quickAction: {
     alignItems: "center",
