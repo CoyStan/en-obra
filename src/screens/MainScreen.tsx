@@ -2003,12 +2003,11 @@ export function MainScreen() {
       <View style={styles.modalOverlay}>
         <ScrollView contentContainerStyle={styles.composerSheet} keyboardShouldPersistTaps="handled">
           <View style={styles.sheetHandle} />
-          <View style={styles.composerHeader}>
+          <View style={styles.captureHeader}>
             <View style={styles.composerTitleBlock}>
-              <Text style={styles.sheetTitle}>Nuevo gasto</Text>
-              <Text style={styles.sheetSubtitle}>
-                {selectedGroup?.name ?? "Grupo"} · Registro local en MXN
-              </Text>
+              <Text style={styles.captureKicker}>Captura de recibo</Text>
+              <Text style={styles.captureTitle}>Nuevo gasto</Text>
+              <Text style={styles.captureSubtitle}>{selectedGroup?.name ?? "Grupo"} · MXN · registro local</Text>
             </View>
             <ActionButton
               icon="close"
@@ -2023,93 +2022,125 @@ export function MainScreen() {
 
           {error ? <Text style={styles.formError}>{error}</Text> : null}
 
-          <View style={styles.receiptComposer}>
-            <View style={styles.receiptTopLine}>
-              <Pressable
-                accessibilityLabel={`Categoría ${selectedCategory.label}`}
-                accessibilityRole="button"
-                accessibilityState={{ expanded: openExpenseMenu === "category" }}
-                hitSlop={4}
-                onPress={() => toggleExpenseMenu("category")}
-                style={({ pressed }) => [styles.receiptCategoryButton, pressed && styles.pressed]}
-              >
-                <CategoryObject categoryId={expenseCategoryId} />
-                <View style={styles.receiptCategoryCopy}>
-                  <Text style={styles.receiptKicker}>Categoría</Text>
-                  <Text numberOfLines={1} style={styles.receiptCategoryLabel}>{selectedCategory.label}</Text>
+          <View style={styles.captureShell}>
+            <View style={styles.captureStepRail}>
+              <View style={styles.captureStepActive}>
+                <Text style={styles.captureStepNumber}>1</Text>
+              </View>
+              <View style={styles.captureStepLine} />
+              <View style={styles.captureStep}>
+                <Text style={styles.captureStepNumberMuted}>2</Text>
+              </View>
+              <View style={styles.captureStepLine} />
+              <View style={styles.captureStep}>
+                <Text style={styles.captureStepNumberMuted}>3</Text>
+              </View>
+            </View>
+
+            <View style={styles.receiptComposer}>
+              <View style={styles.receiptObjectTop}>
+                <View style={styles.receiptObjectIcon}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="receipt-text-plus-outline" size={22} />
                 </View>
-                <MaterialCommunityIcons
-                  color={colors.primaryDark}
-                  name={openExpenseMenu === "category" ? "chevron-up" : "chevron-down"}
-                  size={20}
-                />
-              </Pressable>
+                <View style={styles.receiptObjectCopy}>
+                  <Text style={styles.receiptObjectTitle}>Recibo del gasto</Text>
+                  <Text style={styles.receiptObjectMeta}>Primero captura qué fue y cuánto costó.</Text>
+                </View>
+              </View>
+
+              <View style={styles.receiptTopLine}>
+                <Pressable
+                  accessibilityLabel={`Categoría ${selectedCategory.label}`}
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: openExpenseMenu === "category" }}
+                  hitSlop={4}
+                  onPress={() => toggleExpenseMenu("category")}
+                  style={({ pressed }) => [styles.receiptCategoryButton, pressed && styles.pressed]}
+                >
+                  <CategoryObject categoryId={expenseCategoryId} />
+                  <View style={styles.receiptCategoryCopy}>
+                    <Text style={styles.receiptKicker}>Categoría</Text>
+                    <Text numberOfLines={1} style={styles.receiptCategoryLabel}>{selectedCategory.label}</Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    color={colors.primaryDark}
+                    name={openExpenseMenu === "category" ? "chevron-up" : "chevron-down"}
+                    size={20}
+                  />
+                </Pressable>
               <View style={styles.sheetTrustChip}>
                 <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
                 <Text style={styles.sheetTrustText}>Sin pagos reales</Text>
               </View>
-            </View>
-
-            <AnimatedDropdown open={openExpenseMenu === "category"}>
-              <View style={styles.categoryMatrix}>
-                {expenseCategories.map((category) => {
-                  const selected = category.id === expenseCategoryId;
-                  return (
-                    <Pressable
-                      accessibilityLabel={`Categoría ${category.label}`}
-                      accessibilityRole="radio"
-                      accessibilityState={{ checked: selected }}
-                      hitSlop={4}
-                      key={category.id}
-                      onPress={() => {
-                        setExpenseCategoryId(category.id);
-                        setOpenExpenseMenu(null);
-                      }}
-                      style={({ pressed }) => [
-                        styles.categoryChoice,
-                        selected && styles.categoryChoiceActive,
-                        pressed && styles.pressed,
-                      ]}
-                    >
-                      <CategoryObject categoryId={category.id} size="small" />
-                      <Text numberOfLines={1} style={[styles.categoryChoiceText, selected && styles.categoryChoiceTextActive]}>
-                        {category.label}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
               </View>
-            </AnimatedDropdown>
 
-            <View style={styles.receiptAmountBlock}>
-              <Text style={styles.receiptKicker}>Monto MXN</Text>
-              <View style={styles.receiptAmountLine}>
-                <Text style={styles.receiptCurrency}>$</Text>
-                <TextInput
-                  accessibilityLabel="Monto MXN"
-                  keyboardType="decimal-pad"
-                  onChangeText={setExpenseAmount}
-                  placeholder="0.00"
-                  placeholderTextColor={colors.mutedInk}
-                  style={styles.receiptAmountInput}
-                  value={expenseAmount}
-                />
+              <AnimatedDropdown open={openExpenseMenu === "category"}>
+                <View style={styles.categoryMatrix}>
+                  {expenseCategories.map((category) => {
+                    const selected = category.id === expenseCategoryId;
+                    return (
+                      <Pressable
+                        accessibilityLabel={`Categoría ${category.label}`}
+                        accessibilityRole="radio"
+                        accessibilityState={{ checked: selected }}
+                        hitSlop={4}
+                        key={category.id}
+                        onPress={() => {
+                          setExpenseCategoryId(category.id);
+                          setOpenExpenseMenu(null);
+                        }}
+                        style={({ pressed }) => [
+                          styles.categoryChoice,
+                          selected && styles.categoryChoiceActive,
+                          pressed && styles.pressed,
+                        ]}
+                      >
+                        <CategoryObject categoryId={category.id} size="small" />
+                        <Text numberOfLines={1} style={[styles.categoryChoiceText, selected && styles.categoryChoiceTextActive]}>
+                          {category.label}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </AnimatedDropdown>
+
+              <View style={styles.receiptAmountBlock}>
+                <Text style={styles.receiptKicker}>Monto MXN</Text>
+                <View style={styles.receiptAmountLine}>
+                  <Text style={styles.receiptCurrency}>$</Text>
+                  <TextInput
+                    accessibilityLabel="Monto MXN"
+                    keyboardType="decimal-pad"
+                    onChangeText={setExpenseAmount}
+                    placeholder="0.00"
+                    placeholderTextColor={colors.mutedInk}
+                    style={styles.receiptAmountInput}
+                    value={expenseAmount}
+                  />
+                </View>
               </View>
-            </View>
 
-            <TextInput
-              accessibilityLabel="Concepto del gasto"
-              onChangeText={setExpenseTitle}
-              placeholder="¿Qué se pagó? Ej. Tacos después del cine"
-              placeholderTextColor={colors.mutedInk}
-              style={styles.receiptTitleInput}
-              value={expenseTitle}
-            />
+              <TextInput
+                accessibilityLabel="Concepto del gasto"
+                onChangeText={setExpenseTitle}
+                placeholder="¿Qué se pagó? Ej. Tacos después del cine"
+                placeholderTextColor={colors.mutedInk}
+                style={styles.receiptTitleInput}
+                value={expenseTitle}
+              />
+            </View>
           </View>
 
-          <View style={styles.composerPathPanel}>
-            <View style={styles.composerPathHeader}>
-              <Text style={styles.composerSectionTitle}>Ruta del dinero</Text>
+          <View style={styles.captureRouteShell}>
+            <View style={styles.captureRouteHeader}>
+              <View style={styles.captureStepActive}>
+                <Text style={styles.captureStepNumber}>2</Text>
+              </View>
+              <View style={styles.composerTitleBlock}>
+                <Text style={styles.composerSectionTitle}>Quién movió dinero</Text>
+                <Text style={styles.captureRouteText}>Elige quién pagó y quién participa. Todo se divide igual por ahora.</Text>
+              </View>
               <Pill label="Partes iguales" tone="neutral" />
             </View>
 
@@ -2248,6 +2279,9 @@ export function MainScreen() {
 
           <View style={styles.composerReview}>
             <View style={styles.composerReviewTop}>
+              <View style={styles.captureStepActive}>
+                <Text style={styles.captureStepNumber}>3</Text>
+              </View>
               <View style={styles.splitPreviewIcon}>
                 <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
               </View>
@@ -2279,19 +2313,25 @@ export function MainScreen() {
               </View>
             ) : null}
 
-            <ActionButton
-              disabled={
-                selectedMembers.length === 0 ||
-                !expenseTitle.trim() ||
-                !expenseAmount.trim() ||
-                !payerId ||
-                participantIds.length === 0 ||
-                !participantIds.includes(payerId)
-              }
-              icon="receipt-text-plus"
-              label="Guardar gasto"
-              onPress={submitExpense}
-            />
+            <View style={styles.captureSaveDock}>
+              <View style={styles.captureSaveCopy}>
+                <Text style={styles.captureSaveTitle}>Guardar gasto local</Text>
+                <Text style={styles.captureSaveText}>No cobra ni envía dinero. Solo actualiza balances del grupo.</Text>
+              </View>
+              <ActionButton
+                disabled={
+                  selectedMembers.length === 0 ||
+                  !expenseTitle.trim() ||
+                  !expenseAmount.trim() ||
+                  !payerId ||
+                  participantIds.length === 0 ||
+                  !participantIds.includes(payerId)
+                }
+                icon="receipt-text-plus"
+                label="Guardar"
+                onPress={submitExpense}
+              />
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -3005,6 +3045,117 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: spacing.xs,
     minWidth: 0,
+  },
+  captureHeader: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+  },
+  captureKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  captureRouteHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  captureRouteShell: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  captureRouteText: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  captureSaveCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  captureSaveDock: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  captureSaveText: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  captureSaveTitle: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "900",
+    lineHeight: 17,
+  },
+  captureShell: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  captureStep: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: 14,
+    borderWidth: 1,
+    height: 28,
+    justifyContent: "center",
+    width: 28,
+  },
+  captureStepActive: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: 14,
+    height: 28,
+    justifyContent: "center",
+    width: 28,
+  },
+  captureStepLine: {
+    backgroundColor: colors.border,
+    flex: 1,
+    width: 2,
+  },
+  captureStepNumber: {
+    color: colors.surface,
+    fontSize: typography.micro,
+    fontWeight: "900",
+  },
+  captureStepNumberMuted: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+  },
+  captureStepRail: {
+    alignItems: "center",
+    paddingTop: spacing.sm,
+    width: 30,
+  },
+  captureSubtitle: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "700",
+    lineHeight: 18,
+  },
+  captureTitle: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
   },
   externalPayAction: {
     alignItems: "center",
@@ -5793,7 +5944,6 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: radius.lg,
     borderWidth: 1,
-    flex: 1,
     flexDirection: "row",
     gap: spacing.sm,
     minHeight: 58,
@@ -5816,6 +5966,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: radius.lg,
     borderWidth: 1,
+    flex: 1,
     gap: spacing.md,
     padding: spacing.md,
   },
@@ -5832,6 +5983,36 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     textTransform: "uppercase",
   },
+  receiptObjectCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  receiptObjectIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 20,
+    height: 40,
+    justifyContent: "center",
+    width: 40,
+  },
+  receiptObjectMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  receiptObjectTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+  },
+  receiptObjectTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
   receiptTitleInput: {
     backgroundColor: colors.canvas,
     borderColor: colors.border,
@@ -5844,8 +6025,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   receiptTopLine: {
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: "stretch",
+    flexDirection: "column",
     gap: spacing.sm,
   },
   sharePreviewAmount: {
@@ -5919,6 +6100,7 @@ const styles = StyleSheet.create({
   },
   sheetTrustChip: {
     alignItems: "center",
+    alignSelf: "flex-start",
     backgroundColor: colors.warmWash,
     borderRadius: radius.sm,
     flexDirection: "row",
