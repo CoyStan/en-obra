@@ -1751,89 +1751,118 @@ export function MainScreen() {
     );
   };
 
-  const renderActivity = () => (
-    <View style={styles.ledgerStory}>
-      {!selectedGroup || !selectedSummary || !activeGroupSummary ? (
-        <EmptyState
-          action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
-          body="Selecciona un grupo para ver la actividad."
-          icon="history"
-          title="Sin grupo activo"
-        />
-      ) : activity.length === 0 ? (
-        <EmptyState
-          body="Cuando agregues gastos o marques arreglos, aparecerán aquí."
-          icon="receipt-text-plus"
-          title="Aún no hay actividad"
-        />
-      ) : (
-        <>
-          <View style={styles.ledgerHero}>
-            <View style={styles.ledgerHeroTop}>
-              <View style={styles.ledgerHeroIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="book-clock-outline" size={22} />
-              </View>
-              <View style={styles.ledgerHeroCopy}>
-                <Text style={styles.ledgerKicker}>Libro local</Text>
-                <Text style={styles.ledgerHeroTitle}>{selectedGroup.name}</Text>
-                <Text style={styles.ledgerHeroText}>Historial de gastos, arreglos y cambios guardados en este dispositivo.</Text>
-              </View>
-              <ActionButton icon="restore" label="Demo" onPress={resetDemo} tone="ghost" />
-            </View>
+  const renderActivity = () => {
+    if (!selectedGroup || !selectedSummary || !activeGroupSummary) {
+      return (
+        <View style={styles.ledgerStory}>
+          <EmptyState
+            action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
+            body="Selecciona un grupo para ver la actividad."
+            icon="history"
+            title="Sin grupo activo"
+          />
+        </View>
+      );
+    }
 
-            <View style={styles.ledgerMetricRow}>
-              <View style={styles.ledgerMetric}>
-                <Text style={styles.ledgerMetricLabel}>Movimientos</Text>
-                <Text style={styles.ledgerMetricValue}>{activity.length}</Text>
-              </View>
-              <View style={styles.ledgerMetric}>
-                <Text style={styles.ledgerMetricLabel}>Gastado</Text>
-                <Text adjustsFontSizeToFit minimumFontScale={0.62} numberOfLines={1} style={styles.ledgerMetricValue}>
-                  {formatHeroMoney(activeGroupSummary.totalSpentCents)}
-                </Text>
-              </View>
-              <View style={styles.ledgerMetric}>
-                <Text style={styles.ledgerMetricLabel}>Abierto</Text>
-                <Text
-                  adjustsFontSizeToFit
-                  minimumFontScale={0.62}
-                  numberOfLines={1}
-                  style={[styles.ledgerMetricValue, activeGroupSummary.openBalanceCents ? styles.ledgerMetricDue : styles.ledgerMetricOk]}
-                >
-                  {formatHeroMoney(activeGroupSummary.openBalanceCents)}
-                </Text>
-              </View>
-            </View>
+    if (activity.length === 0) {
+      return (
+        <View style={styles.ledgerStory}>
+          <EmptyState
+            body="Cuando agregues gastos o marques arreglos, aparecerán aquí."
+            icon="receipt-text-plus"
+            title="Aún no hay actividad"
+          />
+        </View>
+      );
+    }
 
-            <View style={styles.ledgerTrustStrip}>
-              <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={15} />
-              <Text style={styles.ledgerTrustText}>Registro local · MXN · sin pagos reales</Text>
-            </View>
+    const latestActivity = activity[0];
+    const settlementCount = activity.filter((item) => item.type === "settlement").length;
 
-            <View style={styles.ledgerActionRow}>
-              <ActionButton icon="receipt-text-plus" label="Agregar gasto" onPress={() => setShowExpenseForm(true)} />
-              <ActionButton icon="scale-balance" label="Balance" onPress={() => openTab("balance")} tone="secondary" />
+    return (
+      <View style={styles.ledgerStory}>
+        <View style={styles.auditHero}>
+          <View style={styles.auditHeroTop}>
+            <View style={styles.auditSeal}>
+              <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={22} />
+            </View>
+            <View style={styles.ledgerHeroCopy}>
+              <Text style={styles.ledgerKicker}>Bitácora local</Text>
+              <Text numberOfLines={1} style={styles.ledgerHeroTitle}>{selectedGroup.name}</Text>
+              <Text numberOfLines={2} style={styles.ledgerHeroText}>Registro local de gastos y arreglos. No se mueve dinero.</Text>
+            </View>
+            <Pressable
+              accessibilityLabel="Reiniciar datos demo"
+              accessibilityRole="button"
+              hitSlop={4}
+              onPress={resetDemo}
+              style={({ pressed }) => [styles.auditDemoButton, pressed && styles.pressed]}
+            >
+              <MaterialCommunityIcons color={colors.primaryDark} name="restore" size={15} />
+              <Text style={styles.auditDemoText}>Demo</Text>
+            </Pressable>
+          </View>
+
+          <View style={styles.auditSummaryGrid}>
+            <View style={styles.auditSummaryItem}>
+              <Text style={styles.ledgerMetricLabel}>Movimientos</Text>
+              <Text style={styles.auditSummaryValue}>{activity.length}</Text>
+            </View>
+            <View style={styles.auditSummaryItem}>
+              <Text style={styles.ledgerMetricLabel}>Arreglos</Text>
+              <Text style={styles.auditSummaryValue}>{settlementCount}</Text>
+            </View>
+            <View style={styles.auditSummaryItemWide}>
+              <Text style={styles.ledgerMetricLabel}>Abierto</Text>
+              <Text
+                adjustsFontSizeToFit
+                minimumFontScale={0.72}
+                numberOfLines={1}
+                style={[styles.auditSummaryMoney, activeGroupSummary.openBalanceCents ? styles.ledgerMetricDue : styles.ledgerMetricOk]}
+              >
+                MXN {formatHeroMoney(activeGroupSummary.openBalanceCents)}
+              </Text>
             </View>
           </View>
 
-          <View style={styles.ledgerTimeline}>
-            {groupActivityByDate(activity).map((section) => (
-              <View key={section.dateKey} style={styles.ledgerDayCard}>
-                <View style={styles.ledgerDayHeader}>
-                  <View>
-                    <Text style={styles.ledgerKicker}>Día</Text>
-                    <Text style={styles.ledgerDayTitle}>{section.label}</Text>
-                  </View>
-                  <Pill label={`${section.items.length} mov.`} tone="neutral" />
+          <View style={styles.latestProofCard}>
+            <View style={styles.latestProofIcon}>
+              <MaterialCommunityIcons color={colors.primaryDark} name={activityIcon(latestActivity)} size={18} />
+            </View>
+            <View style={styles.latestProofCopy}>
+              <Text style={styles.ledgerKicker}>Última prueba</Text>
+              <Text numberOfLines={1} style={styles.latestProofTitle}>{latestActivity.title}</Text>
+              <Text numberOfLines={1} style={styles.latestProofMeta}>
+                {formatDate(latestActivity.createdAt)} · {latestActivity.actorName ?? "Registro local"}
+              </Text>
+            </View>
+            {latestActivity.amountCents > 0 ? <Amount cents={latestActivity.amountCents} tone={latestActivity.type === "settlement" ? "success" : "neutral"} /> : null}
+          </View>
+
+          <View style={styles.ledgerActionRow}>
+            <ActionButton icon="receipt-text-plus" label="Agregar gasto" onPress={() => setShowExpenseForm(true)} />
+            <ActionButton icon="scale-balance" label="Balance" onPress={() => openTab("balance")} tone="secondary" />
+          </View>
+        </View>
+
+        <View style={styles.ledgerTimeline}>
+          {groupActivityByDate(activity).map((section) => (
+            <View key={section.dateKey} style={styles.ledgerDayCard}>
+              <View style={styles.ledgerDayHeader}>
+                <View>
+                  <Text style={styles.ledgerKicker}>Día</Text>
+                  <Text style={styles.ledgerDayTitle}>{section.label}</Text>
                 </View>
-                {section.items.map((item) => <ActivityRow item={item} key={item.id} />)}
+                <Pill label={`${section.items.length} mov.`} tone="neutral" />
               </View>
-            ))}
-          </View>
-        </>
-      )}
-    </View>
-  );
+              {section.items.map((item) => <ActivityRow item={item} key={item.id} />)}
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
 
   const renderAccount = () => (
     <View style={styles.profileCenter}>
@@ -5751,6 +5780,122 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 24,
     elevation: 3,
+  },
+  auditHero: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+    shadowColor: colors.ink,
+    shadowOffset: { height: 14, width: 0 },
+    shadowOpacity: 0.06,
+    shadowRadius: 24,
+    elevation: 3,
+  },
+  auditHeroTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  auditSeal: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderColor: "rgba(8, 127, 106, 0.18)",
+    borderRadius: 22,
+    borderWidth: 1,
+    height: 44,
+    justifyContent: "center",
+    width: 44,
+  },
+  auditDemoButton: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 36,
+    paddingHorizontal: spacing.sm,
+  },
+  auditDemoText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "900",
+  },
+  auditSummaryGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  auditSummaryItem: {
+    backgroundColor: colors.canvas,
+    borderRadius: radius.md,
+    flex: 1,
+    gap: 2,
+    minHeight: 52,
+    minWidth: 88,
+    padding: spacing.sm,
+  },
+  auditSummaryItemWide: {
+    backgroundColor: colors.canvas,
+    borderRadius: radius.md,
+    flexBasis: "100%",
+    gap: 2,
+    minHeight: 52,
+    padding: spacing.sm,
+  },
+  auditSummaryValue: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  auditSummaryMoney: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  latestProofCard: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderColor: "rgba(8, 127, 106, 0.18)",
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 72,
+    padding: spacing.sm,
+  },
+  latestProofIcon: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  latestProofCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  latestProofTitle: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "900",
+    lineHeight: 17,
+  },
+  latestProofMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 14,
   },
   ledgerHeroCopy: {
     flex: 1,

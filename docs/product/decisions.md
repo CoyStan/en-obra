@@ -493,3 +493,14 @@ with whom. A map structure is easier to scan than stacked dashboard cards and
 better matches premium consumer-finance references from Open Design. The
 member ledger remains available for detail, but the first viewport now explains
 the current route and preserves exact MXN amounts plus `Sin pagos reales`.
+
+### Treat Activity As A Local Audit Trail
+
+Decision: The `Actividad` tab should lead with a local audit certificate:
+group context, movement counts, settlement count, open MXN amount, latest proof,
+and action shortcuts before the daily timeline.
+
+Rationale: Activity is not just a feed; it is the trust record for who changed
+money state and when. Presenting it as a bitácora/audit trail reinforces that
+settlements are local records, not real payments, while making the latest event
+and daily timeline easier to scan.
