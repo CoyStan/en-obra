@@ -2495,6 +2495,42 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0058"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "src/theme/theme.ts",
+        "docs/product",
+        "reports/evidence/WORK-APP-0059",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real_payments",
+        "payment_rails",
+        "production_backend",
+        "secrets",
+        "paid_services",
+        "legal_payment_decisions",
+        "destructive_cleanup"
+      ],
+      "id": "WORK-APP-0059",
+      "title": "External settlement agreement flow",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "high",
+      "status": "in-review",
+      "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0059/**, company-os/workspace.json. Redesign settlement confirmation into a premium external-pay agreement flow: visual payer-to-receiver route, MXN amount, outside-the-app boundary, local record effect, before/after agreement language, clear cancel/record actions, Android-first screenshot evidence. Preserve mark settlement paid behavior and avoid real payment language. Forbidden: real payments, payment rails, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
+      "acceptance_target": "Marking a settlement as paid feels like recording an outside-the-app agreement, not initiating a payment; users can see who pays whom, amount, local-only effect, and no-real-payments boundary before confirming.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0059"
     }
   ],
   "attempts": [
@@ -3463,6 +3499,21 @@
       "result": "Replaced the simple split preview list with a visual split-impact object and Android-width screenshot evidence.",
       "commits": [
         "208970972fbfb07c7335dc621e038973708f85e7"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0059",
+      "work_item_id": "WORK-APP-0059",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "started_at": "2026-06-21T13:05:00Z",
+      "cleanliness": "clean",
+      "result": "Redesigned settlement confirmation into an external-pay agreement flow with Android-width screenshot evidence.",
+      "commits": [
+        "615fe0cc8487f6db802a9aea0125eb49a43a5e0a"
       ]
     }
   ],
@@ -4638,6 +4689,16 @@
       "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width split-impact screenshots passed for the visual preview redesign.",
       "freshness": "fresh",
       "timestamp": "2026-06-21T12:55:00Z"
+    },
+    {
+      "id": "EVIDENCE-APP-0059",
+      "work_item_id": "WORK-APP-0059",
+      "attempt_id": "ATTEMPT-APP-0059",
+      "head_sha": "615fe0cc8487f6db802a9aea0125eb49a43a5e0a",
+      "status": "passed",
+      "summary": "Typecheck, test suite, Expo public config, Company OS scope, web export, and Android-width settlement agreement screenshots passed for the external-pay flow redesign.",
+      "freshness": "fresh",
+      "timestamp": "2026-06-21T13:20:00Z"
     }
   ],
   "review_verdicts": [
@@ -5250,6 +5311,14 @@
       "reviewer": "PALARI-DESIGN-REVIEW",
       "verdict": "accept-ready",
       "timestamp": "2026-06-21T12:55:00Z"
+    },
+    {
+      "id": "REVIEW-APP-0059",
+      "work_item_id": "WORK-APP-0059",
+      "reviewed_head": "615fe0cc8487f6db802a9aea0125eb49a43a5e0a",
+      "reviewer": "PALARI-DESIGN-REVIEW",
+      "verdict": "accept-ready",
+      "timestamp": "2026-06-21T13:20:00Z"
     }
   ],
   "human_decisions": [
@@ -7862,6 +7931,40 @@
       "attempt_id": "ATTEMPT-APP-0058",
       "actor": "PALARI-DESIGN",
       "timestamp": "2026-06-21T12:55:00Z"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added-external-agreement-header",
+        "added-payer-receiver-route-object",
+        "added-local-only-boundary-panel",
+        "added-before-after-effect-language",
+        "captured-android-width-screenshots",
+        "ran-typecheck-tests-expo-config-scope"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0059/technical-report.md",
+        "reports/evidence/WORK-APP-0059/settlement-agreement-390x844.png"
+      ],
+      "not_done": [
+        "real-payments",
+        "payment-rails",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions"
+      ],
+      "id": "RECEIPT-APP-0059",
+      "work_item_id": "WORK-APP-0059",
+      "attempt_id": "ATTEMPT-APP-0059",
+      "actor": "PALARI-DESIGN",
+      "timestamp": "2026-06-21T13:20:00Z"
     }
   ],
   "decisions": [
@@ -8589,6 +8692,15 @@
       "what_happened": "Replaced the simple list with total, equal-parts chip, segmented bar, payer badge, and per-person share bars.",
       "what_changed": "Users can see how the receipt amount becomes each participant share before saving.",
       "timestamp": "2026-06-21T12:55:00Z"
+    },
+    {
+      "id": "OUTCOME-APP-0059",
+      "work_item_id": "WORK-APP-0059",
+      "summary": "Settlement confirmation now behaves like an external-pay agreement flow.",
+      "status": "completed",
+      "what_happened": "Replaced generic confirmation with payer-to-receiver route, outside-the-app boundary, local record effect, and clearer actions.",
+      "what_changed": "Users can tell they are recording an agreement outside the app, not initiating a payment.",
+      "timestamp": "2026-06-21T13:20:00Z"
     }
   ]
 }
