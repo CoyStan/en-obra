@@ -531,33 +531,41 @@ function Field({
 
 function ActivityRow({ item }: { item: ActivityItem }) {
   const hasAmount = item.amountCents > 0;
+  const isSettlement = item.type === "settlement";
   return (
-    <View style={styles.activityRow}>
-      <View style={styles.activityRail}>
-        <View style={[styles.activityRailDot, item.type === "settlement" && styles.activityRailDotSettlement]} />
-      </View>
-      {item.type === "expense" ? (
-        <CategoryObject categoryId={item.categoryId} size="small" />
-      ) : (
-        <View style={[styles.activityIcon, activityTone(item)]}>
-        <MaterialCommunityIcons
-          color={item.type === "settlement" ? colors.primary : colors.mutedInk}
-          name={activityIcon(item)}
-          size={18}
-        />
+    <View style={[styles.activityRow, isSettlement && styles.activityRowSettlement]}>
+      <View style={styles.activityProofColumn}>
+        <View style={[styles.activityProofIcon, isSettlement && styles.activityProofIconSettlement]}>
+          {item.type === "expense" ? (
+            <CategoryObject categoryId={item.categoryId} size="small" />
+          ) : (
+            <MaterialCommunityIcons
+              color={colors.primaryDark}
+              name={activityIcon(item)}
+              size={18}
+            />
+          )}
         </View>
-      )}
+        <View style={[styles.activityProofLine, isSettlement && styles.activityProofLineSettlement]} />
+      </View>
       <View style={styles.activityCopy}>
         <View style={styles.activityMetaLine}>
-          {item.label ? <Pill label={item.label} tone={item.type === "settlement" ? "gold" : "neutral"} /> : null}
+          {item.label ? <Pill label={item.label} tone={isSettlement ? "gold" : "neutral"} /> : null}
+          {isSettlement ? <Pill label="Registro local" tone="success" /> : null}
           {item.actorName ? <Text style={styles.activityActor}>{item.actorName}</Text> : null}
         </View>
         <Text numberOfLines={2} style={styles.activityTitle}>{item.title}</Text>
         <Text numberOfLines={2} style={styles.activitySubtitle}>{item.subtitle}</Text>
+        {isSettlement ? (
+          <View style={styles.activityProofNote}>
+            <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
+            <Text style={styles.activityProofNoteText}>Sin pagos reales · acuerdo guardado</Text>
+          </View>
+        ) : null}
       </View>
       <View style={styles.activityAmount}>
         <Text style={styles.activityDate}>{formatDate(item.createdAt)}</Text>
-        {hasAmount ? <Amount cents={item.amountCents} tone={item.type === "settlement" ? "success" : "neutral"} /> : null}
+        {hasAmount ? <Amount cents={item.amountCents} tone={isSettlement ? "success" : "neutral"} /> : null}
       </View>
     </View>
   );
@@ -1684,33 +1692,86 @@ export function MainScreen() {
   );
 
   const renderActivity = () => (
-    <View style={styles.tabContent}>
-      <Section
-        action={<ActionButton icon="restore" label="Demo" onPress={resetDemo} tone="secondary" />}
-        title="Historial"
-      >
-        {!selectedGroup ? (
-          <EmptyState
-            action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
-            body="Selecciona un grupo para ver la actividad."
-            icon="history"
-            title="Sin grupo activo"
-          />
-        ) : activity.length === 0 ? (
-          <EmptyState
-            body="Cuando agregues gastos o marques arreglos, aparecerán aquí."
-            icon="receipt-text-plus"
-            title="Aún no hay actividad"
-          />
-        ) : (
-          groupActivityByDate(activity).map((section) => (
-            <View key={section.dateKey} style={styles.activitySection}>
-              <Text style={styles.activitySectionLabel}>{section.label}</Text>
-              {section.items.map((item) => <ActivityRow item={item} key={item.id} />)}
+    <View style={styles.ledgerStory}>
+      {!selectedGroup || !selectedSummary || !activeGroupSummary ? (
+        <EmptyState
+          action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
+          body="Selecciona un grupo para ver la actividad."
+          icon="history"
+          title="Sin grupo activo"
+        />
+      ) : activity.length === 0 ? (
+        <EmptyState
+          body="Cuando agregues gastos o marques arreglos, aparecerán aquí."
+          icon="receipt-text-plus"
+          title="Aún no hay actividad"
+        />
+      ) : (
+        <>
+          <View style={styles.ledgerHero}>
+            <View style={styles.ledgerHeroTop}>
+              <View style={styles.ledgerHeroIcon}>
+                <MaterialCommunityIcons color={colors.primaryDark} name="book-clock-outline" size={22} />
+              </View>
+              <View style={styles.ledgerHeroCopy}>
+                <Text style={styles.ledgerKicker}>Libro local</Text>
+                <Text style={styles.ledgerHeroTitle}>{selectedGroup.name}</Text>
+                <Text style={styles.ledgerHeroText}>Historial de gastos, arreglos y cambios guardados en este dispositivo.</Text>
+              </View>
+              <ActionButton icon="restore" label="Demo" onPress={resetDemo} tone="ghost" />
             </View>
-          ))
-        )}
-      </Section>
+
+            <View style={styles.ledgerMetricRow}>
+              <View style={styles.ledgerMetric}>
+                <Text style={styles.ledgerMetricLabel}>Movimientos</Text>
+                <Text style={styles.ledgerMetricValue}>{activity.length}</Text>
+              </View>
+              <View style={styles.ledgerMetric}>
+                <Text style={styles.ledgerMetricLabel}>Gastado</Text>
+                <Text adjustsFontSizeToFit minimumFontScale={0.62} numberOfLines={1} style={styles.ledgerMetricValue}>
+                  {formatHeroMoney(activeGroupSummary.totalSpentCents)}
+                </Text>
+              </View>
+              <View style={styles.ledgerMetric}>
+                <Text style={styles.ledgerMetricLabel}>Abierto</Text>
+                <Text
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.62}
+                  numberOfLines={1}
+                  style={[styles.ledgerMetricValue, activeGroupSummary.openBalanceCents ? styles.ledgerMetricDue : styles.ledgerMetricOk]}
+                >
+                  {formatHeroMoney(activeGroupSummary.openBalanceCents)}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.ledgerTrustStrip}>
+              <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={15} />
+              <Text style={styles.ledgerTrustText}>Registro local · MXN · sin pagos reales</Text>
+            </View>
+
+            <View style={styles.ledgerActionRow}>
+              <ActionButton icon="receipt-text-plus" label="Agregar gasto" onPress={() => setShowExpenseForm(true)} />
+              <ActionButton icon="scale-balance" label="Balance" onPress={() => openTab("balance")} tone="secondary" />
+            </View>
+          </View>
+
+          <View style={styles.ledgerTimeline}>
+            {groupActivityByDate(activity).map((section) => (
+              <View key={section.dateKey} style={styles.ledgerDayCard}>
+                <View style={styles.ledgerDayHeader}>
+                  <View>
+                    <Text style={styles.ledgerKicker}>Día</Text>
+                    <Text style={styles.ledgerDayTitle}>{section.label}</Text>
+                  </View>
+                  <Pill label={`${section.items.length} mov.`} tone="neutral" />
+                </View>
+                {section.items.map((item) => <ActivityRow item={item} key={item.id} />)}
+              </View>
+            ))}
+          </View>
+        </>
+      )}
     </View>
   );
 
@@ -2615,7 +2676,7 @@ export function MainScreen() {
 
           {activeTab === "groups" ? renderGroups() : null}
           {activeTab === "balance" ? renderBalance() : null}
-          {activeTab === "activity" ? renderWorkspaceHome() : null}
+          {activeTab === "activity" ? renderActivity() : null}
           {activeTab === "account" ? renderAccount() : null}
         </ScrollView>
 
@@ -4082,6 +4143,50 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 32,
   },
+  activityProofColumn: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    gap: spacing.xs,
+    width: 42,
+  },
+  activityProofIcon: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: 20,
+    borderWidth: 1,
+    height: 40,
+    justifyContent: "center",
+    width: 40,
+  },
+  activityProofIconSettlement: {
+    backgroundColor: colors.successWash,
+    borderColor: "rgba(8, 127, 106, 0.24)",
+  },
+  activityProofLine: {
+    backgroundColor: colors.border,
+    flex: 1,
+    minHeight: 16,
+    width: 2,
+  },
+  activityProofLineSettlement: {
+    backgroundColor: "rgba(8, 127, 106, 0.24)",
+  },
+  activityProofNote: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    backgroundColor: colors.successWash,
+    borderRadius: 999,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 26,
+    paddingHorizontal: spacing.sm,
+  },
+  activityProofNoteText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "800",
+  },
   activityRail: {
     alignItems: "center",
     alignSelf: "stretch",
@@ -4110,16 +4215,23 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   activityRow: {
-    alignItems: "center",
+    alignItems: "flex-start",
     backgroundColor: "transparent",
     borderColor: colors.border,
     borderRadius: 0,
     borderBottomWidth: 1,
     flexDirection: "row",
-    gap: spacing.md,
-    minHeight: 60,
+    gap: spacing.sm,
+    minHeight: 78,
     paddingHorizontal: 0,
     paddingVertical: spacing.md,
+  },
+  activityRowSettlement: {
+    backgroundColor: "rgba(232, 246, 240, 0.34)",
+    borderRadius: radius.lg,
+    borderBottomWidth: 0,
+    marginVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
   },
   activitySettlement: {
     backgroundColor: colors.surfaceTinted,
@@ -4944,6 +5056,11 @@ const styles = StyleSheet.create({
   ledgerAmountSuccess: {
     color: colors.primary,
   },
+  ledgerActionRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
   ledgerCopy: {
     flex: 1,
     gap: spacing.xs,
@@ -4968,6 +5085,111 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     overflow: "hidden",
   },
+  ledgerDayCard: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.xs,
+    overflow: "hidden",
+    padding: spacing.md,
+  },
+  ledgerDayHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: spacing.md,
+    paddingBottom: spacing.xs,
+  },
+  ledgerDayTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+    textTransform: "capitalize",
+  },
+  ledgerHero: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+    shadowColor: colors.ink,
+    shadowOffset: { height: 14, width: 0 },
+    shadowOpacity: 0.06,
+    shadowRadius: 24,
+    elevation: 3,
+  },
+  ledgerHeroCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  ledgerHeroIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 20,
+    height: 40,
+    justifyContent: "center",
+    width: 40,
+  },
+  ledgerHeroText: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "600",
+    lineHeight: 18,
+  },
+  ledgerHeroTitle: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  ledgerHeroTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  ledgerKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  ledgerMetric: {
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flex: 1,
+    gap: 2,
+    minHeight: 62,
+    padding: spacing.sm,
+  },
+  ledgerMetricDue: {
+    color: colors.due,
+  },
+  ledgerMetricLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  ledgerMetricOk: {
+    color: colors.primaryDark,
+  },
+  ledgerMetricRow: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  ledgerMetricValue: {
+    color: colors.ink,
+    fontSize: typography.micro,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 15,
+  },
   ledgerName: {
     color: colors.ink,
     flex: 1,
@@ -4988,6 +5210,27 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     minHeight: 78,
     padding: spacing.md,
+  },
+  ledgerStory: {
+    gap: spacing.md,
+  },
+  ledgerTimeline: {
+    gap: spacing.md,
+  },
+  ledgerTrustStrip: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    backgroundColor: colors.warmWash,
+    borderRadius: 999,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 30,
+    paddingHorizontal: spacing.sm,
+  },
+  ledgerTrustText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "800",
   },
   loadingBand: {
     alignItems: "center",
