@@ -504,3 +504,14 @@ Rationale: Activity is not just a feed; it is the trust record for who changed
 money state and when. Presenting it as a bitácora/audit trail reinforces that
 settlements are local records, not real payments, while making the latest event
 and daily timeline easier to scan.
+
+### Treat Groups As Workspace Rows
+
+Decision: Group selection should behave like a premium workspace switcher:
+compact group rows with a route preview, right-side open MXN rail, member stack,
+and clear active state instead of large repeated cards.
+
+Rationale: Groups are the parent context for the rest of the app. Workspace
+rows make switching groups faster to scan, preserve the "group controls all
+other tabs" mental model, and reduce visual weight while keeping active group,
+member count, open balance, and `Sin pagos reales` cues visible.

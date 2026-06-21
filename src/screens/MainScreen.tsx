@@ -451,9 +451,7 @@ function GroupCard({
   const preview = getBalancePreview(data, group.id);
   const previewCopy =
     preview.creditor && preview.debtor
-      ? `${preview.creditor.member.name} recibe ${formatMoney(preview.creditor.netCents)} · ${
-          preview.debtor.member.name
-        } debe ${formatMoney(Math.abs(preview.debtor.netCents))}`
+      ? `${preview.creditor.member.name} recibe · ${preview.debtor.member.name} debe`
       : "Todo en paz por ahora";
 
   return (
@@ -483,20 +481,26 @@ function GroupCard({
           <MaterialCommunityIcons color={colors.primaryDark} name="chevron-right" size={19} />
         </View>
       </View>
-      <View style={styles.groupPreview}>
-        <MaterialCommunityIcons color={summary.openBalanceCents ? colors.due : colors.primary} name="swap-horizontal" size={16} />
-        <Text numberOfLines={1} style={styles.groupPreviewText}>{previewCopy}</Text>
-      </View>
       <View style={styles.groupPeopleRow}>
-        <AvatarStack members={members} />
-        <View style={styles.groupPeopleBadge}>
-          <Text style={styles.groupPeopleBadgeCount}>{members.length}</Text>
-          <Text style={styles.groupPeopleBadgeText}>pers.</Text>
+        <View style={styles.groupRoutePreview}>
+          <MaterialCommunityIcons color={summary.openBalanceCents ? colors.due : colors.primary} name="swap-horizontal" size={16} />
+          <Text numberOfLines={2} style={styles.groupPreviewText}>{previewCopy}</Text>
         </View>
-        <View style={styles.groupOpenAmount}>
+        <View style={styles.groupCardAmountRail}>
           <Text style={styles.groupOpenLabel}>Abierto</Text>
-          <Amount cents={summary.openBalanceCents} tone={summary.openBalanceCents ? "due" : "success"} />
+          <Text
+            adjustsFontSizeToFit
+            minimumFontScale={0.7}
+            numberOfLines={1}
+            style={[styles.groupCardAmount, summary.openBalanceCents ? styles.groupCardAmountDue : styles.groupCardAmountOk]}
+          >
+            MXN {formatHeroMoney(summary.openBalanceCents)}
+          </Text>
         </View>
+      </View>
+      <View style={styles.groupWorkspaceFooter}>
+        <AvatarStack members={members} />
+        <Text style={styles.groupWorkspaceFooterText}>{members.length} integrantes · toca para abrir Inicio</Text>
       </View>
     </Pressable>
   );
@@ -5478,10 +5482,56 @@ const styles = StyleSheet.create({
     width: 44,
   },
   groupPeopleRow: {
+    alignItems: "stretch",
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 64,
+  },
+  groupRoutePreview: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.md,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minWidth: 0,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  groupCardAmountRail: {
+    alignItems: "flex-end",
+    backgroundColor: colors.surfaceStrong,
+    borderRadius: radius.md,
+    flex: 0.78,
+    justifyContent: "center",
+    minWidth: 116,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  groupCardAmount: {
+    fontSize: typography.small,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 17,
+    textAlign: "right",
+  },
+  groupCardAmountDue: {
+    color: colors.due,
+  },
+  groupCardAmountOk: {
+    color: colors.primaryDark,
+  },
+  groupWorkspaceFooter: {
     alignItems: "center",
     flexDirection: "row",
     gap: spacing.sm,
-    minHeight: 38,
+  },
+  groupWorkspaceFooterText: {
+    color: colors.mutedInk,
+    flex: 1,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 15,
   },
   groupPeopleBadge: {
     alignItems: "center",
