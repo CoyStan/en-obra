@@ -394,6 +394,11 @@ preflight, technical Data Safety draft, privacy scan, secret/config scan,
 retention readiness, demo-only boundaries, no-go guarantees, and next human
 actions into one deterministic review artifact.
 
+`src/backend/releaseBlockers.ts` classifies the remaining handoff blockers by
+owner and category. This separates founder access/storage decisions from
+legal/privacy, Play Console, remote deletion, storage operations, and
+secret/security blockers before release review.
+
 The committed handoff artifact is `docs/backend/release-handoff-v1.json`.
 `src/__tests__/releaseHandoff.test.ts` verifies the artifact matches the
 generator and blocks if release privacy or secret risks are detected.
@@ -431,6 +436,7 @@ to stay ready before Play internal testing:
 - technical Data Safety inventory
 - technical Play Data Safety draft
 - backend release handoff summary
+- release blocker classification
 - release privacy/dependency scan
 - release secret/config safety scan
 - redacted support bundle

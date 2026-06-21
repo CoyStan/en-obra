@@ -3,6 +3,7 @@ import { createBackendReleaseGateReport } from "./backendReleaseGate";
 import { createDataSafetyInventory } from "./dataSafetyInventory";
 import { createPlayDataSafetyDraft } from "./playDataSafetyDraft";
 import { createPlayPreflightReport } from "./playPreflight";
+import { classifyReleaseBlockers, type ReleaseBlockerClassificationReport } from "./releaseBlockers";
 import { createReleasePrivacyScan, type ReleasePrivacyScanInput } from "./releasePrivacyScan";
 import { createRetentionReadinessReport } from "./retentionReadiness";
 import type { SecretSafetyTarget } from "./secretSafetyScan";
@@ -33,6 +34,7 @@ export type ReleaseHandoffSummary = {
   demoOnly: string[];
   noGoGuarantees: string[];
   humanBlockers: string[];
+  blockerClassification: ReleaseBlockerClassificationReport;
   nextHumanActions: string[];
   evidence: string[];
   commands: string[];
@@ -66,6 +68,12 @@ export function createReleaseHandoffSummary(input: ReleaseHandoffInput): Release
     privacyScan.status === "pass" &&
     secretSafety.status === "pass" &&
     playDataSafetyDraft.status === "technical-draft";
+  const humanBlockers = uniqueSorted([
+    ...preflight.humanBlockers,
+    ...playDataSafetyDraft.humanBlockers,
+    "founder access/provider decision",
+    "founder storage/provider decision",
+  ]);
 
   return {
     generatedAt: input.generatedAt,
@@ -96,12 +104,8 @@ export function createReleaseHandoffSummary(input: ReleaseHandoffInput): Release
       "no ads, analytics, payment, location, or contacts SDK signals",
       "no legal approval or Play Console submission",
     ],
-    humanBlockers: uniqueSorted([
-      ...preflight.humanBlockers,
-      ...playDataSafetyDraft.humanBlockers,
-      "founder access/provider decision",
-      "founder storage/provider decision",
-    ]),
+    humanBlockers,
+    blockerClassification: classifyReleaseBlockers(humanBlockers),
     nextHumanActions: [
       "Choose production auth/access provider.",
       "Choose production storage/backend provider and data region.",
@@ -112,7 +116,9 @@ export function createReleaseHandoffSummary(input: ReleaseHandoffInput): Release
     ],
     evidence: uniqueSorted([
       "src/backend/releaseHandoff.ts",
+      "src/backend/releaseBlockers.ts",
       "src/__tests__/releaseHandoff.test.ts",
+      "src/__tests__/releaseBlockers.test.ts",
       "docs/backend/release-handoff-v1.json",
       "docs/backend/release-manifest-v1.json",
       "docs/backend/play-preflight-v1.json",
@@ -132,4 +138,3 @@ export function createReleaseHandoffSummary(input: ReleaseHandoffInput): Release
 export function createReleaseHandoffSummaryJson(input: ReleaseHandoffInput) {
   return `${JSON.stringify(createReleaseHandoffSummary(input), null, 2)}\n`;
 }
-

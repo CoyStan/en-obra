@@ -40,6 +40,8 @@ export type RedactedSupportBundle = {
     status: ReleaseHandoffSummary["status"];
     demoOnly: string[];
     noGoGuarantees: string[];
+    blockerGroups: ReleaseHandoffSummary["blockerClassification"]["groups"];
+    hasUnknownBlockers: boolean;
     nextHumanActions: string[];
   };
   privacy: {
@@ -127,6 +129,8 @@ export function createRedactedSupportBundle(
       status: handoff.status,
       demoOnly: handoff.demoOnly,
       noGoGuarantees: handoff.noGoGuarantees,
+      blockerGroups: handoff.blockerClassification.groups,
+      hasUnknownBlockers: handoff.blockerClassification.hasUnknownBlockers,
       nextHumanActions: handoff.nextHumanActions,
     },
     privacy: {

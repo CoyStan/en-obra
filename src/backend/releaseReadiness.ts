@@ -160,6 +160,10 @@ export function createBackendReadinessReport(generatedAt: string): BackendReadin
       "src/__tests__/releaseHandoff.test.ts",
       "docs/backend/release-handoff-v1.json",
     ]),
+    item("release-blocker-classification", "Release blocker classification", "ready", [
+      "src/backend/releaseBlockers.ts",
+      "src/__tests__/releaseBlockers.test.ts",
+    ]),
     item("release-privacy-scan", "Release privacy and dependency scan", "ready", [
       "src/backend/releasePrivacyScan.ts",
       "src/__tests__/releasePrivacyScan.test.ts",

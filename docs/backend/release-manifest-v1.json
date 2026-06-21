@@ -20,8 +20,8 @@
   "checksums": {
     "schemaSql": "fnv1a32:153b4aad",
     "seedSql": "fnv1a32:93e2272c",
-    "gate": "fnv1a32:abcf1393",
-    "manifestBody": "fnv1a32:3c88fdce"
+    "gate": "fnv1a32:32b5c17b",
+    "manifestBody": "fnv1a32:354074e7"
   },
   "requiredCapabilities": [
     "sql-schema",
@@ -43,6 +43,7 @@
     "data-safety-inventory",
     "play-data-safety-draft",
     "release-handoff",
+    "release-blocker-classification",
     "release-privacy-scan",
     "secret-safety-scan",
     "support-bundle",
@@ -63,6 +64,7 @@
     "mutations",
     "outbox",
     "play-data-safety-draft",
+    "release-blocker-classification",
     "release-handoff",
     "release-manifest",
     "release-privacy-scan",

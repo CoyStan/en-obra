@@ -69,6 +69,382 @@
     "server-side-backups",
     "signed Android App Bundle upload"
   ],
+  "blockerClassification": {
+    "blockers": [
+      {
+        "id": "Play Console account and signing credentials",
+        "category": "play-console",
+        "owner": "release",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": false
+      },
+      {
+        "id": "approved public privacy policy URL",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "final Play Console Data Safety answers",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "founder access/provider decision",
+        "category": "founder-access-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "founder storage/provider decision",
+        "category": "founder-storage-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "human legal/privacy approval",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "human review of Play Console wording",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "legal-retention-approval",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:account-deletion-request",
+        "category": "founder-access-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:backup-restore-drill",
+        "category": "storage-operations",
+        "owner": "engineering",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:legal-retention-approval",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:privacy-policy-url",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:public-deletion-url",
+        "category": "remote-deletion",
+        "owner": "security",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:regional-data-decision",
+        "category": "storage-operations",
+        "owner": "engineering",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:remote-delete-fulfillment",
+        "category": "remote-deletion",
+        "owner": "security",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:remote-deletion-status",
+        "category": "remote-deletion",
+        "owner": "security",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:remote-persistence",
+        "category": "founder-storage-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:retention-policy",
+        "category": "storage-operations",
+        "owner": "engineering",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:security-review",
+        "category": "secrets-security",
+        "owner": "security",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:server-side-backups",
+        "category": "storage-operations",
+        "owner": "engineering",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "missing-production-capability:verified-session",
+        "category": "founder-access-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production auth/storage provider decision",
+        "category": "founder-access-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production-auth",
+        "category": "founder-access-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production-auth-provider",
+        "category": "founder-access-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production-auth-secrets",
+        "category": "founder-access-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production-retention-policy",
+        "category": "storage-operations",
+        "owner": "engineering",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production-storage",
+        "category": "founder-storage-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production-storage-endpoint",
+        "category": "founder-storage-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production-storage-provider",
+        "category": "founder-storage-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "production-storage-secrets",
+        "category": "founder-storage-decision",
+        "owner": "founder",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "public privacy policy URL",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "public-deletion-url",
+        "category": "remote-deletion",
+        "owner": "security",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "public-privacy-policy-url",
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "regional-data-decision",
+        "category": "storage-operations",
+        "owner": "engineering",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "remote-delete-fulfillment",
+        "category": "remote-deletion",
+        "owner": "security",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "remote-deletion",
+        "category": "remote-deletion",
+        "owner": "security",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "remote-deletion-endpoint",
+        "category": "remote-deletion",
+        "owner": "security",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "remote-deletion-fulfillment",
+        "category": "remote-deletion",
+        "owner": "security",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "server-side-backups",
+        "category": "storage-operations",
+        "owner": "engineering",
+        "blocksInternalTestingUpload": false,
+        "blocksProductionBackend": true
+      },
+      {
+        "id": "signed Android App Bundle upload",
+        "category": "build-signing",
+        "owner": "release",
+        "blocksInternalTestingUpload": true,
+        "blocksProductionBackend": false
+      }
+    ],
+    "groups": [
+      {
+        "category": "build-signing",
+        "owner": "release",
+        "blockers": [
+          "signed Android App Bundle upload"
+        ]
+      },
+      {
+        "category": "founder-access-decision",
+        "owner": "founder",
+        "blockers": [
+          "founder access/provider decision",
+          "missing-production-capability:account-deletion-request",
+          "missing-production-capability:verified-session",
+          "production auth/storage provider decision",
+          "production-auth",
+          "production-auth-provider",
+          "production-auth-secrets"
+        ]
+      },
+      {
+        "category": "founder-storage-decision",
+        "owner": "founder",
+        "blockers": [
+          "founder storage/provider decision",
+          "missing-production-capability:remote-persistence",
+          "production-storage",
+          "production-storage-endpoint",
+          "production-storage-provider",
+          "production-storage-secrets"
+        ]
+      },
+      {
+        "category": "legal-privacy",
+        "owner": "legal",
+        "blockers": [
+          "approved public privacy policy URL",
+          "final Play Console Data Safety answers",
+          "human legal/privacy approval",
+          "human review of Play Console wording",
+          "legal-retention-approval",
+          "missing-production-capability:legal-retention-approval",
+          "missing-production-capability:privacy-policy-url",
+          "public privacy policy URL",
+          "public-privacy-policy-url"
+        ]
+      },
+      {
+        "category": "play-console",
+        "owner": "release",
+        "blockers": [
+          "Play Console account and signing credentials"
+        ]
+      },
+      {
+        "category": "remote-deletion",
+        "owner": "security",
+        "blockers": [
+          "missing-production-capability:public-deletion-url",
+          "missing-production-capability:remote-delete-fulfillment",
+          "missing-production-capability:remote-deletion-status",
+          "public-deletion-url",
+          "remote-delete-fulfillment",
+          "remote-deletion",
+          "remote-deletion-endpoint",
+          "remote-deletion-fulfillment"
+        ]
+      },
+      {
+        "category": "secrets-security",
+        "owner": "security",
+        "blockers": [
+          "missing-production-capability:security-review"
+        ]
+      },
+      {
+        "category": "storage-operations",
+        "owner": "engineering",
+        "blockers": [
+          "missing-production-capability:backup-restore-drill",
+          "missing-production-capability:regional-data-decision",
+          "missing-production-capability:retention-policy",
+          "missing-production-capability:server-side-backups",
+          "production-retention-policy",
+          "regional-data-decision",
+          "server-side-backups"
+        ]
+      }
+    ],
+    "unknownBlockers": [],
+    "hasUnknownBlockers": false
+  },
   "nextHumanActions": [
     "Choose production auth/access provider.",
     "Choose production storage/backend provider and data region.",
@@ -112,6 +488,7 @@
     "src/__tests__/deletionWorkflow.test.ts",
     "src/__tests__/playDataSafetyDraft.test.ts",
     "src/__tests__/playPreflight.test.ts",
+    "src/__tests__/releaseBlockers.test.ts",
     "src/__tests__/releaseHandoff.test.ts",
     "src/__tests__/releasePrivacyScan.test.ts",
     "src/__tests__/repository.test.ts",
@@ -137,6 +514,7 @@
     "src/backend/deletionWorkflow.ts",
     "src/backend/playDataSafetyDraft.ts",
     "src/backend/playPreflight.ts",
+    "src/backend/releaseBlockers.ts",
     "src/backend/releaseHandoff.ts",
     "src/backend/releasePrivacyScan.ts",
     "src/backend/repository.ts",

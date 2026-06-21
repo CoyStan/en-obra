@@ -34,6 +34,7 @@ deployment approval.
 - Redacted backend support bundle: `src/backend/supportBundle.ts`
 - Backend Play preflight report: `src/backend/playPreflight.ts`
 - Backend release handoff summary: `src/backend/releaseHandoff.ts`
+- Release blocker classifier: `src/backend/releaseBlockers.ts`
 - Local export package: `src/backend/dataExport.ts`
 - Repository contract: `src/backend/repository.ts`
 - AsyncStorage repository adapter: `src/backend/asyncStorageRepository.ts`
@@ -100,6 +101,9 @@ deployment approval.
 - Backend release handoff summary that aggregates the release gate, preflight,
   Data Safety draft, retention readiness, secret safety, demo-only boundaries,
   no-go guarantees, and exact next human actions.
+- Release blocker classification that groups remaining blockers by owner and
+  category so access/storage, legal/privacy, Play Console, remote deletion,
+  storage operations, and secret/security gates are visible separately.
 - Machine-readable backend gate semantics:
   `src/__tests__/backendReleaseGate.test.ts`
 - Current schema migration no-op and unsupported future-version handling.

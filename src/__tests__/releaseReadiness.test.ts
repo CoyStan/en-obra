@@ -26,6 +26,7 @@ describe("backend release readiness audit", () => {
     expect(byId.get("data-safety-inventory")?.status).toBe("ready");
     expect(byId.get("play-data-safety-draft")?.status).toBe("ready");
     expect(byId.get("release-handoff")?.status).toBe("ready");
+    expect(byId.get("release-blocker-classification")?.status).toBe("ready");
     expect(byId.get("release-privacy-scan")?.status).toBe("ready");
     expect(byId.get("secret-safety-scan")?.status).toBe("ready");
     expect(byId.get("support-bundle")?.status).toBe("ready");

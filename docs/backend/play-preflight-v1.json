@@ -17,6 +17,7 @@
     "Data Safety technical inventory is local-first",
     "technical Play Data Safety draft is generated from current scans",
     "backend release handoff summary is deterministic",
+    "release blockers are classified by owner and category",
     "release config has no committed secrets or production endpoints",
     "deletion workflow is modeled without remote endpoint"
   ],
@@ -92,6 +93,7 @@
     "src/__tests__/deletionWorkflow.test.ts",
     "src/__tests__/playDataSafetyDraft.test.ts",
     "src/__tests__/playPreflight.test.ts",
+    "src/__tests__/releaseBlockers.test.ts",
     "src/__tests__/releaseHandoff.test.ts",
     "src/__tests__/releasePrivacyScan.test.ts",
     "src/__tests__/repository.test.ts",
@@ -117,6 +119,7 @@
     "src/backend/deletionWorkflow.ts",
     "src/backend/playDataSafetyDraft.ts",
     "src/backend/playPreflight.ts",
+    "src/backend/releaseBlockers.ts",
     "src/backend/releaseHandoff.ts",
     "src/backend/releasePrivacyScan.ts",
     "src/backend/repository.ts",

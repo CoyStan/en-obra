@@ -73,6 +73,10 @@ describe("backend release handoff summary", () => {
     expect(summary.humanBlockers).toContain("remote-deletion");
     expect(summary.humanBlockers).toContain("founder access/provider decision");
     expect(summary.humanBlockers).toContain("founder storage/provider decision");
+    expect(summary.blockerClassification.hasUnknownBlockers).toBe(false);
+    expect(summary.blockerClassification.groups.some((group) => group.category === "legal-privacy")).toBe(true);
+    expect(summary.blockerClassification.groups.some((group) => group.category === "founder-access-decision")).toBe(true);
+    expect(summary.blockerClassification.groups.some((group) => group.category === "remote-deletion")).toBe(true);
     expect(summary.nextHumanActions).toContain("Choose production auth/access provider.");
     expect(summary.nextHumanActions).toContain("Complete Play Console Data Safety answers from the technical draft.");
     expect(summary.commands).toContain("npm run release:android:check");
@@ -120,4 +124,3 @@ describe("backend release handoff summary", () => {
     expect(parsed.status).toBe("ready-for-local-internal-testing");
   });
 });
-
