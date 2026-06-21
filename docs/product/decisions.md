@@ -481,3 +481,15 @@ financial hierarchy, consumer-money objects, and one-job mobile screens. A
 single instrument makes the first viewport easier to understand for mainstream
 users, reduces repeated chrome, keeps `Sin pagos reales` visible, and gives the
 app a more premium product shape without changing the local-first data model.
+
+### Make Balance A Settlement Map
+
+Decision: The `Balance` tab should lead with a settlement map: open group
+amount, route count, main payer-to-receiver route, local settlement action, and
+compact secondary route chips before the member ledger.
+
+Rationale: Users come to Balance to answer one question: who needs to settle
+with whom. A map structure is easier to scan than stacked dashboard cards and
+better matches premium consumer-finance references from Open Design. The
+member ledger remains available for detail, but the first viewport now explains
+the current route and preserves exact MXN amounts plus `Sin pagos reales`.

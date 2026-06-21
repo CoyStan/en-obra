@@ -1581,93 +1581,156 @@ export function MainScreen() {
     );
   };
 
-  const renderBalance = () => (
-    <View style={styles.tabContent}>
-      {!selectedGroup || !selectedSummary ? (
-        <EmptyState
-          action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
-          body="Crea o selecciona un grupo para ver quién debe pagar."
-          icon="scale-balance"
-          title="Selecciona un grupo"
-        />
-      ) : (
-        <View style={styles.balanceCockpit}>
-          <View style={styles.balanceHero}>
-            <View style={styles.balanceHeroTop}>
-              <View>
-                <Text style={styles.balanceHeroKicker}>Balance de grupo</Text>
-                <Text style={styles.balanceHeroTitle}>{selectedGroup.name}</Text>
+  const renderBalance = () => {
+    if (!selectedGroup || !selectedSummary) {
+      return (
+        <View style={styles.tabContent}>
+          <EmptyState
+            action={<ActionButton icon="account-group" label="Elegir grupo" onPress={() => openTab("groups")} />}
+            body="Crea o selecciona un grupo para ver quién debe pagar."
+            icon="scale-balance"
+            title="Selecciona un grupo"
+          />
+        </View>
+      );
+    }
+
+    const primaryRoute = selectedSummary.settlements[0] ?? null;
+    const primaryFrom = primaryRoute ? findMember(data.members, primaryRoute.fromMemberId) : null;
+    const primaryTo = primaryRoute ? findMember(data.members, primaryRoute.toMemberId) : null;
+    const openLabel = selectedSummary.openBalanceCents ? "Pendiente por ordenar" : "Grupo liquidado";
+
+    return (
+      <View style={styles.tabContent}>
+        <View style={styles.balanceMap}>
+          <View style={styles.balanceMapHero}>
+            <View style={styles.balanceMapTop}>
+              <View style={styles.balanceMapTitleBlock}>
+                <Text style={styles.balanceMapKicker}>Mapa de balance</Text>
+                <Text numberOfLines={1} style={styles.balanceMapTitle}>{selectedGroup.name}</Text>
+                <Text numberOfLines={1} style={styles.balanceMapMeta}>MXN · {selectedMembers.length} integrantes · arreglo externo</Text>
               </View>
-              <View style={styles.noPaymentChip}>
-                <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
-                <Text style={styles.noPaymentText}>Sin pagos reales</Text>
+              <View style={styles.commandTrustChip}>
+                <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={14} />
+                <Text style={styles.odCommandTrustText}>Sin pagos reales</Text>
               </View>
             </View>
-            <View style={styles.balanceHeroStats}>
-              <View style={styles.balanceHeroStat}>
-                <Text style={styles.commandMetricLabel}>Abierto</Text>
-                <Text style={[styles.balanceHeroAmount, selectedSummary.openBalanceCents ? styles.balanceHeroAmountDue : styles.balanceHeroAmountOk]}>
-                  {formatMoney(selectedSummary.openBalanceCents)}
+
+            <View style={styles.balanceMapAmountRow}>
+              <View style={styles.balanceMapStatus}>
+                <Text style={styles.balanceMapStatusLabel}>Abierto</Text>
+                <Text style={[styles.balanceMapStatusText, selectedSummary.openBalanceCents ? styles.balanceMapStatusDue : styles.balanceMapStatusOk]}>
+                  {openLabel}
                 </Text>
               </View>
-              <View style={styles.balanceHeroStat}>
-                <Text style={styles.commandMetricLabel}>Arreglos</Text>
-                <Text style={styles.balanceHeroAmount}>{selectedSummary.settlements.length}</Text>
+              <View style={styles.balanceMapAmountBlock}>
+                <Text style={styles.balanceMapCurrency}>MXN</Text>
+                <Text
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.72}
+                  style={[styles.balanceMapAmount, selectedSummary.openBalanceCents ? styles.balanceMapAmountDue : styles.balanceMapAmountOk]}
+                >
+                  {formatHeroMoney(selectedSummary.openBalanceCents)}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.balanceMapMetrics}>
+              <View style={styles.balanceMapMetric}>
+                <Text style={styles.balanceMapMetricLabel}>Rutas</Text>
+                <Text style={styles.balanceMapMetricValue}>{selectedSummary.settlements.length}</Text>
+              </View>
+              <View style={styles.balanceMapMetric}>
+                <Text style={styles.balanceMapMetricLabel}>Integrantes</Text>
+                <Text style={styles.balanceMapMetricValue}>{selectedMembers.length}</Text>
               </View>
             </View>
           </View>
 
-          {selectedSummary.settlements.length === 0 ? (
-            <View style={styles.routePanel}>
-              <View style={styles.calmFigure}>
-                <View style={styles.calmFigureIcon}>
-                  <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={22} />
+          <View style={styles.settlementMapPanel}>
+            <View style={styles.settlementMapHeader}>
+              <View>
+                <Text style={styles.settlementMapKicker}>Ruta principal</Text>
+                <Text style={styles.settlementMapTitle}>
+                  {primaryRoute ? "Quién paga ahora" : "Sin rutas pendientes"}
+                </Text>
+              </View>
+              {primaryRoute ? <Pill label={`${selectedSummary.settlements.length} rutas`} tone="gold" /> : <Pill label="En paz" tone="success" />}
+            </View>
+
+            {primaryRoute ? (
+              <>
+                <View style={styles.settlementMapFigure}>
+                  <MoneyFlowFigure
+                    amountCents={primaryRoute.amountCents}
+                    from={primaryFrom}
+                    progress={moneyFlowProgress}
+                    reduceMotion={reduceMotion}
+                    to={primaryTo}
+                  />
                 </View>
+                <View style={styles.settlementMapCopyRow}>
+                  <View style={styles.settlementMapCopy}>
+                    <Text style={styles.settlementMapRouteText}>
+                      {settlementPerspective(primaryRoute, displayMemberId, primaryFrom, primaryTo).title}
+                    </Text>
+                    <Text style={styles.settlementMapRouteMeta}>Se registra solo si ya se arreglaron fuera de la app.</Text>
+                  </View>
+                  <Pressable
+                    accessibilityLabel="Registrar arreglo local"
+                    accessibilityRole="button"
+                    hitSlop={4}
+                    onPress={() => setPendingSettlement(primaryRoute)}
+                    style={({ pressed }) => [styles.settlementMapAction, pressed && styles.pressed]}
+                  >
+                    <MaterialCommunityIcons color={colors.surface} name="check" size={18} />
+                  </Pressable>
+                </View>
+              </>
+            ) : (
+              <View style={styles.settlementMapPeace}>
+                <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={24} />
                 <View style={styles.calmFigureCopy}>
-                  <Text style={styles.moneyFlowAmount}>Todo en paz</Text>
-                  <Text style={styles.calmFigureText}>No hay pagos pendientes para este grupo.</Text>
+                  <Text style={styles.settlementMapRouteText}>Todo en paz</Text>
+                  <Text style={styles.settlementMapRouteMeta}>No hay pagos pendientes para este grupo.</Text>
                 </View>
               </View>
-            </View>
-          ) : (
-            <View style={styles.balanceRouteStage}>
-              <View style={styles.routePanelHeader}>
-                <Text style={styles.routePanelKicker}>Ruta principal</Text>
-                <Pill label={`${selectedSummary.settlements.length} pendientes`} tone="gold" />
-              </View>
-              <SettlementRouteCard
-                activeMemberId={displayMemberId}
-                data={data}
-                onPress={() => setPendingSettlement(selectedSummary.settlements[0])}
-                settlement={selectedSummary.settlements[0]}
-              />
-              <ActionButton
-                icon="check"
-                label="Registrar arreglo local"
-                onPress={() => setPendingSettlement(selectedSummary.settlements[0])}
-                tone="secondary"
-              />
-            </View>
-          )}
+            )}
+          </View>
 
           {selectedSummary.settlements.length > 1 ? (
-            <Section title="Escalera de pagos">
-              <View style={styles.settlementLadder}>
-                {selectedSummary.settlements.slice(1).map((settlement) => (
-                  <SettlementRouteCard
-                    activeMemberId={displayMemberId}
-                    compact
-                    data={data}
+            <View style={styles.routeChipRail}>
+              {selectedSummary.settlements.slice(1).map((settlement) => {
+                const from = findMember(data.members, settlement.fromMemberId);
+                const to = findMember(data.members, settlement.toMemberId);
+                return (
+                  <Pressable
+                    accessibilityLabel={`${from?.name ?? "Integrante"} paga ${formatMoney(settlement.amountCents)} a ${to?.name ?? "integrante"}`}
+                    accessibilityRole="button"
+                    hitSlop={4}
                     key={`${settlement.fromMemberId}-${settlement.toMemberId}`}
                     onPress={() => setPendingSettlement(settlement)}
-                    settlement={settlement}
-                  />
-                ))}
-              </View>
-            </Section>
+                    style={({ pressed }) => [styles.routeChip, pressed && styles.pressed]}
+                  >
+                    <Avatar color={from?.avatarColor ?? colors.due} label={from?.name ?? "A"} />
+                    <MaterialCommunityIcons color={colors.mutedInk} name="arrow-right" size={14} />
+                    <Avatar color={to?.avatarColor ?? colors.primary} label={to?.name ?? "B"} />
+                    <Text numberOfLines={1} style={styles.routeChipAmount}>{formatMoney(settlement.amountCents)}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
           ) : null}
 
-          <Section title="Libro de integrantes">
+          <View style={styles.memberLedgerPanel}>
+            <View style={styles.memberLedgerHeader}>
+              <View>
+                <Text style={styles.balanceMapKicker}>Integrantes</Text>
+                <Text style={styles.memberLedgerTitle}>Balance por persona</Text>
+              </View>
+              <Text style={styles.memberLedgerMeta}>MXN exacto</Text>
+            </View>
             {selectedMembers.length === 0 ? (
               <EmptyState
                 action={<ActionButton icon="account-plus" label="Agregar" onPress={() => setShowMemberForm(true)} />}
@@ -1676,17 +1739,17 @@ export function MainScreen() {
                 title="Aún no hay integrantes"
               />
             ) : (
-              <View style={styles.ledgerList}>
+              <View style={styles.memberLedgerList}>
                 {selectedSummary.balances.map((balance) => (
                   <MemberLedgerRow balance={balance} key={balance.member.id} />
                 ))}
               </View>
             )}
-          </Section>
+          </View>
         </View>
-      )}
-    </View>
-  );
+      </View>
+    );
+  };
 
   const renderActivity = () => (
     <View style={styles.ledgerStory}>
@@ -4289,6 +4352,260 @@ const styles = StyleSheet.create({
   },
   balanceCockpit: {
     gap: spacing.md,
+  },
+  balanceMap: {
+    gap: spacing.md,
+  },
+  balanceMapHero: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    overflow: "hidden",
+    padding: spacing.md,
+    shadowColor: colors.ink,
+    shadowOffset: { height: 14, width: 0 },
+    shadowOpacity: 0.06,
+    shadowRadius: 24,
+    elevation: 3,
+  },
+  balanceMapTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  balanceMapTitleBlock: {
+    flex: 1,
+    minWidth: 0,
+  },
+  balanceMapKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  balanceMapTitle: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  balanceMapMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  balanceMapAmountRow: {
+    alignItems: "flex-end",
+    backgroundColor: colors.canvas,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+    padding: spacing.md,
+  },
+  balanceMapStatus: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  balanceMapStatusLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  balanceMapStatusText: {
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+  },
+  balanceMapStatusDue: {
+    color: colors.due,
+  },
+  balanceMapStatusOk: {
+    color: colors.primaryDark,
+  },
+  balanceMapAmountBlock: {
+    alignItems: "flex-end",
+    flex: 1,
+    minWidth: 0,
+  },
+  balanceMapCurrency: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
+  balanceMapAmount: {
+    fontSize: 28,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 33,
+    textAlign: "right",
+  },
+  balanceMapAmountDue: {
+    color: colors.due,
+  },
+  balanceMapAmountOk: {
+    color: colors.primary,
+  },
+  balanceMapMetrics: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  balanceMapMetric: {
+    backgroundColor: colors.surfaceStrong,
+    borderRadius: radius.md,
+    flex: 1,
+    gap: 2,
+    minHeight: 48,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  balanceMapMetricLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  balanceMapMetricValue: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  settlementMapPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  settlementMapHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  settlementMapKicker: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    textTransform: "uppercase",
+  },
+  settlementMapTitle: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+  },
+  settlementMapFigure: {
+    borderRadius: radius.lg,
+    overflow: "hidden",
+  },
+  settlementMapCopyRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  settlementMapCopy: {
+    flex: 1,
+    gap: 2,
+    minWidth: 0,
+  },
+  settlementMapRouteText: {
+    color: colors.ink,
+    fontSize: typography.body,
+    fontWeight: "900",
+    lineHeight: 20,
+  },
+  settlementMapRouteMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "700",
+    lineHeight: 18,
+  },
+  settlementMapAction: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: 22,
+    height: 44,
+    justifyContent: "center",
+    width: 44,
+  },
+  settlementMapPeace: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 72,
+    padding: spacing.md,
+  },
+  routeChipRail: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  routeChip: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 48,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  routeChipAmount: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    lineHeight: 14,
+  },
+  memberLedgerPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  memberLedgerHeader: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+  },
+  memberLedgerTitle: {
+    color: colors.ink,
+    fontSize: typography.heading,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  memberLedgerMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    paddingTop: 2,
+    textTransform: "uppercase",
+  },
+  memberLedgerList: {
+    gap: spacing.sm,
   },
   balanceHero: {
     backgroundColor: colors.surface,
