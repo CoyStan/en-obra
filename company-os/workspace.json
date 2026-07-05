@@ -3214,6 +3214,46 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0077"
+    },
+    {
+      "allowed_resources": [
+        "src/components/reusables/**",
+        "src/components/nativewind/**",
+        "src/screens/MainScreen.tsx",
+        "App.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0078/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0078",
+      "title": "Premium sheet dropdown select primitives",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Build premium reusable sheet/dropdown/select primitives and migrate add-expense category, payer, participants, and active member selectors to list-style controls while preserving app behavior. Allowed paths: src/components/reusables/**, src/components/nativewind/**, src/screens/MainScreen.tsx, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0078/**, company-os/workspace.json.",
+      "acceptance_target": "Category, payer, participants, and active member selection use accessible list/sheet-style primitives instead of oversized cards/chips where applicable; primitives are tokenized, support smooth open/close feedback, are exercised by proof/evidence, and checks pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0078"
     }
   ],
   "attempts": [
@@ -4451,6 +4491,20 @@
       "result": "Built premium Surface, MoneyCard, PersonRow, GroupRow, and AuditRow patterns with runtime proof.",
       "commits": [
         "ad38d541ae3d5e9039645f4fa467e787b1a225bf"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0078",
+      "work_item_id": "WORK-APP-0078",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Built reusable SelectPanel and SelectOptionRow, migrated add-expense selectors, and captured runtime proof.",
+      "commits": [
+        "955b516f519b5d54fa7ef9236b2921564b0f49fe"
       ]
     }
   ],
@@ -5825,6 +5879,30 @@
       "status": "passed",
       "summary": "Surface and list-row primitives built and verified with typecheck, tests, Expo config, web export, runtime proof, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0078",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0078/technical-report.md",
+        "reports/evidence/WORK-APP-0078/runtime-proof.json",
+        "reports/evidence/WORK-APP-0078/category-select-390x844.png",
+        "reports/evidence/WORK-APP-0078/payer-select-390x844.png",
+        "reports/evidence/WORK-APP-0078/participants-select-390x844.png"
+      ],
+      "id": "EVIDENCE-APP-0078",
+      "work_item_id": "WORK-APP-0078",
+      "attempt_id": "ATTEMPT-APP-0078",
+      "head_sha": "955b516f519b5d54fa7ef9236b2921564b0f49fe",
+      "status": "passed",
+      "summary": "Select primitives and add-expense selector migration verified with typecheck, tests, Expo config, web export, runtime proof, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -6825,6 +6903,31 @@
       "id": "REVIEW-APP-0077",
       "work_item_id": "WORK-APP-0077",
       "reviewed_head": "ad38d541ae3d5e9039645f4fa467e787b1a225bf",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "runtime proof JSON",
+        "category screenshot",
+        "payer screenshot",
+        "participants screenshot",
+        "Company OS scope WORK-APP-0078",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "active-member selector runtime proof requires a profile-bearing state",
+        "full composer visual simplification remains future work"
+      ],
+      "id": "REVIEW-APP-0078",
+      "work_item_id": "WORK-APP-0078",
+      "reviewed_head": "955b516f519b5d54fa7ef9236b2921564b0f49fe",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -10161,6 +10264,49 @@
       "work_item_id": "WORK-APP-0077",
       "attempt_id": "ATTEMPT-APP-0077",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added SelectPanel primitive",
+        "added SelectOptionRow primitive",
+        "migrated category selector",
+        "migrated payer selector",
+        "migrated participant selector",
+        "migrated active-member sheet rows",
+        "removed old local dropdown helper",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/components/reusables/select.tsx",
+        "src/components/reusables/index.ts",
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0078/runtime-proof.json",
+        "reports/evidence/WORK-APP-0078/category-select-390x844.png",
+        "reports/evidence/WORK-APP-0078/payer-select-390x844.png",
+        "reports/evidence/WORK-APP-0078/participants-select-390x844.png",
+        "reports/evidence/WORK-APP-0078/technical-report.md"
+      ],
+      "not_done": [
+        "active-member-runtime-proof-in-fresh-no-profile-state",
+        "full-composer-redesign",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0078",
+      "work_item_id": "WORK-APP-0078",
+      "attempt_id": "ATTEMPT-APP-0078",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -11042,6 +11188,14 @@
       "status": "completed",
       "what_happened": "Built reusable Surface, MoneyCard, PersonRow, GroupRow, and AuditRow components using NativeWind token classes and hidden runtime proof.",
       "what_changed": "Added surface/list-row reusable files, exports, SurfaceRowsProof, and WORK-APP-0077 evidence artifacts."
+    },
+    {
+      "id": "OUTCOME-APP-0078",
+      "work_item_id": "WORK-APP-0078",
+      "summary": "Premium select primitives and add-expense selectors are implemented and accept-ready.",
+      "status": "completed",
+      "what_happened": "Built reusable SelectPanel and SelectOptionRow primitives, migrated category, payer, participant, and active-member option rows, and verified add-expense selector runtime behavior.",
+      "what_changed": "Added select reusable, updated MainScreen selector rows, removed local dropdown helper, and added WORK-APP-0078 evidence artifacts."
     }
   ]
 }
