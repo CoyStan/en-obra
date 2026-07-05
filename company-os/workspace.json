@@ -3136,6 +3136,45 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0075"
+    },
+    {
+      "allowed_resources": [
+        "src/components/reusables/**",
+        "src/components/nativewind/**",
+        "App.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0076/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0076",
+      "title": "Premium core reusables primitives",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Build premium reusable Button, IconButton, Pill, Avatar, and Amount primitives using NativeWind tokens while preserving app behavior. Allowed paths: src/components/reusables/**, src/components/nativewind/**, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0076/**, company-os/workspace.json.",
+      "acceptance_target": "Reusable Button, IconButton, Pill, Avatar, and Amount primitives exist, use NativeWind token classes, support Android touch targets and tokenized variants, are exercised by a hidden proof component, and checks pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0076"
     }
   ],
   "attempts": [
@@ -4345,6 +4384,20 @@
       "result": "Migrated shared Pill primitive to NativeWind token classes, captured Android-width screenshots, and passed checks.",
       "commits": [
         "9ff4894"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0076",
+      "work_item_id": "WORK-APP-0076",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Built premium NativeWind core reusable primitives and runtime proof.",
+      "commits": [
+        "cec9dedfcb8ba812128d3f41a03e68b900ef7e4a"
       ]
     }
   ],
@@ -5675,6 +5728,28 @@
       "status": "passed",
       "summary": "Verified first visible production NativeWind migration with typecheck, tests, Expo config, web export, screenshots, Company OS scope, and Company OS validate.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0076",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0076/technical-report.md",
+        "reports/evidence/WORK-APP-0076/runtime-proof.json",
+        "reports/evidence/WORK-APP-0076/core-reusables-proof-390x844.png"
+      ],
+      "id": "EVIDENCE-APP-0076",
+      "work_item_id": "WORK-APP-0076",
+      "attempt_id": "ATTEMPT-APP-0076",
+      "head_sha": "cec9dedfcb8ba812128d3f41a03e68b900ef7e4a",
+      "status": "passed",
+      "summary": "Core reusable primitives built and verified with typecheck, tests, Expo config, web export, runtime proof, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -6629,6 +6704,29 @@
       "id": "REVIEW-APP-0075",
       "work_item_id": "WORK-APP-0075",
       "reviewed_head": "9ff4894",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "runtime proof JSON",
+        "390x844 screenshot",
+        "Company OS scope WORK-APP-0076",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "primitives are not yet broadly migrated into production surfaces",
+        "bottom-sheet select primitives remain future work"
+      ],
+      "id": "REVIEW-APP-0076",
+      "work_item_id": "WORK-APP-0076",
+      "reviewed_head": "cec9dedfcb8ba812128d3f41a03e68b900ef7e4a",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -9880,6 +9978,49 @@
       "work_item_id": "WORK-APP-0075",
       "attempt_id": "ATTEMPT-APP-0075",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added Amount primitive",
+        "added Avatar primitive",
+        "added Pill primitive",
+        "expanded Button with icon support",
+        "added IconButton primitive",
+        "added hidden runtime proof",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/components/reusables/amount.tsx",
+        "src/components/reusables/avatar.tsx",
+        "src/components/reusables/pill.tsx",
+        "src/components/reusables/button.tsx",
+        "src/components/reusables/index.ts",
+        "src/components/nativewind/CoreReusablesProof.tsx",
+        "reports/evidence/WORK-APP-0076/runtime-proof.json",
+        "reports/evidence/WORK-APP-0076/core-reusables-proof-390x844.png",
+        "reports/evidence/WORK-APP-0076/technical-report.md"
+      ],
+      "not_done": [
+        "production-ui-migration",
+        "bottom-sheet-select-primitives",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0076",
+      "work_item_id": "WORK-APP-0076",
+      "attempt_id": "ATTEMPT-APP-0076",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -10745,6 +10886,14 @@
       "status": "completed",
       "what_happened": "Converted the shared Pill primitive to NativeWind token classes and verified visible app screenshots.",
       "what_changed": "Updated src/components/ui.tsx, decision log, and screenshot/report evidence."
+    },
+    {
+      "id": "OUTCOME-APP-0076",
+      "work_item_id": "WORK-APP-0076",
+      "summary": "Premium core reusable primitives are implemented and accept-ready.",
+      "status": "completed",
+      "what_happened": "Built Button, IconButton, Pill, Avatar, and Amount primitives using NativeWind token classes and hidden runtime proof.",
+      "what_changed": "Added reusable primitive files, exports, CoreReusablesProof, and WORK-APP-0076 evidence artifacts."
     }
   ]
 }
