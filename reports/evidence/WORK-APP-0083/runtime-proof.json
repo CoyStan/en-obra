@@ -1,0 +1,57 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "results": [
+    {
+      "viewport": "360x740",
+      "appRendered": true,
+      "receiptSection": 1,
+      "routeSection": 1,
+      "reviewSection": 1,
+      "saveDock": 1,
+      "saveButton": 1,
+      "categoryPanel": 1,
+      "moneyValue": "1480.50",
+      "titleValue": "Cena de tlayudas",
+      "noRealPaymentsVisible": true,
+      "screenshots": {
+        "composer": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-360x740.png",
+        "categoryOpen": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-category-open-360x740.png"
+      }
+    },
+    {
+      "viewport": "390x844",
+      "appRendered": true,
+      "receiptSection": 1,
+      "routeSection": 1,
+      "reviewSection": 1,
+      "saveDock": 1,
+      "saveButton": 1,
+      "categoryPanel": 1,
+      "moneyValue": "1480.50",
+      "titleValue": "Cena de tlayudas",
+      "noRealPaymentsVisible": true,
+      "screenshots": {
+        "composer": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-390x844.png",
+        "categoryOpen": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-category-open-390x844.png"
+      }
+    },
+    {
+      "viewport": "412x915",
+      "appRendered": true,
+      "receiptSection": 1,
+      "routeSection": 1,
+      "reviewSection": 1,
+      "saveDock": 1,
+      "saveButton": 1,
+      "categoryPanel": 1,
+      "moneyValue": "1480.50",
+      "titleValue": "Cena de tlayudas",
+      "noRealPaymentsVisible": true,
+      "screenshots": {
+        "composer": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-412x915.png",
+        "categoryOpen": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-category-open-412x915.png"
+      }
+    }
+  ],
+  "checkedAt": "2026-07-05T15:33:19.243Z"
+}

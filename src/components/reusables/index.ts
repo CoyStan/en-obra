@@ -3,6 +3,7 @@ export { Avatar } from "./avatar";
 export { Button } from "./button";
 export { IconButton } from "./button";
 export { Card } from "./card";
+export { ComposerSaveDock, ComposerSection } from "./composer";
 export { FeedbackToast } from "./feedback";
 export { HomeMoneyInstrument } from "./home-money-instrument";
 export { Input, MoneyInput, NoteField, TextField } from "./input";

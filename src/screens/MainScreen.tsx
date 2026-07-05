@@ -41,6 +41,9 @@ import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../comp
 import {
   AppTopBar,
   BottomTabBar,
+  Button as ReusableButton,
+  ComposerSaveDock,
+  ComposerSection,
   FeedbackToast,
   HomeMoneyInstrument,
   LocalTrustStrip,
@@ -2149,8 +2152,12 @@ export function MainScreen() {
             </View>
           </View>
 
-          <View style={styles.captureShell}>
-            <View style={styles.receiptComposer}>
+          <ComposerSection
+            icon="receipt-text-plus-outline"
+            meta="Qué fue, cuánto costó y cómo se reparte."
+            testID="expense-composer-receipt-section"
+            title="Recibo del gasto"
+          >
               <View style={styles.captureProgressPills}>
                 <View style={styles.captureProgressPillActive}>
                   <Text style={styles.captureProgressPillTextActive}>Recibo</Text>
@@ -2160,16 +2167,6 @@ export function MainScreen() {
                 </View>
                 <View style={styles.captureProgressPill}>
                   <Text style={styles.captureProgressPillText}>Split</Text>
-                </View>
-              </View>
-
-              <View style={styles.receiptObjectTop}>
-                <View style={styles.receiptObjectIcon}>
-                  <MaterialCommunityIcons color={colors.primaryDark} name="receipt-text-plus-outline" size={22} />
-                </View>
-                <View style={styles.receiptObjectCopy}>
-                  <Text style={styles.receiptObjectTitle}>Recibo del gasto</Text>
-                  <Text style={styles.receiptObjectMeta}>Qué fue, cuánto costó y cómo se reparte.</Text>
                 </View>
               </View>
 
@@ -2236,17 +2233,15 @@ export function MainScreen() {
                 testID="expense-title-input"
                 value={expenseTitle}
               />
-            </View>
-          </View>
+          </ComposerSection>
 
-          <View style={styles.captureRouteShell}>
-            <View style={styles.captureRouteHeader}>
-              <View style={styles.composerTitleBlock}>
-                <Text style={styles.composerSectionTitle}>Ruta del dinero</Text>
-                <Text style={styles.captureRouteText}>Pagador, participantes y reparto igual.</Text>
-              </View>
-              <Pill label="Partes iguales" tone="neutral" />
-            </View>
+          <ComposerSection
+            badge="Partes iguales"
+            icon="swap-horizontal"
+            meta="Pagador, participantes y reparto igual."
+            testID="expense-composer-route-section"
+            title="Ruta del dinero"
+          >
 
             <Pressable
               accessibilityLabel={`Pagó ${payer?.name ?? "selecciona persona"}`}
@@ -2367,9 +2362,16 @@ export function MainScreen() {
               testID="expense-note-input"
               value={expenseNote}
             />
-          </View>
+          </ComposerSection>
 
-          <View style={styles.composerReview}>
+          <ComposerSection
+            icon="scale-balance"
+            meta={participantShares.length
+              ? `${participantShares.length} participantes · ${formatMoney(expenseAmountCents ?? 0)} en MXN`
+              : "Elige monto y participantes para ver cuánto toca."}
+            testID="expense-composer-review-section"
+            title="Split antes de guardar"
+          >
             <View style={styles.composerReviewTop}>
               <View style={styles.splitPreviewIcon}>
                 <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
@@ -2458,26 +2460,29 @@ export function MainScreen() {
               </View>
             ) : null}
 
-            <View style={styles.captureSaveDock}>
-              <View style={styles.captureSaveCopy}>
-                <Text style={styles.captureSaveTitle}>Guardar gasto local</Text>
-                <Text style={styles.captureSaveText}>No cobra ni envía dinero. Solo actualiza balances del grupo.</Text>
-              </View>
-              <ActionButton
-                disabled={
-                  selectedMembers.length === 0 ||
-                  !expenseTitle.trim() ||
-                  !expenseAmount.trim() ||
-                  !payerId ||
-                  participantIds.length === 0 ||
-                  !participantIds.includes(payerId)
-                }
-                icon="receipt-text-plus"
-                label="Guardar"
-                onPress={submitExpense}
-              />
-            </View>
-          </View>
+            <ComposerSaveDock
+              action={
+                <ReusableButton
+                  disabled={
+                    selectedMembers.length === 0 ||
+                    !expenseTitle.trim() ||
+                    !expenseAmount.trim() ||
+                    !payerId ||
+                    participantIds.length === 0 ||
+                    !participantIds.includes(payerId)
+                  }
+                  icon="receipt-text-plus"
+                  onPress={submitExpense}
+                  testID="expense-composer-save-button"
+                >
+                  Guardar
+                </ReusableButton>
+              }
+              body="No cobra ni envía dinero. Solo actualiza balances del grupo."
+              testID="expense-composer-save-dock"
+              title="Guardar gasto local"
+            />
+          </ComposerSection>
         </ScrollView>
       </View>
     </Modal>
