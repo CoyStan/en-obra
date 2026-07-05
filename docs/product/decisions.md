@@ -567,3 +567,13 @@ Rationale: Adding a new styling layer without ownership rules would recreate
 the same drift problem in a different syntax. A guide gives future agents a
 clear place to look before inventing components, variants, colors, or migration
 patterns.
+
+### Use Pill As The First Production NativeWind Migration
+
+Decision: The first visible production migration to NativeWind should be the
+shared `Pill` primitive rather than a full screen.
+
+Rationale: Pills appear across trust, group, status, and money-state surfaces,
+so they prove the new tokenized styling layer on real UI. The primitive is small
+enough to verify safely before migrating larger surfaces such as sheets,
+navigation, or balance maps.

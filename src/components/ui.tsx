@@ -3,6 +3,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { formatMoney } from "../domain/money";
 import { colors, radius, spacing, typography } from "../theme/theme";
+import { cn } from "./reusables";
 
 type IconName = ComponentProps<typeof MaterialCommunityIcons>["name"];
 
@@ -78,7 +79,19 @@ type PillProps = {
 };
 
 export function Pill({ label, tone = "neutral" }: PillProps) {
-  return <Text style={[styles.pill, styles[`${tone}Pill`]]}>{label}</Text>;
+  return (
+    <Text
+      className={cn(
+        "self-start overflow-hidden rounded-ccSm px-ccSm py-ccXs text-ccMicro font-semibold",
+        tone === "success" && "bg-success-wash text-primary-dark",
+        tone === "due" && "bg-due-wash text-due",
+        tone === "neutral" && "bg-surface-strong text-muted-ink",
+        tone === "gold" && "bg-warm-wash text-primary-dark",
+      )}
+    >
+      {label}
+    </Text>
+  );
 }
 
 export function Avatar({ color, label }: { color: string; label: string }) {
@@ -186,10 +199,6 @@ const styles = StyleSheet.create({
   disabled: {
     opacity: 0.45,
   },
-  duePill: {
-    backgroundColor: colors.dueWash,
-    color: colors.due,
-  },
   emptyBody: {
     color: colors.mutedInk,
     fontSize: typography.small,
@@ -227,23 +236,6 @@ const styles = StyleSheet.create({
   ghostButton: {
     backgroundColor: "transparent",
   },
-  goldPill: {
-    backgroundColor: colors.warmWash,
-    color: colors.primaryDark,
-  },
-  neutralPill: {
-    backgroundColor: colors.surfaceStrong,
-    color: colors.mutedInk,
-  },
-  pill: {
-    alignSelf: "flex-start",
-    borderRadius: radius.sm,
-    fontSize: typography.micro,
-    fontWeight: "600",
-    overflow: "hidden",
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
   pressed: {
     opacity: 0.82,
     transform: [{ scale: 0.99 }],
@@ -272,9 +264,5 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: typography.heading,
     fontWeight: "700",
-  },
-  successPill: {
-    backgroundColor: colors.successWash,
-    color: colors.primaryDark,
   },
 });
