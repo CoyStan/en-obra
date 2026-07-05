@@ -3520,6 +3520,43 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0085"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0086/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0086",
+      "title": "Legacy style cleanup and bundle check",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Remove unused legacy styles only for surfaces already migrated to NativeWind/Reusables and capture bundle/export evidence. Allowed paths: src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0086/**, company-os/workspace.json.",
+      "acceptance_target": "Unused migrated-surface styles are removed without behavior regressions; bundle/export remains healthy; typecheck, tests, Expo config, export, scope, and validate pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0086"
     }
   ],
   "attempts": [
@@ -4869,6 +4906,20 @@
       "result": "Migrated Activity rows to AuditRow and Perfil identity controls to reusable PersonRow/SelectOptionRow.",
       "commits": [
         "1d523b94bf29e494188b68798c45f9be24880f7a"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0086",
+      "work_item_id": "WORK-APP-0086",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Removed unused legacy style declarations from migrated surfaces and verified bundle/export health.",
+      "commits": [
+        "ced9045eeb56965f4c1d187a77a316b688c13c0c"
       ]
     }
   ],
@@ -6440,6 +6491,27 @@
       "status": "passed",
       "summary": "Activity and Perfil migration verified with typecheck, tests, Expo config, web export, scope, validate, and mobile screenshots.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0086",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0086/bundle-style-report.json",
+        "reports/evidence/WORK-APP-0086/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0086",
+      "work_item_id": "WORK-APP-0086",
+      "attempt_id": "ATTEMPT-APP-0086",
+      "head_sha": "ced9045eeb56965f4c1d187a77a316b688c13c0c",
+      "status": "passed",
+      "summary": "Legacy style cleanup verified with typecheck, tests, Expo config, web export, bundle report, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -7637,6 +7709,28 @@
       "id": "REVIEW-APP-0085",
       "work_item_id": "WORK-APP-0085",
       "reviewed_head": "1d523b94bf29e494188b68798c45f9be24880f7a",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "bundle style report",
+        "Company OS scope WORK-APP-0086",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "288 historical unused style keys remain for later scoped cleanup",
+        "active profile switcher screenshot still needs seeded-profile harness"
+      ],
+      "id": "REVIEW-APP-0086",
+      "work_item_id": "WORK-APP-0086",
+      "reviewed_head": "ced9045eeb56965f4c1d187a77a316b688c13c0c",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -11324,6 +11418,42 @@
       "work_item_id": "WORK-APP-0085",
       "attempt_id": "ATTEMPT-APP-0085",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "scanned StyleSheet usage",
+        "removed migrated-surface dead style keys",
+        "preserved behavior code",
+        "generated bundle style report",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0086/bundle-style-report.json",
+        "reports/evidence/WORK-APP-0086/technical-report.md"
+      ],
+      "not_done": [
+        "broad historical style purge",
+        "final-evidence-packet",
+        "seeded-profile-runtime-harness",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0086",
+      "work_item_id": "WORK-APP-0086",
+      "attempt_id": "ATTEMPT-APP-0086",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -12269,6 +12399,14 @@
       "status": "completed",
       "what_happened": "Migrated Activity rows to AuditRow and Perfil identity controls to PersonRow and SelectOptionRow.",
       "what_changed": "Updated MainScreen Activity and Perfil markup and WORK-APP-0085 evidence artifacts."
+    },
+    {
+      "id": "OUTCOME-APP-0086",
+      "work_item_id": "WORK-APP-0086",
+      "summary": "Migrated-surface legacy style cleanup is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Removed 123 unused style declarations tied to migrated surfaces and generated bundle/export evidence.",
+      "what_changed": "Reduced MainScreen style weight while keeping typecheck, tests, Expo config, export, scope, and validate green."
     }
   ]
 }
