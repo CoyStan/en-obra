@@ -2895,6 +2895,45 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0069"
+    },
+    {
+      "allowed_resources": [
+        "docs/product/nativewind-reusables-premium-ui-workplan.md",
+        "docs/product/codex-autonomy-goal-nativewind-reusables.md",
+        "docs/product/ui-library-adoption.md",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0070/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0070",
+      "title": "NativeWind Reusables UI adoption decision",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "active",
+      "scope": "Create the UI library adoption decision record and architecture note for NativeWind, React Native Reusables, RN Primitives, gluestack-ui fallback criteria, and Tamagui deferral. Allowed paths: docs/product/nativewind-reusables-premium-ui-workplan.md, docs/product/codex-autonomy-goal-nativewind-reusables.md, docs/product/ui-library-adoption.md, docs/product/decisions.md, reports/evidence/WORK-APP-0070/**, company-os/workspace.json.",
+      "acceptance_target": "Docs explain the NativeWind/Reusables/RN Primitives decision, gluestack/Tamagui fallback criteria, no-big-bang strangler migration rule, verification commands, and boundaries; Company OS validates; app checks still pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0070"
     }
   ],
   "attempts": [
@@ -4021,6 +4060,17 @@
       "commits": [
         "0a41656"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0070",
+      "work_item_id": "WORK-APP-0070",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "dirty-docs",
+      "result": "Started UI library adoption decision and architecture note."
     }
   ],
   "evidence_runs": [

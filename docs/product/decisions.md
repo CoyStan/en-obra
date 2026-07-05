@@ -542,3 +542,17 @@ job per surface, compact progress indicators, and financial objects that show
 state visually. A receipt composer makes category, amount, payer, participants,
 and split consequence easier to understand without introducing real payments or
 backend behavior.
+
+### Adopt NativeWind And React Native Reusables By Strangler Migration
+
+Decision: Cuentas Claras should adopt NativeWind, React Native Reusables, and
+selective RN Primitives as the next UI-system foundation. gluestack-ui remains a
+component/pattern fallback, and Tamagui remains deferred unless the proof work
+shows NativeWind/Reusables cannot satisfy the product's needs.
+
+Rationale: The app is Expo/React Native, so web shadcn/Radix is not the right
+runtime layer. NativeWind plus copy-owned React Native components preserves the
+valuable part of the Tailwind/shadcn workflow: agent-legible styling, local
+component ownership, and fewer global styling conventions. A strangler
+migration lets the app keep working while new premium surfaces move into a more
+consistent, tokenized system.
