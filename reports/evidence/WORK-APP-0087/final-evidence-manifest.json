@@ -1,0 +1,248 @@
+{
+  "checkedAt": "2026-07-05T15:51:52.662Z",
+  "source": "Final premium UI evidence packet assembled from accepted per-flow ticket evidence.",
+  "requiredViewports": [
+    "360x740",
+    "390x844",
+    "412x915"
+  ],
+  "flows": [
+    {
+      "flow": "groups-shell",
+      "sourceWork": "WORK-APP-0081"
+    },
+    {
+      "flow": "inicio-money-instrument",
+      "sourceWork": "WORK-APP-0082"
+    },
+    {
+      "flow": "add-expense-composer",
+      "sourceWork": "WORK-APP-0083"
+    },
+    {
+      "flow": "add-expense-category-open",
+      "sourceWork": "WORK-APP-0083"
+    },
+    {
+      "flow": "balance-settlement-map",
+      "sourceWork": "WORK-APP-0084"
+    },
+    {
+      "flow": "activity-trail",
+      "sourceWork": "WORK-APP-0085"
+    },
+    {
+      "flow": "profile-local",
+      "sourceWork": "WORK-APP-0085"
+    }
+  ],
+  "screenshots": [
+    {
+      "flow": "groups-shell",
+      "viewport": "360x740",
+      "sourceWork": "WORK-APP-0081",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-groups-360x740.png",
+      "exists": true,
+      "bytes": 160164
+    },
+    {
+      "flow": "groups-shell",
+      "viewport": "390x844",
+      "sourceWork": "WORK-APP-0081",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-groups-390x844.png",
+      "exists": true,
+      "bytes": 191079
+    },
+    {
+      "flow": "groups-shell",
+      "viewport": "412x915",
+      "sourceWork": "WORK-APP-0081",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-groups-412x915.png",
+      "exists": true,
+      "bytes": 211069
+    },
+    {
+      "flow": "inicio-money-instrument",
+      "viewport": "360x740",
+      "sourceWork": "WORK-APP-0082",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0082/inicio-money-instrument-360x740.png",
+      "exists": true,
+      "bytes": 155407
+    },
+    {
+      "flow": "inicio-money-instrument",
+      "viewport": "390x844",
+      "sourceWork": "WORK-APP-0082",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0082/inicio-money-instrument-390x844.png",
+      "exists": true,
+      "bytes": 178172
+    },
+    {
+      "flow": "inicio-money-instrument",
+      "viewport": "412x915",
+      "sourceWork": "WORK-APP-0082",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0082/inicio-money-instrument-412x915.png",
+      "exists": true,
+      "bytes": 196806
+    },
+    {
+      "flow": "add-expense-composer",
+      "viewport": "360x740",
+      "sourceWork": "WORK-APP-0083",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-360x740.png",
+      "exists": true,
+      "bytes": 132727
+    },
+    {
+      "flow": "add-expense-composer",
+      "viewport": "390x844",
+      "sourceWork": "WORK-APP-0083",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-390x844.png",
+      "exists": true,
+      "bytes": 153090
+    },
+    {
+      "flow": "add-expense-composer",
+      "viewport": "412x915",
+      "sourceWork": "WORK-APP-0083",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-412x915.png",
+      "exists": true,
+      "bytes": 165017
+    },
+    {
+      "flow": "add-expense-category-open",
+      "viewport": "360x740",
+      "sourceWork": "WORK-APP-0083",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-category-open-360x740.png",
+      "exists": true,
+      "bytes": 128486
+    },
+    {
+      "flow": "add-expense-category-open",
+      "viewport": "390x844",
+      "sourceWork": "WORK-APP-0083",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-category-open-390x844.png",
+      "exists": true,
+      "bytes": 161227
+    },
+    {
+      "flow": "add-expense-category-open",
+      "viewport": "412x915",
+      "sourceWork": "WORK-APP-0083",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0083/composer-category-open-412x915.png",
+      "exists": true,
+      "bytes": 178672
+    },
+    {
+      "flow": "balance-settlement-map",
+      "viewport": "360x740",
+      "sourceWork": "WORK-APP-0084",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0084/balance-map-360x740.png",
+      "exists": true,
+      "bytes": 160208
+    },
+    {
+      "flow": "balance-settlement-map",
+      "viewport": "390x844",
+      "sourceWork": "WORK-APP-0084",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0084/balance-map-390x844.png",
+      "exists": true,
+      "bytes": 177188
+    },
+    {
+      "flow": "balance-settlement-map",
+      "viewport": "412x915",
+      "sourceWork": "WORK-APP-0084",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0084/balance-map-412x915.png",
+      "exists": true,
+      "bytes": 192329
+    },
+    {
+      "flow": "activity-trail",
+      "viewport": "360x740",
+      "sourceWork": "WORK-APP-0085",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/activity-360x740.png",
+      "exists": true,
+      "bytes": 172480
+    },
+    {
+      "flow": "activity-trail",
+      "viewport": "390x844",
+      "sourceWork": "WORK-APP-0085",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/activity-390x844.png",
+      "exists": true,
+      "bytes": 196340
+    },
+    {
+      "flow": "activity-trail",
+      "viewport": "412x915",
+      "sourceWork": "WORK-APP-0085",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/activity-412x915.png",
+      "exists": true,
+      "bytes": 206628
+    },
+    {
+      "flow": "profile-local",
+      "viewport": "360x740",
+      "sourceWork": "WORK-APP-0085",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/profile-360x740.png",
+      "exists": true,
+      "bytes": 149073
+    },
+    {
+      "flow": "profile-local",
+      "viewport": "390x844",
+      "sourceWork": "WORK-APP-0085",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/profile-390x844.png",
+      "exists": true,
+      "bytes": 178891
+    },
+    {
+      "flow": "profile-local",
+      "viewport": "412x915",
+      "sourceWork": "WORK-APP-0085",
+      "path": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/profile-412x915.png",
+      "exists": true,
+      "bytes": 201891
+    }
+  ],
+  "allScreenshotsPresent": true,
+  "checks": [
+    "npm run typecheck",
+    "npm test",
+    "npx expo config --type public",
+    "npm run export:web",
+    "./bin/company-os scope WORK-APP-0087",
+    "./bin/company-os validate"
+  ],
+  "works": [
+    "Android-first group selection shell",
+    "Active group scoped navigation",
+    "Inicio with active user, MXN balance, route cue, next action, and no-real-payments trust cue",
+    "Add-expense composer with category, payer, participant, note, and split preview flows",
+    "Balance view with member ledger and settlement route map",
+    "Activity trail with local settlement cues",
+    "Perfil local onboarding and local data trust surface",
+    "Offline/local-first demo data and integer-cent money model"
+  ],
+  "demoOnly": [
+    "No real payments are initiated or processed",
+    "Account/profile is local demo state, not production auth",
+    "No production sync backend or push service is configured",
+    "Settlement marking records local agreements only"
+  ],
+  "knownLimitations": [
+    "Founder visual acceptance is still pending for WORK-APP-0070 through WORK-APP-0087",
+    "Active signed-in profile switcher needs a seeded-profile screenshot harness",
+    "Historical unused StyleSheet keys remain for later scoped cleanup",
+    "Native Android emulator/device validation is not included in this web evidence packet",
+    "Play Store submission, signing, legal adoption, and production backend decisions remain human-only"
+  ],
+  "founderOnlyDecisions": [
+    "Accept or request changes for in-review Company OS items",
+    "Approve final brand/store listing copy and visual direction",
+    "Choose production auth/backend provider later",
+    "Approve privacy/terms publication before production release",
+    "Provide Play Console/signing credentials for real internal testing builds"
+  ]
+}
