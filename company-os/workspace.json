@@ -3482,6 +3482,44 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0084"
+    },
+    {
+      "allowed_resources": [
+        "src/components/reusables/**",
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0085/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0085",
+      "title": "Activity and Perfil migration",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Migrate Activity and Perfil surfaces toward the NativeWind/Reusables component system while preserving activity, account, identity, and local data behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0085/**, company-os/workspace.json.",
+      "acceptance_target": "Activity trail and identity/profile surfaces use the new component system; local trust cues remain obvious; account and active-member switching still work; screenshots at 360/390/412 and checks pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0085"
     }
   ],
   "attempts": [
@@ -4817,6 +4855,20 @@
       "result": "Migrated balance settlement map and member ledger rows to reusable components with 360/390/412 evidence.",
       "commits": [
         "e996fa609c1ce918bc5b02213b386aafc92bba72"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0085",
+      "work_item_id": "WORK-APP-0085",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Migrated Activity rows to AuditRow and Perfil identity controls to reusable PersonRow/SelectOptionRow.",
+      "commits": [
+        "1d523b94bf29e494188b68798c45f9be24880f7a"
       ]
     }
   ],
@@ -6361,6 +6413,33 @@
       "status": "passed",
       "summary": "Balance settlement map migration verified with typecheck, tests, Expo config, web export, 360/390/412 screenshots, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0085",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0085/activity-360x740.png",
+        "reports/evidence/WORK-APP-0085/activity-390x844.png",
+        "reports/evidence/WORK-APP-0085/activity-412x915.png",
+        "reports/evidence/WORK-APP-0085/profile-360x740.png",
+        "reports/evidence/WORK-APP-0085/profile-390x844.png",
+        "reports/evidence/WORK-APP-0085/profile-412x915.png",
+        "reports/evidence/WORK-APP-0085/runtime-proof.json",
+        "reports/evidence/WORK-APP-0085/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0085",
+      "work_item_id": "WORK-APP-0085",
+      "attempt_id": "ATTEMPT-APP-0085",
+      "head_sha": "1d523b94bf29e494188b68798c45f9be24880f7a",
+      "status": "passed",
+      "summary": "Activity and Perfil migration verified with typecheck, tests, Expo config, web export, scope, validate, and mobile screenshots.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -7533,6 +7612,31 @@
       "id": "REVIEW-APP-0084",
       "work_item_id": "WORK-APP-0084",
       "reviewed_head": "e996fa609c1ce918bc5b02213b386aafc92bba72",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "360 screenshots",
+        "390 screenshots",
+        "412 screenshots",
+        "runtime proof JSON",
+        "Company OS scope WORK-APP-0085",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "legacy StyleSheet entries remain until cleanup ticket",
+        "active profile switcher screenshot should be deepened with seeded-profile harness"
+      ],
+      "id": "REVIEW-APP-0085",
+      "work_item_id": "WORK-APP-0085",
+      "reviewed_head": "1d523b94bf29e494188b68798c45f9be24880f7a",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -11175,6 +11279,51 @@
       "work_item_id": "WORK-APP-0084",
       "attempt_id": "ATTEMPT-APP-0084",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "migrated Activity rows to AuditRow",
+        "migrated Perfil active identity to PersonRow",
+        "migrated Perfil member choices to SelectOptionRow",
+        "preserved local trust cues",
+        "preserved profile onboarding",
+        "preserved identity switching code path",
+        "captured 360 390 412 screenshots",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0085/runtime-proof.json",
+        "reports/evidence/WORK-APP-0085/activity-360x740.png",
+        "reports/evidence/WORK-APP-0085/activity-390x844.png",
+        "reports/evidence/WORK-APP-0085/activity-412x915.png",
+        "reports/evidence/WORK-APP-0085/profile-360x740.png",
+        "reports/evidence/WORK-APP-0085/profile-390x844.png",
+        "reports/evidence/WORK-APP-0085/profile-412x915.png",
+        "reports/evidence/WORK-APP-0085/technical-report.md"
+      ],
+      "not_done": [
+        "legacy-style-cleanup",
+        "final-evidence-packet",
+        "seeded-profile-runtime-harness",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0085",
+      "work_item_id": "WORK-APP-0085",
+      "attempt_id": "ATTEMPT-APP-0085",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -12112,6 +12261,14 @@
       "status": "completed",
       "what_happened": "Migrated member ledger rows to PersonRow and the primary settlement map to reusable section/action components.",
       "what_changed": "Updated MainScreen balance tab and WORK-APP-0084 evidence artifacts."
+    },
+    {
+      "id": "OUTCOME-APP-0085",
+      "work_item_id": "WORK-APP-0085",
+      "summary": "Activity and Perfil surfaces are migrated and accept-ready.",
+      "status": "completed",
+      "what_happened": "Migrated Activity rows to AuditRow and Perfil identity controls to PersonRow and SelectOptionRow.",
+      "what_changed": "Updated MainScreen Activity and Perfil markup and WORK-APP-0085 evidence artifacts."
     }
   ]
 }
