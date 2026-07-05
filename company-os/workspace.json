@@ -3444,6 +3444,44 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0083"
+    },
+    {
+      "allowed_resources": [
+        "src/components/reusables/**",
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0084/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0084",
+      "title": "Balance settlement map migration",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Migrate the Balance settlement map and member ledger toward the NativeWind/Reusables component system while preserving settlement and balance behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0084/**, company-os/workspace.json.",
+      "acceptance_target": "Settlement map and member ledger use the new visual system, decimals, right-side money rails, and cleaner spacing; local settlement action remains clear with Sin pagos reales; screenshots at 360/390/412 and checks pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0084"
     }
   ],
   "attempts": [
@@ -4765,6 +4803,20 @@
       "result": "Migrated add-expense composer sections and save dock to reusable NativeWind components with 360/390/412 evidence.",
       "commits": [
         "5a763a135e6aa447acda95fc3cc3a40fa27275e4"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0084",
+      "work_item_id": "WORK-APP-0084",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Migrated balance settlement map and member ledger rows to reusable components with 360/390/412 evidence.",
+      "commits": [
+        "e996fa609c1ce918bc5b02213b386aafc92bba72"
       ]
     }
   ],
@@ -6285,6 +6337,30 @@
       "status": "passed",
       "summary": "Add-expense composer migration verified with typecheck, tests, Expo config, web export, 360/390/412 composer screenshots, category-open screenshots, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0084",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0084/technical-report.md",
+        "reports/evidence/WORK-APP-0084/runtime-proof.json",
+        "reports/evidence/WORK-APP-0084/balance-map-360x740.png",
+        "reports/evidence/WORK-APP-0084/balance-map-390x844.png",
+        "reports/evidence/WORK-APP-0084/balance-map-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0084",
+      "work_item_id": "WORK-APP-0084",
+      "attempt_id": "ATTEMPT-APP-0084",
+      "head_sha": "e996fa609c1ce918bc5b02213b386aafc92bba72",
+      "status": "passed",
+      "summary": "Balance settlement map migration verified with typecheck, tests, Expo config, web export, 360/390/412 screenshots, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -7432,6 +7508,31 @@
       "id": "REVIEW-APP-0083",
       "work_item_id": "WORK-APP-0083",
       "reviewed_head": "5a763a135e6aa447acda95fc3cc3a40fa27275e4",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "360 screenshot",
+        "390 screenshot",
+        "412 screenshot",
+        "runtime proof JSON",
+        "Company OS scope WORK-APP-0084",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "legacy StyleSheet entries remain until cleanup ticket",
+        "activity and profile surfaces remain future migration"
+      ],
+      "id": "REVIEW-APP-0084",
+      "work_item_id": "WORK-APP-0084",
+      "reviewed_head": "e996fa609c1ce918bc5b02213b386aafc92bba72",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -11033,6 +11134,47 @@
       "work_item_id": "WORK-APP-0083",
       "attempt_id": "ATTEMPT-APP-0083",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "migrated member ledger rows to PersonRow",
+        "migrated settlement map wrapper to ComposerSection",
+        "migrated settlement action to reusable Button",
+        "preserved MoneyFlowFigure",
+        "preserved settlement confirmation",
+        "captured 360 390 412 screenshots",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0084/runtime-proof.json",
+        "reports/evidence/WORK-APP-0084/balance-map-360x740.png",
+        "reports/evidence/WORK-APP-0084/balance-map-390x844.png",
+        "reports/evidence/WORK-APP-0084/balance-map-412x915.png",
+        "reports/evidence/WORK-APP-0084/technical-report.md"
+      ],
+      "not_done": [
+        "activity-profile-migration",
+        "legacy-style-cleanup",
+        "final-evidence-packet",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0084",
+      "work_item_id": "WORK-APP-0084",
+      "attempt_id": "ATTEMPT-APP-0084",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -11962,6 +12104,14 @@
       "status": "completed",
       "what_happened": "Added reusable composer section/save components and migrated receipt, route, split review, and save dock in the expense sheet.",
       "what_changed": "Updated reusable exports, MainScreen composer markup, and WORK-APP-0083 evidence artifacts."
+    },
+    {
+      "id": "OUTCOME-APP-0084",
+      "work_item_id": "WORK-APP-0084",
+      "summary": "Balance settlement map and member ledger are migrated and accept-ready.",
+      "status": "completed",
+      "what_happened": "Migrated member ledger rows to PersonRow and the primary settlement map to reusable section/action components.",
+      "what_changed": "Updated MainScreen balance tab and WORK-APP-0084 evidence artifacts."
     }
   ]
 }
