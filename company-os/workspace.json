@@ -3019,6 +3019,47 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0072"
+    },
+    {
+      "allowed_resources": [
+        "package.json",
+        "package-lock.json",
+        "src/components/reusables/**",
+        "src/components/nativewind/**",
+        "App.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0073/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0073",
+      "title": "React Native Reusables primitive spike",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "active",
+      "scope": "Add a small copy-owned React Native Reusables-style primitive spike using NativeWind tokens. Allowed paths: package.json, package-lock.json, src/components/reusables/**, src/components/nativewind/**, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0073/**, company-os/workspace.json.",
+      "acceptance_target": "Copy-owned Button/Card/Input-style primitives exist, use NativeWind token classes, include a tiny proof component rendered without changing visible production UI, and checks pass. RN Primitives are evaluated/used only if they add value without broad architecture churn.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0073"
     }
   ],
   "attempts": [
@@ -4187,6 +4228,17 @@
       "commits": [
         "b402472"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0073",
+      "work_item_id": "WORK-APP-0073",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started React Native Reusables primitive spike."
     }
   ],
   "evidence_runs": [
