@@ -1,5 +1,6 @@
 import "./global.css";
 import { StatusBar } from "expo-status-bar";
+import { CoreReusablesProof } from "./src/components/nativewind/CoreReusablesProof";
 import { NativeWindProof } from "./src/components/nativewind/NativeWindProof";
 import { ReusablesProof } from "./src/components/nativewind/ReusablesProof";
 import { MainScreen } from "./src/screens/MainScreen";
@@ -10,6 +11,7 @@ export default function App() {
       <StatusBar style="dark" />
       <NativeWindProof />
       <ReusablesProof />
+      <CoreReusablesProof />
       <MainScreen />
     </>
   );

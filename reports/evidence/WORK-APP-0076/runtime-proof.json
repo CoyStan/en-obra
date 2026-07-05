@@ -1,0 +1,15 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "viewport": "390x844",
+  "appRendered": true,
+  "hiddenProofIdsPresent": {
+    "core-reusables-proof-card": 1,
+    "core-reusables-proof-avatar": 1,
+    "core-reusables-proof-amount": 1,
+    "core-reusables-proof-pill": 1,
+    "core-reusables-proof-button": 1,
+    "core-reusables-proof-icon-button": 1
+  },
+  "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0076/core-reusables-proof-390x844.png",
+  "checkedAt": "2026-07-05T14:52:26.370Z"
+}
