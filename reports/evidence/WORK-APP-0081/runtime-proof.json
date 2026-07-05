@@ -1,0 +1,45 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "results": [
+    {
+      "viewport": "360x740",
+      "appRendered": true,
+      "noRealPaymentsVisible": true,
+      "topBarCount": 1,
+      "bottomTabCount": 1,
+      "trustStripCount": 1,
+      "workspaceBarCount": 1,
+      "screenshots": {
+        "groups": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-groups-360x740.png",
+        "balance": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-balance-360x740.png"
+      }
+    },
+    {
+      "viewport": "390x844",
+      "appRendered": true,
+      "noRealPaymentsVisible": true,
+      "topBarCount": 1,
+      "bottomTabCount": 1,
+      "trustStripCount": 1,
+      "workspaceBarCount": 1,
+      "screenshots": {
+        "groups": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-groups-390x844.png",
+        "balance": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-balance-390x844.png"
+      }
+    },
+    {
+      "viewport": "412x915",
+      "appRendered": true,
+      "noRealPaymentsVisible": true,
+      "topBarCount": 1,
+      "bottomTabCount": 1,
+      "trustStripCount": 1,
+      "workspaceBarCount": 1,
+      "screenshots": {
+        "groups": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-groups-412x915.png",
+        "balance": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0081/shell-balance-412x915.png"
+      }
+    }
+  ],
+  "checkedAt": "2026-07-05T15:19:50.326Z"
+}

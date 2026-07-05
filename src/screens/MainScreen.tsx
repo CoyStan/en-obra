@@ -39,12 +39,16 @@ import { deleteLocalUserData, getLocalDataInventory, getRemoteDeletionStatus } f
 import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
 import {
+  AppTopBar,
+  BottomTabBar,
   FeedbackToast,
+  LocalTrustStrip,
   MoneyInput,
   NoteField,
   SelectOptionRow,
   SelectPanel,
   TextField,
+  WorkspaceContextBar,
 } from "../components/reusables";
 
 type TabId = "groups" | "home" | "balance" | "activity" | "account";
@@ -2671,37 +2675,16 @@ export function MainScreen() {
             roomy && styles.contentRoomy,
           ]}
         >
-          <View style={styles.appBar}>
-            <View style={styles.appBrand}>
-              <View style={styles.brandMark}>
-                <MaterialCommunityIcons color={colors.surface} name="scale-balance" size={19} />
-              </View>
-              <View style={styles.appBrandCopy}>
-                <Text style={[styles.appTitle, compact && styles.appTitleCompact]}>Cuentas Claras</Text>
-                <Text style={styles.appSubtitle}>Gastos compartidos · MXN</Text>
-              </View>
-            </View>
-            <View style={styles.appActions}>
-              <Pressable
-                accessibilityLabel="Ver actividad"
-                accessibilityRole="button"
-                hitSlop={4}
-                onPress={() => openTab("activity")}
-                style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
-              >
-                <MaterialCommunityIcons color={colors.primaryDark} name="bell-outline" size={22} />
-              </Pressable>
-              <Pressable
-                accessibilityLabel="Abrir perfil"
-                accessibilityRole="button"
-                hitSlop={4}
-                onPress={() => openTab("account")}
-                style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
-              >
-                <MaterialCommunityIcons color={colors.primaryDark} name="dots-vertical" size={22} />
-              </Pressable>
-            </View>
-          </View>
+          <AppTopBar
+            actions={[
+              { accessibilityLabel: "Ver actividad", icon: "bell-outline", onPress: () => openTab("activity") },
+              { accessibilityLabel: "Abrir perfil", icon: "dots-vertical", onPress: () => openTab("account") },
+            ]}
+            compact={compact}
+            subtitle="Gastos compartidos · MXN"
+            testID="premium-app-top-bar"
+            title="Cuentas Claras"
+          />
 
           {error || accountError ? (
             <Pressable
@@ -2728,28 +2711,14 @@ export function MainScreen() {
           ) : null}
 
           {activeTab !== "groups" && activeTab !== "home" ? (
-            <View style={[styles.workspaceBar, compact && styles.workspaceBarCompact]}>
-              <View style={styles.workspaceBarIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="account-group" size={18} />
-              </View>
-              <View style={styles.workspaceBarCopy}>
-                <Text style={styles.workspaceBarKicker}>Grupo activo</Text>
-                <Text numberOfLines={1} style={styles.workspaceBarTitle}>
-                  {selectedGroup ? selectedGroup.name : "Elige un grupo"}
-                </Text>
-                <Text numberOfLines={1} style={styles.workspaceBarSubtitle}>{workspaceHint}</Text>
-              </View>
-              <Pressable
-                accessibilityLabel={selectedGroup ? "Cambiar grupo activo" : "Elegir grupo"}
-                accessibilityRole="button"
-                hitSlop={4}
-                onPress={() => openTab("groups")}
-                style={({ pressed }) => [styles.workspaceSwitchButton, pressed && styles.pressed]}
-              >
-                <MaterialCommunityIcons color={colors.primaryDark} name="swap-horizontal" size={15} />
-                <Text style={styles.workspaceSwitchText}>{selectedGroup ? "Cambiar" : "Elegir"}</Text>
-              </Pressable>
-            </View>
+            <WorkspaceContextBar
+              compact={compact}
+              onSwitch={() => openTab("groups")}
+              subtitle={workspaceHint}
+              switchLabel={selectedGroup ? "Cambiar" : "Elegir"}
+              testID="premium-workspace-context-bar"
+              title={selectedGroup ? selectedGroup.name : "Elige un grupo"}
+            />
           ) : null}
 
           {activeTab === "groups" ? renderGroups() : null}
@@ -2766,8 +2735,10 @@ export function MainScreen() {
           visible={Boolean(feedback)}
         />
 
-        <View style={styles.bottomNav}>
-          {tabs.map((tab) => {
+        <BottomTabBar
+          compact={compact}
+          onPressTab={(id) => openTab(id as TabId)}
+          tabs={tabs.map((tab) => {
             const active = activeTab === tab.id;
             const disabledByContext = Boolean(tab.groupScoped && !selectedGroup);
             const isGroupSwitcher = tab.id === "groups";
@@ -2780,42 +2751,20 @@ export function MainScreen() {
                 : selectedGroup
                   ? `${tab.label} de ${selectedGroup.name}`
                   : `${tab.label}. Primero elige un grupo`;
-            return (
-              <Pressable
-                accessibilityLabel={accessibilityLabel}
-                accessibilityRole="tab"
-                accessibilityState={{ disabled: disabledByContext, selected: active }}
-                hitSlop={4}
-                key={tab.id}
-                onPress={() => openTab(tab.id)}
-                style={[
-                  styles.navItem,
-                  isGroupSwitcher && styles.navGroupSwitcher,
-                  !isGroupSwitcher && selectedGroup && styles.navWorkspaceItem,
-                  active && styles.navItemActive,
-                  disabledByContext && styles.navItemDisabled,
-                ]}
-              >
-                <MaterialCommunityIcons
-                  color={disabledByContext ? colors.mutedInk : colors.primaryDark}
-                  name={tab.icon}
-                  size={20}
-                />
-                {!isGroupSwitcher && selectedGroup ? <View style={styles.navScopedDot} /> : null}
-                <Text
-                  style={[
-                    styles.navLabel,
-                    compact && styles.navLabelCompact,
-                    active && styles.navLabelActive,
-                    disabledByContext && styles.navLabelDisabled,
-                  ]}
-                >
-                  {displayLabel}
-                </Text>
-              </Pressable>
-            );
+            return {
+              accessibilityLabel,
+              active,
+              disabled: disabledByContext,
+              icon: tab.icon,
+              id: tab.id,
+              label: displayLabel,
+              scoped: Boolean(!isGroupSwitcher && selectedGroup),
+            };
           })}
-        </View>
+          testID="premium-bottom-tab-bar"
+        >
+          <LocalTrustStrip testID="premium-bottom-trust-strip" />
+        </BottomTabBar>
         {renderMemberSheet()}
         {renderExpenseSheet()}
         {renderActiveGroupMemberSheet()}

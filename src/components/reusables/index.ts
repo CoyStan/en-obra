@@ -9,5 +9,6 @@ export { AuditRow, GroupRow, PersonRow } from "./list-row";
 export { MoneyCard } from "./money-card";
 export { Pill } from "./pill";
 export { SelectOptionRow, SelectPanel } from "./select";
+export { AppTopBar, BottomTabBar, LocalTrustStrip, WorkspaceContextBar } from "./shell";
 export { Surface } from "./surface";
 export { cn } from "./utils";
