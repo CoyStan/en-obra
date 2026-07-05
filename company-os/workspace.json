@@ -3130,7 +3130,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Migrate one small visible production surface to the NativeWind/Reusables component system as a proof. Target: shared Pill component in src/components/ui.tsx. Allowed paths: src/components/ui.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0075/**, company-os/workspace.json.",
       "acceptance_target": "A small visible production surface uses NativeWind token classes, app behavior is preserved, screenshots at 360x740 390x844 412x915 show the app still renders cleanly, and all checks pass.",
       "required_approval_capability": "design",
@@ -4337,12 +4337,15 @@
       "id": "ATTEMPT-APP-0075",
       "work_item_id": "WORK-APP-0075",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started first production NativeWind proof migration."
+      "result": "Migrated shared Pill primitive to NativeWind token classes, captured Android-width screenshots, and passed checks.",
+      "commits": [
+        "9ff4894"
+      ]
     }
   ],
   "evidence_runs": [
@@ -5663,6 +5666,15 @@
       "status": "passed",
       "summary": "Verified UI component guide with typecheck, tests, Expo config, web export, Company OS scope, and Company OS validate.",
       "freshness": "fresh"
+    },
+    {
+      "id": "EVIDENCE-APP-0075",
+      "work_item_id": "WORK-APP-0075",
+      "attempt_id": "ATTEMPT-APP-0075",
+      "head_sha": "9ff4894",
+      "status": "passed",
+      "summary": "Verified first visible production NativeWind migration with typecheck, tests, Expo config, web export, screenshots, Company OS scope, and Company OS validate.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -6596,6 +6608,27 @@
       "id": "REVIEW-APP-0074",
       "work_item_id": "WORK-APP-0074",
       "reviewed_head": "6cc94cc",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "Android screenshots 360x740 390x844 412x915",
+        "Company OS scope WORK-APP-0075",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "only Pill migrated so broader visual migration remains future work"
+      ],
+      "id": "REVIEW-APP-0075",
+      "work_item_id": "WORK-APP-0075",
+      "reviewed_head": "9ff4894",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -9809,6 +9842,44 @@
       "work_item_id": "WORK-APP-0074",
       "attempt_id": "ATTEMPT-APP-0074",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "migrated shared Pill primitive to NativeWind token classes",
+        "removed unused pill StyleSheet entries",
+        "recorded decision",
+        "captured Android-width screenshots",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/components/ui.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0075/pill-migration-360x740.png",
+        "reports/evidence/WORK-APP-0075/pill-migration-390x844.png",
+        "reports/evidence/WORK-APP-0075/pill-migration-412x915.png",
+        "reports/evidence/WORK-APP-0075/technical-report.md"
+      ],
+      "not_done": [
+        "full-screen-migration",
+        "broad-style-cleanup",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0075",
+      "work_item_id": "WORK-APP-0075",
+      "attempt_id": "ATTEMPT-APP-0075",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -10666,6 +10737,14 @@
       "status": "completed",
       "what_happened": "Created the operating guide for future NativeWind/Reusables migration tickets.",
       "what_changed": "Added docs/product/ui-component-system.md, updated decisions, and recorded evidence."
+    },
+    {
+      "id": "OUTCOME-APP-0075",
+      "work_item_id": "WORK-APP-0075",
+      "summary": "Shared Pill is the first visible production NativeWind migration.",
+      "status": "completed",
+      "what_happened": "Converted the shared Pill primitive to NativeWind token classes and verified visible app screenshots.",
+      "what_changed": "Updated src/components/ui.tsx, decision log, and screenshot/report evidence."
     }
   ]
 }
