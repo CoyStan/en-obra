@@ -556,3 +556,14 @@ valuable part of the Tailwind/shadcn workflow: agent-legible styling, local
 component ownership, and fewer global styling conventions. A strangler
 migration lets the app keep working while new premium surfaces move into a more
 consistent, tokenized system.
+
+### Govern New UI Components Through An Ownership Guide
+
+Decision: New NativeWind/Reusables UI work should follow
+`docs/product/ui-component-system.md` for component paths, naming, token rules,
+variant semantics, accessibility, migration order, and verification.
+
+Rationale: Adding a new styling layer without ownership rules would recreate
+the same drift problem in a different syntax. A guide gives future agents a
+clear place to look before inventing components, variants, colors, or migration
+patterns.
