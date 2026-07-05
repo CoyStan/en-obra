@@ -3406,6 +3406,44 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0082"
+    },
+    {
+      "allowed_resources": [
+        "src/components/reusables/**",
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0083/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0083",
+      "title": "Add-expense composer migration",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Migrate the add-expense composer surface to the NativeWind/Reusables component system while preserving category, payer, participants, equal split, note, save, and validation behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0083/**, company-os/workspace.json.",
+      "acceptance_target": "Receipt composer uses new sheet/section/select/input/money components; category, payer, and participants remain dropdown/list selectors; equal split preview and local save remain clear; screenshots at 360/390/412 and checks pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0083"
     }
   ],
   "attempts": [
@@ -4713,6 +4751,20 @@
       "result": "Migrated Inicio balance/route money instrument to a reusable NativeWind component with 360/390/412 evidence.",
       "commits": [
         "9f5f5ea031adf0ba60b152523797a9faff762e0b"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0083",
+      "work_item_id": "WORK-APP-0083",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Migrated add-expense composer sections and save dock to reusable NativeWind components with 360/390/412 evidence.",
+      "commits": [
+        "5a763a135e6aa447acda95fc3cc3a40fa27275e4"
       ]
     }
   ],
@@ -6206,6 +6258,33 @@
       "status": "passed",
       "summary": "Inicio money instrument migration verified with typecheck, tests, Expo config, web export, 360/390/412 screenshots, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0083",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0083/technical-report.md",
+        "reports/evidence/WORK-APP-0083/runtime-proof.json",
+        "reports/evidence/WORK-APP-0083/composer-360x740.png",
+        "reports/evidence/WORK-APP-0083/composer-390x844.png",
+        "reports/evidence/WORK-APP-0083/composer-412x915.png",
+        "reports/evidence/WORK-APP-0083/composer-category-open-360x740.png",
+        "reports/evidence/WORK-APP-0083/composer-category-open-390x844.png",
+        "reports/evidence/WORK-APP-0083/composer-category-open-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0083",
+      "work_item_id": "WORK-APP-0083",
+      "attempt_id": "ATTEMPT-APP-0083",
+      "head_sha": "5a763a135e6aa447acda95fc3cc3a40fa27275e4",
+      "status": "passed",
+      "summary": "Add-expense composer migration verified with typecheck, tests, Expo config, web export, 360/390/412 composer screenshots, category-open screenshots, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -7327,6 +7406,32 @@
       "id": "REVIEW-APP-0082",
       "work_item_id": "WORK-APP-0082",
       "reviewed_head": "9f5f5ea031adf0ba60b152523797a9faff762e0b",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "360 screenshots",
+        "390 screenshots",
+        "412 screenshots",
+        "category-open screenshots",
+        "runtime proof JSON",
+        "Company OS scope WORK-APP-0083",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "legacy composer StyleSheet entries remain until cleanup ticket",
+        "balance and activity/profile surfaces remain future migrations"
+      ],
+      "id": "REVIEW-APP-0083",
+      "work_item_id": "WORK-APP-0083",
+      "reviewed_head": "5a763a135e6aa447acda95fc3cc3a40fa27275e4",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -10880,6 +10985,54 @@
       "work_item_id": "WORK-APP-0082",
       "attempt_id": "ATTEMPT-APP-0082",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added ComposerSection primitive",
+        "added ComposerSaveDock primitive",
+        "migrated receipt composer section",
+        "migrated route section",
+        "migrated split review section",
+        "migrated save action to reusable Button",
+        "captured 360 390 412 composer screenshots",
+        "captured category-open screenshots",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/components/reusables/composer.tsx",
+        "src/components/reusables/index.ts",
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0083/runtime-proof.json",
+        "reports/evidence/WORK-APP-0083/composer-360x740.png",
+        "reports/evidence/WORK-APP-0083/composer-390x844.png",
+        "reports/evidence/WORK-APP-0083/composer-412x915.png",
+        "reports/evidence/WORK-APP-0083/composer-category-open-360x740.png",
+        "reports/evidence/WORK-APP-0083/composer-category-open-390x844.png",
+        "reports/evidence/WORK-APP-0083/composer-category-open-412x915.png",
+        "reports/evidence/WORK-APP-0083/technical-report.md"
+      ],
+      "not_done": [
+        "balance-map-migration",
+        "activity-profile-migration",
+        "legacy-style-cleanup",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0083",
+      "work_item_id": "WORK-APP-0083",
+      "attempt_id": "ATTEMPT-APP-0083",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -11801,6 +11954,14 @@
       "status": "completed",
       "what_happened": "Added reusable HomeMoneyInstrument and wired Inicio active user, balance, MXN amount, route cue, no-real-payments copy, and progress rail through it.",
       "what_changed": "Updated reusable exports, MainScreen Inicio instrument markup, and WORK-APP-0082 evidence artifacts."
+    },
+    {
+      "id": "OUTCOME-APP-0083",
+      "work_item_id": "WORK-APP-0083",
+      "summary": "Add-expense composer is migrated and accept-ready.",
+      "status": "completed",
+      "what_happened": "Added reusable composer section/save components and migrated receipt, route, split review, and save dock in the expense sheet.",
+      "what_changed": "Updated reusable exports, MainScreen composer markup, and WORK-APP-0083 evidence artifacts."
     }
   ]
 }
