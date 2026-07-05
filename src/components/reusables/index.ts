@@ -4,5 +4,8 @@ export { Button } from "./button";
 export { IconButton } from "./button";
 export { Card } from "./card";
 export { Input } from "./input";
+export { AuditRow, GroupRow, PersonRow } from "./list-row";
+export { MoneyCard } from "./money-card";
 export { Pill } from "./pill";
+export { Surface } from "./surface";
 export { cn } from "./utils";

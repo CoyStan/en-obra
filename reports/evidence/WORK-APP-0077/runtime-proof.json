@@ -1,0 +1,16 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "viewport": "390x844",
+  "appRendered": true,
+  "hiddenProofIdsPresent": {
+    "surface-rows-proof": 1,
+    "surface-rows-proof-money-card": 1,
+    "surface-rows-proof-money-card-amount": 1,
+    "surface-rows-proof-money-action": 1,
+    "surface-rows-proof-person-row": 1,
+    "surface-rows-proof-group-row": 1,
+    "surface-rows-proof-audit-row": 1
+  },
+  "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0077/surface-rows-proof-390x844.png",
+  "checkedAt": "2026-07-05T14:58:09.240Z"
+}
