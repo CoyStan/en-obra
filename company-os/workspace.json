@@ -3557,6 +3557,42 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0086"
+    },
+    {
+      "allowed_resources": [
+        "reports/evidence/WORK-APP-0087/**",
+        "docs/product/decisions.md",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0087",
+      "title": "Final premium UI evidence packet",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Capture final premium UI evidence across major flows after NativeWind/Reusables migration and summarize remaining founder-only decisions. Allowed paths: reports/evidence/WORK-APP-0087/**, docs/product/decisions.md, company-os/workspace.json.",
+      "acceptance_target": "Screenshots at 360x740, 390x844, and 412x915 cover major flows; checks pass; evidence packet lists what works, demo-only boundaries, limitations, and remaining founder-only decisions.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0087"
     }
   ],
   "attempts": [
@@ -4920,6 +4956,20 @@
       "result": "Removed unused legacy style declarations from migrated surfaces and verified bundle/export health.",
       "commits": [
         "ced9045eeb56965f4c1d187a77a316b688c13c0c"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0087",
+      "work_item_id": "WORK-APP-0087",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Assembled final premium UI evidence packet covering major flows and Android widths.",
+      "commits": [
+        "5f56389089a6875c701a90040e4dba23dd80a282"
       ]
     }
   ],
@@ -6512,6 +6562,27 @@
       "status": "passed",
       "summary": "Legacy style cleanup verified with typecheck, tests, Expo config, web export, bundle report, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0087",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0087/final-evidence-manifest.json",
+        "reports/evidence/WORK-APP-0087/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0087",
+      "work_item_id": "WORK-APP-0087",
+      "attempt_id": "ATTEMPT-APP-0087",
+      "head_sha": "5f56389089a6875c701a90040e4dba23dd80a282",
+      "status": "passed",
+      "summary": "Final UI evidence packet verified with typecheck, tests, Expo config, web export, 21 screenshot references, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -7731,6 +7802,30 @@
       "id": "REVIEW-APP-0086",
       "work_item_id": "WORK-APP-0086",
       "reviewed_head": "ced9045eeb56965f4c1d187a77a316b688c13c0c",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "final evidence manifest",
+        "21 screenshot references",
+        "Company OS scope WORK-APP-0087",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "native emulator evidence not captured",
+        "active signed-in profile switcher needs seeded-profile screenshot harness",
+        "Play Store/legal/backend decisions remain human-only"
+      ],
+      "id": "REVIEW-APP-0087",
+      "work_item_id": "WORK-APP-0087",
+      "reviewed_head": "5f56389089a6875c701a90040e4dba23dd80a282",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -11454,6 +11549,41 @@
       "work_item_id": "WORK-APP-0086",
       "attempt_id": "ATTEMPT-APP-0086",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "assembled final screenshot manifest",
+        "verified 21 screenshots exist across 7 flows and 3 widths",
+        "documented working flows",
+        "documented demo-only boundaries",
+        "documented founder-only decisions",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "reports/evidence/WORK-APP-0087/final-evidence-manifest.json",
+        "reports/evidence/WORK-APP-0087/technical-report.md"
+      ],
+      "not_done": [
+        "founder acceptance",
+        "production auth",
+        "production backend",
+        "real payments",
+        "legal/privacy adoption",
+        "Play Store signing",
+        "production deployment",
+        "native emulator evidence"
+      ],
+      "id": "RECEIPT-APP-0087",
+      "work_item_id": "WORK-APP-0087",
+      "attempt_id": "ATTEMPT-APP-0087",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -12407,6 +12537,14 @@
       "status": "completed",
       "what_happened": "Removed 123 unused style declarations tied to migrated surfaces and generated bundle/export evidence.",
       "what_changed": "Reduced MainScreen style weight while keeping typecheck, tests, Expo config, export, scope, and validate green."
+    },
+    {
+      "id": "OUTCOME-APP-0087",
+      "work_item_id": "WORK-APP-0087",
+      "summary": "Final premium UI evidence packet is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Assembled a manifest and report covering screenshots, checks, what works, demo-only boundaries, limitations, and founder-only decisions.",
+      "what_changed": "Added WORK-APP-0087 evidence artifacts and marked the final UI migration evidence ready for founder review."
     }
   ]
 }
