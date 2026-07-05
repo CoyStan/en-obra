@@ -1,0 +1,48 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "results": [
+    {
+      "viewport": "360x740",
+      "appRendered": true,
+      "activityRows": 4,
+      "activityLocalCueVisible": true,
+      "profileRendered": true,
+      "profileLocalCueVisible": true,
+      "profileActivePersonRow": 0,
+      "profilePersonOptions": 0,
+      "screenshots": {
+        "activity": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/activity-360x740.png",
+        "profile": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/profile-360x740.png"
+      }
+    },
+    {
+      "viewport": "390x844",
+      "appRendered": true,
+      "activityRows": 4,
+      "activityLocalCueVisible": true,
+      "profileRendered": true,
+      "profileLocalCueVisible": true,
+      "profileActivePersonRow": 0,
+      "profilePersonOptions": 0,
+      "screenshots": {
+        "activity": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/activity-390x844.png",
+        "profile": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/profile-390x844.png"
+      }
+    },
+    {
+      "viewport": "412x915",
+      "appRendered": true,
+      "activityRows": 4,
+      "activityLocalCueVisible": true,
+      "profileRendered": true,
+      "profileLocalCueVisible": true,
+      "profileActivePersonRow": 0,
+      "profilePersonOptions": 0,
+      "screenshots": {
+        "activity": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/activity-412x915.png",
+        "profile": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0085/profile-412x915.png"
+      }
+    }
+  ],
+  "checkedAt": "2026-07-05T15:41:52.238Z"
+}

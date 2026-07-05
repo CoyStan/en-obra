@@ -40,6 +40,7 @@ import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
 import {
   AppTopBar,
+  AuditRow,
   BottomTabBar,
   Button as ReusableButton,
   ComposerSaveDock,
@@ -511,42 +512,22 @@ function Field({
 function ActivityRow({ item }: { item: ActivityItem }) {
   const hasAmount = item.amountCents > 0;
   const isSettlement = item.type === "settlement";
+  const metaParts = [
+    item.label,
+    item.actorName,
+    item.subtitle,
+    isSettlement ? "Sin pagos reales · acuerdo guardado" : null,
+    formatDate(item.createdAt),
+  ].filter(Boolean);
   return (
-    <View style={[styles.activityRow, isSettlement && styles.activityRowSettlement]}>
-      <View style={styles.activityProofColumn}>
-        <View style={[styles.activityProofIcon, isSettlement && styles.activityProofIconSettlement]}>
-          {item.type === "expense" ? (
-            <CategoryObject categoryId={item.categoryId} size="small" />
-          ) : (
-            <MaterialCommunityIcons
-              color={colors.primaryDark}
-              name={activityIcon(item)}
-              size={18}
-            />
-          )}
-        </View>
-        <View style={[styles.activityProofLine, isSettlement && styles.activityProofLineSettlement]} />
-      </View>
-      <View style={styles.activityCopy}>
-        <View style={styles.activityMetaLine}>
-          {item.label ? <Pill label={item.label} tone={isSettlement ? "gold" : "neutral"} /> : null}
-          {isSettlement ? <Pill label="Registro local" tone="success" /> : null}
-          {item.actorName ? <Text style={styles.activityActor}>{item.actorName}</Text> : null}
-        </View>
-        <Text numberOfLines={2} style={styles.activityTitle}>{item.title}</Text>
-        <Text numberOfLines={2} style={styles.activitySubtitle}>{item.subtitle}</Text>
-        {isSettlement ? (
-          <View style={styles.activityProofNote}>
-            <MaterialCommunityIcons color={colors.mutedInk} name="shield-check-outline" size={14} />
-            <Text style={styles.activityProofNoteText}>Sin pagos reales · acuerdo guardado</Text>
-          </View>
-        ) : null}
-      </View>
-      <View style={styles.activityAmount}>
-        <Text style={styles.activityDate}>{formatDate(item.createdAt)}</Text>
-        {hasAmount ? <Amount cents={item.amountCents} tone={isSettlement ? "success" : "neutral"} /> : null}
-      </View>
-    </View>
+    <AuditRow
+      amountCents={hasAmount ? item.amountCents : undefined}
+      amountTone={isSettlement ? "success" : "neutral"}
+      icon={item.type === "expense" ? activityIconForTitle(item.title) : activityIcon(item)}
+      meta={metaParts.join(" · ")}
+      testID={`activity-row-${item.id}`}
+      title={item.title}
+    />
   );
 }
 
@@ -1853,52 +1834,32 @@ export function MainScreen() {
                   />
                 </View>
 
-                <View style={styles.profileActivePersonaCard}>
-                  <View style={styles.profileActivePersona}>
-                    <Avatar color={activeGroupMember?.avatarColor ?? displayMember?.avatarColor ?? colors.primary} label={activeGroupMember?.name ?? displayMember?.name ?? "Yo"} />
-                    <View style={styles.profileActivePersonaCopy}>
-                      <Text style={styles.profileActivePersonaName}>
-                        {activeGroupMember ? activeGroupMember.name : "Elige tu integrante"}
-                      </Text>
-                      <Text style={styles.accountSectionText}>
-                        {activeGroupMember
-                          ? "Gastos nuevos y balances se leen desde esta identidad."
-                          : "Vincula tu sesión a una persona del grupo."}
-                      </Text>
-                    </View>
-                    <MaterialCommunityIcons color={colors.primaryDark} name="fingerprint" size={22} />
-                  </View>
-                </View>
+                <PersonRow
+                  avatarColor={activeGroupMember?.avatarColor ?? displayMember?.avatarColor ?? colors.primary}
+                  badge={activeGroupMember ? "Identidad activa" : "Pendiente"}
+                  meta={
+                    activeGroupMember
+                      ? "Gastos nuevos y balances se leen desde esta identidad."
+                      : "Vincula tu sesión a una persona del grupo."
+                  }
+                  name={activeGroupMember ? activeGroupMember.name : "Elige tu integrante"}
+                  testID="profile-active-person-row"
+                />
 
                 <View style={styles.profilePeopleList}>
                   {selectedMembers.map((member) => (
-                    <Pressable
+                    <SelectOptionRow
                       accessibilityLabel={`Usar ${member.name} en este grupo`}
-                      accessibilityRole="button"
-                      accessibilityState={{ selected: activeGroupMember?.id === member.id }}
-                      hitSlop={4}
                       key={member.id}
+                      leading={<Avatar color={member.avatarColor} label={member.name} />}
+                      meta={activeGroupMember?.id === member.id ? "Identidad activa" : "Disponible para este grupo"}
                       onPress={() => {
                         void saveActiveGroupMember(member.id);
                       }}
-                      style={[
-                        styles.profilePersonRow,
-                        activeGroupMember?.id === member.id && styles.profilePersonRowActive,
-                      ]}
-                    >
-                      <Avatar color={member.avatarColor} label={member.name} />
-                      <View style={styles.profilePersonRowCopy}>
-                        <Text numberOfLines={1} style={styles.profilePersonName}>{member.name}</Text>
-                        <Text style={styles.profilePersonMeta}>
-                          {activeGroupMember?.id === member.id ? "Identidad activa" : "Disponible para este grupo"}
-                        </Text>
-                      </View>
-                      {activeGroupMember?.id === member.id ? (
-                        <MaterialCommunityIcons color={colors.primary} name="check-circle" size={21} />
-                      ) : (
-                        <MaterialCommunityIcons color={colors.mutedInk} name="chevron-right" size={20} />
-                      )}
-                    </Pressable>
+                      selected={activeGroupMember?.id === member.id}
+                      testID={`profile-person-option-${member.id}`}
+                      title={member.name}
+                    />
                   ))}
                 </View>
               </View>
