@@ -38,7 +38,14 @@ import { useAppData } from "../state/useAppData";
 import { deleteLocalUserData, getLocalDataInventory, getRemoteDeletionStatus } from "../security/dataDeletion";
 import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
-import { MoneyInput, NoteField, SelectOptionRow, SelectPanel, TextField } from "../components/reusables";
+import {
+  FeedbackToast,
+  MoneyInput,
+  NoteField,
+  SelectOptionRow,
+  SelectPanel,
+  TextField,
+} from "../components/reusables";
 
 type TabId = "groups" | "home" | "balance" | "activity" | "account";
 type ExpenseMenuId = "category" | "payer" | "participants";
@@ -784,6 +791,7 @@ export function MainScreen() {
   const [dataControlMessage, setDataControlMessage] = useState("");
   const [dataControlTone, setDataControlTone] = useState<"success" | "error">("success");
   const [pendingSettlement, setPendingSettlement] = useState<SettlementSuggestion | null>(null);
+  const [feedback, setFeedback] = useState<{ message: string; tone: "success" | "neutral" | "due" } | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
   const moneyFlowProgress = useRef(new Animated.Value(0)).current;
   const density = densityForWidth(viewportWidth);
@@ -960,6 +968,14 @@ export function MainScreen() {
     return () => loop.stop();
   }, [moneyFlowProgress, reduceMotion]);
 
+  useEffect(() => {
+    if (!feedback) {
+      return undefined;
+    }
+    const timeout = setTimeout(() => setFeedback(null), 2600);
+    return () => clearTimeout(timeout);
+  }, [feedback]);
+
   const openActiveMemberPicker = () => {
     if (!account.profile || account.mode !== "signed-in" || !selectedGroup) {
       return;
@@ -1022,6 +1038,7 @@ export function MainScreen() {
     setParticipantIds([]);
     setOpenExpenseMenu(null);
     setShowExpenseForm(false);
+    setFeedback({ message: "Gasto guardado localmente. Sin pagos reales.", tone: "success" });
   };
 
   const chooseExpensePayer = (memberId: string) => {
@@ -1059,6 +1076,7 @@ export function MainScreen() {
     }
     markSettlementPaid(selectedGroup.id, pendingSettlement, activeActorUserId);
     setPendingSettlement(null);
+    setFeedback({ message: "Arreglo marcado como pagado en el registro local.", tone: "success" });
   };
 
   const resetLocalDemo = () => {
@@ -2740,6 +2758,13 @@ export function MainScreen() {
           {activeTab === "activity" ? renderActivity() : null}
           {activeTab === "account" ? renderAccount() : null}
         </ScrollView>
+
+        <FeedbackToast
+          message={feedback?.message ?? ""}
+          testID="local-feedback-toast"
+          tone={feedback?.tone}
+          visible={Boolean(feedback)}
+        />
 
         <View style={styles.bottomNav}>
           {tabs.map((tab) => {
