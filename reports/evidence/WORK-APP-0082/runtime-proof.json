@@ -1,0 +1,45 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "results": [
+    {
+      "viewport": "360x740",
+      "appRendered": true,
+      "instrumentCount": 1,
+      "activeUserVisible": true,
+      "groupVisible": true,
+      "balanceVisible": true,
+      "mxnVisible": true,
+      "routeVisible": true,
+      "nextActionVisible": true,
+      "noRealPaymentsVisible": true,
+      "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0082/inicio-money-instrument-360x740.png"
+    },
+    {
+      "viewport": "390x844",
+      "appRendered": true,
+      "instrumentCount": 1,
+      "activeUserVisible": true,
+      "groupVisible": true,
+      "balanceVisible": true,
+      "mxnVisible": true,
+      "routeVisible": true,
+      "nextActionVisible": true,
+      "noRealPaymentsVisible": true,
+      "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0082/inicio-money-instrument-390x844.png"
+    },
+    {
+      "viewport": "412x915",
+      "appRendered": true,
+      "instrumentCount": 1,
+      "activeUserVisible": true,
+      "groupVisible": true,
+      "balanceVisible": true,
+      "mxnVisible": true,
+      "routeVisible": true,
+      "nextActionVisible": true,
+      "noRealPaymentsVisible": true,
+      "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0082/inicio-money-instrument-412x915.png"
+    }
+  ],
+  "checkedAt": "2026-07-05T15:27:58.411Z"
+}

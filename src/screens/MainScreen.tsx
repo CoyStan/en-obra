@@ -42,6 +42,7 @@ import {
   AppTopBar,
   BottomTabBar,
   FeedbackToast,
+  HomeMoneyInstrument,
   LocalTrustStrip,
   MoneyInput,
   NoteField,
@@ -1179,60 +1180,11 @@ export function MainScreen() {
             </View>
           </View>
 
-          <View style={[styles.moneyInstrument, personalBalanceState.tone === "due" && styles.moneyInstrumentDue]}>
-            <View style={styles.instrumentGrid}>
-              <View style={styles.instrumentLeft}>
-                <Pressable
-                  accessibilityHint="Abre perfil o cambia tu integrante del grupo."
-                  accessibilityLabel={identityLabel}
-                  accessibilityRole="button"
-                  hitSlop={4}
-                  onPress={openIdentity}
-                  style={({ pressed }) => [styles.instrumentIdentity, pressed && styles.pressed]}
-                >
-                  <Avatar color={displayMember?.avatarColor ?? colors.primary} label={displayMember?.name ?? "Yo"} />
-                  <View style={styles.identityCopy}>
-                    <Text numberOfLines={1} style={styles.identityLabel}>{displayMember?.name ?? "Elige persona"}</Text>
-                    <Text numberOfLines={1} style={styles.identityMeta}>{identityMeta}</Text>
-                  </View>
-                  <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={18} />
-                </Pressable>
-                <View style={styles.instrumentStateBlock}>
-                  <Text style={styles.instrumentLabel}>Tu balance</Text>
-                  <Text style={[styles.instrumentState, personalBalanceState.tone === "due" && styles.instrumentStateDue]}>
-                    {personalBalanceState.label}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.instrumentAmountBlock}>
-                <Text style={styles.instrumentCurrency}>MXN</Text>
-                <Text
-                  numberOfLines={1}
-                  adjustsFontSizeToFit
-                  minimumFontScale={0.72}
-                  style={[
-                    styles.instrumentAmount,
-                    compact && styles.instrumentAmountCompact,
-                    personalBalanceState.tone === "due" && styles.instrumentAmountDue,
-                  ]}
-                >
-                  {heroAmountText}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.instrumentFlowCard}>
-              <View style={styles.instrumentFlowHeader}>
-                <View>
-                  <Text style={styles.instrumentFlowKicker}>Quién le debe a quién</Text>
-                  <Text numberOfLines={1} style={styles.instrumentFlowTitle}>{routeTitle}</Text>
-                </View>
-                <Text numberOfLines={1} style={styles.instrumentFlowAmount}>
-                  {personalSettlement ? formatMoney(personalSettlement.amountCents) : "$0.00"}
-                </Text>
-              </View>
-              {personalSettlement ? (
+          <HomeMoneyInstrument
+            amountText={heroAmountText}
+            compact={compact}
+            flow={
+              personalSettlement ? (
                 <MoneyFlowFigure
                   amountCents={personalSettlement.amountCents}
                   from={personalSettlementFrom}
@@ -1245,30 +1197,24 @@ export function MainScreen() {
                   <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={20} />
                   <Text style={styles.instrumentPeaceText}>Todo en paz · no hay arreglos pendientes</Text>
                 </View>
-              )}
-              <Text numberOfLines={2} style={styles.instrumentFlowCaption}>
-                {personalSettlement ? personalCue : routeCaption}
-              </Text>
-            </View>
-
-            <View style={styles.instrumentProgress}>
-              <View style={styles.instrumentProgressTop}>
-                <Text style={styles.instrumentMetricText}>Gastado {formatMoney(activeGroupSummary.totalSpentCents)}</Text>
-                <Text style={[styles.instrumentMetricText, activeGroupSummary.openBalanceCents ? styles.instrumentMetricDue : styles.instrumentMetricOk]}>
-                  Abierto {formatMoney(activeGroupSummary.openBalanceCents)}
-                </Text>
-              </View>
-              <View style={styles.instrumentTrack}>
-                <View
-                  style={[
-                    styles.instrumentTrackFill,
-                    activeGroupSummary.openBalanceCents ? styles.instrumentTrackFillDue : styles.instrumentTrackFillOk,
-                    { width: openPercent },
-                  ]}
-                />
-              </View>
-            </View>
-          </View>
+              )
+            }
+            identity={{
+              avatarColor: displayMember?.avatarColor ?? colors.primary,
+              label: displayMember?.name ?? "Elige persona",
+              meta: identityMeta,
+              onPress: openIdentity,
+            }}
+            openLabel={`Abierto ${formatMoney(activeGroupSummary.openBalanceCents)}`}
+            openPercent={openPercent}
+            routeAmount={personalSettlement ? formatMoney(personalSettlement.amountCents) : "$0.00"}
+            routeCaption={personalSettlement ? personalCue : routeCaption}
+            routeTitle={routeTitle}
+            spentLabel={`Gastado ${formatMoney(activeGroupSummary.totalSpentCents)}`}
+            stateLabel={personalBalanceState.label}
+            testID="inicio-money-instrument"
+            tone={personalBalanceState.tone}
+          />
 
           <View style={styles.peopleStrip}>
             <View style={styles.peopleStripHeader}>
