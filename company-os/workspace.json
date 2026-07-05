@@ -3292,6 +3292,44 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0079"
+    },
+    {
+      "allowed_resources": [
+        "src/components/reusables/**",
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0080/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0080",
+      "title": "Premium motion feedback layer",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Build a premium reusable motion/feedback layer and wire lightweight status feedback to local save and settlement actions while preserving app behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0080/**, company-os/workspace.json.",
+      "acceptance_target": "Press/open/save/settlement feedback has tokenized reusable components or behavior; local save and settlement actions show clear non-payment status feedback; checks and runtime evidence pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0080"
     }
   ],
   "attempts": [
@@ -4557,6 +4595,20 @@
       "result": "Built premium form primitives and migrated add-expense amount, title, and note inputs with runtime proof.",
       "commits": [
         "066f947ecddaf6e65723ceed043234a1aba36656"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0080",
+      "work_item_id": "WORK-APP-0080",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Built reusable FeedbackToast and wired local save/settlement feedback with runtime proof.",
+      "commits": [
+        "01e4228933241ceec733a1f6c82016a788132c88"
       ]
     }
   ],
@@ -5977,6 +6029,28 @@
       "status": "passed",
       "summary": "Form/input primitives and add-expense field migration verified with typecheck, tests, Expo config, web export, runtime proof, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0080",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0080/technical-report.md",
+        "reports/evidence/WORK-APP-0080/runtime-proof.json",
+        "reports/evidence/WORK-APP-0080/local-feedback-toast-390x844.png"
+      ],
+      "id": "EVIDENCE-APP-0080",
+      "work_item_id": "WORK-APP-0080",
+      "attempt_id": "ATTEMPT-APP-0080",
+      "head_sha": "01e4228933241ceec733a1f6c82016a788132c88",
+      "status": "passed",
+      "summary": "Feedback layer verified with typecheck, tests, Expo config, web export, runtime proof, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -7025,6 +7099,29 @@
       "id": "REVIEW-APP-0079",
       "work_item_id": "WORK-APP-0079",
       "reviewed_head": "066f947ecddaf6e65723ceed043234a1aba36656",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "runtime proof JSON",
+        "toast screenshot",
+        "Company OS scope WORK-APP-0080",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "toast queue is intentionally simple",
+        "broader gesture motion can be expanded in surface migration tickets"
+      ],
+      "id": "REVIEW-APP-0080",
+      "work_item_id": "WORK-APP-0080",
+      "reviewed_head": "01e4228933241ceec733a1f6c82016a788132c88",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -10446,6 +10543,45 @@
       "work_item_id": "WORK-APP-0079",
       "attempt_id": "ATTEMPT-APP-0079",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added FeedbackToast primitive",
+        "wired local expense save feedback",
+        "wired local settlement feedback",
+        "ran app and Company OS checks",
+        "captured runtime toast proof"
+      ],
+      "outputs_created": [
+        "src/components/reusables/feedback.tsx",
+        "src/components/reusables/index.ts",
+        "src/screens/MainScreen.tsx",
+        "reports/evidence/WORK-APP-0080/runtime-proof.json",
+        "reports/evidence/WORK-APP-0080/local-feedback-toast-390x844.png",
+        "reports/evidence/WORK-APP-0080/technical-report.md"
+      ],
+      "not_done": [
+        "global-toast-queue",
+        "gesture-wide-motion-system",
+        "settlement-runtime-screenshot",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0080",
+      "work_item_id": "WORK-APP-0080",
+      "attempt_id": "ATTEMPT-APP-0080",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -11343,6 +11479,14 @@
       "status": "completed",
       "what_happened": "Added TextField, MoneyInput, and NoteField on top of Input, then migrated the add-expense amount, concept, and note fields.",
       "what_changed": "Updated reusable input exports, MainScreen composer fields, and WORK-APP-0079 evidence artifacts."
+    },
+    {
+      "id": "OUTCOME-APP-0080",
+      "work_item_id": "WORK-APP-0080",
+      "summary": "Premium local feedback toast is implemented and accept-ready.",
+      "status": "completed",
+      "what_happened": "Added reusable FeedbackToast and wired success feedback after local expense save and settlement confirmation.",
+      "what_changed": "Updated reusable exports, MainScreen local feedback state/actions, and WORK-APP-0080 evidence artifacts."
     }
   ]
 }
