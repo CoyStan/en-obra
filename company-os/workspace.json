@@ -3054,7 +3054,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Add a small copy-owned React Native Reusables-style primitive spike using NativeWind tokens. Allowed paths: package.json, package-lock.json, src/components/reusables/**, src/components/nativewind/**, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0073/**, company-os/workspace.json.",
       "acceptance_target": "Copy-owned Button/Card/Input-style primitives exist, use NativeWind token classes, include a tiny proof component rendered without changing visible production UI, and checks pass. RN Primitives are evaluated/used only if they add value without broad architecture churn.",
       "required_approval_capability": "design",
@@ -4233,12 +4233,15 @@
       "id": "ATTEMPT-APP-0073",
       "work_item_id": "WORK-APP-0073",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started React Native Reusables primitive spike."
+      "result": "Added copy-owned Reusables-style Button/Card/Input primitives, hidden proof component, runtime proof, and passing checks. RN Primitives deferred to Sheet/Select work.",
+      "commits": [
+        "67494c7"
+      ]
     }
   ],
   "evidence_runs": [
@@ -5541,6 +5544,15 @@
       "status": "passed",
       "summary": "Verified shared token bridge with typecheck, tests, Expo config, web export, Company OS scope, and Company OS validate.",
       "freshness": "fresh"
+    },
+    {
+      "id": "EVIDENCE-APP-0073",
+      "work_item_id": "WORK-APP-0073",
+      "attempt_id": "ATTEMPT-APP-0073",
+      "head_sha": "67494c7",
+      "status": "passed",
+      "summary": "Verified Reusables primitive spike with typecheck, tests, Expo config, web export, runtime proof, Company OS scope, and Company OS validate.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -6429,6 +6441,29 @@
       "id": "REVIEW-APP-0072",
       "work_item_id": "WORK-APP-0072",
       "reviewed_head": "b402472",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "runtime proof JSON",
+        "390x844 screenshot",
+        "Company OS scope WORK-APP-0073",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder architecture approval still required",
+        "primitives are proof-level and not yet production surface replacements",
+        "RN Primitives still need Sheet Select proof"
+      ],
+      "id": "REVIEW-APP-0073",
+      "work_item_id": "WORK-APP-0073",
+      "reviewed_head": "67494c7",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -9558,6 +9593,49 @@
       "work_item_id": "WORK-APP-0072",
       "attempt_id": "ATTEMPT-APP-0072",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "researched React Native Reusables and RN Primitives docs",
+        "created copy-owned Button Card Input primitives",
+        "added cn helper",
+        "added hidden Reusables proof component",
+        "ran app checks and runtime proof",
+        "deferred RN Primitives to future Sheet Select work"
+      ],
+      "outputs_created": [
+        "src/components/reusables/button.tsx",
+        "src/components/reusables/card.tsx",
+        "src/components/reusables/input.tsx",
+        "src/components/reusables/utils.ts",
+        "src/components/reusables/index.ts",
+        "src/components/nativewind/ReusablesProof.tsx",
+        "reports/evidence/WORK-APP-0073/runtime-proof.json",
+        "reports/evidence/WORK-APP-0073/reusables-proof-390x844.png",
+        "reports/evidence/WORK-APP-0073/technical-report.md"
+      ],
+      "not_done": [
+        "production-ui-migration",
+        "sheet-select-dialog-primitives",
+        "rn-primitives-installation",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0073",
+      "work_item_id": "WORK-APP-0073",
+      "attempt_id": "ATTEMPT-APP-0073",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -10399,6 +10477,14 @@
       "status": "completed",
       "what_happened": "Added a JSON token source and updated the app theme and Tailwind config to consume it.",
       "what_changed": "Created src/theme/tokens.json, simplified src/theme/theme.ts, and removed hardcoded duplicate tokens from tailwind.config.js."
+    },
+    {
+      "id": "OUTCOME-APP-0073",
+      "work_item_id": "WORK-APP-0073",
+      "summary": "Copy-owned Reusables-style primitives exist and pass proof checks.",
+      "status": "completed",
+      "what_happened": "Added Button, Card, Input, and cn helper using NativeWind token classes, plus a hidden proof component rendered from App.tsx.",
+      "what_changed": "Created src/components/reusables primitives, ReusablesProof, runtime evidence, and technical report."
     }
   ]
 }
