@@ -3175,6 +3175,45 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0076"
+    },
+    {
+      "allowed_resources": [
+        "src/components/reusables/**",
+        "src/components/nativewind/**",
+        "App.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0077/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0077",
+      "title": "Premium card surface list-row system",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Build premium reusable Card/Surface/ListRow patterns using NativeWind tokens while preserving app behavior. Allowed paths: src/components/reusables/**, src/components/nativewind/**, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0077/**, company-os/workspace.json.",
+      "acceptance_target": "Reusable money-card, person-row, group-row, and audit-row patterns exist, use NativeWind token classes, reduce repeated local styling, are exercised by a hidden proof component, and checks pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0077"
     }
   ],
   "attempts": [
@@ -4398,6 +4437,20 @@
       "result": "Built premium NativeWind core reusable primitives and runtime proof.",
       "commits": [
         "cec9dedfcb8ba812128d3f41a03e68b900ef7e4a"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0077",
+      "work_item_id": "WORK-APP-0077",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Built premium Surface, MoneyCard, PersonRow, GroupRow, and AuditRow patterns with runtime proof.",
+      "commits": [
+        "ad38d541ae3d5e9039645f4fa467e787b1a225bf"
       ]
     }
   ],
@@ -5750,6 +5803,28 @@
       "status": "passed",
       "summary": "Core reusable primitives built and verified with typecheck, tests, Expo config, web export, runtime proof, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0077",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0077/technical-report.md",
+        "reports/evidence/WORK-APP-0077/runtime-proof.json",
+        "reports/evidence/WORK-APP-0077/surface-rows-proof-390x844.png"
+      ],
+      "id": "EVIDENCE-APP-0077",
+      "work_item_id": "WORK-APP-0077",
+      "attempt_id": "ATTEMPT-APP-0077",
+      "head_sha": "ad38d541ae3d5e9039645f4fa467e787b1a225bf",
+      "status": "passed",
+      "summary": "Surface and list-row primitives built and verified with typecheck, tests, Expo config, web export, runtime proof, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -6727,6 +6802,29 @@
       "id": "REVIEW-APP-0076",
       "work_item_id": "WORK-APP-0076",
       "reviewed_head": "cec9dedfcb8ba812128d3f41a03e68b900ef7e4a",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "runtime proof JSON",
+        "390x844 screenshot",
+        "Company OS scope WORK-APP-0077",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual approval still required",
+        "patterns are not yet migrated into production screens",
+        "sheet and dropdown primitives remain future work"
+      ],
+      "id": "REVIEW-APP-0077",
+      "work_item_id": "WORK-APP-0077",
+      "reviewed_head": "ad38d541ae3d5e9039645f4fa467e787b1a225bf",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -10021,6 +10119,48 @@
       "work_item_id": "WORK-APP-0076",
       "attempt_id": "ATTEMPT-APP-0076",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added Surface primitive",
+        "added MoneyCard pattern",
+        "added PersonRow pattern",
+        "added GroupRow pattern",
+        "added AuditRow pattern",
+        "added hidden runtime proof",
+        "ran app and Company OS checks"
+      ],
+      "outputs_created": [
+        "src/components/reusables/surface.tsx",
+        "src/components/reusables/money-card.tsx",
+        "src/components/reusables/list-row.tsx",
+        "src/components/reusables/index.ts",
+        "src/components/nativewind/SurfaceRowsProof.tsx",
+        "reports/evidence/WORK-APP-0077/runtime-proof.json",
+        "reports/evidence/WORK-APP-0077/surface-rows-proof-390x844.png",
+        "reports/evidence/WORK-APP-0077/technical-report.md"
+      ],
+      "not_done": [
+        "production-surface-migration",
+        "bottom-sheet-select-primitives",
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "production-deployment"
+      ],
+      "id": "RECEIPT-APP-0077",
+      "work_item_id": "WORK-APP-0077",
+      "attempt_id": "ATTEMPT-APP-0077",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -10894,6 +11034,14 @@
       "status": "completed",
       "what_happened": "Built Button, IconButton, Pill, Avatar, and Amount primitives using NativeWind token classes and hidden runtime proof.",
       "what_changed": "Added reusable primitive files, exports, CoreReusablesProof, and WORK-APP-0076 evidence artifacts."
+    },
+    {
+      "id": "OUTCOME-APP-0077",
+      "work_item_id": "WORK-APP-0077",
+      "summary": "Premium Surface, MoneyCard, and list-row patterns are implemented and accept-ready.",
+      "status": "completed",
+      "what_happened": "Built reusable Surface, MoneyCard, PersonRow, GroupRow, and AuditRow components using NativeWind token classes and hidden runtime proof.",
+      "what_changed": "Added surface/list-row reusable files, exports, SurfaceRowsProof, and WORK-APP-0077 evidence artifacts."
     }
   ]
 }
