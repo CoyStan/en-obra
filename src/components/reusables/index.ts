@@ -7,5 +7,6 @@ export { Input } from "./input";
 export { AuditRow, GroupRow, PersonRow } from "./list-row";
 export { MoneyCard } from "./money-card";
 export { Pill } from "./pill";
+export { SelectOptionRow, SelectPanel } from "./select";
 export { Surface } from "./surface";
 export { cn } from "./utils";

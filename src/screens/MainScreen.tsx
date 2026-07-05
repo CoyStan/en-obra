@@ -38,6 +38,7 @@ import { useAppData } from "../state/useAppData";
 import { deleteLocalUserData, getLocalDataInventory, getRemoteDeletionStatus } from "../security/dataDeletion";
 import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
+import { SelectOptionRow, SelectPanel } from "../components/reusables";
 
 type TabId = "groups" | "home" | "balance" | "activity" | "account";
 type ExpenseMenuId = "category" | "payer" | "participants";
@@ -341,50 +342,6 @@ function CategoryObject({ categoryId, size = "regular" }: { categoryId?: string;
         size={size === "small" ? 16 : 19}
       />
     </View>
-  );
-}
-
-function AnimatedDropdown({
-  children,
-  open,
-}: {
-  children: ReactNode;
-  open: boolean;
-}) {
-  const progress = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(progress, {
-      duration: 180,
-      easing: Easing.out(Easing.cubic),
-      toValue: open ? 1 : 0,
-      useNativeDriver: true,
-    }).start();
-  }, [open, progress]);
-
-  if (!open) {
-    return null;
-  }
-
-  return (
-    <Animated.View
-      style={[
-        styles.dropdownPanel,
-        {
-          opacity: progress,
-          transform: [
-            {
-              translateY: progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-6, 0],
-              }),
-            },
-          ],
-        },
-      ]}
-    >
-      {children}
-    </Animated.View>
   );
 }
 
@@ -2150,26 +2107,20 @@ export function MainScreen() {
             <ActionButton icon="close" label="Cerrar" onPress={() => setShowActiveMemberSheet(false)} tone="ghost" />
           </View>
           <Text style={styles.accountSectionText}>Con esto, al abrir un gasto empezará con tu integrante.</Text>
-          <View style={styles.payerOptions}>
+          <View className="gap-ccXs">
             {selectedMembers.map((member) => (
-              <Pressable
-                accessibilityHint="Selecciona quién eres en este grupo."
-                accessibilityLabel={`Eres ${member.name}`}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: activeGroupMember?.id === member.id }}
-                hitSlop={4}
+              <SelectOptionRow
                 key={member.id}
+                leading={<Avatar color={member.avatarColor} label={member.name} />}
+                meta={activeGroupMember?.id === member.id ? "Identidad activa" : "Disponible para este grupo"}
                 onPress={() => {
                   void saveActiveGroupMember(member.id);
                 }}
-                style={[styles.payerOption, activeGroupMember?.id === member.id && styles.payerOptionActive]}
-              >
-                <Avatar color={member.avatarColor} label={member.name} />
-                <Text style={styles.payerName}>{member.name}</Text>
-                {activeGroupMember?.id === member.id ? (
-                  <MaterialCommunityIcons color={colors.primary} name="check-circle" size={18} />
-                ) : null}
-              </Pressable>
+                role="radio"
+                selected={activeGroupMember?.id === member.id}
+                testID={`active-member-option-${member.id}`}
+                title={member.name}
+              />
             ))}
           </View>
         </View>
@@ -2276,40 +2227,29 @@ export function MainScreen() {
                 </Pressable>
               </View>
 
-              <AnimatedDropdown open={openExpenseMenu === "category"}>
+              <SelectPanel open={openExpenseMenu === "category"} testID="expense-category-select-panel">
                 <View style={styles.categoryListMenu}>
                   {expenseCategories.map((category) => {
                     const selected = category.id === expenseCategoryId;
                     return (
-                      <Pressable
+                      <SelectOptionRow
                         accessibilityLabel={`Categoría ${category.label}`}
-                        accessibilityRole="radio"
-                        accessibilityState={{ checked: selected }}
-                        hitSlop={4}
                         key={category.id}
+                        leading={<CategoryObject categoryId={category.id} size="small" />}
+                        meta="Clasifica el historial"
                         onPress={() => {
                           setExpenseCategoryId(category.id);
                           setOpenExpenseMenu(null);
                         }}
-                        style={({ pressed }) => [
-                          styles.dropdownRow,
-                          selected && styles.dropdownRowActive,
-                          pressed && styles.pressed,
-                        ]}
-                      >
-                        <CategoryObject categoryId={category.id} size="small" />
-                        <View style={styles.dropdownRowCopy}>
-                          <Text style={styles.dropdownRowTitle}>{category.label}</Text>
-                          <Text style={styles.dropdownRowMeta}>Clasifica el historial</Text>
-                        </View>
-                        {selected ? (
-                          <MaterialCommunityIcons color={colors.primary} name="check-circle" size={20} />
-                        ) : null}
-                      </Pressable>
+                        role="radio"
+                        selected={selected}
+                        testID={`expense-category-option-${category.id}`}
+                        title={category.label}
+                      />
                     );
                   })}
                 </View>
-              </AnimatedDropdown>
+              </SelectPanel>
 
               <View style={styles.receiptAmountBlock}>
                 <Text style={styles.receiptKicker}>Monto MXN</Text>
@@ -2376,35 +2316,21 @@ export function MainScreen() {
               <View style={styles.moneyPathBridgeLine} />
             </View>
 
-          <AnimatedDropdown open={openExpenseMenu === "payer"}>
+          <SelectPanel open={openExpenseMenu === "payer"} testID="expense-payer-select-panel">
             {selectedMembers.map((member) => (
-              <Pressable
-                accessibilityHint="Selecciona quién pagó este gasto."
+              <SelectOptionRow
                 accessibilityLabel={`Pagó ${member.name}`}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: payerId === member.id }}
-                hitSlop={4}
                 key={member.id}
+                leading={<Avatar color={member.avatarColor} label={member.name} />}
+                meta={activeGroupMember?.id === member.id ? "Tu integrante activo" : "Integrante del grupo"}
                 onPress={() => chooseExpensePayer(member.id)}
-                style={({ pressed }) => [
-                  styles.dropdownRow,
-                  payerId === member.id && styles.dropdownRowActive,
-                  pressed && styles.pressed,
-                ]}
-              >
-                <Avatar color={member.avatarColor} label={member.name} />
-                <View style={styles.dropdownRowCopy}>
-                  <Text style={styles.dropdownRowTitle}>{member.name}</Text>
-                  <Text style={styles.dropdownRowMeta}>
-                    {activeGroupMember?.id === member.id ? "Tu integrante activo" : "Integrante del grupo"}
-                  </Text>
-                </View>
-                {payerId === member.id ? (
-                  <MaterialCommunityIcons color={colors.primary} name="check-circle" size={20} />
-                ) : null}
-              </Pressable>
+                role="radio"
+                selected={payerId === member.id}
+                testID={`expense-payer-option-${member.id}`}
+                title={member.name}
+              />
             ))}
-          </AnimatedDropdown>
+          </SelectPanel>
 
             <Pressable
               accessibilityLabel={`Participan ${participantSummary}`}
@@ -2434,49 +2360,43 @@ export function MainScreen() {
               <Pill label={`${participantIds.length}/${selectedMembers.length}`} tone="neutral" />
             </Pressable>
 
-          <AnimatedDropdown open={openExpenseMenu === "participants"}>
+          <SelectPanel open={openExpenseMenu === "participants"} testID="expense-participants-select-panel">
             {selectedMembers.map((member) => {
               const selected = participantIds.includes(member.id);
               const share = participantShares.find((item) => item.memberId === member.id);
               return (
-                <Pressable
-                  accessibilityHint="Incluye o quita a este integrante del gasto."
+                <SelectOptionRow
                   accessibilityLabel={`${selected ? "Incluido" : "No incluido"} ${member.name}${
                     payerId === member.id ? ", pagó el gasto" : ""
                   }`}
-                  accessibilityRole="checkbox"
-                  accessibilityState={{ checked: selected, disabled: payerId === member.id }}
-                  hitSlop={4}
+                  disabled={payerId === member.id}
                   key={member.id}
+                  leading={<Avatar color={member.avatarColor} label={member.name} />}
+                  meta={
+                    payerId === member.id
+                      ? "Pagó · incluido"
+                      : selected && share
+                        ? formatMoney(share.amountCents)
+                        : selected
+                          ? "Incluido"
+                          : "No participa"
+                  }
                   onPress={() => toggleExpenseParticipant(member.id)}
-                  style={({ pressed }) => [
-                    styles.dropdownRow,
-                    selected && styles.dropdownRowActive,
-                    pressed && styles.pressed,
-                  ]}
-                >
-                  <Avatar color={member.avatarColor} label={member.name} />
-                  <View style={styles.dropdownRowCopy}>
-                    <Text style={styles.dropdownRowTitle}>{member.name}</Text>
-                    <Text style={styles.dropdownRowMeta}>
-                      {payerId === member.id
-                        ? "Pagó · incluido"
-                        : selected && share
-                          ? formatMoney(share.amountCents)
-                          : selected
-                            ? "Incluido"
-                          : "No participa"}
-                    </Text>
-                  </View>
-                  <MaterialCommunityIcons
-                    color={selected ? colors.primary : colors.mutedInk}
-                    name={selected ? "checkbox-marked-circle" : "checkbox-blank-circle-outline"}
-                    size={20}
-                  />
-                </Pressable>
+                  role="checkbox"
+                  selected={selected}
+                  testID={`expense-participant-option-${member.id}`}
+                  title={member.name}
+                  trailing={
+                    <MaterialCommunityIcons
+                      color={selected ? colors.primary : colors.mutedInk}
+                      name={selected ? "checkbox-marked-circle" : "checkbox-blank-circle-outline"}
+                      size={20}
+                    />
+                  }
+                />
               );
             })}
-          </AnimatedDropdown>
+          </SelectPanel>
 
             <TextInput
               accessibilityLabel="Nota opcional"

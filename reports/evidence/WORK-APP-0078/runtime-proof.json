@@ -1,0 +1,29 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "viewport": "390x844",
+  "appRendered": true,
+  "steps": [
+    "open group workspace",
+    "open expense sheet",
+    "open category selector",
+    "choose category",
+    "open payer selector",
+    "open participants selector"
+  ],
+  "panels": {
+    "categoryPanel": 1,
+    "payerPanel": 1,
+    "participantsPanel": 1
+  },
+  "optionCounts": {
+    "categoryOptions": 14,
+    "payerOptions": 5,
+    "participantOptions": 5
+  },
+  "screenshots": {
+    "category": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0078/category-select-390x844.png",
+    "payer": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0078/payer-select-390x844.png",
+    "participants": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0078/participants-select-390x844.png"
+  },
+  "checkedAt": "2026-07-05T15:04:05.599Z"
+}
