@@ -1,0 +1,39 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "results": [
+    {
+      "viewport": "360x740",
+      "appRendered": true,
+      "balanceMapSection": 1,
+      "registerButton": 1,
+      "ledgerRows": 5,
+      "mxnVisible": true,
+      "noRealPaymentsVisible": true,
+      "settlementCopyVisible": true,
+      "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0084/balance-map-360x740.png"
+    },
+    {
+      "viewport": "390x844",
+      "appRendered": true,
+      "balanceMapSection": 1,
+      "registerButton": 1,
+      "ledgerRows": 5,
+      "mxnVisible": true,
+      "noRealPaymentsVisible": true,
+      "settlementCopyVisible": true,
+      "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0084/balance-map-390x844.png"
+    },
+    {
+      "viewport": "412x915",
+      "appRendered": true,
+      "balanceMapSection": 1,
+      "registerButton": 1,
+      "ledgerRows": 5,
+      "mxnVisible": true,
+      "noRealPaymentsVisible": true,
+      "settlementCopyVisible": true,
+      "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0084/balance-map-412x915.png"
+    }
+  ],
+  "checkedAt": "2026-07-05T15:37:57.030Z"
+}

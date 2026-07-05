@@ -49,6 +49,7 @@ import {
   LocalTrustStrip,
   MoneyInput,
   NoteField,
+  PersonRow,
   SelectOptionRow,
   SelectPanel,
   TextField,
@@ -676,30 +677,15 @@ function MemberLedgerRow({ balance }: { balance: MemberBalance }) {
   const amountTone = balance.netCents < 0 ? "due" : balance.netCents > 0 ? "success" : "neutral";
 
   return (
-    <View style={styles.ledgerRow}>
-      <Avatar color={balance.member.avatarColor} label={balance.member.name} />
-      <View style={styles.ledgerCopy}>
-        <View style={styles.ledgerNameLine}>
-          <Text numberOfLines={1} style={styles.ledgerName}>{balance.member.name}</Text>
-          <Pill label={status.label} tone={status.tone} />
-        </View>
-        <Text numberOfLines={2} style={styles.ledgerExplanation}>{describeBalance(balance)}</Text>
-      </View>
-      <View style={styles.ledgerAmountBlock}>
-        <Text style={styles.ledgerCurrency}>MXN</Text>
-        <Text
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          style={[
-            styles.ledgerAmount,
-            amountTone === "due" && styles.ledgerAmountDue,
-            amountTone === "success" && styles.ledgerAmountSuccess,
-          ]}
-        >
-          {formatHeroMoney(Math.abs(balance.netCents))}
-        </Text>
-      </View>
-    </View>
+    <PersonRow
+      amountCents={Math.abs(balance.netCents)}
+      amountTone={amountTone}
+      avatarColor={balance.member.avatarColor}
+      badge={status.label}
+      meta={describeBalance(balance)}
+      name={balance.member.name}
+      testID={`member-ledger-row-${balance.member.id}`}
+    />
   );
 }
 
@@ -1580,17 +1566,13 @@ export function MainScreen() {
             </View>
           </View>
 
-          <View style={styles.settlementMapPanel}>
-            <View style={styles.settlementMapHeader}>
-              <View>
-                <Text style={styles.settlementMapKicker}>Ruta principal</Text>
-                <Text style={styles.settlementMapTitle}>
-                  {primaryRoute ? "Quién paga ahora" : "Sin rutas pendientes"}
-                </Text>
-              </View>
-              {primaryRoute ? <Pill label={`${selectedSummary.settlements.length} rutas`} tone="gold" /> : <Pill label="En paz" tone="success" />}
-            </View>
-
+          <ComposerSection
+            badge={primaryRoute ? `${selectedSummary.settlements.length} rutas` : "En paz"}
+            icon={primaryRoute ? "swap-horizontal" : "check-decagram-outline"}
+            meta={primaryRoute ? "Se registra solo si ya se arreglaron fuera de la app." : "No hay pagos pendientes para este grupo."}
+            testID="balance-settlement-map-section"
+            title={primaryRoute ? "Quién paga ahora" : "Sin rutas pendientes"}
+          >
             {primaryRoute ? (
               <>
                 <View style={styles.settlementMapFigure}>
@@ -1607,17 +1589,15 @@ export function MainScreen() {
                     <Text style={styles.settlementMapRouteText}>
                       {settlementPerspective(primaryRoute, displayMemberId, primaryFrom, primaryTo).title}
                     </Text>
-                    <Text style={styles.settlementMapRouteMeta}>Se registra solo si ya se arreglaron fuera de la app.</Text>
+                    <Text style={styles.settlementMapRouteMeta}>Sin pagos reales · registro local</Text>
                   </View>
-                  <Pressable
-                    accessibilityLabel="Registrar arreglo local"
-                    accessibilityRole="button"
-                    hitSlop={4}
+                  <ReusableButton
+                    icon="check"
                     onPress={() => setPendingSettlement(primaryRoute)}
-                    style={({ pressed }) => [styles.settlementMapAction, pressed && styles.pressed]}
+                    testID="balance-settlement-register-button"
                   >
-                    <MaterialCommunityIcons color={colors.surface} name="check" size={18} />
-                  </Pressable>
+                    Registrar
+                  </ReusableButton>
                 </View>
               </>
             ) : (
@@ -1629,7 +1609,7 @@ export function MainScreen() {
                 </View>
               </View>
             )}
-          </View>
+          </ComposerSection>
 
           {selectedSummary.settlements.length > 1 ? (
             <View style={styles.routeChipRail}>
