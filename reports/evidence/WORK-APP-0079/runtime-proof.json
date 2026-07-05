@@ -1,0 +1,13 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "viewport": "390x844",
+  "appRendered": true,
+  "fields": {
+    "moneyInput": "1480.50",
+    "titleInput": "Cena de prueba",
+    "noteInput": "Nota local con decimales"
+  },
+  "helperTextVisible": true,
+  "screenshot": "/home/quetza/projects/cuentas-claras/reports/evidence/WORK-APP-0079/form-inputs-390x844.png",
+  "checkedAt": "2026-07-05T15:08:47.402Z"
+}

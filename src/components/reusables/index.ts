@@ -3,7 +3,7 @@ export { Avatar } from "./avatar";
 export { Button } from "./button";
 export { IconButton } from "./button";
 export { Card } from "./card";
-export { Input } from "./input";
+export { Input, MoneyInput, NoteField, TextField } from "./input";
 export { AuditRow, GroupRow, PersonRow } from "./list-row";
 export { MoneyCard } from "./money-card";
 export { Pill } from "./pill";

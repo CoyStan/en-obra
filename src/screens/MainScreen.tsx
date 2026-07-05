@@ -38,7 +38,7 @@ import { useAppData } from "../state/useAppData";
 import { deleteLocalUserData, getLocalDataInventory, getRemoteDeletionStatus } from "../security/dataDeletion";
 import { colors, radius, spacing, typography } from "../theme/theme";
 import { ActionButton, Amount, Avatar, EmptyState, Pill, Section } from "../components/ui";
-import { SelectOptionRow, SelectPanel } from "../components/reusables";
+import { MoneyInput, NoteField, SelectOptionRow, SelectPanel, TextField } from "../components/reusables";
 
 type TabId = "groups" | "home" | "balance" | "activity" | "account";
 type ExpenseMenuId = "category" | "payer" | "participants";
@@ -2251,28 +2251,21 @@ export function MainScreen() {
                 </View>
               </SelectPanel>
 
-              <View style={styles.receiptAmountBlock}>
-                <Text style={styles.receiptKicker}>Monto MXN</Text>
-                <View style={styles.receiptAmountLine}>
-                  <Text style={styles.receiptCurrency}>$</Text>
-                  <TextInput
-                    accessibilityLabel="Monto MXN"
-                    keyboardType="decimal-pad"
-                    onChangeText={setExpenseAmount}
-                    placeholder="0.00"
-                    placeholderTextColor={colors.mutedInk}
-                    style={styles.receiptAmountInput}
-                    value={expenseAmount}
-                  />
-                </View>
-              </View>
+              <MoneyInput
+                helper="Acepta decimales. Ej. 1480.50"
+                label="Monto MXN"
+                onChangeText={setExpenseAmount}
+                placeholder="0.00"
+                testID="expense-money-input"
+                value={expenseAmount}
+              />
 
-              <TextInput
-                accessibilityLabel="Concepto del gasto"
+              <TextField
+                helper="Describe el recibo en pocas palabras."
+                label="Concepto del gasto"
                 onChangeText={setExpenseTitle}
                 placeholder="¿Qué se pagó? Ej. Tacos después del cine"
-                placeholderTextColor={colors.mutedInk}
-                style={styles.receiptTitleInput}
+                testID="expense-title-input"
                 value={expenseTitle}
               />
             </View>
@@ -2398,12 +2391,12 @@ export function MainScreen() {
             })}
           </SelectPanel>
 
-            <TextInput
-              accessibilityLabel="Nota opcional"
+            <NoteField
+              helper="Opcional: agrega contexto para el historial."
+              label="Nota"
               onChangeText={setExpenseNote}
-              placeholder="Nota opcional"
-              placeholderTextColor={colors.mutedInk}
-              style={styles.composerNoteInput}
+              placeholder="Opcional"
+              testID="expense-note-input"
               value={expenseNote}
             />
           </View>
