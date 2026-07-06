@@ -759,3 +759,16 @@ Rationale: The first viewport’s job is to answer “what is my situation?” I
 amount truncates, the whole screen loses trust. A slightly smaller, right-aligned
 amount with tighter surrounding copy feels more professional than oversized type
 that fails on common Android widths.
+
+### Use A Tweakcn-Inspired Warm Fintech Palette
+
+Decision: Cuentas Claras should use a warmer shadcn/tweakcn-style token palette:
+ivory canvas, soft sand borders, graphite ink, emerald primary actions,
+controlled blue accents, terracotta warmth, and clear red owed states.
+
+Rationale: The previous green/gray theme felt cold and too utilitarian for a
+consumer finance app. Tweakcn is useful as a theme reference because its
+shadcn-style CSS-variable workflow maps cleanly to our NativeWind token bridge,
+while keeping the implementation local to `src/theme/tokens.json` instead of
+adding a web-only dependency. The result should feel lighter and more premium
+without losing the Mexico/LATAM trust cues or MXN financial clarity.
