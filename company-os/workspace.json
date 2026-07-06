@@ -4302,7 +4302,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Make the add-expense composer native, fast, list-driven, and less visually heavy. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0106/**,company-os/workspace.json.",
       "acceptance_target": "Composer feels native, fast, list-driven, supports keyboard behavior, and passes Android-size screenshots.",
       "required_approval_capability": "design",
@@ -10700,6 +10700,18 @@
       "quorum_status": "met",
       "evidence_reference": "EVIDENCE-APP-0111-R1",
       "review_reference": "REVIEW-APP-0111-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0106-R1",
+      "work_item_id": "WORK-APP-0106",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "b5808e5d79a7f3f7623b084c7009c1b1bd5a7b4e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0106-R1",
+      "review_reference": "REVIEW-APP-0106-R1"
     }
   ],
   "receipts": [
