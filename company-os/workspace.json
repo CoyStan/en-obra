@@ -4486,7 +4486,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Simplify the Inicio/Home surface, reduce redundant text, modernize the palette to a clean cool-neutral base, and migrate the surface from legacy StyleSheet to the NativeWind reusables system. Keep 'Sin pagos reales' near settlement actions. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0111/**,company-os/workspace.json.",
       "acceptance_target": "Inicio/Home is cleaner, uses fewer redundant labels, presents a modern simplified palette, is fully token-driven, passes typecheck/tests/export, and captures screenshots at 360/390/412 widths.",
       "required_approval_capability": "design",
@@ -10625,6 +10625,18 @@
       "evidence_reference": "EVIDENCE-APP-0050",
       "review_reference": "REVIEW-APP-0050",
       "timestamp": "2026-06-21T00:18:00Z"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0111-R1",
+      "work_item_id": "WORK-APP-0111",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "c4f360e8af4f3d115853d5cd519c5019f430928c",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0111-R1",
+      "review_reference": "REVIEW-APP-0111-R1"
     }
   ],
   "receipts": [
