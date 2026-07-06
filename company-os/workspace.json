@@ -4302,7 +4302,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Make the add-expense composer native, fast, list-driven, and less visually heavy. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0106/**,company-os/workspace.json.",
       "acceptance_target": "Composer feels native, fast, list-driven, supports keyboard behavior, and passes Android-size screenshots.",
       "required_approval_capability": "design",
