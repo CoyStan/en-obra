@@ -4302,11 +4302,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Make the add-expense composer native, fast, list-driven, and less visually heavy. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0106/**,company-os/workspace.json.",
       "acceptance_target": "Composer feels native, fast, list-driven, supports keyboard behavior, and passes Android-size screenshots.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0106-R1"
     },
     {
       "allowed_resources": [
@@ -6151,6 +6152,20 @@
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
       "result": "Refreshed tokens to a cool slate-white + sky-blue palette, simplified HomeMoneyInstrument, and reduced Inicio text density while keeping Sin pagos reales near settlement."
+    },
+    {
+      "commits": [
+        "b5808e5d79a7f3f7623b084c7009c1b1bd5a7b4e"
+      ],
+      "id": "ATTEMPT-APP-0106-R1",
+      "work_item_id": "WORK-APP-0106",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0106",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Simplified the add-expense composer by removing redundant header, context rail, helper text, and Local/Mock pill; kept Sin pagos reales at the save boundary."
     }
   ],
   "evidence_runs": [
@@ -8254,6 +8269,29 @@
       "status": "passed",
       "summary": "Inicio simplification and palette refresh passed typecheck, tests, Expo config, web export, scope, and validate. Screenshots captured at 360/390/412.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0106",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0106/technical-report.md",
+        "reports/evidence/WORK-APP-0106/screenshots/gasto-360x740.png",
+        "reports/evidence/WORK-APP-0106/screenshots/gasto-390x844.png",
+        "reports/evidence/WORK-APP-0106/screenshots/gasto-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0106-R1",
+      "work_item_id": "WORK-APP-0106",
+      "attempt_id": "ATTEMPT-APP-0106-R1",
+      "head_sha": "b5808e5d79a7f3f7623b084c7009c1b1bd5a7b4e",
+      "status": "passed",
+      "summary": "Add-expense composer simplification passed typecheck, tests, Expo config, web export, scope, and validate. Screenshots captured at 360/390/412.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -9971,6 +10009,31 @@
       "id": "REVIEW-APP-0111-R1",
       "work_item_id": "WORK-APP-0111",
       "reviewed_head": "c4f360e8af4f3d115853d5cd519c5019f430928c",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "composer reusable diff",
+        "input reusable diff",
+        "expense composer render diff",
+        "technical report",
+        "Gasto screenshots",
+        "typecheck",
+        "tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder visual acceptance still required",
+        "settlement and deletion dialogs remain verbose",
+        "other tabs remain legacy StyleSheet"
+      ],
+      "id": "REVIEW-APP-0106-R1",
+      "work_item_id": "WORK-APP-0106",
+      "reviewed_head": "b5808e5d79a7f3f7623b084c7009c1b1bd5a7b4e",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -14532,6 +14595,44 @@
       "work_item_id": "WORK-APP-0111",
       "attempt_id": "ATTEMPT-APP-0111-R1",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "actions_taken": [
+        "simplified ComposerSection and ComposerSaveDock",
+        "lightened input labels",
+        "reduced expense composer text density",
+        "captured screenshots"
+      ],
+      "outputs_created": [
+        "src/components/reusables/composer.tsx",
+        "src/components/reusables/input.tsx",
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0106/technical-report.md",
+        "reports/evidence/WORK-APP-0106/screenshots"
+      ],
+      "not_done": [
+        "settlement and deletion dialog simplification",
+        "other tab migrations",
+        "full dark mode",
+        "real payments",
+        "production backend",
+        "secrets",
+        "paid services",
+        "deployment",
+        "Play Store submission"
+      ],
+      "sources_used": [
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-OPEN-DESIGN"
+      ],
+      "id": "RECEIPT-APP-0106-R1",
+      "work_item_id": "WORK-APP-0106",
+      "attempt_id": "ATTEMPT-APP-0106-R1",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -15653,6 +15754,14 @@
       "status": "completed",
       "what_happened": "Refreshed the palette from a green-washed Supabase-Money look to a clean slate-white + sky-blue palette and reduced the Inicio surface text density.",
       "what_changed": "tokens.json, HomeMoneyInstrument, MainScreen Inicio render, decisions.md, and new screenshot evidence."
+    },
+    {
+      "id": "OUTCOME-APP-0106-R1",
+      "work_item_id": "WORK-APP-0106",
+      "summary": "Add-expense composer simplification is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Reduced the add-expense composer's visual weight and text density while preserving all input behavior and keeping Sin pagos reales at the save boundary.",
+      "what_changed": "composer.tsx, input.tsx, MainScreen.tsx expense composer, decisions.md, and new screenshot evidence."
     }
   ]
 }
