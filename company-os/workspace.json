@@ -3976,7 +3976,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Generate local share/reminder Spanish text for group summaries, individual debts, and settlement reminders. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0097/**,company-os/workspace.json.",
       "acceptance_target": "App generates shareable Spanish text without external services, secrets, or real messaging integrations; tests/screenshots pass.",
       "required_approval_capability": "design",
@@ -5963,12 +5963,15 @@
       "id": "ATTEMPT-APP-0097",
       "work_item_id": "WORK-APP-0097",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started local share/reminder message mock."
+      "result": "Added local-only Spanish share/reminder text generators with tests and no external messaging integration.",
+      "commits": [
+        "1a4d39444a5abb93eab8a6dfb56734926799e85e"
+      ]
     }
   ],
   "evidence_runs": [
@@ -7788,6 +7791,26 @@
       "status": "passed",
       "summary": "Settlement explanation engine passed typecheck, focused balance tests, full tests, Expo config, scope, and Company OS validate.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test shareMessages",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os scope WORK-APP-0097",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0097/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0097",
+      "work_item_id": "WORK-APP-0097",
+      "attempt_id": "ATTEMPT-APP-0097",
+      "head_sha": "1a4d39444a5abb93eab8a6dfb56734926799e85e",
+      "status": "passed",
+      "summary": "Local share/reminder text passed typecheck, focused tests, full tests, Expo config, scope, and Company OS validate.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -9241,6 +9264,28 @@
       "id": "REVIEW-APP-0096",
       "work_item_id": "WORK-APP-0096",
       "reviewed_head": "a0da472392947f6314d7034c0cff2cc7a6f69a54",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff",
+        "technical report",
+        "typecheck",
+        "focused tests",
+        "full tests",
+        "Expo config",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "no external messaging integration added",
+        "UI display remains separate work"
+      ],
+      "id": "REVIEW-APP-0097",
+      "work_item_id": "WORK-APP-0097",
+      "reviewed_head": "1a4d39444a5abb93eab8a6dfb56734926799e85e",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -13358,6 +13403,43 @@
       "work_item_id": "WORK-APP-0096",
       "attempt_id": "ATTEMPT-APP-0096",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added group summary text",
+        "added individual balance text",
+        "added settlement reminder text",
+        "added local-only copy tests",
+        "updated decision log"
+      ],
+      "outputs_created": [
+        "src/domain/shareMessages.ts",
+        "src/__tests__/shareMessages.test.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0097/technical-report.md"
+      ],
+      "not_done": [
+        "clipboard integration",
+        "WhatsApp deep links",
+        "system share sheet",
+        "production backend",
+        "real payments",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0097",
+      "work_item_id": "WORK-APP-0097",
+      "attempt_id": "ATTEMPT-APP-0097",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -14391,6 +14473,14 @@
       "status": "completed",
       "what_happened": "Added a plain-Spanish settlement plan explanation layer over the existing minimal route engine.",
       "what_changed": "Domain balances now expose route explanations, summaries, totals, and tested peace state output."
+    },
+    {
+      "id": "OUTCOME-APP-0097",
+      "work_item_id": "WORK-APP-0097",
+      "summary": "Local share/reminder message mock is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Added local Spanish text generators for group summaries, member balances, and settlement reminders.",
+      "what_changed": "New domain shareMessages adapter, tests, decision log, and evidence report were added without external integrations."
     }
   ]
 }
