@@ -3752,6 +3752,48 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0091"
+    },
+    {
+      "allowed_resources": [
+        "src/domain/**",
+        "src/backend/**",
+        "src/data/demoData.ts",
+        "src/state/**",
+        "src/__tests__/**",
+        "docs/backend/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0092/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0092",
+      "title": "Split engine upgrade",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Upgrade the local split engine to support equal, exact amount, shares, and include/exclude participants using integer cents. Allowed paths: src/domain/**, src/backend/**, src/data/demoData.ts, src/state/**, src/__tests__/**, docs/backend/**, docs/product/decisions.md, reports/evidence/WORK-APP-0092/**, company-os/workspace.json.",
+      "acceptance_target": "Split engine supports equal, exact amount, shares, and include/exclude participants with integer cents; mutations persist share method rows; SQL/backend artifacts and tests pass; no UI-heavy editor work beyond existing equal flow.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0092"
     }
   ],
   "attempts": [
@@ -5185,6 +5227,20 @@
       "result": "Added safe local member management with rename, guarded removal, UI, tests, and screenshots.",
       "commits": [
         "57e106c366feec48514846b7180a6e76bef160ba"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0092",
+      "work_item_id": "WORK-APP-0092",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Implemented deterministic equal, exact amount, and share-unit split engine with SQL-ready persistence and tests.",
+      "commits": [
+        "f317f83de135a837a5b9583dfef0ce4d91602404"
       ]
     }
   ],
@@ -6899,6 +6955,21 @@
       "status": "passed",
       "summary": "Member management flow verified with typecheck, tests, Expo config, web export, 360/390/412 screenshots, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck|npm test focused|npm test|npx expo config --type public|npm run export:web|./bin/company-os scope WORK-APP-0092|./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0092/technical-report.md|docs/backend/schema-v1.sql|docs/backend/seed-demo-v1.sql|docs/backend/release-manifest-v1.json"
+      ],
+      "id": "EVIDENCE-APP-0092",
+      "work_item_id": "WORK-APP-0092",
+      "attempt_id": "ATTEMPT-APP-0092",
+      "head_sha": "f317f83de135a837a5b9583dfef0ce4d91602404",
+      "status": "passed",
+      "summary": "Split engine verification passed: typecheck, focused tests, full tests, Expo config, web export, scope, and Company OS validate.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -8234,6 +8305,29 @@
       "id": "REVIEW-APP-0091",
       "work_item_id": "WORK-APP-0091",
       "reviewed_head": "57e106c366feec48514846b7180a6e76bef160ba",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff",
+        "technical report",
+        "typecheck",
+        "focused tests",
+        "full tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "split editor UI remains future work",
+        "current add expense UI still defaults to equal"
+      ],
+      "id": "REVIEW-APP-0092",
+      "work_item_id": "WORK-APP-0092",
+      "reviewed_head": "f317f83de135a837a5b9583dfef0ce4d91602404",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -12171,6 +12265,41 @@
       "work_item_id": "WORK-APP-0091",
       "attempt_id": "ATTEMPT-APP-0091",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added split engine",
+        "updated validation and mutations",
+        "expanded SQL dataset",
+        "seeded exact and share demos",
+        "added tests and report"
+      ],
+      "outputs_created": [
+        "src/domain/splits.ts",
+        "reports/evidence/WORK-APP-0092/technical-report.md",
+        "docs/backend/schema-v1.sql",
+        "docs/backend/seed-demo-v1.sql"
+      ],
+      "not_done": [
+        "participant split editor UI",
+        "production backend",
+        "real payments",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0092",
+      "work_item_id": "WORK-APP-0092",
+      "attempt_id": "ATTEMPT-APP-0092",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -13164,6 +13293,14 @@
       "status": "completed",
       "what_happened": "Added add/edit/remove-safe member management in the selected group with balance consistency guards.",
       "what_changed": "Users can now manage local group members from Balance while preserving historical expense and settlement references."
+    },
+    {
+      "id": "OUTCOME-APP-0092",
+      "work_item_id": "WORK-APP-0092",
+      "summary": "Split engine upgrade is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Implemented deterministic equal, exact amount, and share-unit split support with integer cents and verification evidence.",
+      "what_changed": "Domain split logic, validation, mutations, SQL-ready schema/dataset, demo seed, backend artifacts, and tests now support multiple split methods."
     }
   ]
 }
