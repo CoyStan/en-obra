@@ -760,15 +760,19 @@ amount truncates, the whole screen loses trust. A slightly smaller, right-aligne
 amount with tighter surrounding copy feels more professional than oversized type
 that fails on common Android widths.
 
-### Use A Tweakcn-Inspired Warm Fintech Palette
+### Use A Supabase-Money Tweakcn Palette
 
-Decision: Cuentas Claras should use a warmer shadcn/tweakcn-style token palette:
-ivory canvas, soft sand borders, graphite ink, emerald primary actions,
-controlled blue accents, terracotta warmth, and clear red owed states.
+Decision: Cuentas Claras should use a Supabase-like shadcn/tweakcn-style token
+palette with a small Amber Minimal warmth layer: clean off-white canvas, white
+surfaces, soft green-tinted panels, graphite ink, emerald primary actions,
+controlled blue accents, terracotta/marigold secondary warmth, and clear red
+owed states.
 
 Rationale: The previous green/gray theme felt cold and too utilitarian for a
 consumer finance app. Tweakcn is useful as a theme reference because its
 shadcn-style CSS-variable workflow maps cleanly to our NativeWind token bridge,
 while keeping the implementation local to `src/theme/tokens.json` instead of
-adding a web-only dependency. The result should feel lighter and more premium
-without losing the Mexico/LATAM trust cues or MXN financial clarity.
+adding a web-only dependency. The selected direction is closer to Supabase's
+clean product feel than to a beige finance notebook, so it should feel lighter,
+more premium, and more technical without losing the Mexico/LATAM trust cues or
+MXN financial clarity.
