@@ -619,3 +619,15 @@ cents, explicit participant rows, and persisted split methods let future UI work
 offer exact amounts, shares, and include/exclude controls without changing the
 backend contract or introducing real payments, production sync, secrets, or paid
 services.
+
+### Simplify Add Expense Into One Receipt Capture Surface
+
+Decision: The add-expense flow should use one compact receipt capture surface
+instead of separate stacked cards for receipt, money route, and split review.
+Category, payer, and participants are list-style dropdown rows, and the split
+preview appears only when there is enough input to make it useful.
+
+Rationale: The earlier composer preserved content but felt visually heavy on
+Android widths. A single surface with progressive disclosure reduces cognitive
+load for mainstream users, keeps the equal split consequence visible at the
+right moment, and avoids hiding the core task behind dense explanatory copy.

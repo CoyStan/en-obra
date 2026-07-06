@@ -865,6 +865,14 @@ export function MainScreen() {
       : participantNames.length
         ? participantNames.join(", ")
         : "Selecciona participantes";
+  const splitReady = Boolean(expenseAmountCents && participantShares.length);
+  const expenseCanSave =
+    selectedMembers.length > 0 &&
+    Boolean(expenseTitle.trim()) &&
+    Boolean(expenseAmount.trim()) &&
+    Boolean(payerId) &&
+    participantIds.length > 0 &&
+    participantIds.includes(payerId);
   const toggleExpenseMenu = (menu: ExpenseMenuId) => {
     setOpenExpenseMenu((current) => (current === menu ? null : menu));
   };
@@ -2268,44 +2276,33 @@ export function MainScreen() {
           </View>
 
           <ComposerSection
+            badge="Partes iguales"
+            className="bg-surface"
             icon="receipt-text-plus-outline"
-            meta="Qué fue, cuánto costó y cómo se reparte."
+            meta="Monto, pagador y participantes en una sola captura."
             testID="expense-composer-receipt-section"
-            title="Recibo del gasto"
+            title="Nuevo gasto"
           >
-              <View style={styles.captureProgressPills}>
-                <View style={styles.captureProgressPillActive}>
-                  <Text style={styles.captureProgressPillTextActive}>Recibo</Text>
+            <View style={styles.expenseQuickGrid}>
+              <Pressable
+                accessibilityLabel={`Categoría ${selectedCategory.label}`}
+                accessibilityRole="button"
+                accessibilityState={{ expanded: openExpenseMenu === "category" }}
+                hitSlop={4}
+                onPress={() => toggleExpenseMenu("category")}
+                style={({ pressed }) => [styles.expenseSelectRow, pressed && styles.pressed]}
+              >
+                <CategoryObject categoryId={expenseCategoryId} size="small" />
+                <View style={styles.moneyPathCopy}>
+                  <Text style={styles.moneyPathLabel}>Categoría</Text>
+                  <Text numberOfLines={1} style={styles.moneyPathValue}>{selectedCategory.label}</Text>
                 </View>
-                <View style={styles.captureProgressPill}>
-                  <Text style={styles.captureProgressPillText}>Ruta</Text>
-                </View>
-                <View style={styles.captureProgressPill}>
-                  <Text style={styles.captureProgressPillText}>Split</Text>
-                </View>
-              </View>
-
-              <View style={styles.receiptTopLine}>
-                <Pressable
-                  accessibilityLabel={`Categoría ${selectedCategory.label}`}
-                  accessibilityRole="button"
-                  accessibilityState={{ expanded: openExpenseMenu === "category" }}
-                  hitSlop={4}
-                  onPress={() => toggleExpenseMenu("category")}
-                  style={({ pressed }) => [styles.receiptCategoryButton, pressed && styles.pressed]}
-                >
-                  <CategoryObject categoryId={expenseCategoryId} />
-                  <View style={styles.receiptCategoryCopy}>
-                    <Text style={styles.receiptKicker}>Categoría</Text>
-                    <Text numberOfLines={1} style={styles.receiptCategoryLabel}>{selectedCategory.label}</Text>
-                  </View>
-                  <MaterialCommunityIcons
-                    color={colors.primaryDark}
-                    name={openExpenseMenu === "category" ? "chevron-up" : "chevron-down"}
-                    size={20}
-                  />
-                </Pressable>
-              </View>
+                <MaterialCommunityIcons
+                  color={colors.primaryDark}
+                  name={openExpenseMenu === "category" ? "chevron-up" : "chevron-down"}
+                  size={20}
+                />
+              </Pressable>
 
               <SelectPanel open={openExpenseMenu === "category"} testID="expense-category-select-panel">
                 <View style={styles.categoryListMenu}>
@@ -2316,7 +2313,7 @@ export function MainScreen() {
                         accessibilityLabel={`Categoría ${category.label}`}
                         key={category.id}
                         leading={<CategoryObject categoryId={category.id} size="small" />}
-                        meta="Clasifica el historial"
+                        meta={selected ? "Seleccionada" : "Clasifica el historial"}
                         onPress={() => {
                           setExpenseCategoryId(category.id);
                           setOpenExpenseMenu(null);
@@ -2341,167 +2338,128 @@ export function MainScreen() {
               />
 
               <TextField
-                helper="Describe el recibo en pocas palabras."
-                label="Concepto del gasto"
+                helper="Nombre corto para el historial."
+                label="Concepto"
                 onChangeText={setExpenseTitle}
-                placeholder="¿Qué se pagó? Ej. Tacos después del cine"
+                placeholder="Ej. Tacos después del cine"
                 testID="expense-title-input"
                 value={expenseTitle}
               />
-          </ComposerSection>
 
-          <ComposerSection
-            badge="Partes iguales"
-            icon="swap-horizontal"
-            meta="Pagador, participantes y reparto igual."
-            testID="expense-composer-route-section"
-            title="Ruta del dinero"
-          >
-
-            <Pressable
-              accessibilityLabel={`Pagó ${payer?.name ?? "selecciona persona"}`}
-              accessibilityRole="button"
-              accessibilityState={{ expanded: openExpenseMenu === "payer" }}
-              hitSlop={4}
-              onPress={() => toggleExpenseMenu("payer")}
-              style={({ pressed }) => [styles.moneyPathRow, pressed && styles.pressed]}
-            >
-              <View style={styles.moneyPathIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="cash-plus" size={19} />
-              </View>
-              {payer ? <Avatar color={payer.avatarColor} label={payer.name} /> : null}
-              <View style={styles.moneyPathCopy}>
-                <Text style={styles.moneyPathLabel}>Pagó</Text>
-                <Text numberOfLines={1} style={styles.moneyPathValue}>
-                  {payer?.name ?? "Selecciona quién pagó"}
-                </Text>
-              </View>
-              <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={20} />
-            </Pressable>
-
-            <View style={styles.moneyPathBridge}>
-              <View style={styles.moneyPathBridgeLine} />
-              <View style={styles.moneyPathBridgeDot}>
-                <MaterialCommunityIcons color={colors.surface} name="arrow-down" size={13} />
-              </View>
-              <View style={styles.moneyPathBridgeLine} />
-            </View>
-
-          <SelectPanel open={openExpenseMenu === "payer"} testID="expense-payer-select-panel">
-            {selectedMembers.map((member) => (
-              <SelectOptionRow
-                accessibilityLabel={`Pagó ${member.name}`}
-                key={member.id}
-                leading={<Avatar color={member.avatarColor} label={member.name} />}
-                meta={activeGroupMember?.id === member.id ? "Tu integrante activo" : "Integrante del grupo"}
-                onPress={() => chooseExpensePayer(member.id)}
-                role="radio"
-                selected={payerId === member.id}
-                testID={`expense-payer-option-${member.id}`}
-                title={member.name}
-              />
-            ))}
-          </SelectPanel>
-
-            <Pressable
-              accessibilityLabel={`Participan ${participantSummary}`}
-              accessibilityRole="button"
-              accessibilityState={{ expanded: openExpenseMenu === "participants" }}
-              hitSlop={4}
-              onPress={() => toggleExpenseMenu("participants")}
-              style={({ pressed }) => [styles.moneyPathRow, pressed && styles.pressed]}
-            >
-              <View style={styles.moneyPathIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="account-multiple-check-outline" size={19} />
-              </View>
-              <View style={styles.participantMiniStack}>
-                {selectedMembers
-                  .filter((member) => participantIds.includes(member.id))
-                  .slice(0, 3)
-                  .map((member, index) => (
-                    <View key={member.id} style={index > 0 && styles.participantMiniOverlap}>
-                      <Avatar color={member.avatarColor} label={member.name} />
+              <View style={styles.expenseRouteStack}>
+                <Pressable
+                  accessibilityLabel={`Pagó ${payer?.name ?? "selecciona persona"}`}
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: openExpenseMenu === "payer" }}
+                  hitSlop={4}
+                  onPress={() => toggleExpenseMenu("payer")}
+                  style={({ pressed }) => [styles.expenseSelectRow, pressed && styles.pressed]}
+                >
+                  {payer ? <Avatar color={payer.avatarColor} label={payer.name} /> : (
+                    <View style={styles.moneyPathIcon}>
+                      <MaterialCommunityIcons color={colors.primaryDark} name="cash-plus" size={19} />
                     </View>
-                  ))}
-              </View>
-              <View style={styles.moneyPathCopy}>
-                <Text style={styles.moneyPathLabel}>Participan</Text>
-                <Text numberOfLines={1} style={styles.moneyPathValue}>{participantSummary}</Text>
-              </View>
-              <Pill label={`${participantIds.length}/${selectedMembers.length}`} tone="neutral" />
-            </Pressable>
+                  )}
+                  <View style={styles.moneyPathCopy}>
+                    <Text style={styles.moneyPathLabel}>Pagó</Text>
+                    <Text numberOfLines={1} style={styles.moneyPathValue}>
+                      {payer?.name ?? "Selecciona quién pagó"}
+                    </Text>
+                  </View>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={20} />
+                </Pressable>
 
-          <SelectPanel open={openExpenseMenu === "participants"} testID="expense-participants-select-panel">
-            {selectedMembers.map((member) => {
-              const selected = participantIds.includes(member.id);
-              const share = participantShares.find((item) => item.memberId === member.id);
-              return (
-                <SelectOptionRow
-                  accessibilityLabel={`${selected ? "Incluido" : "No incluido"} ${member.name}${
-                    payerId === member.id ? ", pagó el gasto" : ""
-                  }`}
-                  disabled={payerId === member.id}
-                  key={member.id}
-                  leading={<Avatar color={member.avatarColor} label={member.name} />}
-                  meta={
-                    payerId === member.id
-                      ? "Pagó · incluido"
-                      : selected && share
-                        ? formatMoney(share.amountCents)
-                        : selected
-                          ? "Incluido"
-                          : "No participa"
-                  }
-                  onPress={() => toggleExpenseParticipant(member.id)}
-                  role="checkbox"
-                  selected={selected}
-                  testID={`expense-participant-option-${member.id}`}
-                  title={member.name}
-                  trailing={
-                    <MaterialCommunityIcons
-                      color={selected ? colors.primary : colors.mutedInk}
-                      name={selected ? "checkbox-marked-circle" : "checkbox-blank-circle-outline"}
-                      size={20}
+                <SelectPanel open={openExpenseMenu === "payer"} testID="expense-payer-select-panel">
+                  {selectedMembers.map((member) => (
+                    <SelectOptionRow
+                      accessibilityLabel={`Pagó ${member.name}`}
+                      key={member.id}
+                      leading={<Avatar color={member.avatarColor} label={member.name} />}
+                      meta={activeGroupMember?.id === member.id ? "Tu integrante activo" : "Integrante del grupo"}
+                      onPress={() => chooseExpensePayer(member.id)}
+                      role="radio"
+                      selected={payerId === member.id}
+                      testID={`expense-payer-option-${member.id}`}
+                      title={member.name}
                     />
-                  }
-                />
-              );
-            })}
-          </SelectPanel>
+                  ))}
+                </SelectPanel>
 
-            <NoteField
-              helper="Opcional: agrega contexto para el historial."
-              label="Nota"
-              onChangeText={setExpenseNote}
-              placeholder="Opcional"
-              testID="expense-note-input"
-              value={expenseNote}
-            />
-          </ComposerSection>
+                <Pressable
+                  accessibilityLabel={`Participan ${participantSummary}`}
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: openExpenseMenu === "participants" }}
+                  hitSlop={4}
+                  onPress={() => toggleExpenseMenu("participants")}
+                  style={({ pressed }) => [styles.expenseSelectRow, pressed && styles.pressed]}
+                >
+                  <View style={styles.participantMiniStack}>
+                    {selectedMembers
+                      .filter((member) => participantIds.includes(member.id))
+                      .slice(0, 3)
+                      .map((member, index) => (
+                        <View key={member.id} style={index > 0 && styles.participantMiniOverlap}>
+                          <Avatar color={member.avatarColor} label={member.name} />
+                        </View>
+                      ))}
+                  </View>
+                  <View style={styles.moneyPathCopy}>
+                    <Text style={styles.moneyPathLabel}>Participan</Text>
+                    <Text numberOfLines={1} style={styles.moneyPathValue}>{participantSummary}</Text>
+                  </View>
+                  <Pill label={`${participantIds.length}/${selectedMembers.length}`} tone="neutral" />
+                </Pressable>
 
-          <ComposerSection
-            icon="scale-balance"
-            meta={participantShares.length
-              ? `${participantShares.length} participantes · ${formatMoney(expenseAmountCents ?? 0)} en MXN`
-              : "Elige monto y participantes para ver cuánto toca."}
-            testID="expense-composer-review-section"
-            title="Split antes de guardar"
-          >
-            <View style={styles.composerReviewTop}>
-              <View style={styles.splitPreviewIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
+                <SelectPanel open={openExpenseMenu === "participants"} testID="expense-participants-select-panel">
+                  {selectedMembers.map((member) => {
+                    const selected = participantIds.includes(member.id);
+                    const share = participantShares.find((item) => item.memberId === member.id);
+                    return (
+                      <SelectOptionRow
+                        accessibilityLabel={`${selected ? "Incluido" : "No incluido"} ${member.name}${
+                          payerId === member.id ? ", pagó el gasto" : ""
+                        }`}
+                        disabled={payerId === member.id}
+                        key={member.id}
+                        leading={<Avatar color={member.avatarColor} label={member.name} />}
+                        meta={
+                          payerId === member.id
+                            ? "Pagó · incluido"
+                            : selected && share
+                              ? formatMoney(share.amountCents)
+                              : selected
+                                ? "Incluido"
+                                : "No participa"
+                        }
+                        onPress={() => toggleExpenseParticipant(member.id)}
+                        role="checkbox"
+                        selected={selected}
+                        testID={`expense-participant-option-${member.id}`}
+                        title={member.name}
+                        trailing={
+                          <MaterialCommunityIcons
+                            color={selected ? colors.primary : colors.mutedInk}
+                            name={selected ? "checkbox-marked-circle" : "checkbox-blank-circle-outline"}
+                            size={20}
+                          />
+                        }
+                      />
+                    );
+                  })}
+                </SelectPanel>
               </View>
-              <View style={styles.splitPreviewCopy}>
-                <Text style={styles.splitPreviewTitle}>Split antes de guardar</Text>
-                <Text style={styles.splitPreviewText}>
-                  {participantShares.length
-                    ? `${participantShares.length} participantes · ${formatMoney(expenseAmountCents ?? 0)} en MXN`
-                    : "Elige monto y participantes para ver cuánto toca."}
-                </Text>
-              </View>
+
+              <NoteField
+                helper="Opcional."
+                label="Nota"
+                onChangeText={setExpenseNote}
+                placeholder="Opcional"
+                testID="expense-note-input"
+                value={expenseNote}
+              />
             </View>
 
-            {participantShares.length ? (
+            {splitReady ? (
               <View style={styles.splitImpactPanel}>
                 <View style={[styles.splitImpactTop, compact && styles.splitImpactTopCompact]}>
                   <View style={styles.splitImpactTotal}>
@@ -2578,14 +2536,7 @@ export function MainScreen() {
             <ComposerSaveDock
               action={
                 <ReusableButton
-                  disabled={
-                    selectedMembers.length === 0 ||
-                    !expenseTitle.trim() ||
-                    !expenseAmount.trim() ||
-                    !payerId ||
-                    participantIds.length === 0 ||
-                    !participantIds.includes(payerId)
-                  }
+                  disabled={!expenseCanSave}
                   icon="receipt-text-plus"
                   onPress={submitExpense}
                   testID="expense-composer-save-button"
@@ -3325,6 +3276,24 @@ const styles = StyleSheet.create({
     color: colors.primaryDark,
     fontSize: typography.micro,
     fontWeight: "700",
+  },
+  expenseQuickGrid: {
+    gap: spacing.sm,
+  },
+  expenseRouteStack: {
+    gap: spacing.xs,
+  },
+  expenseSelectRow: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 52,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
   },
   heroCard: {
     backgroundColor: colors.surface,
