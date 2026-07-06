@@ -740,6 +740,8 @@ export function MainScreen() {
     isLoading,
     joinGroupByInvite,
     markSettlementPaid,
+    removeMember,
+    renameMember,
     resetDemo,
     selectGroup,
     selectedGroup,
@@ -755,6 +757,8 @@ export function MainScreen() {
   const [groupDescription, setGroupDescription] = useState("");
   const [groupInviteCode, setGroupInviteCode] = useState("");
   const [memberName, setMemberName] = useState("");
+  const [editingMemberId, setEditingMemberId] = useState("");
+  const [editingMemberName, setEditingMemberName] = useState("");
   const [expenseTitle, setExpenseTitle] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
   const [expenseCategoryId, setExpenseCategoryId] = useState(defaultCategory.id);
@@ -1004,6 +1008,34 @@ export function MainScreen() {
     }
     setMemberName("");
     setShowMemberForm(false);
+  };
+
+  const startEditMember = (member: Member) => {
+    setEditingMemberId(member.id);
+    setEditingMemberName(member.name);
+  };
+
+  const submitMemberRename = () => {
+    if (!selectedGroup || !editingMemberId) {
+      return;
+    }
+    const renamed = renameMember(selectedGroup.id, editingMemberId, editingMemberName);
+    if (!renamed) {
+      return;
+    }
+    setEditingMemberId("");
+    setEditingMemberName("");
+  };
+
+  const submitMemberRemove = (memberId: string) => {
+    if (!selectedGroup) {
+      return;
+    }
+    const removed = removeMember(selectedGroup.id, memberId);
+    if (removed && editingMemberId === memberId) {
+      setEditingMemberId("");
+      setEditingMemberName("");
+    }
   };
 
   const submitExpense = () => {
@@ -1699,7 +1731,12 @@ export function MainScreen() {
                 <Text style={styles.balanceMapKicker}>Integrantes</Text>
                 <Text style={styles.memberLedgerTitle}>Balance por persona</Text>
               </View>
-              <Text style={styles.memberLedgerMeta}>MXN exacto</Text>
+              <ActionButton
+                icon="account-edit-outline"
+                label="Gestionar"
+                onPress={() => setShowMemberForm(true)}
+                tone="secondary"
+              />
             </View>
             {selectedMembers.length === 0 ? (
               <EmptyState
@@ -2055,8 +2092,8 @@ export function MainScreen() {
           <View style={styles.sheetHandle} />
           <View style={styles.sheetHeader}>
             <View>
-              <Text style={styles.sheetTitle}>Agregar integrante</Text>
-              <Text style={styles.sheetSubtitle}>Se guardará solo en este dispositivo.</Text>
+              <Text style={styles.sheetTitle}>Integrantes</Text>
+              <Text style={styles.sheetSubtitle}>Agrega, corrige nombres o quita integrantes sin gastos.</Text>
             </View>
             <ActionButton icon="close" label="Cerrar" onPress={() => setShowMemberForm(false)} tone="ghost" />
           </View>
@@ -2073,6 +2110,66 @@ export function MainScreen() {
             label="Agregar integrante"
             onPress={submitMember}
           />
+          <View style={styles.memberManagerList}>
+            {selectedMembers.map((member) => {
+              const isEditing = editingMemberId === member.id;
+              return (
+                <View key={member.id} style={styles.memberManagerItem}>
+                  {isEditing ? (
+                    <>
+                      <Field
+                        label="Nombre visible"
+                        onChangeText={setEditingMemberName}
+                        placeholder="Nombre"
+                        value={editingMemberName}
+                      />
+                      <View style={styles.memberManagerActions}>
+                        <ActionButton
+                          disabled={!editingMemberName.trim()}
+                          icon="check"
+                          label="Guardar"
+                          onPress={submitMemberRename}
+                        />
+                        <ActionButton
+                          icon="close"
+                          label="Cancelar"
+                          onPress={() => {
+                            setEditingMemberId("");
+                            setEditingMemberName("");
+                          }}
+                          tone="secondary"
+                        />
+                      </View>
+                    </>
+                  ) : (
+                    <>
+                      <SelectOptionRow
+                        leading={<Avatar color={member.avatarColor} label={member.name} />}
+                        meta={member.role === "owner" ? "Organiza este grupo" : "Integrante local"}
+                        onPress={() => startEditMember(member)}
+                        selected={activeGroupMember?.id === member.id}
+                        title={member.name}
+                      />
+                      <View style={styles.memberManagerActions}>
+                        <ActionButton
+                          icon="pencil"
+                          label="Editar"
+                          onPress={() => startEditMember(member)}
+                          tone="secondary"
+                        />
+                        <ActionButton
+                          icon="account-minus-outline"
+                          label="Quitar"
+                          onPress={() => submitMemberRemove(member.id)}
+                          tone="danger"
+                        />
+                      </View>
+                    </>
+                  )}
+                </View>
+              );
+            })}
+          </View>
         </View>
       </View>
     </Modal>
@@ -5658,6 +5755,22 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     gap: spacing.xs,
     minWidth: 0,
+  },
+  memberManagerActions: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+  },
+  memberManagerItem: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  memberManagerList: {
+    gap: spacing.sm,
   },
   memberName: {
     color: colors.ink,

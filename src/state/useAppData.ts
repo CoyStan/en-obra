@@ -5,6 +5,8 @@ import {
   createGroupMutation,
   joinGroupByInviteMutation,
   markSettlementPaidMutation,
+  removeMemberMutation,
+  renameMemberMutation,
 } from "../backend/appMutations";
 import { calculateGroupSummary, getGroupMembers } from "../domain/balances";
 import type {
@@ -118,6 +120,34 @@ export function useAppData() {
     return true;
   }, [data]);
 
+  const renameMember = useCallback((groupId: string, memberId: string, name: string) => {
+    const result = renameMemberMutation(data, groupId, memberId, name);
+    if (!result.ok) {
+      setError(result.error);
+      return false;
+    }
+    setData(result.data);
+    persistData(result.data).catch(() => {
+      setError("No se pudo guardar el cambio localmente.");
+    });
+    setError(null);
+    return true;
+  }, [data]);
+
+  const removeMember = useCallback((groupId: string, memberId: string) => {
+    const result = removeMemberMutation(data, groupId, memberId);
+    if (!result.ok) {
+      setError(result.error);
+      return false;
+    }
+    setData(result.data);
+    persistData(result.data).catch(() => {
+      setError("No se pudo guardar el cambio localmente.");
+    });
+    setError(null);
+    return true;
+  }, [data]);
+
   const addExpense = useCallback((groupId: string, input: AddExpenseInput) => {
     const result = addExpenseMutation(data, groupId, input);
     if (!result.ok) {
@@ -167,6 +197,8 @@ export function useAppData() {
     isLoading,
     joinGroupByInvite,
     markSettlementPaid,
+    removeMember,
+    renameMember,
     resetDemo,
     selectGroup,
     selectedGroup,

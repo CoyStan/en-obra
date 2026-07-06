@@ -5,6 +5,8 @@ import {
   createGroupMutation,
   joinGroupByInviteMutation,
   markSettlementPaidMutation,
+  removeMemberMutation,
+  renameMemberMutation,
   type MutationContext,
 } from "../backend/appMutations";
 import { demoData } from "../data/demoData";
@@ -140,6 +142,49 @@ describe("backend app mutations", () => {
       "activity_event",
     ]);
     expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
+  it("renames a local group member without changing balances", () => {
+    const data = cloneData();
+    const beforeBalanceCount = data.expenseParticipants?.length;
+    const result = renameMemberMutation(data, "group-oaxaca", "member-oaxaca-luis", "Luis Ángel", deterministicContext());
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.data.groupMembers?.find((member) => member.id === "member-oaxaca-luis")?.displayNameSnapshot).toBe("Luis Ángel");
+    expect(result.data.users?.find((user) => user.id === "user-luis")?.displayName).toBe("Luis Ángel");
+    expect(result.data.expenseParticipants?.length).toBe(beforeBalanceCount);
+    expect(result.data.syncOutbox?.at(-1)?.operation).toBe("update");
+    expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
+  it("removes a local member only when they have no money references", () => {
+    const data = cloneData();
+    const added = addMemberMutation(data, "group-oaxaca", "Valeria", deterministicContext());
+    expect(added.ok).toBe(true);
+    if (!added.ok) return;
+
+    const result = removeMemberMutation(added.data, "group-oaxaca", "member-test-1", deterministicContext());
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.data.groupMembers?.some((member) => member.id === "member-test-1")).toBe(false);
+    expect(result.data.groups.find((group) => group.id === "group-oaxaca")?.memberIds).not.toContain("member-test-1");
+    expect(result.data.syncOutbox?.at(-1)).toMatchObject({
+      entityType: "group_member",
+      operation: "delete",
+    });
+    expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
+  it("blocks removing members with expenses or settlements", () => {
+    const data = cloneData();
+    const result = removeMemberMutation(data, "group-oaxaca", "member-oaxaca-luis", deterministicContext());
+
+    expect(result.ok).toBe(false);
+    expect(result.data).toBe(data);
   });
 
   it("adds an expense with equal participant shares and backend outbox rows", () => {

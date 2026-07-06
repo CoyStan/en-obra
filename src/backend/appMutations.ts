@@ -40,6 +40,20 @@ export type JoinGroupMutationInput = {
   actorUserId?: string;
 };
 
+function memberHasMoneyReferences(current: AppData, memberId: string) {
+  return (
+    current.expenses.some((expense) =>
+      expense.payerId === memberId ||
+      expense.paidByMemberId === memberId ||
+      expense.participantIds.includes(memberId),
+    ) ||
+    (current.expenseParticipants ?? []).some((participant) => participant.memberId === memberId) ||
+    current.settlements.some((settlement) =>
+      settlement.fromMemberId === memberId || settlement.toMemberId === memberId,
+    )
+  );
+}
+
 const avatarColors = ["#229ED9", "#168AC0", "#4F9BC7", "#6B7C93", "#3B82B8", "#7C8DA1"];
 
 function currentTime(context?: MutationContext) {
@@ -385,6 +399,119 @@ export function addMemberMutation(
           createdAt,
         }),
         createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt }),
+      ],
+    },
+  };
+}
+
+export function renameMemberMutation(
+  current: AppData,
+  groupId: string,
+  memberId: string,
+  name: string,
+  context?: MutationContext,
+): MutationResult {
+  const validation = validateMemberInput(name);
+  if (!validation.ok) {
+    return { ok: false, error: validation.error, data: current };
+  }
+
+  const groupMember = (current.groupMembers ?? []).find((member) => member.id === memberId && member.groupId === groupId);
+  if (!groupMember || groupMember.leftAt) {
+    return { ok: false, error: "No encontramos ese integrante activo.", data: current };
+  }
+
+  const updatedAt = currentTime(context);
+  const updatedGroupMember: GroupMember = {
+    ...groupMember,
+    displayNameSnapshot: validation.value.name,
+  };
+  const updatedUser = current.users?.find((user) => user.id === groupMember.userId && !user.deletedAt)
+    ? current.users.map((user) =>
+        user.id === groupMember.userId
+          ? { ...user, displayName: validation.value.name, updatedAt }
+          : user,
+      )
+    : current.users;
+
+  return {
+    ok: true,
+    data: {
+      ...current,
+      users: updatedUser,
+      groupMembers: (current.groupMembers ?? []).map((member) =>
+        member.id === memberId ? updatedGroupMember : member,
+      ),
+      members: current.members.map((member) =>
+        member.id === memberId ? { ...member, name: validation.value.name } : member,
+      ),
+      groups: current.groups.map((group) =>
+        group.id === groupId ? { ...group, updatedAt } : group,
+      ),
+      syncOutbox: [
+        ...(current.syncOutbox ?? []),
+        createSyncOutboxItem({
+          operation: "update",
+          entityType: "group_member",
+          entityId: updatedGroupMember.id,
+          payload: updatedGroupMember,
+          createdAt: updatedAt,
+        }),
+      ],
+    },
+  };
+}
+
+export function removeMemberMutation(
+  current: AppData,
+  groupId: string,
+  memberId: string,
+  context?: MutationContext,
+): MutationResult {
+  const group = current.groups.find((item) => item.id === groupId);
+  if (!group) {
+    return { ok: false, error: "No se encontró el grupo.", data: current };
+  }
+
+  const groupMember = (current.groupMembers ?? []).find((member) => member.id === memberId && member.groupId === groupId);
+  if (!groupMember || groupMember.leftAt) {
+    return { ok: false, error: "No encontramos ese integrante activo.", data: current };
+  }
+
+  const activeMemberCount = (current.groupMembers ?? []).filter((member) => member.groupId === groupId && !member.leftAt).length;
+  if (activeMemberCount <= 1) {
+    return { ok: false, error: "El grupo necesita al menos un integrante.", data: current };
+  }
+
+  if (memberHasMoneyReferences(current, memberId)) {
+    return {
+      ok: false,
+      error: "No se puede quitar porque ya tiene gastos o arreglos. Edita el nombre si necesitas corregirlo.",
+      data: current,
+    };
+  }
+
+  const removedAt = currentTime(context);
+  return {
+    ok: true,
+    data: {
+      ...current,
+      groupMembers: (current.groupMembers ?? []).filter((member) => member.id !== memberId),
+      members: current.members.filter((member) => member.id !== memberId),
+      groups: current.groups.map((item) =>
+        item.id === groupId
+          ? { ...item, memberIds: item.memberIds.filter((id) => id !== memberId), updatedAt: removedAt }
+          : item,
+      ),
+      syncOutbox: [
+        ...(current.syncOutbox ?? []),
+        createSyncOutboxItem({
+          operation: "delete",
+          entityType: "group_member",
+          entityId: groupMember.id,
+          payload: groupMember,
+          createdAt: removedAt,
+        }),
       ],
     },
   };

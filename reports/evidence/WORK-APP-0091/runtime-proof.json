@@ -1,0 +1,27 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "checkedAt": "2026-07-06T06:36:51.288Z",
+  "results": [
+    {
+      "viewport": "360x740",
+      "managerVisible": true,
+      "editVisible": true,
+      "removeVisible": true,
+      "saveVisible": true
+    },
+    {
+      "viewport": "390x844",
+      "managerVisible": true,
+      "editVisible": true,
+      "removeVisible": true,
+      "saveVisible": true
+    },
+    {
+      "viewport": "412x915",
+      "managerVisible": true,
+      "editVisible": true,
+      "removeVisible": true,
+      "saveVisible": true
+    }
+  ]
+}
