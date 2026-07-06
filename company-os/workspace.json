@@ -4339,7 +4339,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Redesign balance screen around who owes whom, right-aligned money, and one clear settlement action. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0107/**,company-os/workspace.json.",
       "acceptance_target": "Balance screen prioritizes who owes whom, right-aligns money, has one clear settlement action, and passes screenshots.",
       "required_approval_capability": "design",
