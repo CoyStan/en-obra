@@ -3899,11 +3899,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Support local edit/delete expense flows with audit events and recalculated balances. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0095/**,company-os/workspace.json.",
       "acceptance_target": "Existing local expenses can be edited/deleted with history entries, recalculated balances, data integrity tests, and no production backend.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0095"
     },
     {
       "allowed_resources": [
@@ -5927,6 +5928,17 @@
       "commits": [
         "a8a5924c3cb49933751558f93e583ec77fffb5bf"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0095",
+      "work_item_id": "WORK-APP-0095",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started local edit/delete expense with audit events."
     }
   ],
   "evidence_runs": [
