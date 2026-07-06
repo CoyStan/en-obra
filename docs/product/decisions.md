@@ -577,3 +577,20 @@ Rationale: Pills appear across trust, group, status, and money-state surfaces,
 so they prove the new tokenized styling layer on real UI. The primitive is small
 enough to verify safely before migrating larger surfaces such as sheets,
 navigation, or balance maps.
+
+## 2026-07-06
+
+### Close The Tricount Gap Through Local/Mock Collaboration First
+
+Decision: The next product phase should move beyond a polished local MVP toward
+a Tricount-credible shared-expense utility: local/mock create/join groups,
+active group identity, member management, flexible splits, share/reminder text,
+receipt placeholders, search/export, and simpler Android-first information
+architecture.
+
+Rationale: The largest competitive weakness is not only visual polish; it is
+that Tricount feels like a complete collaborative social utility while Cuentas
+Claras still behaves like a single-device demo. Building provider-neutral
+local/mock collaboration and split capabilities closes real product gaps without
+crossing hard boundaries around production auth, sync, payments, secrets, paid
+services, legal commitments, or Play submission.
