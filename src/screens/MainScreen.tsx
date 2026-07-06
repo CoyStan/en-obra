@@ -535,6 +535,7 @@ function ActivityRow({
     item.label,
     item.actorName,
     item.subtitle,
+    item.receiptAttachmentLabel ? `Recibo local: ${item.receiptAttachmentLabel}` : null,
     isSettlement ? "Sin pagos reales · acuerdo guardado" : null,
     formatDate(item.createdAt),
   ].filter(Boolean);
@@ -813,6 +814,7 @@ export function MainScreen() {
   const [expenseAmount, setExpenseAmount] = useState("");
   const [expenseCategoryId, setExpenseCategoryId] = useState(defaultCategory.id);
   const [expenseNote, setExpenseNote] = useState("");
+  const [expenseReceiptAttached, setExpenseReceiptAttached] = useState(false);
   const [payerId, setPayerId] = useState("");
   const [participantIds, setParticipantIds] = useState<string[]>([]);
   const [expenseSplitMode, setExpenseSplitMode] = useState<ExpenseSplitMode>("equal");
@@ -1132,6 +1134,7 @@ export function MainScreen() {
     setExpenseAmount("");
     setExpenseCategoryId(defaultCategory.id);
     setExpenseNote("");
+    setExpenseReceiptAttached(false);
     setParticipantIds([]);
     setExpenseSplitMode("equal");
     setExactShareTextByMember({});
@@ -1152,6 +1155,7 @@ export function MainScreen() {
     setExpenseAmount((expense.amountCents / 100).toFixed(2));
     setExpenseCategoryId(expense.categoryId ?? defaultCategory.id);
     setExpenseNote(expense.note ?? "");
+    setExpenseReceiptAttached(Boolean(expense.receiptAttachmentLabel));
     setPayerId(expense.paidByMemberId ?? expense.payerId);
     setParticipantIds(expense.participantIds);
     setExpenseSplitMode(method);
@@ -1189,6 +1193,8 @@ export function MainScreen() {
       note: expenseNote,
       participantIds,
       payerId,
+      receiptAttachmentKind: expenseReceiptAttached ? "mock-photo" as const : undefined,
+      receiptAttachmentLabel: expenseReceiptAttached ? "Foto de recibo local" : undefined,
       split: splitInput,
       title: expenseTitle,
     };
@@ -2736,6 +2742,34 @@ export function MainScreen() {
                 testID="expense-note-input"
                 value={expenseNote}
               />
+
+              <Pressable
+                accessibilityLabel={expenseReceiptAttached ? "Quitar recibo local" : "Agregar recibo local de prueba"}
+                accessibilityRole="switch"
+                accessibilityState={{ checked: expenseReceiptAttached }}
+                onPress={() => setExpenseReceiptAttached((current) => !current)}
+                style={({ pressed }) => [
+                  styles.receiptAttachmentRow,
+                  expenseReceiptAttached && styles.receiptAttachmentRowActive,
+                  pressed && styles.pressed,
+                ]}
+                testID="expense-receipt-attachment-toggle"
+              >
+                <View style={styles.receiptAttachmentIcon}>
+                  <MaterialCommunityIcons
+                    color={expenseReceiptAttached ? colors.primaryDark : colors.mutedInk}
+                    name={expenseReceiptAttached ? "image-check-outline" : "image-plus-outline"}
+                    size={20}
+                  />
+                </View>
+                <View style={styles.moneyPathCopy}>
+                  <Text style={styles.moneyPathLabel}>Recibo</Text>
+                  <Text numberOfLines={1} style={styles.moneyPathValue}>
+                    {expenseReceiptAttached ? "Foto de recibo local" : "Agregar foto simulada"}
+                  </Text>
+                </View>
+                <Pill label={expenseReceiptAttached ? "Local" : "Mock"} tone={expenseReceiptAttached ? "success" : "neutral"} />
+              </Pressable>
             </View>
 
             {splitReady ? (
@@ -7215,6 +7249,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     gap: spacing.xs,
+  },
+  receiptAttachmentIcon: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderRadius: 18,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  receiptAttachmentRow: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 58,
+    padding: spacing.sm,
+  },
+  receiptAttachmentRowActive: {
+    backgroundColor: colors.surfaceTinted,
+    borderColor: colors.primary,
   },
   receiptCategoryButton: {
     alignItems: "center",

@@ -31,6 +31,8 @@ export type AddExpenseMutationInput = {
   payerId: string;
   categoryId?: string;
   participantIds?: string[];
+  receiptAttachmentKind?: "mock-photo";
+  receiptAttachmentLabel?: string;
   split?: SplitInput;
   actorUserId?: string;
   note?: string;
@@ -554,6 +556,7 @@ export function addExpenseMutation(
   const createdAt = currentTime(context);
   const participantIds = validation.value.participantIds;
   const actorUserId = resolveActorUserId(current, input.actorUserId);
+  const receiptAttachmentLabel = input.receiptAttachmentLabel?.trim();
   const expense: Expense = {
     id: makeId(context, "expense"),
     groupId,
@@ -566,6 +569,8 @@ export function addExpenseMutation(
     categoryId: input.categoryId,
     participantIds,
     note: validation.value.note,
+    receiptAttachmentKind: receiptAttachmentLabel ? input.receiptAttachmentKind ?? "mock-photo" : undefined,
+    receiptAttachmentLabel: receiptAttachmentLabel || undefined,
     expenseDate: createdAt.slice(0, 10),
     createdAt,
     updatedAt: createdAt,
@@ -647,6 +652,7 @@ export function updateExpenseMutation(
 
   const updatedAt = currentTime(context);
   const actorUserId = resolveActorUserId(current, input.actorUserId);
+  const receiptAttachmentLabel = input.receiptAttachmentLabel?.trim();
   const updatedExpense: Expense = {
     ...existingExpense,
     title: validation.value.title,
@@ -657,6 +663,8 @@ export function updateExpenseMutation(
     categoryId: input.categoryId,
     participantIds: validation.value.participantIds,
     note: validation.value.note,
+    receiptAttachmentKind: receiptAttachmentLabel ? input.receiptAttachmentKind ?? "mock-photo" : undefined,
+    receiptAttachmentLabel: receiptAttachmentLabel || undefined,
     updatedAt,
   };
   const participants = validation.value.splitShares.map((share) => ({

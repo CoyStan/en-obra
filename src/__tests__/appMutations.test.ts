@@ -201,6 +201,8 @@ describe("backend app mutations", () => {
         participantIds: ["member-oaxaca-ana", "member-oaxaca-luis"],
         categoryId: "food",
         actorUserId: "user-ana",
+        receiptAttachmentKind: "mock-photo",
+        receiptAttachmentLabel: "  Foto de recibo local  ",
       },
       deterministicContext(),
     );
@@ -217,6 +219,8 @@ describe("backend app mutations", () => {
       amountCents: 10001,
       currency: "MXN",
       paidByMemberId: "member-oaxaca-ana",
+      receiptAttachmentKind: "mock-photo",
+      receiptAttachmentLabel: "Foto de recibo local",
     });
     expect(shares.reduce((sum, share) => sum + share.shareCents, 0)).toBe(10001);
     expect(result.data.syncOutbox?.map((item) => item.entityType).slice(-4)).toEqual([
@@ -326,6 +330,8 @@ describe("backend app mutations", () => {
         payerId: "member-oaxaca-diego",
         categoryId: "transport",
         actorUserId: "user-diego",
+        receiptAttachmentKind: "mock-photo",
+        receiptAttachmentLabel: "Ticket local actualizado",
         split: {
           method: "exact",
           shares: [
@@ -348,6 +354,8 @@ describe("backend app mutations", () => {
       amountCents: 90000,
       paidByMemberId: "member-oaxaca-diego",
       participantIds: ["member-oaxaca-diego", "member-oaxaca-ana"],
+      receiptAttachmentKind: "mock-photo",
+      receiptAttachmentLabel: "Ticket local actualizado",
     });
     expect(shares.map((share) => [share.memberId, share.shareMethod, share.shareCents])).toEqual([
       ["member-oaxaca-diego", "exact", 50000],

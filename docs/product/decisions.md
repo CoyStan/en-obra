@@ -702,3 +702,16 @@ Rationale: The settlement flow is useful only if users understand that the app
 is recording an agreement that happened outside Cuentas Claras. Button labels,
 confirmation copy, and success feedback should reinforce that no money moved in
 the app, while still feeling calm and action-oriented.
+
+### Treat Receipt Attachments As Local Mock Metadata First
+
+Decision: Receipt attachment support should start as an optional local mock
+metadata flag on expenses, with a visible history cue, before adding camera,
+file picker, uploads, or SQL artifact changes.
+
+Rationale: Receipts are a Tricount-level trust feature, but native media access
+introduces permissions, storage, privacy, and later sync decisions. A mock
+receipt placeholder lets the product flow and activity history prove the shape
+of the feature while staying local-only. SQL artifact expansion should be a
+separate scoped ticket because this item does not allow `docs/backend/**`
+artifact updates.

@@ -76,6 +76,8 @@ export type Expense = {
   categoryId?: string;
   participantIds: string[];
   note?: string;
+  receiptAttachmentKind?: "mock-photo";
+  receiptAttachmentLabel?: string;
   expenseDate?: string;
   createdAt: string;
   updatedAt?: string;
@@ -160,6 +162,7 @@ export type ActivityItem = {
   subtitle: string;
   actorName?: string;
   categoryId?: string;
+  receiptAttachmentLabel?: string;
   label?: string;
   amountCents: number;
   currency: CurrencyCode;
