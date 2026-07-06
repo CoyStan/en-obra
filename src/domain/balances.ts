@@ -17,6 +17,22 @@ type LedgerEntry = {
   netCents: number;
 };
 
+export type SettlementRouteExplanation = {
+  amountText: string;
+  detail: string;
+  fromName: string;
+  suggestion: SettlementSuggestion;
+  title: string;
+  toName: string;
+};
+
+export type SettlementPlanExplanation = {
+  routeCount: number;
+  routes: SettlementRouteExplanation[];
+  summary: string;
+  totalCents: number;
+};
+
 function byDateDesc(left: { createdAt: string }, right: { createdAt: string }) {
   return new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime();
 }
@@ -178,6 +194,55 @@ export function simplifySettlements(balances: MemberBalance[]): SettlementSugges
   }
 
   return suggestions;
+}
+
+export function explainSettlementPlan(
+  data: AppData,
+  groupId: string,
+  activeMemberId?: string,
+): SettlementPlanExplanation {
+  const members = new Map(getGroupMembers(data, groupId).map((member) => [member.id, member]));
+  const suggestions = simplifySettlements(calculateGroupBalances(data, groupId));
+  const routes = suggestions.map((suggestion) => {
+    const fromName = memberName(members, suggestion.fromMemberId);
+    const toName = memberName(members, suggestion.toMemberId);
+    const amountText = formatMoney(suggestion.amountCents);
+    const title =
+      activeMemberId === suggestion.fromMemberId
+        ? `Tú pagas a ${toName}`
+        : activeMemberId === suggestion.toMemberId
+          ? `${fromName} te paga`
+          : `${fromName} paga a ${toName}`;
+
+    return {
+      amountText,
+      detail: `${amountText} fuera de la app. Cuando ya pasó, márcalo como pagado en el registro local.`,
+      fromName,
+      suggestion,
+      title,
+      toName,
+    };
+  });
+  const totalCents = routes.reduce((sum, route) => sum + route.suggestion.amountCents, 0);
+
+  if (routes.length === 0) {
+    return {
+      routeCount: 0,
+      routes,
+      summary: "Todo está en paz. No hay arreglos pendientes en este grupo.",
+      totalCents,
+    };
+  }
+
+  return {
+    routeCount: routes.length,
+    routes,
+    summary:
+      routes.length === 1
+        ? "Con 1 arreglo local el grupo queda en ceros."
+        : `Con ${routes.length} arreglos locales el grupo queda en ceros.`,
+    totalCents,
+  };
 }
 
 export function calculateGroupSummary(data: AppData, groupId: string) {

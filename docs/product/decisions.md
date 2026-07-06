@@ -656,3 +656,14 @@ Rationale: Shared-expense users need to correct mistakes, but destructive local
 changes must still feel accountable. Local audit events make edits/deletes
 transparent without requiring production sync, real identities, backend
 authorization, payments, secrets, or external services.
+
+### Explain Settlement Routes As Local Agreements
+
+Decision: The settlement engine should expose a plain-Spanish plan explanation
+with route count, total amount, active-user perspective, and local-only detail
+copy.
+
+Rationale: A minimal route list is useful, but users also need to understand
+what to do next without reading a financial model. The copy should say who pays
+whom, how much, and that the agreement happens outside the app and is only
+marked locally, avoiding any implication of real payment processing.

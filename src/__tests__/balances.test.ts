@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { buildActivity, calculateGroupBalances, describeBalance, simplifySettlements } from "../domain/balances";
+import {
+  buildActivity,
+  calculateGroupBalances,
+  describeBalance,
+  explainSettlementPlan,
+  simplifySettlements,
+} from "../domain/balances";
 import { formatMoney, parseMoneyInput } from "../domain/money";
 import { splitEqual } from "../domain/splits";
 import type { AppData } from "../domain/types";
@@ -99,6 +105,57 @@ describe("group balances", () => {
     expect(suggestions).toEqual([
       { fromMemberId: "maru", toMemberId: "ana", amountCents: 30000, currency: "MXN" },
     ]);
+  });
+
+  it("explains the minimal settlement plan in simple Spanish", () => {
+    const plan = explainSettlementPlan(simpleData, "group", "luis");
+
+    expect(plan.routeCount).toBe(2);
+    expect(plan.totalCents).toBe(60000);
+    expect(plan.summary).toBe("Con 2 arreglos locales el grupo queda en ceros.");
+    expect(plan.routes[0]).toMatchObject({
+      amountText: expect.stringMatching(/MXN\s300\.00/),
+      fromName: "Luis",
+      title: "Tú pagas a Ana",
+      toName: "Ana",
+    });
+    expect(plan.routes[0].detail).toContain("fuera de la app");
+    expect(plan.routes[0].detail).toContain("registro local");
+  });
+
+  it("explains the peace state when no settlement routes remain", () => {
+    const settledData: AppData = {
+      ...simpleData,
+      settlements: [
+        {
+          id: "settlement-luis",
+          groupId: "group",
+          fromMemberId: "luis",
+          toMemberId: "ana",
+          amountCents: 30000,
+          currency: "MXN",
+          status: "paid",
+          createdAt: "2026-06-10T02:00:00Z",
+        },
+        {
+          id: "settlement-maru",
+          groupId: "group",
+          fromMemberId: "maru",
+          toMemberId: "ana",
+          amountCents: 30000,
+          currency: "MXN",
+          status: "paid",
+          createdAt: "2026-06-10T02:05:00Z",
+        },
+      ],
+    };
+
+    expect(explainSettlementPlan(settledData, "group")).toEqual({
+      routeCount: 0,
+      routes: [],
+      summary: "Todo está en paz. No hay arreglos pendientes en este grupo.",
+      totalCents: 0,
+    });
   });
 
   it("explains activity and paid settlements without payment-rail language", () => {
