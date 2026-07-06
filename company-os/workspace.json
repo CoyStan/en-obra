@@ -3672,6 +3672,46 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0089"
+    },
+    {
+      "allowed_resources": [
+        "src/backend/**",
+        "src/state/**",
+        "src/screens/MainScreen.tsx",
+        "src/__tests__/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0090/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0090",
+      "title": "Create/join group flow",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Add local create/join group flows on top of the invite/membership model. Allowed paths: src/backend/**, src/state/**, src/screens/MainScreen.tsx, src/__tests__/**, docs/product/decisions.md, reports/evidence/WORK-APP-0090/**, company-os/workspace.json.",
+      "acceptance_target": "User can create a group or enter a mocked invite/join flow; selected group scopes all tabs; no production backend or real invite link claims; screenshots at 360/390/412 and checks pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0090"
     }
   ],
   "attempts": [
@@ -5077,6 +5117,20 @@
       "result": "Added local invite metadata, membership join state, SQL dataset/schema support, regenerated artifacts, and tests.",
       "commits": [
         "33344719df02f68cf85b31cea421407f1dc72914"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0090",
+      "work_item_id": "WORK-APP-0090",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Added local create/join group flow with mock invite code UI, mutation support, tests, and screenshots.",
+      "commits": [
+        "8c3f0de419a315c27d048f49e5a0612cc660de13"
       ]
     }
   ],
@@ -6734,6 +6788,36 @@
       "status": "passed",
       "summary": "Multi-user group membership model verified with typecheck, tests, Expo config, web export, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0090",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0090/create-group-360x740.png",
+        "reports/evidence/WORK-APP-0090/create-group-390x844.png",
+        "reports/evidence/WORK-APP-0090/create-group-412x915.png",
+        "reports/evidence/WORK-APP-0090/join-group-360x740.png",
+        "reports/evidence/WORK-APP-0090/join-group-390x844.png",
+        "reports/evidence/WORK-APP-0090/join-group-412x915.png",
+        "reports/evidence/WORK-APP-0090/joined-group-360x740.png",
+        "reports/evidence/WORK-APP-0090/joined-group-390x844.png",
+        "reports/evidence/WORK-APP-0090/joined-group-412x915.png",
+        "reports/evidence/WORK-APP-0090/runtime-proof.json",
+        "reports/evidence/WORK-APP-0090/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0090",
+      "work_item_id": "WORK-APP-0090",
+      "attempt_id": "ATTEMPT-APP-0090",
+      "head_sha": "8c3f0de419a315c27d048f49e5a0612cc660de13",
+      "status": "passed",
+      "summary": "Create/join group flow verified with typecheck, tests, Expo config, web export, 360/390/412 screenshots, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -8019,6 +8103,31 @@
       "id": "REVIEW-APP-0089",
       "work_item_id": "WORK-APP-0089",
       "reviewed_head": "33344719df02f68cf85b31cea421407f1dc72914",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "360 screenshots",
+        "390 screenshots",
+        "412 screenshots",
+        "runtime proof JSON",
+        "Company OS scope WORK-APP-0090",
+        "Company OS validate",
+        "technical report"
+      ],
+      "residual_risks": [
+        "founder visual/product acceptance still required",
+        "join flow is local/mock only",
+        "member management remains WORK-APP-0091"
+      ],
+      "id": "REVIEW-APP-0090",
+      "work_item_id": "WORK-APP-0090",
+      "reviewed_head": "8c3f0de419a315c27d048f49e5a0612cc660de13",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -11874,6 +11983,47 @@
       "work_item_id": "WORK-APP-0089",
       "attempt_id": "ATTEMPT-APP-0089",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "created local invite on group creation",
+        "added join by invite mutation",
+        "wired useAppData join action",
+        "added create join segmented UI",
+        "captured 360 390 412 screenshots",
+        "ran full verification"
+      ],
+      "outputs_created": [
+        "src/backend/appMutations.ts",
+        "src/backend/dataIntegrity.ts",
+        "src/state/useAppData.ts",
+        "src/screens/MainScreen.tsx",
+        "src/__tests__/appMutations.test.ts",
+        "reports/evidence/WORK-APP-0090/runtime-proof.json",
+        "reports/evidence/WORK-APP-0090/technical-report.md"
+      ],
+      "not_done": [
+        "production invite links",
+        "production backend sync",
+        "real auth",
+        "member management UI",
+        "real payments",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0090",
+      "work_item_id": "WORK-APP-0090",
+      "attempt_id": "ATTEMPT-APP-0090",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -12851,6 +13001,14 @@
       "status": "completed",
       "what_happened": "Added provider-neutral local invite and join-state model with SQL schema, seed data, backend artifacts, tests, and documentation.",
       "what_changed": "Future create/join/member-management flows now have a concrete local contract without production backend or payments."
+    },
+    {
+      "id": "OUTCOME-APP-0090",
+      "work_item_id": "WORK-APP-0090",
+      "summary": "Create/join group flow is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Added a local create/join group UI and invite-code mutation path, with screenshots proving the flow at Android widths.",
+      "what_changed": "Users can now create a group or join a mocked local invite and land in the selected group workspace without production backend claims."
     }
   ]
 }
