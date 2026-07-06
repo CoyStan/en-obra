@@ -4122,7 +4122,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Expand categories for common Mexico/LATAM use cases with cleaner dropdown/list selection. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0101/**,company-os/workspace.json.",
       "acceptance_target": "Categories cover common Mexico/LATAM use cases and use a clean dropdown/list selection with tests/screenshots.",
       "required_approval_capability": "design",
@@ -6015,6 +6015,17 @@
       "commits": [
         "f68431049ccbb5d4dd0957852f523a2d522be9fe"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0101",
+      "work_item_id": "WORK-APP-0101",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started Mexico/LATAM category system expansion."
     }
   ],
   "evidence_runs": [
