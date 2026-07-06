@@ -6095,7 +6095,10 @@
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Revised the theme to the selected Supabase Money plus Amber Minimal direction and refreshed screenshots."
+      "result": "Revised the theme to the selected Supabase Money plus Amber Minimal direction and refreshed screenshots.",
+      "commits": [
+        "76a700ae44a82ebe79702aa2bfa87a352c160a70"
+      ]
     }
   ],
   "evidence_runs": [
