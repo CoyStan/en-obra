@@ -4050,7 +4050,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Polish mark-paid flow so it is lighter, clearer, and explicitly local/no-real-payment. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0099/**,company-os/workspace.json.",
       "acceptance_target": "Mark-paid flow is visually lighter, confirms impact clearly, remains local-only, and passes tests/screenshots.",
       "required_approval_capability": "design",
@@ -5992,12 +5992,15 @@
       "id": "ATTEMPT-APP-0099",
       "work_item_id": "WORK-APP-0099",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started settlement confirmation polish."
+      "result": "Polished settlement confirmation copy, action labels, and local-success feedback to clarify no real payment happens.",
+      "commits": [
+        "89b049b04386f8c50b5f5c1b5132a83a90ee0607"
+      ]
     }
   ],
   "evidence_runs": [
@@ -7861,6 +7864,32 @@
       "status": "passed",
       "summary": "SPEI/CLABE helper mock passed typecheck, focused tests, full tests, Expo config, web export, scope, validate, and Android-width screenshots.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0099",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0099/technical-report.md",
+        "reports/evidence/WORK-APP-0099/screenshots/settlement-confirmation-360x740.png",
+        "reports/evidence/WORK-APP-0099/screenshots/settlement-confirmation-390x844.png",
+        "reports/evidence/WORK-APP-0099/screenshots/settlement-confirmation-412x915.png",
+        "reports/evidence/WORK-APP-0099/screenshots/settlement-success-360x740.png",
+        "reports/evidence/WORK-APP-0099/screenshots/settlement-success-390x844.png",
+        "reports/evidence/WORK-APP-0099/screenshots/settlement-success-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0099",
+      "work_item_id": "WORK-APP-0099",
+      "attempt_id": "ATTEMPT-APP-0099",
+      "head_sha": "89b049b04386f8c50b5f5c1b5132a83a90ee0607",
+      "status": "passed",
+      "summary": "Settlement confirmation polish passed typecheck, full tests, Expo config, web export, scope, validate, and Android-width screenshots for confirmation and success states.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -9362,6 +9391,29 @@
       "id": "REVIEW-APP-0098",
       "work_item_id": "WORK-APP-0098",
       "reviewed_head": "9aa24ed99b1810bfadd9671c31cb4ab4b3d0c9f5",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff",
+        "technical report",
+        "screenshots",
+        "typecheck",
+        "full tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "no real payment processing",
+        "native emulator verification remains later work"
+      ],
+      "id": "REVIEW-APP-0099",
+      "work_item_id": "WORK-APP-0099",
+      "reviewed_head": "89b049b04386f8c50b5f5c1b5132a83a90ee0607",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -13560,6 +13612,45 @@
       "work_item_id": "WORK-APP-0098",
       "attempt_id": "ATTEMPT-APP-0098",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "reworded settlement action labels",
+        "reworded confirmation copy",
+        "reworded post-confirm success feedback",
+        "captured confirmation screenshots",
+        "captured success screenshots",
+        "updated decision log"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0099/technical-report.md",
+        "reports/evidence/WORK-APP-0099/screenshots"
+      ],
+      "not_done": [
+        "real payments",
+        "bank transfer",
+        "CLABE validation",
+        "external services",
+        "production backend",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission",
+        "native emulator verification"
+      ],
+      "id": "RECEIPT-APP-0099",
+      "work_item_id": "WORK-APP-0099",
+      "attempt_id": "ATTEMPT-APP-0099",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -14609,6 +14700,14 @@
       "status": "completed",
       "what_happened": "Added optional local-only settlement helper fields for bank alias and CLABE/reference notes in the settlement confirmation flow.",
       "what_changed": "Settlement type, mutation, app state hook, confirmation modal UI, tests, decisions, and evidence changed without payment processing."
+    },
+    {
+      "id": "OUTCOME-APP-0099",
+      "work_item_id": "WORK-APP-0099",
+      "summary": "Settlement confirmation polish is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Made the mark-paid flow clearer and more explicitly local/no-real-payment.",
+      "what_changed": "Settlement map action, confirmation copy, action labels, success feedback, decisions, and evidence changed without adding payment processing."
     }
   ]
 }
