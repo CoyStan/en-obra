@@ -3939,7 +3939,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Improve settlement route simplification and simple Spanish explanations. Allowed paths: src/domain/**,src/state/**,src/backend/**,src/__tests__/**,docs/product/decisions.md,reports/evidence/WORK-APP-0096/**,company-os/workspace.json.",
       "acceptance_target": "Settlement engine produces minimal routes, explains them in simple Spanish, preserves integer cents, and passes tests.",
       "required_approval_capability": "design",
@@ -5948,12 +5948,15 @@
       "id": "ATTEMPT-APP-0096",
       "work_item_id": "WORK-APP-0096",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started settlement simplification explanation engine."
+      "result": "Added settlement route explanation engine with simple Spanish copy and tests.",
+      "commits": [
+        "a0da472392947f6314d7034c0cff2cc7a6f69a54"
+      ]
     }
   ],
   "evidence_runs": [
@@ -7753,6 +7756,26 @@
       "status": "passed",
       "summary": "Local expense edit/delete passed typecheck, focused tests, full tests, Expo config, web export, scope, validate, and Android-width screenshots.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test balances",
+        "npm test",
+        "npx expo config --type public",
+        "./bin/company-os scope WORK-APP-0096",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0096/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0096",
+      "work_item_id": "WORK-APP-0096",
+      "attempt_id": "ATTEMPT-APP-0096",
+      "head_sha": "a0da472392947f6314d7034c0cff2cc7a6f69a54",
+      "status": "passed",
+      "summary": "Settlement explanation engine passed typecheck, focused balance tests, full tests, Expo config, scope, and Company OS validate.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -9184,6 +9207,28 @@
       "id": "REVIEW-APP-0095",
       "work_item_id": "WORK-APP-0095",
       "reviewed_head": "1037f39c785d66e7fd69c84f1e65829983ca5c65",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff",
+        "technical report",
+        "typecheck",
+        "balance tests",
+        "full tests",
+        "Expo config",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "UI adoption remains later work",
+        "no production payment or backend behavior"
+      ],
+      "id": "REVIEW-APP-0096",
+      "work_item_id": "WORK-APP-0096",
+      "reviewed_head": "a0da472392947f6314d7034c0cff2cc7a6f69a54",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -13266,6 +13311,41 @@
       "work_item_id": "WORK-APP-0095",
       "attempt_id": "ATTEMPT-APP-0095",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added settlement plan explanation",
+        "added active user route copy",
+        "added peace state copy",
+        "added domain tests",
+        "updated decision log"
+      ],
+      "outputs_created": [
+        "src/domain/balances.ts",
+        "src/__tests__/balances.test.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0096/technical-report.md"
+      ],
+      "not_done": [
+        "UI adoption",
+        "real payments",
+        "production backend",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0096",
+      "work_item_id": "WORK-APP-0096",
+      "attempt_id": "ATTEMPT-APP-0096",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -14291,6 +14371,14 @@
       "status": "completed",
       "what_happened": "Added local edit and delete flows for expenses with audit events, recalculated share rows, tests, and visual evidence.",
       "what_changed": "Backend mutations, app data hook, activity item targeting, activity row actions, edit-mode composer, decision log, and tests changed."
+    },
+    {
+      "id": "OUTCOME-APP-0096",
+      "work_item_id": "WORK-APP-0096",
+      "summary": "Settlement simplification explanation engine is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Added a plain-Spanish settlement plan explanation layer over the existing minimal route engine.",
+      "what_changed": "Domain balances now expose route explanations, summaries, totals, and tested peace state output."
     }
   ]
 }
