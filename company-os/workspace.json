@@ -4158,7 +4158,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Add local search/filtering for activity and expenses by person, category, amount, and date. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0102/**,company-os/workspace.json.",
       "acceptance_target": "Activity/expenses can be searched and filtered by person, category, amount, and date with accessible empty states.",
       "required_approval_capability": "design",
@@ -6029,6 +6029,17 @@
       "commits": [
         "878e54153180dd3c71aac586e59796b3bf72ccac"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0102",
+      "work_item_id": "WORK-APP-0102",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started local search and filters for activity/expenses."
     }
   ],
   "evidence_runs": [
