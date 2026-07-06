@@ -4230,7 +4230,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Restructure navigation around Groups -> Group Home -> Expenses/Balances/Activity/Profile with fewer competing panels. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0104/**,company-os/workspace.json.",
       "acceptance_target": "Navigation follows the selected group mental model, reduces competing panels, and screenshots pass Android sizes.",
       "required_approval_capability": "design",
@@ -6043,6 +6043,17 @@
       "commits": [
         "18cb592d62aa2be2d3ab9dcf86a1d03ac5e1c919"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0104",
+      "work_item_id": "WORK-APP-0104",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started app IA simplification around group-first workspace navigation."
     }
   ],
   "evidence_runs": [
