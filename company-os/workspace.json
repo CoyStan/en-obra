@@ -3976,11 +3976,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Generate local share/reminder Spanish text for group summaries, individual debts, and settlement reminders. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0097/**,company-os/workspace.json.",
       "acceptance_target": "App generates shareable Spanish text without external services, secrets, or real messaging integrations; tests/screenshots pass.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0097"
     },
     {
       "allowed_resources": [
@@ -5957,6 +5958,17 @@
       "commits": [
         "a0da472392947f6314d7034c0cff2cc7a6f69a54"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0097",
+      "work_item_id": "WORK-APP-0097",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started local share/reminder message mock."
     }
   ],
   "evidence_runs": [
