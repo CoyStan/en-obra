@@ -4050,7 +4050,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Polish mark-paid flow so it is lighter, clearer, and explicitly local/no-real-payment. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0099/**,company-os/workspace.json.",
       "acceptance_target": "Mark-paid flow is visually lighter, confirms impact clearly, remains local-only, and passes tests/screenshots.",
       "required_approval_capability": "design",
@@ -5987,6 +5987,17 @@
       "commits": [
         "9aa24ed99b1810bfadd9671c31cb4ab4b3d0c9f5"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0099",
+      "work_item_id": "WORK-APP-0099",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started settlement confirmation polish."
     }
   ],
   "evidence_runs": [
