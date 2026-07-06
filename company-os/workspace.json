@@ -3631,6 +3631,47 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0088"
+    },
+    {
+      "allowed_resources": [
+        "src/domain/**",
+        "src/data/demoData.ts",
+        "src/backend/**",
+        "src/__tests__/**",
+        "docs/backend/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0089/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0089",
+      "title": "Multi-user group membership model",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Extend the local SQL-ready model for multi-user group membership, local invite metadata, join state, generated backend SQL artifacts, and replaceable sync seams without production backend. Allowed paths: src/domain/**, src/data/demoData.ts, src/backend/**, src/__tests__/**, docs/backend/**, docs/product/decisions.md, reports/evidence/WORK-APP-0089/**, company-os/workspace.json.",
+      "acceptance_target": "Local model supports users, groups, memberships, active identity, group roles, invite metadata, and join state without production backend; SQL dataset/schema/tests pass; Company OS evidence exists.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0089"
     }
   ],
   "attempts": [
@@ -5022,6 +5063,20 @@
       "result": "Defined Tricount gap product plan, PRD/UX brief, and decision log entry.",
       "commits": [
         "bcf1e550255c215adc36105dbb165dfd8ac16785"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0089",
+      "work_item_id": "WORK-APP-0089",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Added local invite metadata, membership join state, SQL dataset/schema support, regenerated artifacts, and tests.",
+      "commits": [
+        "33344719df02f68cf85b31cea421407f1dc72914"
       ]
     }
   ],
@@ -6654,6 +6709,31 @@
       "status": "passed",
       "summary": "Tricount gap PRD and UX simplification brief verified with Company OS scope and validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0089",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0089/technical-report.md",
+        "docs/backend/schema-v1.sql",
+        "docs/backend/seed-demo-v1.sql",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/play-preflight-v1.json",
+        "docs/backend/release-handoff-v1.json"
+      ],
+      "id": "EVIDENCE-APP-0089",
+      "work_item_id": "WORK-APP-0089",
+      "attempt_id": "ATTEMPT-APP-0089",
+      "head_sha": "33344719df02f68cf85b31cea421407f1dc72914",
+      "status": "passed",
+      "summary": "Multi-user group membership model verified with typecheck, tests, Expo config, web export, scope, and workspace validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -7917,6 +7997,28 @@
       "id": "REVIEW-APP-0088",
       "work_item_id": "WORK-APP-0088",
       "reviewed_head": "bcf1e550255c215adc36105dbb165dfd8ac16785",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "Company OS scope WORK-APP-0089",
+        "Company OS validate",
+        "technical report",
+        "SQL artifact drift tests"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "create/join group UI remains WORK-APP-0090",
+        "model is local/mock only and does not provide real sync"
+      ],
+      "id": "REVIEW-APP-0089",
+      "work_item_id": "WORK-APP-0089",
+      "reviewed_head": "33344719df02f68cf85b31cea421407f1dc72914",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -11718,6 +11820,60 @@
       "work_item_id": "WORK-APP-0088",
       "attempt_id": "ATTEMPT-APP-0088",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added GroupInvite type",
+        "added membership status and join source",
+        "added invite activity events",
+        "updated normalization",
+        "updated demo data",
+        "updated SQL schema and dataset",
+        "regenerated backend artifacts",
+        "updated tests",
+        "ran full verification"
+      ],
+      "outputs_created": [
+        "src/domain/types.ts",
+        "src/domain/appDataNormalization.ts",
+        "src/data/demoData.ts",
+        "src/backend/sqlSchema.ts",
+        "src/backend/sqlDataset.ts",
+        "src/backend/appMutations.ts",
+        "src/__tests__/sqlReadyModel.test.ts",
+        "src/__tests__/sqlDataset.test.ts",
+        "docs/backend/schema-v1.sql",
+        "docs/backend/seed-demo-v1.sql",
+        "docs/backend/release-manifest-v1.json",
+        "docs/backend/play-preflight-v1.json",
+        "docs/backend/release-handoff-v1.json",
+        "docs/backend/sql-readiness.md",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0089/technical-report.md"
+      ],
+      "not_done": [
+        "create join UI",
+        "member management UI",
+        "production backend",
+        "production auth",
+        "real invite links",
+        "real payments",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0089",
+      "work_item_id": "WORK-APP-0089",
+      "attempt_id": "ATTEMPT-APP-0089",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -12687,6 +12843,14 @@
       "status": "completed",
       "what_happened": "Converted Tricount comparison weaknesses into a scoped product plan, PRD, IA, journeys, UX rules, and downstream work item map.",
       "what_changed": "Added planning docs and decision log entry for local/mock collaboration-first execution."
+    },
+    {
+      "id": "OUTCOME-APP-0089",
+      "work_item_id": "WORK-APP-0089",
+      "summary": "Local multi-user group membership model is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Added provider-neutral local invite and join-state model with SQL schema, seed data, backend artifacts, tests, and documentation.",
+      "what_changed": "Future create/join/member-management flows now have a concrete local contract without production backend or payments."
     }
   ]
 }
