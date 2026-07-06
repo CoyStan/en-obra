@@ -3862,11 +3862,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Add participant split editing for exact amounts and share units using clear list/dropdown patterns. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0094/**,company-os/workspace.json.",
       "acceptance_target": "Users can edit exact amounts/shares in a clear list/dropdown pattern with validation and cent rounding; tests and screenshots pass.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0094"
     },
     {
       "allowed_resources": [
@@ -5912,6 +5913,17 @@
       "commits": [
         "afa7138edb6c51f8520c7b9895cac05c0e278d63"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0094",
+      "work_item_id": "WORK-APP-0094",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started participant split editor."
     }
   ],
   "evidence_runs": [
