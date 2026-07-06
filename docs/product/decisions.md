@@ -606,3 +606,16 @@ backend sync. Local invite metadata gives the next tickets a concrete contract
 for mock join flows and later provider replacement, while keeping all data on
 device and avoiding secrets, paid services, production auth, and production
 backend decisions.
+
+### Upgrade The Split Engine Before The Split Editor
+
+Decision: Support equal, exact-amount, and share-unit splits in the local domain,
+mutation, SQL-ready dataset, and demo seed before redesigning the add-expense
+split editor UI.
+
+Rationale: Flexible splits are a core shared-expense trust feature, but the
+engine has to stay deterministic before the UI becomes more expressive. Integer
+cents, explicit participant rows, and persisted split methods let future UI work
+offer exact amounts, shares, and include/exclude controls without changing the
+backend contract or introducing real payments, production sync, secrets, or paid
+services.

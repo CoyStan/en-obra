@@ -86,8 +86,9 @@ export type ExpenseParticipant = {
   id: string;
   expenseId: string;
   memberId: string;
-  shareMethod: "equal";
+  shareMethod: SplitMethod;
   shareCents: number;
+  shareUnits?: number;
   createdAt: string;
 };
 
@@ -125,6 +126,13 @@ export type SplitShare = {
   memberId: string;
   amountCents: number;
 };
+
+export type SplitMethod = "equal" | "exact" | "shares";
+
+export type SplitInput =
+  | { method: "equal"; participantIds: string[] }
+  | { method: "exact"; shares: SplitShare[] }
+  | { method: "shares"; shares: { memberId: string; units: number }[] };
 
 export type MemberBalance = {
   member: Member;

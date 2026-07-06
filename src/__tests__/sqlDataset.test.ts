@@ -31,6 +31,8 @@ describe("SQL backend dataset foundation", () => {
     expect(schema).toContain("join_source TEXT NOT NULL DEFAULT 'seed'");
     expect(schema).toContain("amount_cents INTEGER NOT NULL CHECK");
     expect(schema).toContain("share_cents INTEGER NOT NULL CHECK");
+    expect(schema).toContain("share_method IN ('equal', 'exact', 'shares')");
+    expect(schema).toContain("share_units INTEGER");
     expect(schema).toContain("currency_code TEXT NOT NULL DEFAULT 'MXN'");
   });
 
@@ -97,7 +99,11 @@ describe("SQL backend dataset foundation", () => {
     for (const participant of dataset.expense_participants) {
       expect(expenseIds.has(participant.expense_id)).toBe(true);
       expect(memberIds.has(participant.member_id)).toBe(true);
+      expect(["equal", "exact", "shares"]).toContain(participant.share_method);
       expect(Number.isInteger(participant.share_cents)).toBe(true);
+      if (participant.share_units !== null) {
+        expect(Number.isInteger(participant.share_units)).toBe(true);
+      }
     }
 
     for (const settlement of dataset.settlements) {

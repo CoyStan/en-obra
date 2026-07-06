@@ -75,8 +75,9 @@ CREATE TABLE IF NOT EXISTS expense_participants (
   id TEXT PRIMARY KEY,
   expense_id TEXT NOT NULL REFERENCES expenses(id),
   member_id TEXT NOT NULL REFERENCES group_members(id),
-  share_method TEXT NOT NULL CHECK (share_method = 'equal'),
+  share_method TEXT NOT NULL CHECK (share_method IN ('equal', 'exact', 'shares')),
   share_cents INTEGER NOT NULL CHECK (share_cents >= 0),
+  share_units INTEGER,
   created_at TEXT NOT NULL,
   UNIQUE (expense_id, member_id)
 );

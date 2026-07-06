@@ -83,6 +83,7 @@ export function normalizeAppData(data: AppData): AppData {
           memberId: share.memberId,
           shareMethod: "equal" as const,
           shareCents: share.amountCents,
+          shareUnits: 1,
           createdAt: expense.createdAt,
         })),
       );

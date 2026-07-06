@@ -1,4 +1,4 @@
-import { splitEqual } from "../domain/money";
+import { resolveSplit, splitEqual } from "../domain/splits";
 import type {
   ActivityEvent,
   AppData,
@@ -181,6 +181,43 @@ const settlements: Settlement[] = [
   },
 ];
 
+function sharesForExpense(expense: Expense) {
+  if (expense.id === "expense-roma-super") {
+    const split = resolveSplit(expense.amountCents, {
+      method: "exact",
+      shares: [
+        { memberId: "member-roma-ana", amountCents: 60000 },
+        { memberId: "member-roma-fer", amountCents: 72450 },
+        { memberId: "member-roma-paola", amountCents: 50000 },
+      ],
+    });
+    if (split.ok) {
+      return split.shares;
+    }
+  }
+
+  if (expense.id === "expense-asada-carne") {
+    const split = resolveSplit(expense.amountCents, {
+      method: "shares",
+      shares: [
+        { memberId: "member-asada-luis", units: 2 },
+        { memberId: "member-asada-diego", units: 1 },
+        { memberId: "member-asada-rene", units: 2 },
+        { memberId: "member-asada-sofia", units: 1 },
+      ],
+    });
+    if (split.ok) {
+      return split.shares;
+    }
+  }
+
+  return splitEqual(expense.amountCents, expense.participantIds).map((share) => ({
+    ...share,
+    method: "equal" as const,
+    units: undefined,
+  }));
+}
+
 const activityEvents: ActivityEvent[] = [
   ...groupInvites.map((invite) => ({
     id: `activity-${invite.id}`,
@@ -268,12 +305,13 @@ export const demoData: AppData = {
   ],
   expenses,
   expenseParticipants: expenses.flatMap((expense) =>
-    splitEqual(expense.amountCents, expense.participantIds).map((share) => ({
+    sharesForExpense(expense).map((share) => ({
       id: `participant-${expense.id}-${share.memberId}`,
       expenseId: expense.id,
       memberId: share.memberId,
-      shareMethod: "equal" as const,
+      shareMethod: share.method,
       shareCents: share.amountCents,
+      shareUnits: share.units,
       createdAt: expense.createdAt,
     })),
   ),

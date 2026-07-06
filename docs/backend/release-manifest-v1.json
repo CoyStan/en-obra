@@ -19,10 +19,10 @@
     "sync_outbox"
   ],
   "checksums": {
-    "schemaSql": "fnv1a32:2e79ce14",
-    "seedSql": "fnv1a32:3859c1a9",
+    "schemaSql": "fnv1a32:00212253",
+    "seedSql": "fnv1a32:5bf2a9f6",
     "gate": "fnv1a32:5e000e9f",
-    "manifestBody": "fnv1a32:20cedb71"
+    "manifestBody": "fnv1a32:d57d2dc0"
   },
   "requiredCapabilities": [
     "sql-schema",

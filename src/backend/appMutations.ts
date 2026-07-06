@@ -1,5 +1,4 @@
 import { getGroupMembers } from "../domain/balances";
-import { splitEqual } from "../domain/money";
 import type {
   ActivityEvent,
   AppData,
@@ -9,6 +8,7 @@ import type {
   GroupMember,
   Settlement,
   SettlementSuggestion,
+  SplitInput,
   User,
 } from "../domain/types";
 import { resolveActorUserId } from "../state/actorIdentity";
@@ -31,6 +31,7 @@ export type AddExpenseMutationInput = {
   payerId: string;
   categoryId?: string;
   participantIds?: string[];
+  split?: SplitInput;
   actorUserId?: string;
   note?: string;
 };
@@ -530,6 +531,7 @@ export function addExpenseMutation(
     note: input.note,
     participantIds: input.participantIds,
     payerId: input.payerId,
+    split: input.split,
     title: input.title,
   });
 
@@ -561,12 +563,13 @@ export function addExpenseMutation(
     createdAt,
     updatedAt: createdAt,
   };
-  const participants = splitEqual(expense.amountCents, participantIds).map((share) => ({
+  const participants = validation.value.splitShares.map((share) => ({
     id: makeId(context, "participant"),
     expenseId: expense.id,
     memberId: share.memberId,
-    shareMethod: "equal" as const,
+    shareMethod: share.method,
     shareCents: share.amountCents,
+    shareUnits: share.units,
     createdAt,
   }));
   const event = activityEvent(

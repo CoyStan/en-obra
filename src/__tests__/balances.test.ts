@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildActivity, calculateGroupBalances, describeBalance, simplifySettlements } from "../domain/balances";
-import { formatMoney, parseMoneyInput, splitEqual } from "../domain/money";
+import { formatMoney, parseMoneyInput } from "../domain/money";
+import { splitEqual } from "../domain/splits";
 import type { AppData } from "../domain/types";
 
 const simpleData: AppData = {

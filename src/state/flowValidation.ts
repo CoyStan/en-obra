@@ -1,4 +1,6 @@
 import { parseMoneyInput } from "../domain/money";
+import { resolveSplit, type ResolvedSplitShare } from "../domain/splits";
+import type { SplitInput } from "../domain/types";
 
 type ValidationResult<T> = { ok: true; value: T } | { ok: false; error: string };
 
@@ -16,6 +18,7 @@ export type ValidExpenseInput = {
   note?: string;
   payerId: string;
   participantIds: string[];
+  splitShares: ResolvedSplitShare[];
   title: string;
 };
 
@@ -57,6 +60,7 @@ export function validateExpenseInput({
   note,
   participantIds,
   payerId,
+  split,
   title,
 }: {
   amount: string;
@@ -64,6 +68,7 @@ export function validateExpenseInput({
   note?: string;
   participantIds?: string[];
   payerId: string;
+  split?: SplitInput;
   title: string;
 }): ValidationResult<ValidExpenseInput> {
   const cleanTitle = title.trim();
@@ -93,6 +98,16 @@ export function validateExpenseInput({
     return { ok: false, error: "Elige solo integrantes de este grupo." };
   }
 
+  const splitInput = split ?? { method: "equal" as const, participantIds: selectedParticipantIds };
+  const splitResult = resolveSplit(amountCents, splitInput);
+  if (!splitResult.ok) {
+    return { ok: false, error: splitResult.error };
+  }
+
+  if (splitResult.shares.some((share) => !memberIds.includes(share.memberId))) {
+    return { ok: false, error: "Elige solo integrantes de este grupo." };
+  }
+
   const cleanNote = note?.trim();
   return {
     ok: true,
@@ -100,7 +115,8 @@ export function validateExpenseInput({
       amountCents,
       note: cleanNote || undefined,
       payerId,
-      participantIds: selectedParticipantIds,
+      participantIds: splitResult.shares.map((share) => share.memberId),
+      splitShares: splitResult.shares,
       title: cleanTitle,
     },
   };

@@ -226,6 +226,75 @@ describe("backend app mutations", () => {
     expect(auditAppDataIntegrity(result.data)).toEqual([]);
   });
 
+  it("adds an expense with exact participant shares", () => {
+    const data = cloneData();
+    const result = addExpenseMutation(
+      data,
+      "group-oaxaca",
+      {
+        title: "Cena parcial",
+        amount: "100.01",
+        payerId: "member-oaxaca-ana",
+        split: {
+          method: "exact",
+          shares: [
+            { memberId: "member-oaxaca-ana", amountCents: 6000 },
+            { memberId: "member-oaxaca-luis", amountCents: 4001 },
+          ],
+        },
+      },
+      deterministicContext(),
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    const expense = result.data.expenses[0];
+    const shares = result.data.expenseParticipants?.filter((share) => share.expenseId === expense.id) ?? [];
+
+    expect(expense.participantIds).toEqual(["member-oaxaca-ana", "member-oaxaca-luis"]);
+    expect(shares.map((share) => [share.memberId, share.shareMethod, share.shareCents])).toEqual([
+      ["member-oaxaca-ana", "exact", 6000],
+      ["member-oaxaca-luis", "exact", 4001],
+    ]);
+    expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
+  it("adds an expense with share units and rounded cents", () => {
+    const data = cloneData();
+    const result = addExpenseMutation(
+      data,
+      "group-oaxaca",
+      {
+        title: "Hotel por partes",
+        amount: "100.00",
+        payerId: "member-oaxaca-ana",
+        split: {
+          method: "shares",
+          shares: [
+            { memberId: "member-oaxaca-ana", units: 2 },
+            { memberId: "member-oaxaca-luis", units: 1 },
+            { memberId: "member-oaxaca-maru", units: 1 },
+          ],
+        },
+      },
+      deterministicContext(),
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    const expense = result.data.expenses[0];
+    const shares = result.data.expenseParticipants?.filter((share) => share.expenseId === expense.id) ?? [];
+
+    expect(shares.map((share) => [share.memberId, share.shareMethod, share.shareCents, share.shareUnits])).toEqual([
+      ["member-oaxaca-ana", "shares", 5000, 2],
+      ["member-oaxaca-luis", "shares", 2500, 1],
+      ["member-oaxaca-maru", "shares", 2500, 1],
+    ]);
+    expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
   it("rejects invalid expense input without changing data", () => {
     const data = cloneData();
     const result = addExpenseMutation(

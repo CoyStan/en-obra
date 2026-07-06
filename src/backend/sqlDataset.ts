@@ -145,6 +145,7 @@ export function createSqlDataset(input: AppData = demoData): SqlDataset {
       member_id: participant.memberId,
       share_method: participant.shareMethod,
       share_cents: participant.shareCents,
+      share_units: participant.shareUnits ?? null,
       created_at: participant.createdAt,
     })),
     settlements: sortById(data.settlements).map((settlement) => ({

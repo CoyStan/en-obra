@@ -1,4 +1,5 @@
-import type { CurrencyCode, SplitShare } from "./types";
+import type { CurrencyCode } from "./types";
+export { splitEqual } from "./splits";
 
 const pesoFormatter = new Intl.NumberFormat("es-MX", {
   currency: "MXN",
@@ -42,21 +43,4 @@ export function parseMoneyInput(value: string) {
   }
 
   return Math.round(amount * 100);
-}
-
-export function splitEqual(amountCents: number, participantIds: string[]): SplitShare[] {
-  if (!Number.isInteger(amountCents) || amountCents <= 0) {
-    throw new Error("amountCents must be a positive integer");
-  }
-  if (participantIds.length === 0) {
-    throw new Error("At least one participant is required");
-  }
-
-  const baseShare = Math.floor(amountCents / participantIds.length);
-  const remainder = amountCents % participantIds.length;
-
-  return participantIds.map((memberId, index) => ({
-    memberId,
-    amountCents: baseShare + (index < remainder ? 1 : 0),
-  }));
 }

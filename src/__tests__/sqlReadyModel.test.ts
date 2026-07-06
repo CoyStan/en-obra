@@ -26,6 +26,7 @@ describe("SQL-ready local model", () => {
     for (const expense of demoData.expenses) {
       const shares = demoData.expenseParticipants?.filter((share) => share.expenseId === expense.id) ?? [];
       expect(shares.reduce((sum, share) => sum + share.shareCents, 0)).toBe(expense.amountCents);
+      expect(shares.every((share) => ["equal", "exact", "shares"].includes(share.shareMethod))).toBe(true);
     }
   });
 

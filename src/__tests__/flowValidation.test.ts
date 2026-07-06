@@ -41,6 +41,10 @@ describe("core flow validation", () => {
         note: "cena y taxi",
         payerId: "ana",
         participantIds: ["ana", "diego"],
+        splitShares: [
+          { amountCents: 62538, memberId: "ana", method: "equal" },
+          { amountCents: 62537, memberId: "diego", method: "equal" },
+        ],
         title: "Noche de tacos",
       },
     });
@@ -61,7 +65,63 @@ describe("core flow validation", () => {
         amountCents: 90000,
         payerId: "diego",
         participantIds: ["ana", "luis"],
+        splitShares: [
+          { amountCents: 45000, memberId: "ana", method: "equal" },
+          { amountCents: 45000, memberId: "luis", method: "equal" },
+        ],
         title: "Boletos",
+      },
+    });
+  });
+
+  it("validates exact and shares split modes", () => {
+    expect(
+      validateExpenseInput({
+        amount: "100.01",
+        memberIds: ["ana", "luis"],
+        payerId: "ana",
+        split: {
+          method: "exact",
+          shares: [
+            { memberId: "ana", amountCents: 6000 },
+            { memberId: "luis", amountCents: 4001 },
+          ],
+        },
+        title: "Cena",
+      }),
+    ).toMatchObject({
+      ok: true,
+      value: {
+        participantIds: ["ana", "luis"],
+        splitShares: [
+          { amountCents: 6000, memberId: "ana", method: "exact" },
+          { amountCents: 4001, memberId: "luis", method: "exact" },
+        ],
+      },
+    });
+
+    expect(
+      validateExpenseInput({
+        amount: "100.00",
+        memberIds: ["ana", "luis"],
+        payerId: "ana",
+        split: {
+          method: "shares",
+          shares: [
+            { memberId: "ana", units: 3 },
+            { memberId: "luis", units: 1 },
+          ],
+        },
+        title: "Hotel",
+      }),
+    ).toMatchObject({
+      ok: true,
+      value: {
+        participantIds: ["ana", "luis"],
+        splitShares: [
+          { amountCents: 7500, memberId: "ana", method: "shares", units: 3 },
+          { amountCents: 2500, memberId: "luis", method: "shares", units: 1 },
+        ],
       },
     });
   });
