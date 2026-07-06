@@ -3825,7 +3825,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Simplify add-expense UX with fewer taps, progressive disclosure, list/dropdown selections, and less card-heavy layout. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0093/**,company-os/workspace.json.",
       "acceptance_target": "Add expense takes fewer taps, uses progressive disclosure, avoids card-heavy layout, preserves validation, and passes tests/screenshots.",
       "required_approval_capability": "design",
@@ -5903,12 +5903,15 @@
       "id": "ATTEMPT-APP-0093",
       "work_item_id": "WORK-APP-0093",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started add-expense UX simplification."
+      "result": "Simplified add-expense composer into one compact receipt capture surface with dropdown/list selectors and screenshots.",
+      "commits": [
+        "afa7138edb6c51f8520c7b9895cac05c0e278d63"
+      ]
     }
   ],
   "evidence_runs": [
@@ -7637,6 +7640,30 @@
       "status": "passed",
       "summary": "Split engine verification passed: typecheck, focused tests, full tests, Expo config, web export, scope, and Company OS validate.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test focused",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0093",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0093/technical-report.md",
+        "reports/evidence/WORK-APP-0093/screenshots/add-expense-360x740.png",
+        "reports/evidence/WORK-APP-0093/screenshots/add-expense-390x844.png",
+        "reports/evidence/WORK-APP-0093/screenshots/add-expense-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0093",
+      "work_item_id": "WORK-APP-0093",
+      "attempt_id": "ATTEMPT-APP-0093",
+      "head_sha": "afa7138edb6c51f8520c7b9895cac05c0e278d63",
+      "status": "passed",
+      "summary": "Add-expense UX simplification passed typecheck, focused tests, full tests, Expo config, web export, scope, validate, and Android-width screenshots.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -8995,6 +9022,30 @@
       "id": "REVIEW-APP-0092",
       "work_item_id": "WORK-APP-0092",
       "reviewed_head": "f317f83de135a837a5b9583dfef0ce4d91602404",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff",
+        "technical report",
+        "screenshots",
+        "typecheck",
+        "focused tests",
+        "full tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "exact split editor remains WORK-APP-0094",
+        "native emulator verification remains later work"
+      ],
+      "id": "REVIEW-APP-0093",
+      "work_item_id": "WORK-APP-0093",
+      "reviewed_head": "afa7138edb6c51f8520c7b9895cac05c0e278d63",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -12967,6 +13018,41 @@
       "work_item_id": "WORK-APP-0092",
       "attempt_id": "ATTEMPT-APP-0092",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "simplified composer",
+        "converted stacked sections to one receipt surface",
+        "kept dropdown list selectors",
+        "captured mobile screenshots",
+        "updated decision log"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0093/technical-report.md",
+        "reports/evidence/WORK-APP-0093/screenshots"
+      ],
+      "not_done": [
+        "exact split editor",
+        "production backend",
+        "real payments",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0093",
+      "work_item_id": "WORK-APP-0093",
+      "attempt_id": "ATTEMPT-APP-0093",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -13968,6 +14054,14 @@
       "status": "completed",
       "what_happened": "Implemented deterministic equal, exact amount, and share-unit split support with integer cents and verification evidence.",
       "what_changed": "Domain split logic, validation, mutations, SQL-ready schema/dataset, demo seed, backend artifacts, and tests now support multiple split methods."
+    },
+    {
+      "id": "OUTCOME-APP-0093",
+      "work_item_id": "WORK-APP-0093",
+      "summary": "Add-expense UX simplification is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Converted the add-expense sheet into a lighter one-surface receipt capture flow with compact dropdown/list selectors and mobile screenshot evidence.",
+      "what_changed": "MainScreen composer structure, save readiness guard, compact selector styles, decision log, and evidence report/screenshots changed."
     }
   ]
 }
