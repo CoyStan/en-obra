@@ -4339,11 +4339,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Redesign balance screen around who owes whom, right-aligned money, and one clear settlement action. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0107/**,company-os/workspace.json.",
       "acceptance_target": "Balance screen prioritizes who owes whom, right-aligns money, has one clear settlement action, and passes screenshots.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0107-R1"
     },
     {
       "allowed_resources": [
@@ -6166,6 +6167,20 @@
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
       "result": "Simplified the add-expense composer by removing redundant header, context rail, helper text, and Local/Mock pill; kept Sin pagos reales at the save boundary."
+    },
+    {
+      "commits": [
+        "20e198e6950123a8fe1c7ae33155b05afbf34990"
+      ],
+      "id": "ATTEMPT-APP-0107-R1",
+      "work_item_id": "WORK-APP-0107",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Simplified the Balance hero, settlement map, settlement card, member ledger, and settlement confirmation dialog by removing redundant text and duplicate safety disclaimers."
     }
   ],
   "evidence_runs": [
@@ -8292,6 +8307,29 @@
       "status": "passed",
       "summary": "Add-expense composer simplification passed typecheck, tests, Expo config, web export, scope, and validate. Screenshots captured at 360/390/412.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0107",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0107/technical-report.md",
+        "reports/evidence/WORK-APP-0107/screenshots/balance-360x740.png",
+        "reports/evidence/WORK-APP-0107/screenshots/balance-390x844.png",
+        "reports/evidence/WORK-APP-0107/screenshots/balance-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0107-R1",
+      "work_item_id": "WORK-APP-0107",
+      "attempt_id": "ATTEMPT-APP-0107-R1",
+      "head_sha": "20e198e6950123a8fe1c7ae33155b05afbf34990",
+      "status": "passed",
+      "summary": "Balance and settlement simplification passed typecheck, tests, Expo config, web export, scope, and validate. Screenshots captured at 360/390/412.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -10034,6 +10072,33 @@
       "id": "REVIEW-APP-0106-R1",
       "work_item_id": "WORK-APP-0106",
       "reviewed_head": "b5808e5d79a7f3f7623b084c7009c1b1bd5a7b4e",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "balance hero diff",
+        "settlement map diff",
+        "settlement card diff",
+        "member ledger diff",
+        "settlement confirmation diff",
+        "technical report",
+        "Balance screenshots",
+        "typecheck",
+        "tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder visual acceptance still required",
+        "dead StyleSheet entries remain",
+        "Activity and Perfil surfaces remain legacy"
+      ],
+      "id": "REVIEW-APP-0107-R1",
+      "work_item_id": "WORK-APP-0107",
+      "reviewed_head": "20e198e6950123a8fe1c7ae33155b05afbf34990",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -14645,6 +14710,43 @@
       "work_item_id": "WORK-APP-0106",
       "attempt_id": "ATTEMPT-APP-0106-R1",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "actions_taken": [
+        "simplified balance hero",
+        "settlement map",
+        "settlement card",
+        "member ledger",
+        "and settlement confirmation dialog"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0107/technical-report.md",
+        "reports/evidence/WORK-APP-0107/screenshots"
+      ],
+      "not_done": [
+        "dead style cleanup",
+        "Activity and Perfil surface migration",
+        "full dark mode",
+        "real payments",
+        "production backend",
+        "secrets",
+        "paid services",
+        "deployment",
+        "Play Store submission"
+      ],
+      "sources_used": [
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-OPEN-DESIGN"
+      ],
+      "id": "RECEIPT-APP-0107-R1",
+      "work_item_id": "WORK-APP-0107",
+      "attempt_id": "ATTEMPT-APP-0107-R1",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -15774,6 +15876,14 @@
       "status": "completed",
       "what_happened": "Reduced the add-expense composer's visual weight and text density while preserving all input behavior and keeping Sin pagos reales at the save boundary.",
       "what_changed": "composer.tsx, input.tsx, MainScreen.tsx expense composer, decisions.md, and new screenshot evidence."
+    },
+    {
+      "id": "OUTCOME-APP-0107-R1",
+      "work_item_id": "WORK-APP-0107",
+      "summary": "Balance and settlement simplification is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Reduced the Balance surface and settlement confirmation dialog to essential information with one safety disclaimer at the action boundary.",
+      "what_changed": "MainScreen.tsx balance and settlement render, decisions.md, and new screenshot evidence."
     }
   ]
 }
