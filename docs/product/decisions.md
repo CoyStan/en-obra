@@ -667,3 +667,14 @@ Rationale: A minimal route list is useful, but users also need to understand
 what to do next without reading a financial model. The copy should say who pays
 whom, how much, and that the agreement happens outside the app and is only
 marked locally, avoiding any implication of real payment processing.
+
+### Generate Share Text Locally Before Messaging Integrations
+
+Decision: Cuentas Claras should generate group summary, individual balance, and
+settlement reminder text as local strings before adding any clipboard, WhatsApp,
+deep-link, or system share integration.
+
+Rationale: Reminder copy is useful immediately, but external sharing can imply
+production messaging, payments, permissions, or privacy choices. A local text
+adapter gives the app a safe contract to review and replace later without
+secrets, paid APIs, production backend behavior, or real payment processing.
