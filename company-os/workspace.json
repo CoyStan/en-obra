@@ -4086,7 +4086,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Add local/mock receipt photo placeholder support to expense creation and history display. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0100/**,company-os/workspace.json.",
       "acceptance_target": "Add expense can attach a local/mock receipt placeholder and show it in history without OCR or cloud storage.",
       "required_approval_capability": "design",
@@ -6006,12 +6006,15 @@
       "id": "ATTEMPT-APP-0100",
       "work_item_id": "WORK-APP-0100",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started local/mock receipt attachment placeholder support."
+      "result": "Added local/mock receipt attachment metadata, composer toggle, activity cue, tests, and screenshots without camera or uploads.",
+      "commits": [
+        "f68431049ccbb5d4dd0957852f523a2d522be9fe"
+      ]
     }
   ],
   "evidence_runs": [
@@ -7901,6 +7904,33 @@
       "status": "passed",
       "summary": "Settlement confirmation polish passed typecheck, full tests, Expo config, web export, scope, validate, and Android-width screenshots for confirmation and success states.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test -- src/__tests__/appMutations.test.ts src/__tests__/sqlDataset.test.ts src/__tests__/balances.test.ts",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0100",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0100/technical-report.md",
+        "reports/evidence/WORK-APP-0100/screenshots/receipt-toggle-360x740.png",
+        "reports/evidence/WORK-APP-0100/screenshots/receipt-toggle-390x844.png",
+        "reports/evidence/WORK-APP-0100/screenshots/receipt-toggle-412x915.png",
+        "reports/evidence/WORK-APP-0100/screenshots/receipt-activity-360x740.png",
+        "reports/evidence/WORK-APP-0100/screenshots/receipt-activity-390x844.png",
+        "reports/evidence/WORK-APP-0100/screenshots/receipt-activity-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0100",
+      "work_item_id": "WORK-APP-0100",
+      "attempt_id": "ATTEMPT-APP-0100",
+      "head_sha": "f68431049ccbb5d4dd0957852f523a2d522be9fe",
+      "status": "passed",
+      "summary": "Receipt attachment local mock passed typecheck, focused tests, full tests, Expo config, web export, scope, validate, and Android-width composer/activity screenshots.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -9425,6 +9455,32 @@
       "id": "REVIEW-APP-0099",
       "work_item_id": "WORK-APP-0099",
       "reviewed_head": "89b049b04386f8c50b5f5c1b5132a83a90ee0607",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff",
+        "technical report",
+        "screenshots",
+        "typecheck",
+        "focused tests",
+        "full tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "receipt is mock metadata only",
+        "no native media picker",
+        "no SQL artifact expansion",
+        "native emulator verification remains later work"
+      ],
+      "id": "REVIEW-APP-0100",
+      "work_item_id": "WORK-APP-0100",
+      "reviewed_head": "f68431049ccbb5d4dd0957852f523a2d522be9fe",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -13662,6 +13718,52 @@
       "work_item_id": "WORK-APP-0099",
       "attempt_id": "ATTEMPT-APP-0099",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added mock receipt expense metadata",
+        "wired add expense mutation",
+        "wired update expense mutation",
+        "added composer receipt toggle",
+        "added activity receipt cue",
+        "wrote mutation tests",
+        "captured composer screenshots",
+        "captured activity screenshots",
+        "updated decision log"
+      ],
+      "outputs_created": [
+        "src/domain/types.ts",
+        "src/backend/appMutations.ts",
+        "src/domain/balances.ts",
+        "src/screens/MainScreen.tsx",
+        "src/__tests__/appMutations.test.ts",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0100/technical-report.md",
+        "reports/evidence/WORK-APP-0100/screenshots"
+      ],
+      "not_done": [
+        "camera access",
+        "file picker",
+        "real image storage",
+        "uploads",
+        "production backend",
+        "secrets",
+        "paid services",
+        "SQL artifact expansion",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0100",
+      "work_item_id": "WORK-APP-0100",
+      "attempt_id": "ATTEMPT-APP-0100",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -14719,6 +14821,14 @@
       "status": "completed",
       "what_happened": "Made the mark-paid flow clearer and more explicitly local/no-real-payment.",
       "what_changed": "Settlement map action, confirmation copy, action labels, success feedback, decisions, and evidence changed without adding payment processing."
+    },
+    {
+      "id": "OUTCOME-APP-0100",
+      "work_item_id": "WORK-APP-0100",
+      "summary": "Receipt attachment local mock is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Added a local/mock receipt placeholder to expense creation/editing and history display.",
+      "what_changed": "Expense metadata, add/update mutations, activity item metadata, composer UI, tests, decisions, and evidence changed without camera access or uploads."
     }
   ]
 }
