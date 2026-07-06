@@ -4013,11 +4013,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Add optional local-only settlement note fields for bank alias or CLABE placeholder without processing payments. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0098/**,company-os/workspace.json.",
       "acceptance_target": "Settlement helper stores/displays optional mock SPEI/CLABE notes, clearly says no real payments, and avoids secrets/payment processing.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0098"
     },
     {
       "allowed_resources": [
@@ -5972,6 +5973,17 @@
       "commits": [
         "1a4d39444a5abb93eab8a6dfb56734926799e85e"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0098",
+      "work_item_id": "WORK-APP-0098",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started local-only SPEI/CLABE settlement helper mock."
     }
   ],
   "evidence_runs": [
