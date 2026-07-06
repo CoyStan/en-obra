@@ -1509,14 +1509,34 @@ export function MainScreen() {
               <Text style={styles.actionDockSecondaryText}>Gasto</Text>
             </Pressable>
             <Pressable
-              accessibilityLabel="Ver historial"
+              accessibilityLabel="Ver balance"
+              accessibilityRole="button"
+              hitSlop={4}
+              onPress={() => setActiveTab("balance")}
+              style={({ pressed }) => [styles.actionDockSecondary, pressed && styles.pressed]}
+            >
+              <MaterialCommunityIcons color={colors.primaryDark} name="scale-balance" size={18} />
+              <Text style={styles.actionDockSecondaryText}>Balance</Text>
+            </Pressable>
+            <Pressable
+              accessibilityLabel="Ver actividad"
               accessibilityRole="button"
               hitSlop={4}
               onPress={() => setActiveTab("activity")}
               style={({ pressed }) => [styles.actionDockSecondary, pressed && styles.pressed]}
             >
               <MaterialCommunityIcons color={colors.primaryDark} name="history" size={18} />
-              <Text style={styles.actionDockSecondaryText}>{activity.length} movimientos</Text>
+              <Text style={styles.actionDockSecondaryText}>Actividad</Text>
+            </Pressable>
+            <Pressable
+              accessibilityLabel="Ver perfil del grupo"
+              accessibilityRole="button"
+              hitSlop={4}
+              onPress={() => setActiveTab("account")}
+              style={({ pressed }) => [styles.actionDockSecondary, pressed && styles.pressed]}
+            >
+              <MaterialCommunityIcons color={colors.primaryDark} name="account-circle-outline" size={18} />
+              <Text style={styles.actionDockSecondaryText}>Perfil</Text>
             </Pressable>
           </View>
         </View>
@@ -3314,7 +3334,7 @@ export function MainScreen() {
             const active = activeTab === tab.id;
             const disabledByContext = Boolean(tab.groupScoped && !selectedGroup);
             const isGroupSwitcher = tab.id === "groups";
-            const displayLabel = isGroupSwitcher && selectedGroup ? "Cambiar" : tab.label;
+            const displayLabel = tab.label;
             const accessibilityLabel =
               isGroupSwitcher
                 ? selectedGroup
@@ -4667,7 +4687,8 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: radius.lg,
     borderWidth: 1,
-    flex: 1,
+    flexBasis: "47%",
+    flexGrow: 1,
     flexDirection: "row",
     gap: spacing.xs,
     justifyContent: "center",
@@ -4676,6 +4697,7 @@ const styles = StyleSheet.create({
   },
   actionDockSecondaryRow: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: spacing.sm,
   },
   actionDockSecondaryText: {

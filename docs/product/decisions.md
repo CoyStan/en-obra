@@ -737,3 +737,15 @@ Rationale: History is useful only if users can find a charge without learning a
 reporting tool. A compact filter panel supports common questions such as
 “¿qué pagó Ana?”, “¿cuáles fueron comidas?”, and “¿qué gastos grandes hubo?”
 without backend search, analytics, saved filters, or heavy table UI.
+
+### Make Group Home The Workspace Hub
+
+Decision: After choosing a group, the Home screen should act as the group
+workspace hub with direct routes to `Gasto`, `Balance`, `Actividad`, and
+`Perfil`, while the bottom tab keeps `Grupos` as the explicit group selector.
+
+Rationale: Users should understand the hierarchy as `Grupos -> grupo activo ->
+acciones del grupo`. Keeping `Grupos` visible avoids the earlier ambiguity where
+the first tab became `Cambiar`, and a compact action hub makes the core
+destinations obvious without forcing users to infer the app model from the
+bottom navigation alone.
