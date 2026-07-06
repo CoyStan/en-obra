@@ -4266,7 +4266,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Redesign first viewport to show answer and next action with less copy and fewer cards. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0105/**,company-os/workspace.json.",
       "acceptance_target": "First viewport shows personal balance, who owes whom, and next action with reduced copy/cards and verified screenshots.",
       "required_approval_capability": "design",
@@ -6057,6 +6057,17 @@
       "commits": [
         "88ddc7a7760d78d211bd562205fcafb06356b57a"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0105",
+      "work_item_id": "WORK-APP-0105",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started answer-first home redesign focused on first viewport clarity."
     }
   ],
   "evidence_runs": [
