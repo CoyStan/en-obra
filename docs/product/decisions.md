@@ -817,3 +817,19 @@ Rationale: The composer had become a dense form with multiple explanations of
 the same local-only limitation. The modern, minimal composer should expose only
 the required fields (monto, concepto, pagador, participantes, reparto) and the
 save action. The safety disclaimer remains at the point of saving.
+
+### Simplify the Balance and Settlement Surfaces
+
+Decision: Reduce the Balance surface to a clean hero (group name + open balance
+amount + status label), a single settlement map section with one primary action,
+and a compact member ledger. Remove the "Mapa de balance" kicker, the meta line,
+the trust chip, the metrics row, and the ComposerSection badge/icon/meta. In the
+settlement confirmation dialog, remove the eyebrow, the SPEI helper box header,
+the effect timeline, and the input helper paragraphs. Shorten the boundary text
+to "Sin pagos reales · Marca el arreglo como pagado. No mueve dinero."
+
+Rationale: The Balance surface was explaining the same local-only constraint in
+four different places (hero trust chip, settlement map meta, settlement card demo
+chip, and confirmation dialog boundary). The simplified surface shows the
+balance, who pays whom, and one action. The safety disclaimer stays at the
+settlement confirmation boundary, which is the action point.

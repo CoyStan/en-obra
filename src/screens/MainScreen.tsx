@@ -1774,14 +1774,9 @@ export function MainScreen() {
             </View>
             <View style={styles.settlementMetaRow}>
               <View style={styles.settlementAmountInline}>
-                <Text style={styles.settlementAmountLabel}>Monto MXN</Text>
                 <Text style={styles.settlementAmountText}>
                   {formatMoney(settlement.amountCents)}
                 </Text>
-              </View>
-              <View style={styles.demoChip}>
-                <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
-                <Text style={styles.demoOnly}>Sin pagos reales</Text>
               </View>
             </View>
           </View>
@@ -1821,21 +1816,9 @@ export function MainScreen() {
       <View style={styles.tabContent}>
         <View style={styles.balanceMap}>
           <View style={styles.balanceMapHero}>
-            <View style={styles.balanceMapTop}>
-              <View style={styles.balanceMapTitleBlock}>
-                <Text style={styles.balanceMapKicker}>Mapa de balance</Text>
-                <Text numberOfLines={1} style={styles.balanceMapTitle}>{selectedGroup.name}</Text>
-                <Text numberOfLines={1} style={styles.balanceMapMeta}>MXN · {selectedMembers.length} integrantes · arreglo externo</Text>
-              </View>
-              <View style={styles.commandTrustChip}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={14} />
-                <Text style={styles.odCommandTrustText}>Sin pagos reales</Text>
-              </View>
-            </View>
-
             <View style={styles.balanceMapAmountRow}>
               <View style={styles.balanceMapStatus}>
-                <Text style={styles.balanceMapStatusLabel}>Abierto</Text>
+                <Text numberOfLines={1} style={styles.balanceMapTitle}>{selectedGroup.name}</Text>
                 <Text style={[styles.balanceMapStatusText, selectedSummary.openBalanceCents ? styles.balanceMapStatusDue : styles.balanceMapStatusOk]}>
                   {openLabel}
                 </Text>
@@ -1852,23 +1835,9 @@ export function MainScreen() {
                 </Text>
               </View>
             </View>
-
-            <View style={styles.balanceMapMetrics}>
-              <View style={styles.balanceMapMetric}>
-                <Text style={styles.balanceMapMetricLabel}>Rutas</Text>
-                <Text style={styles.balanceMapMetricValue}>{selectedSummary.settlements.length}</Text>
-              </View>
-              <View style={styles.balanceMapMetric}>
-                <Text style={styles.balanceMapMetricLabel}>Integrantes</Text>
-                <Text style={styles.balanceMapMetricValue}>{selectedMembers.length}</Text>
-              </View>
-            </View>
           </View>
 
           <ComposerSection
-            badge={primaryRoute ? `${selectedSummary.settlements.length} rutas` : "En paz"}
-            icon={primaryRoute ? "swap-horizontal" : "check-decagram-outline"}
-            meta={primaryRoute ? "Se registra solo si ya se arreglaron fuera de la app." : "No hay pagos pendientes para este grupo."}
             testID="balance-settlement-map-section"
             title={primaryRoute ? "Quién paga ahora" : "Sin rutas pendientes"}
           >
@@ -1888,14 +1857,14 @@ export function MainScreen() {
                     <Text style={styles.settlementMapRouteText}>
                       {settlementPerspective(primaryRoute, displayMemberId, primaryFrom, primaryTo).title}
                     </Text>
-                    <Text style={styles.settlementMapRouteMeta}>Sin pagos reales · registro local</Text>
+                    <Text style={styles.settlementMapRouteMeta}>Sin pagos reales</Text>
                   </View>
                   <ReusableButton
                     icon="check"
                     onPress={() => setPendingSettlement(primaryRoute)}
                     testID="balance-settlement-register-button"
                   >
-                    Marcar local
+                    Marcar
                   </ReusableButton>
                 </View>
               </>
@@ -1904,7 +1873,6 @@ export function MainScreen() {
                 <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={24} />
                 <View style={styles.calmFigureCopy}>
                   <Text style={styles.settlementMapRouteText}>Todo en paz</Text>
-                  <Text style={styles.settlementMapRouteMeta}>No hay pagos pendientes para este grupo.</Text>
                 </View>
               </View>
             )}
@@ -1936,10 +1904,7 @@ export function MainScreen() {
 
           <View style={styles.memberLedgerPanel}>
             <View style={styles.memberLedgerHeader}>
-              <View>
-                <Text style={styles.balanceMapKicker}>Integrantes</Text>
-                <Text style={styles.memberLedgerTitle}>Balance por persona</Text>
-              </View>
+              <Text style={styles.memberLedgerTitle}>Balance por persona</Text>
               <ActionButton
                 icon="account-edit-outline"
                 label="Gestionar"
@@ -3047,8 +3012,7 @@ export function MainScreen() {
                   <MaterialCommunityIcons color={colors.primaryDark} name="handshake-outline" size={20} />
                 </View>
                 <View style={styles.settlementAgreementTitleWrap}>
-                  <Text style={styles.confirmEyebrow}>Arreglo fuera de la app</Text>
-                  <Text style={styles.confirmTitle}>{perspective?.confirmTitle ?? "Confirmar arreglo local"}</Text>
+                  <Text style={styles.confirmTitle}>{perspective?.confirmTitle ?? "Confirmar arreglo"}</Text>
                 </View>
               </View>
 
@@ -3087,54 +3051,28 @@ export function MainScreen() {
                     <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={18} />
                   </View>
                   <View style={styles.settlementBoundaryCopy}>
-                    <Text style={styles.settlementBoundaryTitle}>Solo registro local</Text>
+                    <Text style={styles.settlementBoundaryTitle}>Sin pagos reales</Text>
                     <Text style={styles.settlementBoundaryText}>
-                      {perspective?.confirmBody ??
-                        "Esto marca el arreglo como pagado en Cuentas Claras. No mueve dinero ni inicia pagos reales."}
+                      Marca el arreglo como pagado. No mueve dinero.
                     </Text>
                   </View>
                 </View>
 
-                <View style={styles.settlementHelperBox} testID="settlement-helper-box">
-                  <View style={styles.settlementHelperHeader}>
-                    <View style={styles.settlementHelperIcon}>
-                      <MaterialCommunityIcons color={colors.primaryDark} name="bank-outline" size={17} />
-                    </View>
-                    <View style={styles.settlementHelperCopy}>
-                      <Text style={styles.settlementHelperTitle}>Referencia SPEI opcional</Text>
-                      <Text style={styles.settlementHelperText}>Nota local: no valida CLABE ni inicia pagos.</Text>
-                    </View>
-                  </View>
-                  <View style={styles.settlementHelperFields}>
-                    <TextField
-                      helper="Ej. BBVA Ana o cuenta de renta."
-                      label="Alias o banco"
-                      onChangeText={setSettlementBankAlias}
-                      placeholder="Opcional"
-                      testID="settlement-bank-alias-input"
-                      value={settlementBankAlias}
-                    />
-                    <TextField
-                      helper="Visible solo en este demo local."
-                      label="CLABE o referencia"
-                      onChangeText={setSettlementClabeReference}
-                      placeholder="Opcional"
-                      testID="settlement-clabe-reference-input"
-                      value={settlementClabeReference}
-                    />
-                  </View>
-                </View>
-
-                <View style={styles.settlementAgreementEffect}>
-                  <View style={styles.settlementEffectItem}>
-                    <MaterialCommunityIcons color={colors.due} name="clock-outline" size={18} />
-                    <Text style={styles.settlementEffectText}>Antes: pendiente</Text>
-                  </View>
-                  <MaterialCommunityIcons color={colors.mutedInk} name="arrow-right" size={16} />
-                  <View style={styles.settlementEffectItem}>
-                    <MaterialCommunityIcons color={colors.primary} name="check-circle-outline" size={18} />
-                    <Text style={styles.settlementEffectText}>Después: registrado local</Text>
-                  </View>
+                <View style={styles.settlementHelperFields}>
+                  <TextField
+                    label="Alias o banco"
+                    onChangeText={setSettlementBankAlias}
+                    placeholder="Opcional"
+                    testID="settlement-bank-alias-input"
+                    value={settlementBankAlias}
+                  />
+                  <TextField
+                    label="CLABE o referencia"
+                    onChangeText={setSettlementClabeReference}
+                    placeholder="Opcional"
+                    testID="settlement-clabe-reference-input"
+                    value={settlementClabeReference}
+                  />
                 </View>
               </ScrollView>
 
@@ -3142,7 +3080,7 @@ export function MainScreen() {
                 <ActionButton icon="close" label="Cancelar" onPress={closeSettlementConfirmation} tone="ghost" />
                 <ActionButton
                   icon="check"
-                  label={perspective?.actionLabel ?? "Registrar local"}
+                  label={perspective?.actionLabel ?? "Registrar"}
                   onPress={confirmSettlementPaid}
                 />
               </View>
