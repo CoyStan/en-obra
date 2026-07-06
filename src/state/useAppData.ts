@@ -3,10 +3,12 @@ import {
   addExpenseMutation,
   addMemberMutation,
   createGroupMutation,
+  deleteExpenseMutation,
   joinGroupByInviteMutation,
   markSettlementPaidMutation,
   removeMemberMutation,
   renameMemberMutation,
+  updateExpenseMutation,
 } from "../backend/appMutations";
 import { calculateGroupSummary, getGroupMembers } from "../domain/balances";
 import type {
@@ -164,6 +166,34 @@ export function useAppData() {
     return true;
   }, [data]);
 
+  const updateExpense = useCallback((groupId: string, expenseId: string, input: AddExpenseInput) => {
+    const result = updateExpenseMutation(data, groupId, expenseId, input);
+    if (!result.ok) {
+      setError(result.error);
+      return false;
+    }
+    setData(result.data);
+    persistData(result.data).catch(() => {
+      setError("No se pudo guardar el cambio localmente.");
+    });
+    setError(null);
+    return true;
+  }, [data]);
+
+  const deleteExpense = useCallback((groupId: string, expenseId: string, actorUserId?: string) => {
+    const result = deleteExpenseMutation(data, groupId, expenseId, actorUserId);
+    if (!result.ok) {
+      setError(result.error);
+      return false;
+    }
+    setData(result.data);
+    persistData(result.data).catch(() => {
+      setError("No se pudo guardar el cambio localmente.");
+    });
+    setError(null);
+    return true;
+  }, [data]);
+
   const markSettlementPaid = useCallback((groupId: string, suggestion: SettlementSuggestion, actorUserId?: string) => {
     const result = markSettlementPaidMutation(data, groupId, suggestion, actorUserId);
     if (!result.ok) {
@@ -195,6 +225,7 @@ export function useAppData() {
     clearError,
     createGroup,
     data,
+    deleteExpense,
     error,
     isLoading,
     joinGroupByInvite,
@@ -205,5 +236,6 @@ export function useAppData() {
     selectGroup,
     selectedGroup,
     selectedSummary,
+    updateExpense,
   };
 }

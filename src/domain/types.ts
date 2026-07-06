@@ -151,6 +151,7 @@ export type SettlementSuggestion = {
 
 export type ActivityItem = {
   id: string;
+  entityId?: string;
   groupId: string;
   type: "expense" | "settlement" | "member" | "group";
   title: string;
@@ -169,6 +170,8 @@ export type ActivityEvent = {
   actorUserId: string;
   eventType:
     | "expense_created"
+    | "expense_deleted"
+    | "expense_updated"
     | "settlement_recorded"
     | "member_added"
     | "member_joined"

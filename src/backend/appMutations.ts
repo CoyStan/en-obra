@@ -36,6 +36,8 @@ export type AddExpenseMutationInput = {
   note?: string;
 };
 
+export type UpdateExpenseMutationInput = AddExpenseMutationInput;
+
 export type JoinGroupMutationInput = {
   inviteCode: string;
   actorUserId?: string;
@@ -606,6 +608,144 @@ export function addExpenseMutation(
           }),
         ),
         createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt }),
+      ],
+    },
+  };
+}
+
+export function updateExpenseMutation(
+  current: AppData,
+  groupId: string,
+  expenseId: string,
+  input: UpdateExpenseMutationInput,
+  context?: MutationContext,
+): MutationResult {
+  const existingExpense = current.expenses.find((expense) => expense.id === expenseId && expense.groupId === groupId);
+  if (!existingExpense) {
+    return { ok: false, error: "No se encontró el gasto local.", data: current };
+  }
+
+  const groupMemberIds = getGroupMembers(current, groupId).map((member) => member.id);
+  const validation = validateExpenseInput({
+    amount: input.amount,
+    memberIds: groupMemberIds,
+    note: input.note,
+    participantIds: input.participantIds,
+    payerId: input.payerId,
+    split: input.split,
+    title: input.title,
+  });
+
+  if (!validation.ok) {
+    return { ok: false, error: validation.error, data: current };
+  }
+
+  const updatedAt = currentTime(context);
+  const actorUserId = resolveActorUserId(current, input.actorUserId);
+  const updatedExpense: Expense = {
+    ...existingExpense,
+    title: validation.value.title,
+    amountCents: validation.value.amountCents,
+    payerId: validation.value.payerId,
+    paidByMemberId: validation.value.payerId,
+    createdByUserId: existingExpense.createdByUserId ?? actorUserId,
+    categoryId: input.categoryId,
+    participantIds: validation.value.participantIds,
+    note: validation.value.note,
+    updatedAt,
+  };
+  const participants = validation.value.splitShares.map((share) => ({
+    id: makeId(context, "participant"),
+    expenseId: updatedExpense.id,
+    memberId: share.memberId,
+    shareMethod: share.method,
+    shareCents: share.amountCents,
+    shareUnits: share.units,
+    createdAt: updatedAt,
+  }));
+  const event = activityEvent(
+    context,
+    groupId,
+    actorUserId,
+    "expense_updated",
+    "expense",
+    updatedExpense.id,
+    `Se editó ${updatedExpense.title}`,
+    updatedAt,
+  );
+  const previousParticipants = current.expenseParticipants?.filter((share) => share.expenseId === expenseId) ?? [];
+
+  return {
+    ok: true,
+    data: {
+      ...current,
+      activityEvents: [event, ...(current.activityEvents ?? [])],
+      expenses: current.expenses.map((expense) => (expense.id === expenseId ? updatedExpense : expense)),
+      expenseParticipants: [
+        ...participants,
+        ...((current.expenseParticipants ?? []).filter((share) => share.expenseId !== expenseId)),
+      ],
+      syncOutbox: [
+        ...(current.syncOutbox ?? []),
+        createSyncOutboxItem({ operation: "update", entityType: "expense", entityId: updatedExpense.id, payload: updatedExpense, createdAt: updatedAt }),
+        ...previousParticipants.map((participant) =>
+          createSyncOutboxItem({ operation: "delete", entityType: "expense_participant", entityId: participant.id, payload: participant, createdAt: updatedAt }),
+        ),
+        ...participants.map((participant) =>
+          createSyncOutboxItem({
+            operation: "create",
+            entityType: "expense_participant",
+            entityId: participant.id,
+            payload: participant,
+            createdAt: updatedAt,
+          }),
+        ),
+        createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt: updatedAt }),
+      ],
+    },
+  };
+}
+
+export function deleteExpenseMutation(
+  current: AppData,
+  groupId: string,
+  expenseId: string,
+  actorUserId?: string,
+  context?: MutationContext,
+): MutationResult {
+  const existingExpense = current.expenses.find((expense) => expense.id === expenseId && expense.groupId === groupId);
+  if (!existingExpense) {
+    return { ok: false, error: "No se encontró el gasto local.", data: current };
+  }
+
+  const deletedAt = currentTime(context);
+  const resolvedActorUserId = resolveActorUserId(current, actorUserId);
+  const deletedParticipants = current.expenseParticipants?.filter((share) => share.expenseId === expenseId) ?? [];
+  const event = activityEvent(
+    context,
+    groupId,
+    resolvedActorUserId,
+    "expense_deleted",
+    "expense",
+    expenseId,
+    `Se eliminó ${existingExpense.title}`,
+    deletedAt,
+  );
+
+  return {
+    ok: true,
+    data: {
+      ...current,
+      activityEvents: [event, ...(current.activityEvents ?? [])],
+      expenses: current.expenses.filter((expense) => expense.id !== expenseId),
+      expenseParticipants: (current.expenseParticipants ?? []).filter((share) => share.expenseId !== expenseId),
+      syncOutbox: [
+        ...(current.syncOutbox ?? []),
+        createSyncOutboxItem({ operation: "delete", entityType: "expense", entityId: existingExpense.id, payload: existingExpense, createdAt: deletedAt }),
+        ...deletedParticipants.map((participant) =>
+          createSyncOutboxItem({ operation: "delete", entityType: "expense_participant", entityId: participant.id, payload: participant, createdAt: deletedAt }),
+        ),
+        createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt: deletedAt }),
       ],
     },
   };

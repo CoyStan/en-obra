@@ -30,6 +30,7 @@ import { resolveSplit } from "../domain/splits";
 import type {
   ActivityItem,
   AppData,
+  Expense,
   Group,
   Member,
   MemberBalance,
@@ -518,9 +519,18 @@ function Field({
   );
 }
 
-function ActivityRow({ item }: { item: ActivityItem }) {
+function ActivityRow({
+  item,
+  onDeleteExpense,
+  onEditExpense,
+}: {
+  item: ActivityItem;
+  onDeleteExpense?: (expenseId: string) => void;
+  onEditExpense?: (expenseId: string) => void;
+}) {
   const hasAmount = item.amountCents > 0;
   const isSettlement = item.type === "settlement";
+  const editableExpenseId = item.type === "expense" ? item.entityId ?? item.id : "";
   const metaParts = [
     item.label,
     item.actorName,
@@ -529,14 +539,42 @@ function ActivityRow({ item }: { item: ActivityItem }) {
     formatDate(item.createdAt),
   ].filter(Boolean);
   return (
-    <AuditRow
-      amountCents={hasAmount ? item.amountCents : undefined}
-      amountTone={isSettlement ? "success" : "neutral"}
-      icon={item.type === "expense" ? activityIconForTitle(item.title) : activityIcon(item)}
-      meta={metaParts.join(" · ")}
-      testID={`activity-row-${item.id}`}
-      title={item.title}
-    />
+    <View style={styles.activityRowShell}>
+      <AuditRow
+        amountCents={hasAmount ? item.amountCents : undefined}
+        amountTone={isSettlement ? "success" : "neutral"}
+        icon={item.type === "expense" ? activityIconForTitle(item.title) : activityIcon(item)}
+        meta={metaParts.join(" · ")}
+        testID={`activity-row-${item.id}`}
+        title={item.title}
+      />
+      {editableExpenseId && onDeleteExpense && onEditExpense ? (
+        <View style={styles.expenseAuditActions}>
+          <Pressable
+            accessibilityLabel={`Editar ${item.title}`}
+            accessibilityRole="button"
+            hitSlop={4}
+            onPress={() => onEditExpense(editableExpenseId)}
+            style={({ pressed }) => [styles.expenseAuditAction, pressed && styles.pressed]}
+            testID={`expense-edit-${editableExpenseId}`}
+          >
+            <MaterialCommunityIcons color={colors.primaryDark} name="pencil-outline" size={15} />
+            <Text style={styles.expenseAuditActionText}>Editar</Text>
+          </Pressable>
+          <Pressable
+            accessibilityLabel={`Eliminar ${item.title}`}
+            accessibilityRole="button"
+            hitSlop={4}
+            onPress={() => onDeleteExpense(editableExpenseId)}
+            style={({ pressed }) => [styles.expenseAuditActionDanger, pressed && styles.pressed]}
+            testID={`expense-delete-${editableExpenseId}`}
+          >
+            <MaterialCommunityIcons color={colors.due} name="trash-can-outline" size={15} />
+            <Text style={styles.expenseAuditActionDangerText}>Eliminar local</Text>
+          </Pressable>
+        </View>
+      ) : null}
+    </View>
   );
 }
 
@@ -745,6 +783,7 @@ export function MainScreen() {
     clearError,
     createGroup,
     data,
+    deleteExpense,
     error,
     isLoading,
     joinGroupByInvite,
@@ -755,6 +794,7 @@ export function MainScreen() {
     selectGroup,
     selectedGroup,
     selectedSummary,
+    updateExpense,
   } = useAppData();
 
   const [activeTab, setActiveTab] = useState<TabId>("groups");
@@ -768,6 +808,7 @@ export function MainScreen() {
   const [memberName, setMemberName] = useState("");
   const [editingMemberId, setEditingMemberId] = useState("");
   const [editingMemberName, setEditingMemberName] = useState("");
+  const [editingExpenseId, setEditingExpenseId] = useState("");
   const [expenseTitle, setExpenseTitle] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
   const [expenseCategoryId, setExpenseCategoryId] = useState(defaultCategory.id);
@@ -901,6 +942,7 @@ export function MainScreen() {
         ? participantNames.join(", ")
         : "Selecciona participantes";
   const splitReady = Boolean(expenseAmountCents && participantShares.length);
+  const expenseComposerTitle = editingExpenseId ? "Editar gasto" : "Nuevo gasto";
   const expenseCanSave =
     selectedMembers.length > 0 &&
     Boolean(expenseTitle.trim()) &&
@@ -1082,23 +1124,8 @@ export function MainScreen() {
     }
   };
 
-  const submitExpense = () => {
-    if (!selectedGroup) {
-      return;
-    }
-    const added = addExpense(selectedGroup.id, {
-      actorUserId: activeActorUserId,
-      amount: expenseAmount,
-      categoryId: expenseCategoryId,
-      note: expenseNote,
-      participantIds,
-      payerId,
-      split: splitInput,
-      title: expenseTitle,
-    });
-    if (!added) {
-      return;
-    }
+  const resetExpenseComposer = () => {
+    setEditingExpenseId("");
     setExpenseTitle("");
     setExpenseAmount("");
     setExpenseCategoryId(defaultCategory.id);
@@ -1108,8 +1135,89 @@ export function MainScreen() {
     setExactShareTextByMember({});
     setShareUnitsTextByMember({});
     setOpenExpenseMenu(null);
+  };
+
+  const openNewExpenseComposer = () => {
+    resetExpenseComposer();
+    setShowExpenseForm(true);
+  };
+
+  const loadExpenseIntoComposer = (expense: Expense) => {
+    const shares = data.expenseParticipants?.filter((share) => share.expenseId === expense.id) ?? [];
+    const method = shares[0]?.shareMethod ?? "equal";
+    setEditingExpenseId(expense.id);
+    setExpenseTitle(expense.title);
+    setExpenseAmount((expense.amountCents / 100).toFixed(2));
+    setExpenseCategoryId(expense.categoryId ?? defaultCategory.id);
+    setExpenseNote(expense.note ?? "");
+    setPayerId(expense.paidByMemberId ?? expense.payerId);
+    setParticipantIds(expense.participantIds);
+    setExpenseSplitMode(method);
+    setExactShareTextByMember(
+      method === "exact"
+        ? Object.fromEntries(shares.map((share) => [share.memberId, (share.shareCents / 100).toFixed(2)]))
+        : {},
+    );
+    setShareUnitsTextByMember(
+      method === "shares"
+        ? Object.fromEntries(shares.map((share) => [share.memberId, String(share.shareUnits ?? 1)]))
+        : {},
+    );
+    setOpenExpenseMenu(null);
+    setShowExpenseForm(true);
+  };
+
+  const startEditExpense = (expenseId: string) => {
+    const expense = data.expenses.find((item) => item.id === expenseId);
+    if (!expense) {
+      setFeedback({ message: "Ese gasto ya no está en el registro local.", tone: "due" });
+      return;
+    }
+    loadExpenseIntoComposer(expense);
+  };
+
+  const submitExpense = () => {
+    if (!selectedGroup) {
+      return;
+    }
+    const input = {
+      actorUserId: activeActorUserId,
+      amount: expenseAmount,
+      categoryId: expenseCategoryId,
+      note: expenseNote,
+      participantIds,
+      payerId,
+      split: splitInput,
+      title: expenseTitle,
+    };
+    const saved = editingExpenseId
+      ? updateExpense(selectedGroup.id, editingExpenseId, input)
+      : addExpense(selectedGroup.id, input);
+    if (!saved) {
+      return;
+    }
+    const wasEditing = Boolean(editingExpenseId);
+    resetExpenseComposer();
     setShowExpenseForm(false);
-    setFeedback({ message: "Gasto guardado localmente. Sin pagos reales.", tone: "success" });
+    setFeedback({
+      message: wasEditing ? "Gasto actualizado en el registro local." : "Gasto guardado localmente. Sin pagos reales.",
+      tone: "success",
+    });
+  };
+
+  const submitExpenseDelete = (expenseId: string) => {
+    if (!selectedGroup) {
+      return;
+    }
+    const removed = deleteExpense(selectedGroup.id, expenseId, activeActorUserId);
+    if (!removed) {
+      return;
+    }
+    if (editingExpenseId === expenseId) {
+      resetExpenseComposer();
+      setShowExpenseForm(false);
+    }
+    setFeedback({ message: "Gasto eliminado del registro local.", tone: "success" });
   };
 
   const chooseExpensePayer = (memberId: string) => {
@@ -1226,7 +1334,7 @@ export function MainScreen() {
         setPendingSettlement(personalSettlement);
         return;
       }
-      setShowExpenseForm(true);
+      openNewExpenseComposer();
     };
 
     return (
@@ -1345,7 +1453,7 @@ export function MainScreen() {
               accessibilityRole="button"
               disabled={selectedMembers.length === 0}
               hitSlop={4}
-              onPress={() => setShowExpenseForm(true)}
+              onPress={openNewExpenseComposer}
               style={({ pressed }) => [
                 styles.actionDockSecondary,
                 selectedMembers.length === 0 && styles.quickActionDisabled,
@@ -1392,7 +1500,14 @@ export function MainScreen() {
               title="Aún no hay actividad"
             />
           ) : (
-            activity.slice(0, 5).map((item) => <ActivityRow item={item} key={item.id} />)
+            activity.slice(0, 5).map((item) => (
+              <ActivityRow
+                item={item}
+                key={item.id}
+                onDeleteExpense={submitExpenseDelete}
+                onEditExpense={startEditExpense}
+              />
+            ))
           )}
         </View>
       </View>
@@ -1904,7 +2019,7 @@ export function MainScreen() {
           </View>
 
           <View style={styles.ledgerActionRow}>
-            <ActionButton icon="receipt-text-plus" label="Agregar gasto" onPress={() => setShowExpenseForm(true)} />
+            <ActionButton icon="receipt-text-plus" label="Agregar gasto" onPress={openNewExpenseComposer} />
             <ActionButton icon="scale-balance" label="Balance" onPress={() => openTab("balance")} tone="secondary" />
           </View>
         </View>
@@ -1919,7 +2034,14 @@ export function MainScreen() {
                 </View>
                 <Pill label={`${section.items.length} mov.`} tone="neutral" />
               </View>
-              {section.items.map((item) => <ActivityRow item={item} key={item.id} />)}
+              {section.items.map((item) => (
+                <ActivityRow
+                  item={item}
+                  key={item.id}
+                  onDeleteExpense={submitExpenseDelete}
+                  onEditExpense={startEditExpense}
+                />
+              ))}
             </View>
           ))}
         </View>
@@ -2286,7 +2408,7 @@ export function MainScreen() {
           <View style={styles.captureHeader}>
             <View style={styles.composerTitleBlock}>
               <Text style={styles.captureKicker}>Captura de recibo</Text>
-              <Text style={styles.captureTitle}>Nuevo gasto</Text>
+              <Text style={styles.captureTitle}>{expenseComposerTitle}</Text>
               <Text style={styles.captureSubtitle}>{selectedGroup?.name ?? "Grupo"} · MXN</Text>
             </View>
             <ActionButton
@@ -2329,7 +2451,7 @@ export function MainScreen() {
             icon="receipt-text-plus-outline"
             meta="Monto, pagador y participantes en una sola captura."
             testID="expense-composer-receipt-section"
-            title="Nuevo gasto"
+            title={expenseComposerTitle}
           >
             <View style={styles.expenseQuickGrid}>
               <Pressable
@@ -2685,12 +2807,12 @@ export function MainScreen() {
                   onPress={submitExpense}
                   testID="expense-composer-save-button"
                 >
-                  Guardar
+                  {editingExpenseId ? "Actualizar" : "Guardar"}
                 </ReusableButton>
               }
               body="No cobra ni envía dinero. Solo actualiza balances del grupo."
               testID="expense-composer-save-dock"
-              title="Guardar gasto local"
+              title={editingExpenseId ? "Actualizar gasto local" : "Guardar gasto local"}
             />
           </ComposerSection>
         </ScrollView>
@@ -3426,6 +3548,41 @@ const styles = StyleSheet.create({
   },
   expenseRouteStack: {
     gap: spacing.xs,
+  },
+  expenseAuditAction: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 999,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 32,
+    paddingHorizontal: spacing.sm,
+  },
+  expenseAuditActionDanger: {
+    alignItems: "center",
+    backgroundColor: colors.dueWash,
+    borderRadius: 999,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 32,
+    paddingHorizontal: spacing.sm,
+  },
+  expenseAuditActionDangerText: {
+    color: colors.due,
+    fontSize: typography.micro,
+    fontWeight: "900",
+  },
+  expenseAuditActions: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.xs,
+    justifyContent: "flex-end",
+    paddingHorizontal: spacing.xs,
+  },
+  expenseAuditActionText: {
+    color: colors.primaryDark,
+    fontSize: typography.micro,
+    fontWeight: "900",
   },
   expenseSelectRow: {
     alignItems: "center",
@@ -4604,6 +4761,9 @@ const styles = StyleSheet.create({
   },
   activityRailDotSettlement: {
     backgroundColor: colors.primary,
+  },
+  activityRowShell: {
+    gap: spacing.xs,
   },
   activityMember: {
     backgroundColor: colors.blueWash,

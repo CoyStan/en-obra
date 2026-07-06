@@ -644,3 +644,15 @@ separate editor would add navigation overhead and make the MVP feel heavier.
 Keeping the controls list-based and inline preserves the low-cognitive-load
 flow while exposing exact amounts and share units only when the user asks for
 them.
+
+### Keep Expense Edit/Delete Local And Audited
+
+Decision: Expense edits and deletes should be available from local activity rows,
+recalculate balances immediately, and add audit events to the local history.
+Deleted expense audit rows remain as orphan-safe history entries instead of
+pretending the change never happened.
+
+Rationale: Shared-expense users need to correct mistakes, but destructive local
+changes must still feel accountable. Local audit events make edits/deletes
+transparent without requiring production sync, real identities, backend
+authorization, payments, secrets, or external services.

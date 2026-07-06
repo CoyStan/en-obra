@@ -233,6 +233,7 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
     )
     .map((expense) => ({
       id: expense.id,
+      entityId: expense.id,
       groupId,
       type: "expense",
       title: expense.title,
@@ -251,6 +252,7 @@ export function buildActivity(data: AppData, groupId: string): ActivityItem[] {
     .filter((settlement) => !eventEntityKeys.has(`settlement:${settlement.id}`))
     .map((settlement) => ({
       id: settlement.id,
+      entityId: settlement.id,
       groupId,
       type: "settlement",
       title: `${memberName(members, settlement.fromMemberId)} pagó a ${memberName(
@@ -281,6 +283,7 @@ function activityFromEvent(
     if (expense) {
       return {
         id: event.id,
+        entityId: expense.id,
         groupId: event.groupId,
         type: "expense",
         title: expense.title,
@@ -303,6 +306,7 @@ function activityFromEvent(
     if (settlement) {
       return {
         id: event.id,
+        entityId: settlement.id,
         groupId: event.groupId,
         type: "settlement",
         title: `${memberName(members, settlement.fromMemberId)} pagó a ${memberName(
@@ -337,6 +341,7 @@ function activityFromEvent(
 
   return {
     id: event.id,
+    entityId: event.entityId,
     groupId: event.groupId,
     type: "group",
     title: event.summary,

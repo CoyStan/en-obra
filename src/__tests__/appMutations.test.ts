@@ -3,10 +3,12 @@ import {
   addExpenseMutation,
   addMemberMutation,
   createGroupMutation,
+  deleteExpenseMutation,
   joinGroupByInviteMutation,
   markSettlementPaidMutation,
   removeMemberMutation,
   renameMemberMutation,
+  updateExpenseMutation,
   type MutationContext,
 } from "../backend/appMutations";
 import { demoData } from "../data/demoData";
@@ -310,6 +312,79 @@ describe("backend app mutations", () => {
 
     expect(result.ok).toBe(false);
     expect(result.data).toBe(data);
+  });
+
+  it("updates an expense with new participant shares and an audit event", () => {
+    const data = cloneData();
+    const result = updateExpenseMutation(
+      data,
+      "group-oaxaca",
+      "expense-oaxaca-taxi",
+      {
+        title: "Taxi aeropuerto editado",
+        amount: "900.00",
+        payerId: "member-oaxaca-diego",
+        categoryId: "transport",
+        actorUserId: "user-diego",
+        split: {
+          method: "exact",
+          shares: [
+            { memberId: "member-oaxaca-diego", amountCents: 50000 },
+            { memberId: "member-oaxaca-ana", amountCents: 40000 },
+          ],
+        },
+      },
+      deterministicContext(),
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    const expense = result.data.expenses.find((item) => item.id === "expense-oaxaca-taxi");
+    const shares = result.data.expenseParticipants?.filter((share) => share.expenseId === "expense-oaxaca-taxi") ?? [];
+
+    expect(expense).toMatchObject({
+      title: "Taxi aeropuerto editado",
+      amountCents: 90000,
+      paidByMemberId: "member-oaxaca-diego",
+      participantIds: ["member-oaxaca-diego", "member-oaxaca-ana"],
+    });
+    expect(shares.map((share) => [share.memberId, share.shareMethod, share.shareCents])).toEqual([
+      ["member-oaxaca-diego", "exact", 50000],
+      ["member-oaxaca-ana", "exact", 40000],
+    ]);
+    expect(result.data.activityEvents?.[0]).toMatchObject({
+      eventType: "expense_updated",
+      entityType: "expense",
+      entityId: "expense-oaxaca-taxi",
+    });
+    expect(result.data.syncOutbox?.some((item) => item.operation === "update" && item.entityType === "expense")).toBe(true);
+    expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
+  it("deletes a local expense, removes shares, and keeps an orphan audit event", () => {
+    const data = cloneData();
+    const result = deleteExpenseMutation(
+      data,
+      "group-oaxaca",
+      "expense-oaxaca-taxi",
+      "user-maru",
+      deterministicContext(),
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.data.expenses.some((expense) => expense.id === "expense-oaxaca-taxi")).toBe(false);
+    expect(result.data.expenseParticipants?.some((share) => share.expenseId === "expense-oaxaca-taxi")).toBe(false);
+    expect(result.data.activityEvents?.[0]).toMatchObject({
+      eventType: "expense_deleted",
+      entityType: "expense",
+      entityId: "expense-oaxaca-taxi",
+      summary: "Se eliminó Taxi aeropuerto",
+    });
+    expect(result.data.syncOutbox?.some((item) => item.operation === "delete" && item.entityType === "expense")).toBe(true);
+    expect(auditAppDataIntegrity(result.data)).toEqual([]);
   });
 
   it("records settlement as local paid record plus activity and outbox rows", () => {
