@@ -749,3 +749,13 @@ acciones del grupo`. Keeping `Grupos` visible avoids the earlier ambiguity where
 the first tab became `Cambiar`, and a compact action hub makes the core
 destinations obvious without forcing users to infer the app model from the
 bottom navigation alone.
+
+### Prioritize Full Balance Legibility On Home
+
+Decision: The Home money instrument should give the personal balance enough
+horizontal space to render MXN decimals fully before adding decorative scale.
+
+Rationale: The first viewport’s job is to answer “what is my situation?” If the
+amount truncates, the whole screen loses trust. A slightly smaller, right-aligned
+amount with tighter surrounding copy feels more professional than oversized type
+that fails on common Android widths.

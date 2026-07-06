@@ -51,18 +51,18 @@ export function HomeMoneyInstrument({
   return (
     <View
       className={cn(
-        "gap-ccMd rounded-ccLg border border-border bg-surface p-ccMd",
+        "gap-ccSm rounded-ccLg border border-border bg-surface p-ccSm",
         due && "bg-due-wash",
       )}
       testID={testID}
     >
-      <View className="flex-row items-start justify-between gap-ccMd">
-        <View className="min-w-0 flex-1 gap-ccSm">
+      <View className="flex-row items-start justify-between gap-ccSm">
+        <View className="min-w-0 flex-1 gap-ccXs">
           <Pressable
             accessibilityHint="Abre perfil o cambia tu integrante del grupo."
             accessibilityLabel={identity.label}
             accessibilityRole="button"
-            className="min-h-[46px] flex-row items-center gap-ccSm rounded-ccMd bg-surface px-ccSm py-ccXs active:bg-surface-strong"
+            className="min-h-[42px] flex-row items-center gap-ccXs rounded-ccMd bg-surface px-ccXs py-ccXs active:bg-surface-strong"
             hitSlop={4}
             onPress={identity.onPress}
           >
@@ -84,17 +84,17 @@ export function HomeMoneyInstrument({
             </Text>
           </View>
         </View>
-        <View className="max-w-[50%] items-end">
+        <View className="max-w-[58%] shrink-0 items-end">
           <Text className="text-ccMicro font-extrabold text-muted-ink">{currencyLabel}</Text>
           <Text
             adjustsFontSizeToFit
             className={cn(
-              "text-right text-[42px] font-extrabold text-primary",
-              compact && "text-[36px]",
+              "text-right text-[36px] font-extrabold text-primary",
+              compact && "text-[32px]",
               due && "text-due",
               neutral && "text-ink",
             )}
-            minimumFontScale={0.72}
+            minimumFontScale={0.58}
             numberOfLines={1}
           >
             {amountText}
@@ -102,8 +102,8 @@ export function HomeMoneyInstrument({
         </View>
       </View>
 
-      <View className="gap-ccSm rounded-ccMd border border-border bg-surface p-ccSm">
-        <View className="flex-row items-start justify-between gap-ccMd">
+      <View className="gap-ccXs rounded-ccMd border border-border bg-surface p-ccXs">
+        <View className="flex-row items-start justify-between gap-ccSm">
           <View className="min-w-0 flex-1">
             <Text className="text-ccMicro font-bold uppercase text-muted-ink">Quién le debe a quién</Text>
             <Text className="text-ccBody font-extrabold text-ink" numberOfLines={1}>
@@ -124,7 +124,7 @@ export function HomeMoneyInstrument({
       </View>
 
       <View className="gap-ccXs">
-        <View className="flex-row items-center justify-between gap-ccMd">
+        <View className="flex-row items-center justify-between gap-ccSm">
           <Text className="text-ccMicro font-bold text-muted-ink">{spentLabel}</Text>
           <Text className={cn("text-right text-ccMicro font-extrabold text-primary", due && "text-due")}>
             {openLabel}
