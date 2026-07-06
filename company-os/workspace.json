@@ -4230,7 +4230,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Restructure navigation around Groups -> Group Home -> Expenses/Balances/Activity/Profile with fewer competing panels. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0104/**,company-os/workspace.json.",
       "acceptance_target": "Navigation follows the selected group mental model, reduces competing panels, and screenshots pass Android sizes.",
       "required_approval_capability": "design",
@@ -6048,12 +6048,15 @@
       "id": "ATTEMPT-APP-0104",
       "work_item_id": "WORK-APP-0104",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started app IA simplification around group-first workspace navigation."
+      "result": "Clarified group-first IA with a four-destination group home hub and stable Grupos tab label.",
+      "commits": [
+        "88ddc7a7760d78d211bd562205fcafb06356b57a"
+      ]
     }
   ],
   "evidence_runs": [
@@ -8024,6 +8027,32 @@
       "status": "passed",
       "summary": "Search/filter work passed typecheck, focused tests, full tests, Expo config, web export, scope, validate, and Android-width filter/empty-state screenshots.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0104",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0104/technical-report.md",
+        "reports/evidence/WORK-APP-0104/screenshots/group-home-hub-360x740.png",
+        "reports/evidence/WORK-APP-0104/screenshots/group-home-hub-390x844.png",
+        "reports/evidence/WORK-APP-0104/screenshots/group-home-hub-412x915.png",
+        "reports/evidence/WORK-APP-0104/screenshots/groups-tab-360x740.png",
+        "reports/evidence/WORK-APP-0104/screenshots/groups-tab-390x844.png",
+        "reports/evidence/WORK-APP-0104/screenshots/groups-tab-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0104",
+      "work_item_id": "WORK-APP-0104",
+      "attempt_id": "ATTEMPT-APP-0104",
+      "head_sha": "88ddc7a7760d78d211bd562205fcafb06356b57a",
+      "status": "passed",
+      "summary": "App IA simplification passed typecheck, full tests, Expo config, web export, scope, validate, and Android-width home/groups screenshots.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -9622,6 +9651,29 @@
       "id": "REVIEW-APP-0102",
       "work_item_id": "WORK-APP-0102",
       "reviewed_head": "18cb592d62aa2be2d3ab9dcf86a1d03ac5e1c919",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff",
+        "technical report",
+        "screenshots",
+        "typecheck",
+        "full tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "full navigation rewrite remains future work",
+        "dedicated expenses tab remains future decision"
+      ],
+      "id": "REVIEW-APP-0104",
+      "work_item_id": "WORK-APP-0104",
+      "reviewed_head": "88ddc7a7760d78d211bd562205fcafb06356b57a",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -13985,6 +14037,43 @@
       "work_item_id": "WORK-APP-0102",
       "attempt_id": "ATTEMPT-APP-0102",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "kept Grupos bottom tab label",
+        "expanded group home hub to Gasto Balance Actividad Perfil",
+        "made hub wrap 2x2 on mobile",
+        "preserved primary next action",
+        "captured group home screenshots",
+        "captured groups tab screenshots",
+        "updated decision log"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0104/technical-report.md",
+        "reports/evidence/WORK-APP-0104/screenshots"
+      ],
+      "not_done": [
+        "full navigation rewrite",
+        "dedicated expenses tab",
+        "production backend",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0104",
+      "work_item_id": "WORK-APP-0104",
+      "attempt_id": "ATTEMPT-APP-0104",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -15066,6 +15155,14 @@
       "status": "completed",
       "what_happened": "Added local activity search and filters by person, category, amount, and date.",
       "what_changed": "Activity screen state, filtering logic, filter UI, no-results state, decisions, and evidence changed."
+    },
+    {
+      "id": "OUTCOME-APP-0104",
+      "work_item_id": "WORK-APP-0104",
+      "summary": "App IA simplification is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Clarified selected-group workspace navigation with a four-action home hub and stable Grupos tab.",
+      "what_changed": "Home shortcuts, bottom tab label behavior, decisions, and evidence changed."
     }
   ]
 }
