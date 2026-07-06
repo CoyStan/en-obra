@@ -3593,6 +3593,44 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0087"
+    },
+    {
+      "allowed_resources": [
+        "docs/product/tricount-gap-premium-product-plan.md",
+        "docs/product/tricount-gap-prd-ux-brief.md",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0088/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0088",
+      "title": "Tricount gap PRD and UX simplification brief",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R1",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Document the Tricount gap PRD, user journeys, information architecture, and low-cognitive-load UX rules for the next product phase. Allowed paths: docs/product/tricount-gap-premium-product-plan.md, docs/product/tricount-gap-prd-ux-brief.md, docs/product/decisions.md, reports/evidence/WORK-APP-0088/**, company-os/workspace.json.",
+      "acceptance_target": "Documents target gaps, user journeys, information architecture, and low-cognitive-load rules; Company OS evidence/report exists; checks pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0088"
     }
   ],
   "attempts": [
@@ -4970,6 +5008,20 @@
       "result": "Assembled final premium UI evidence packet covering major flows and Android widths.",
       "commits": [
         "5f56389089a6875c701a90040e4dba23dd80a282"
+      ]
+    },
+    {
+      "id": "ATTEMPT-APP-0088",
+      "work_item_id": "WORK-APP-0088",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "dirty-doc-plan",
+      "result": "Defined Tricount gap product plan, PRD/UX brief, and decision log entry.",
+      "commits": [
+        "bcf1e550255c215adc36105dbb165dfd8ac16785"
       ]
     }
   ],
@@ -6583,6 +6635,25 @@
       "status": "passed",
       "summary": "Final UI evidence packet verified with typecheck, tests, Expo config, web export, 21 screenshot references, scope, and workspace validation.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "./bin/company-os scope WORK-APP-0088",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "docs/product/tricount-gap-premium-product-plan.md",
+        "docs/product/tricount-gap-prd-ux-brief.md",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0088/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0088",
+      "work_item_id": "WORK-APP-0088",
+      "attempt_id": "ATTEMPT-APP-0088",
+      "head_sha": "bcf1e550255c215adc36105dbb165dfd8ac16785",
+      "status": "passed",
+      "summary": "Tricount gap PRD and UX simplification brief verified with Company OS scope and validation.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -7826,6 +7897,26 @@
       "id": "REVIEW-APP-0087",
       "work_item_id": "WORK-APP-0087",
       "reviewed_head": "5f56389089a6875c701a90040e4dba23dd80a282",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "Tricount gap plan",
+        "PRD UX brief",
+        "decision log",
+        "technical report",
+        "Company OS scope WORK-APP-0088",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder product acceptance still required",
+        "downstream implementation remains",
+        "competitor references should be refreshed before store positioning claims"
+      ],
+      "id": "REVIEW-APP-0088",
+      "work_item_id": "WORK-APP-0088",
+      "reviewed_head": "bcf1e550255c215adc36105dbb165dfd8ac16785",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -11584,6 +11675,49 @@
       "work_item_id": "WORK-APP-0087",
       "attempt_id": "ATTEMPT-APP-0087",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "documented Tricount competitive gaps",
+        "defined user journeys",
+        "defined information architecture",
+        "defined low cognitive load rules",
+        "recorded local mock collaboration decision",
+        "ran Company OS checks"
+      ],
+      "outputs_created": [
+        "docs/product/tricount-gap-premium-product-plan.md",
+        "docs/product/tricount-gap-prd-ux-brief.md",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0088/technical-report.md"
+      ],
+      "not_done": [
+        "multi-user group model",
+        "create join group flow",
+        "flexible splits",
+        "settlement sharing",
+        "receipts",
+        "search export",
+        "dark mode",
+        "native Android verification",
+        "real payments",
+        "production backend",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0088",
+      "work_item_id": "WORK-APP-0088",
+      "attempt_id": "ATTEMPT-APP-0088",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -12545,6 +12679,14 @@
       "status": "completed",
       "what_happened": "Assembled a manifest and report covering screenshots, checks, what works, demo-only boundaries, limitations, and founder-only decisions.",
       "what_changed": "Added WORK-APP-0087 evidence artifacts and marked the final UI migration evidence ready for founder review."
+    },
+    {
+      "id": "OUTCOME-APP-0088",
+      "work_item_id": "WORK-APP-0088",
+      "summary": "Tricount gap PRD and UX simplification brief is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Converted Tricount comparison weaknesses into a scoped product plan, PRD, IA, journeys, UX rules, and downstream work item map.",
+      "what_changed": "Added planning docs and decision log entry for local/mock collaboration-first execution."
     }
   ]
 }
