@@ -3825,11 +3825,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Simplify add-expense UX with fewer taps, progressive disclosure, list/dropdown selections, and less card-heavy layout. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0093/**,company-os/workspace.json.",
       "acceptance_target": "Add expense takes fewer taps, uses progressive disclosure, avoids card-heavy layout, preserves validation, and passes tests/screenshots.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0093"
     },
     {
       "allowed_resources": [
@@ -5897,6 +5898,17 @@
       "commits": [
         "f317f83de135a837a5b9583dfef0ce4d91602404"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0093",
+      "work_item_id": "WORK-APP-0093",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started add-expense UX simplification."
     }
   ],
   "evidence_runs": [
