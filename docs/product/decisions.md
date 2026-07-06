@@ -631,3 +631,16 @@ Rationale: The earlier composer preserved content but felt visually heavy on
 Android widths. A single surface with progressive disclosure reduces cognitive
 load for mainstream users, keeps the equal split consequence visible at the
 right moment, and avoids hiding the core task behind dense explanatory copy.
+
+### Add Flexible Splits As A Compact In-Composer Editor
+
+Decision: Flexible split editing should live inside the add-expense composer as
+a compact mode row: `Igual`, `Exacto`, and `Partes`. Exact and share-unit rows
+use right-side numeric inputs next to each participant instead of launching a
+separate advanced screen.
+
+Rationale: Flexible splits are essential for Tricount-level usefulness, but a
+separate editor would add navigation overhead and make the MVP feel heavier.
+Keeping the controls list-based and inline preserves the low-cognitive-load
+flow while exposing exact amounts and share units only when the user asks for
+them.

@@ -25,7 +25,8 @@ import {
   getGroupMembers,
 } from "../domain/balances";
 import { useAccount } from "../auth/useAccount";
-import { formatMoney, parseMoneyInput, splitEqual } from "../domain/money";
+import { formatMoney, parseMoneyInput } from "../domain/money";
+import { resolveSplit } from "../domain/splits";
 import type {
   ActivityItem,
   AppData,
@@ -33,6 +34,7 @@ import type {
   Member,
   MemberBalance,
   SettlementSuggestion,
+  SplitInput,
 } from "../domain/types";
 import { useAppData } from "../state/useAppData";
 import { deleteLocalUserData, getLocalDataInventory, getRemoteDeletionStatus } from "../security/dataDeletion";
@@ -59,6 +61,7 @@ import {
 
 type TabId = "groups" | "home" | "balance" | "activity" | "account";
 type ExpenseMenuId = "category" | "payer" | "participants";
+type ExpenseSplitMode = "equal" | "exact" | "shares";
 
 const MONEY_FLOW_TRACK_WIDTH = 120;
 const MONEY_FLOW_DOT_SIZE = 24;
@@ -112,6 +115,12 @@ const expenseCategories: {
 ];
 
 const defaultCategory = expenseCategories[0];
+
+const splitModes: { id: ExpenseSplitMode; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap }[] = [
+  { id: "equal", label: "Igual", icon: "equal" },
+  { id: "exact", label: "Exacto", icon: "calculator-variant-outline" },
+  { id: "shares", label: "Partes", icon: "chart-pie" },
+];
 
 function findMember(members: Member[], id: string) {
   return members.find((member) => member.id === id);
@@ -765,6 +774,9 @@ export function MainScreen() {
   const [expenseNote, setExpenseNote] = useState("");
   const [payerId, setPayerId] = useState("");
   const [participantIds, setParticipantIds] = useState<string[]>([]);
+  const [expenseSplitMode, setExpenseSplitMode] = useState<ExpenseSplitMode>("equal");
+  const [exactShareTextByMember, setExactShareTextByMember] = useState<Record<string, string>>({});
+  const [shareUnitsTextByMember, setShareUnitsTextByMember] = useState<Record<string, string>>({});
   const [openExpenseMenu, setOpenExpenseMenu] = useState<ExpenseMenuId | null>(null);
   const [showActiveMemberSheet, setShowActiveMemberSheet] = useState(false);
   const [showDeleteLocalDataConfirm, setShowDeleteLocalDataConfirm] = useState(false);
@@ -848,12 +860,35 @@ export function MainScreen() {
     ? `${workspaceSectionLabel} de ${selectedGroup.name}`
     : "Primero elige un grupo";
   const expenseAmountCents = useMemo(() => parseMoneyInput(expenseAmount), [expenseAmount]);
-  const participantShares = useMemo(() => {
-    if (!expenseAmountCents || participantIds.length === 0) {
-      return [];
+  const splitInput = useMemo<SplitInput>(() => {
+    if (expenseSplitMode === "exact") {
+      return {
+        method: "exact",
+        shares: participantIds.map((memberId) => ({
+          amountCents: parseMoneyInput(exactShareTextByMember[memberId] ?? "") ?? 0,
+          memberId,
+        })),
+      };
     }
-    return splitEqual(expenseAmountCents, participantIds);
-  }, [expenseAmountCents, participantIds]);
+    if (expenseSplitMode === "shares") {
+      return {
+        method: "shares",
+        shares: participantIds.map((memberId) => ({
+          memberId,
+          units: Math.max(1, Number.parseInt(shareUnitsTextByMember[memberId] ?? "1", 10) || 1),
+        })),
+      };
+    }
+    return { method: "equal", participantIds };
+  }, [exactShareTextByMember, expenseSplitMode, participantIds, shareUnitsTextByMember]);
+  const splitResult = useMemo(() => {
+    if (!expenseAmountCents || participantIds.length === 0) {
+      return { ok: true as const, shares: [] };
+    }
+    return resolveSplit(expenseAmountCents, splitInput);
+  }, [expenseAmountCents, participantIds.length, splitInput]);
+  const participantShares = splitResult.ok ? splitResult.shares : [];
+  const splitError = splitResult.ok ? "" : splitResult.error;
   const selectedCategory = categoryFor(expenseCategoryId);
   const payer = selectedMembers.find((member) => member.id === payerId);
   const participantNames = selectedMembers
@@ -872,7 +907,8 @@ export function MainScreen() {
     Boolean(expenseAmount.trim()) &&
     Boolean(payerId) &&
     participantIds.length > 0 &&
-    participantIds.includes(payerId);
+    participantIds.includes(payerId) &&
+    splitResult.ok;
   const toggleExpenseMenu = (menu: ExpenseMenuId) => {
     setOpenExpenseMenu((current) => (current === menu ? null : menu));
   };
@@ -1057,6 +1093,7 @@ export function MainScreen() {
       note: expenseNote,
       participantIds,
       payerId,
+      split: splitInput,
       title: expenseTitle,
     });
     if (!added) {
@@ -1067,6 +1104,9 @@ export function MainScreen() {
     setExpenseCategoryId(defaultCategory.id);
     setExpenseNote("");
     setParticipantIds([]);
+    setExpenseSplitMode("equal");
+    setExactShareTextByMember({});
+    setShareUnitsTextByMember({});
     setOpenExpenseMenu(null);
     setShowExpenseForm(false);
     setFeedback({ message: "Gasto guardado localmente. Sin pagos reales.", tone: "success" });
@@ -1088,6 +1128,14 @@ export function MainScreen() {
       }
       return [...current, memberId];
     });
+  };
+
+  const updateExactShareText = (memberId: string, value: string) => {
+    setExactShareTextByMember((current) => ({ ...current, [memberId]: value }));
+  };
+
+  const updateShareUnitsText = (memberId: string, value: string) => {
+    setShareUnitsTextByMember((current) => ({ ...current, [memberId]: value.replace(/[^0-9]/g, "") }));
   };
 
   const submitAccount = async () => {
@@ -2449,6 +2497,96 @@ export function MainScreen() {
                 </SelectPanel>
               </View>
 
+              <View style={styles.splitEditor}>
+                <View style={styles.splitModeTabs} testID="expense-split-mode-tabs">
+                  {splitModes.map((mode) => {
+                    const selected = expenseSplitMode === mode.id;
+                    return (
+                      <Pressable
+                        accessibilityLabel={`Dividir ${mode.label}`}
+                        accessibilityRole="radio"
+                        accessibilityState={{ checked: selected }}
+                        key={mode.id}
+                        onPress={() => setExpenseSplitMode(mode.id)}
+                        style={({ pressed }) => [
+                          styles.splitModeTab,
+                          selected && styles.splitModeTabActive,
+                          pressed && styles.pressed,
+                        ]}
+                        testID={`expense-split-mode-${mode.id}`}
+                      >
+                        <MaterialCommunityIcons
+                          color={selected ? colors.primaryDark : colors.mutedInk}
+                          name={mode.icon}
+                          size={16}
+                        />
+                        <Text style={[styles.splitModeText, selected && styles.splitModeTextActive]}>{mode.label}</Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+
+                {expenseSplitMode !== "equal" ? (
+                  <View style={styles.splitEditorList} testID="expense-split-editor-list">
+                    {selectedMembers
+                      .filter((member) => participantIds.includes(member.id))
+                      .map((member) => {
+                        const share = participantShares.find((item) => item.memberId === member.id);
+                        return (
+                          <View key={member.id} style={styles.splitEditorRow}>
+                            <Avatar color={member.avatarColor} label={member.name} />
+                            <View style={styles.splitEditorCopy}>
+                              <Text numberOfLines={1} style={styles.splitEditorName}>{member.name}</Text>
+                              {expenseSplitMode === "shares" ? (
+                                <Text numberOfLines={1} style={styles.splitEditorMeta}>
+                                  {share ? formatMoney(share.amountCents) : "Pendiente"}
+                                </Text>
+                              ) : null}
+                            </View>
+                            {expenseSplitMode === "exact" ? (
+                              <View style={styles.splitEditorInputShell}>
+                                <Text style={styles.splitEditorPrefix}>$</Text>
+                                <TextInput
+                                  accessibilityLabel={`Monto exacto de ${member.name}`}
+                                  keyboardType="decimal-pad"
+                                  onChangeText={(value) => updateExactShareText(member.id, value)}
+                                  placeholder="0.00"
+                                  placeholderTextColor={colors.mutedInk}
+                                  style={styles.splitEditorInput}
+                                  testID={`expense-exact-share-${member.id}`}
+                                  value={exactShareTextByMember[member.id] ?? ""}
+                                />
+                              </View>
+                            ) : (
+                              <View style={styles.splitEditorInputShell}>
+                                <TextInput
+                                  accessibilityLabel={`Partes de ${member.name}`}
+                                  keyboardType="number-pad"
+                                  onChangeText={(value) => updateShareUnitsText(member.id, value)}
+                                  placeholder="1"
+                                  placeholderTextColor={colors.mutedInk}
+                                  style={[styles.splitEditorInput, styles.splitEditorUnitsInput]}
+                                  testID={`expense-share-units-${member.id}`}
+                                  value={shareUnitsTextByMember[member.id] ?? "1"}
+                                />
+                                <Text style={styles.splitEditorSuffix}>partes</Text>
+                              </View>
+                            )}
+                          </View>
+                        );
+                      })}
+                    {splitError ? <Text style={styles.splitEditorError}>{splitError}</Text> : null}
+                  </View>
+                ) : (
+                  <View style={styles.splitEditorHint}>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="equal" size={16} />
+                    <Text style={styles.splitEditorHintText}>
+                      Se divide igual entre quienes participan.
+                    </Text>
+                  </View>
+                )}
+              </View>
+
               <NoteField
                 helper="Opcional."
                 label="Nota"
@@ -2470,7 +2608,13 @@ export function MainScreen() {
                   </View>
                   <View style={[styles.splitImpactRule, compact && styles.splitImpactRuleCompact]}>
                     <MaterialCommunityIcons color={colors.primaryDark} name="equal" size={17} />
-                    <Text style={styles.splitImpactRuleText}>{participantShares.length} partes iguales</Text>
+                    <Text style={styles.splitImpactRuleText}>
+                      {expenseSplitMode === "equal"
+                        ? `${participantShares.length} partes iguales`
+                        : expenseSplitMode === "exact"
+                          ? "Montos exactos"
+                          : "Por partes"}
+                    </Text>
                   </View>
                 </View>
 
@@ -7027,6 +7171,131 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     minHeight: 58,
     padding: spacing.md,
+  },
+  splitEditor: {
+    gap: spacing.xs,
+  },
+  splitEditorCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  splitEditorError: {
+    color: colors.due,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 15,
+  },
+  splitEditorHint: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: radius.md,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 38,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  splitEditorHintText: {
+    color: colors.primaryDark,
+    flex: 1,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 15,
+  },
+  splitEditorInput: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: typography.small,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "900",
+    minWidth: 0,
+    padding: 0,
+    textAlign: "right",
+  },
+  splitEditorInputShell: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    flexShrink: 0,
+    gap: spacing.xs,
+    minHeight: 40,
+    width: 154,
+    paddingHorizontal: spacing.sm,
+  },
+  splitEditorList: {
+    gap: spacing.xs,
+  },
+  splitEditorMeta: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontVariant: ["tabular-nums"],
+    fontWeight: "800",
+    lineHeight: 14,
+  },
+  splitEditorName: {
+    color: colors.ink,
+    fontSize: typography.small,
+    fontWeight: "900",
+    lineHeight: 17,
+  },
+  splitEditorPrefix: {
+    color: colors.primaryDark,
+    fontSize: typography.small,
+    fontWeight: "900",
+  },
+  splitEditorRow: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 52,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  splitEditorSuffix: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+  },
+  splitEditorUnitsInput: {
+    minWidth: 28,
+  },
+  splitModeTab: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    justifyContent: "center",
+    minHeight: 40,
+    paddingHorizontal: spacing.xs,
+  },
+  splitModeTabActive: {
+    backgroundColor: colors.successWash,
+    borderColor: colors.primary,
+  },
+  splitModeTabs: {
+    flexDirection: "row",
+    gap: spacing.xs,
+  },
+  splitModeText: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+  },
+  splitModeTextActive: {
+    color: colors.primaryDark,
   },
   splitPreviewCopy: {
     flex: 1,

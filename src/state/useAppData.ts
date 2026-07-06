@@ -12,6 +12,7 @@ import { calculateGroupSummary, getGroupMembers } from "../domain/balances";
 import type {
   AppData,
   SettlementSuggestion,
+  SplitInput,
 } from "../domain/types";
 import { cloneDemoData, loadPersistedData, persistData } from "./storage";
 
@@ -21,6 +22,7 @@ type AddExpenseInput = {
   payerId: string;
   categoryId?: string;
   participantIds?: string[];
+  split?: SplitInput;
   actorUserId?: string;
   note?: string;
 };
