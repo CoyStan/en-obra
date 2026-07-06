@@ -6139,7 +6139,8 @@
     },
     {
       "commits": [
-        "c24f8c2"
+        "c24f8c2a6e6ca883fb663f047c020636a583307b",
+        "c4f360e8af4f3d115853d5cd519c5019f430928c"
       ],
       "id": "ATTEMPT-APP-0111-R1",
       "work_item_id": "WORK-APP-0111",
@@ -8249,7 +8250,7 @@
       "id": "EVIDENCE-APP-0111-R1",
       "work_item_id": "WORK-APP-0111",
       "attempt_id": "ATTEMPT-APP-0111-R1",
-      "head_sha": "c24f8c2a6e6ca883fb663f047c020636a583307b",
+      "head_sha": "c4f360e8af4f3d115853d5cd519c5019f430928c",
       "status": "passed",
       "summary": "Inicio simplification and palette refresh passed typecheck, tests, Expo config, web export, scope, and validate. Screenshots captured at 360/390/412.",
       "freshness": "fresh"
@@ -9969,7 +9970,7 @@
       ],
       "id": "REVIEW-APP-0111-R1",
       "work_item_id": "WORK-APP-0111",
-      "reviewed_head": "c24f8c2a6e6ca883fb663f047c020636a583307b",
+      "reviewed_head": "c4f360e8af4f3d115853d5cd519c5019f430928c",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
