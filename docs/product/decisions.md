@@ -804,3 +804,16 @@ disclaimers that competed with the balance and next action. The remaining copy
 should be scannable: who you are, what the group is, your balance, the next
 route, and the primary action. Settlement and local-only honesty remain
 visible but compact.
+
+### Simplify the Add-Expense Composer
+
+Decision: Reduce the visual weight and text density of the add-expense composer:
+remove the "Captura de recibo" kicker, the subtitle, the context rail, the
+receipt "Local/Mock" pill, the input helper paragraphs, and the equal-split hint
+sentence. Shorten the split impact labels and the save dock copy. Keep "Sin
+pagos reales" only in the save dock body, which is the action boundary.
+
+Rationale: The composer had become a dense form with multiple explanations of
+the same local-only limitation. The modern, minimal composer should expose only
+the required fields (monto, concepto, pagador, participantes, reparto) and the
+save action. The safety disclaimer remains at the point of saving.

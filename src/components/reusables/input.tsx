@@ -35,7 +35,7 @@ type FieldShellProps = {
 function FieldShell({ children, error, helper, label, testID }: FieldShellProps) {
   return (
     <View className="gap-ccXs" testID={testID}>
-      <Text className="text-ccMicro font-bold uppercase text-muted-ink">{label}</Text>
+      <Text className="text-ccMicro font-semibold uppercase tracking-wide text-muted-ink">{label}</Text>
       {children}
       {error ? (
         <Text className="text-ccMicro font-semibold text-due">{error}</Text>

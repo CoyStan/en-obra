@@ -2606,11 +2606,7 @@ export function MainScreen() {
         <ScrollView contentContainerStyle={styles.composerSheet} keyboardShouldPersistTaps="handled">
           <View style={styles.sheetHandle} />
           <View style={styles.captureHeader}>
-            <View style={styles.composerTitleBlock}>
-              <Text style={styles.captureKicker}>Captura de recibo</Text>
-              <Text style={styles.captureTitle}>{expenseComposerTitle}</Text>
-              <Text style={styles.captureSubtitle}>{selectedGroup?.name ?? "Grupo"} · MXN</Text>
-            </View>
+            <Text style={styles.captureTitle}>{expenseComposerTitle}</Text>
             <ActionButton
               icon="close"
               label="Cerrar"
@@ -2624,32 +2620,8 @@ export function MainScreen() {
 
           {error ? <Text style={styles.formError}>{error}</Text> : null}
 
-          <View style={styles.captureContextRail}>
-            <View style={styles.captureContextChip}>
-              <MaterialCommunityIcons
-                color={colors.primaryDark}
-                name={selectedGroup ? groupGlyph(selectedGroup) : "account-group-outline"}
-                size={15}
-              />
-              <Text numberOfLines={1} style={styles.captureContextText}>{selectedGroup?.name ?? "Grupo"}</Text>
-            </View>
-            <View style={styles.captureContextChip}>
-              <MaterialCommunityIcons color={colors.primaryDark} name="account-circle-outline" size={15} />
-              <Text numberOfLines={1} style={styles.captureContextText}>
-                {activeGroupMember?.name ?? displayMember?.name ?? "Persona"}
-              </Text>
-            </View>
-            <View style={styles.captureContextChip}>
-              <MaterialCommunityIcons color={colors.primaryDark} name="cash-remove" size={15} />
-              <Text style={styles.captureContextText}>Sin pagos reales</Text>
-            </View>
-          </View>
-
           <ComposerSection
-            badge="Partes iguales"
             className="bg-surface"
-            icon="receipt-text-plus-outline"
-            meta="Monto, pagador y participantes en una sola captura."
             testID="expense-composer-receipt-section"
             title={expenseComposerTitle}
           >
@@ -2712,7 +2684,6 @@ export function MainScreen() {
               </SelectPanel>
 
               <MoneyInput
-                helper="Acepta decimales. Ej. 1480.50"
                 label="Monto MXN"
                 onChangeText={setExpenseAmount}
                 placeholder="0.00"
@@ -2721,7 +2692,6 @@ export function MainScreen() {
               />
 
               <TextField
-                helper="Nombre corto para el historial."
                 label="Concepto"
                 onChangeText={setExpenseTitle}
                 placeholder="Ej. Tacos después del cine"
@@ -2912,18 +2882,10 @@ export function MainScreen() {
                       })}
                     {splitError ? <Text style={styles.splitEditorError}>{splitError}</Text> : null}
                   </View>
-                ) : (
-                  <View style={styles.splitEditorHint}>
-                    <MaterialCommunityIcons color={colors.primaryDark} name="equal" size={16} />
-                    <Text style={styles.splitEditorHintText}>
-                      Se divide igual entre quienes participan.
-                    </Text>
-                  </View>
-                )}
+                ) : null}
               </View>
 
               <NoteField
-                helper="Opcional."
                 label="Nota"
                 onChangeText={setExpenseNote}
                 placeholder="Opcional"
@@ -2932,7 +2894,7 @@ export function MainScreen() {
               />
 
               <Pressable
-                accessibilityLabel={expenseReceiptAttached ? "Quitar recibo local" : "Agregar recibo local de prueba"}
+                accessibilityLabel={expenseReceiptAttached ? "Quitar recibo" : "Agregar recibo"}
                 accessibilityRole="switch"
                 accessibilityState={{ checked: expenseReceiptAttached }}
                 onPress={() => setExpenseReceiptAttached((current) => !current)}
@@ -2953,10 +2915,9 @@ export function MainScreen() {
                 <View style={styles.moneyPathCopy}>
                   <Text style={styles.moneyPathLabel}>Recibo</Text>
                   <Text numberOfLines={1} style={styles.moneyPathValue}>
-                    {expenseReceiptAttached ? "Foto de recibo local" : "Agregar foto simulada"}
+                    {expenseReceiptAttached ? "Agregado" : "Agregar"}
                   </Text>
                 </View>
-                <Pill label={expenseReceiptAttached ? "Local" : "Mock"} tone={expenseReceiptAttached ? "success" : "neutral"} />
               </Pressable>
             </View>
 
@@ -2964,7 +2925,7 @@ export function MainScreen() {
               <View style={styles.splitImpactPanel}>
                 <View style={[styles.splitImpactTop, compact && styles.splitImpactTopCompact]}>
                   <View style={styles.splitImpactTotal}>
-                    <Text style={styles.splitImpactLabel}>Total a dividir</Text>
+                    <Text style={styles.splitImpactLabel}>Total</Text>
                     <Text adjustsFontSizeToFit minimumFontScale={0.72} numberOfLines={1} style={styles.splitImpactAmount}>
                       {formatMoney(expenseAmountCents ?? 0)}
                     </Text>
@@ -2973,9 +2934,9 @@ export function MainScreen() {
                     <MaterialCommunityIcons color={colors.primaryDark} name="equal" size={17} />
                     <Text style={styles.splitImpactRuleText}>
                       {expenseSplitMode === "equal"
-                        ? `${participantShares.length} partes iguales`
+                        ? `${participantShares.length} iguales`
                         : expenseSplitMode === "exact"
-                          ? "Montos exactos"
+                          ? "Exacto"
                           : "Por partes"}
                     </Text>
                   </View>
@@ -3024,7 +2985,6 @@ export function MainScreen() {
                         </View>
                       </View>
                       <View style={styles.sharePreviewAmountBlock}>
-                        <Text style={styles.sharePreviewAmountLabel}>Le toca</Text>
                         <Text style={styles.sharePreviewAmount}>{formatMoney(share.amountCents)}</Text>
                       </View>
                     </View>
@@ -3034,7 +2994,7 @@ export function MainScreen() {
 
                 {participantShares.length > 5 ? (
                   <Text style={styles.splitImpactMore}>
-                    +{participantShares.length - 5} participantes más en el reparto
+                    +{participantShares.length - 5} más
                   </Text>
                 ) : null}
               </View>
@@ -3051,9 +3011,9 @@ export function MainScreen() {
                   {editingExpenseId ? "Actualizar" : "Guardar"}
                 </ReusableButton>
               }
-              body="No cobra ni envía dinero. Solo actualiza balances del grupo."
+              body="Sin pagos reales · solo actualiza balances"
               testID="expense-composer-save-dock"
-              title={editingExpenseId ? "Actualizar gasto local" : "Guardar gasto local"}
+              title={editingExpenseId ? "Actualizar gasto" : "Guardar gasto"}
             />
           </ComposerSection>
         </ScrollView>
@@ -3736,45 +3696,11 @@ const styles = StyleSheet.create({
     maxHeight: "92%",
     padding: spacing.md,
   },
-  composerTitleBlock: {
-    flex: 1,
-    gap: spacing.xs,
-    minWidth: 0,
-  },
   captureHeader: {
     alignItems: "flex-start",
     flexDirection: "row",
     gap: spacing.md,
     justifyContent: "space-between",
-  },
-  captureContextChip: {
-    alignItems: "center",
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    flexDirection: "row",
-    gap: spacing.xs,
-    minHeight: 36,
-    paddingHorizontal: spacing.sm,
-  },
-  captureContextRail: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: spacing.sm,
-  },
-  captureContextText: {
-    color: colors.primaryDark,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-  },
-  captureKicker: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-    textTransform: "uppercase",
   },
   captureProgressPill: {
     alignItems: "center",
@@ -3812,12 +3738,6 @@ const styles = StyleSheet.create({
     fontSize: typography.micro,
     fontWeight: "900",
     lineHeight: 14,
-  },
-  captureSubtitle: {
-    color: colors.mutedInk,
-    fontSize: typography.small,
-    fontWeight: "700",
-    lineHeight: 18,
   },
   captureTitle: {
     color: colors.ink,
@@ -7594,12 +7514,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     gap: 1,
   },
-  sharePreviewAmountLabel: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "800",
-    lineHeight: 14,
-  },
   sharePreviewBarFill: {
     borderRadius: 999,
     height: 7,
@@ -7722,23 +7636,6 @@ const styles = StyleSheet.create({
   },
   splitEditorError: {
     color: colors.due,
-    fontSize: typography.micro,
-    fontWeight: "800",
-    lineHeight: 15,
-  },
-  splitEditorHint: {
-    alignItems: "center",
-    backgroundColor: colors.successWash,
-    borderRadius: radius.md,
-    flexDirection: "row",
-    gap: spacing.xs,
-    minHeight: 38,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  splitEditorHintText: {
-    color: colors.primaryDark,
-    flex: 1,
     fontSize: typography.micro,
     fontWeight: "800",
     lineHeight: 15,
