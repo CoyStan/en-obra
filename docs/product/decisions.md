@@ -715,3 +715,14 @@ receipt placeholder lets the product flow and activity history prove the shape
 of the feature while staying local-only. SQL artifact expansion should be a
 separate scoped ticket because this item does not allow `docs/backend/**`
 artifact updates.
+
+### Group Expense Categories By Everyday Mental Models
+
+Decision: The category picker should offer a broader Mexico/LATAM category set,
+grouped as `Diario`, `Viaje`, `Casa`, `Salidas`, `Cuidado`, and `Otros`.
+
+Rationale: A shared-expense app needs enough categories to make history readable
+without asking users to think like accountants. Grouping common categories such
+as comida, súper, propina, gasolina, hospedaje, servicios, farmacia, niños, and
+mascotas keeps the menu scannable while covering real household, trip, and event
+use cases.

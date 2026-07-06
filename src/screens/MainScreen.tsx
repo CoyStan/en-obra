@@ -96,26 +96,39 @@ const heroMoneyFormatter = new Intl.NumberFormat("es-MX", {
 const expenseCategories: {
   id: string;
   label: string;
+  group: "Diario" | "Casa" | "Viaje" | "Salidas" | "Cuidado" | "Otros";
+  hint: string;
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
   tone: "primary" | "blue" | "warm" | "due";
 }[] = [
-  { id: "food", label: "Comida", icon: "food-outline", tone: "warm" },
-  { id: "travel", label: "Viaje", icon: "bag-suitcase-outline", tone: "blue" },
-  { id: "transport", label: "Transporte", icon: "car-outline", tone: "primary" },
-  { id: "groceries", label: "Súper", icon: "cart-outline", tone: "primary" },
-  { id: "home", label: "Casa", icon: "home-outline", tone: "blue" },
-  { id: "rent", label: "Renta", icon: "home-city-outline", tone: "blue" },
-  { id: "utilities", label: "Servicios", icon: "flash-outline", tone: "primary" },
-  { id: "lodging", label: "Hospedaje", icon: "bed-king-outline", tone: "blue" },
-  { id: "fuel", label: "Gasolina", icon: "gas-station-outline", tone: "primary" },
-  { id: "tickets", label: "Boletos", icon: "ticket-confirmation-outline", tone: "due" },
-  { id: "health", label: "Salud", icon: "medical-bag", tone: "due" },
-  { id: "shopping", label: "Compras", icon: "shopping-outline", tone: "warm" },
-  { id: "fun", label: "Plan", icon: "glass-cocktail", tone: "due" },
-  { id: "other", label: "Otro", icon: "dots-horizontal-circle-outline", tone: "primary" },
+  { id: "food", label: "Comida", group: "Diario", hint: "Restaurantes, fondas, tacos", icon: "food-outline", tone: "warm" },
+  { id: "groceries", label: "Súper", group: "Diario", hint: "Mandado y despensa", icon: "cart-outline", tone: "primary" },
+  { id: "coffee", label: "Café", group: "Diario", hint: "Café, pan, antojo", icon: "coffee-outline", tone: "warm" },
+  { id: "tips", label: "Propina", group: "Diario", hint: "Servicio y reparto", icon: "hand-coin-outline", tone: "warm" },
+  { id: "transport", label: "Transporte", group: "Viaje", hint: "Uber, taxi, metro, camión", icon: "car-outline", tone: "primary" },
+  { id: "fuel", label: "Gasolina", group: "Viaje", hint: "Gas y casetas", icon: "gas-station-outline", tone: "primary" },
+  { id: "parking", label: "Estacionamiento", group: "Viaje", hint: "Parquímetro, valet, pensión", icon: "parking", tone: "primary" },
+  { id: "travel", label: "Viaje", group: "Viaje", hint: "Traslados y gastos del viaje", icon: "bag-suitcase-outline", tone: "blue" },
+  { id: "lodging", label: "Hospedaje", group: "Viaje", hint: "Hotel, Airbnb, cabaña", icon: "bed-king-outline", tone: "blue" },
+  { id: "tickets", label: "Boletos", group: "Viaje", hint: "Avión, bus, eventos", icon: "ticket-confirmation-outline", tone: "due" },
+  { id: "home", label: "Casa", group: "Casa", hint: "Gastos del depa o casa", icon: "home-outline", tone: "blue" },
+  { id: "rent", label: "Renta", group: "Casa", hint: "Renta y mantenimiento", icon: "home-city-outline", tone: "blue" },
+  { id: "utilities", label: "Servicios", group: "Casa", hint: "Luz, agua, gas", icon: "flash-outline", tone: "primary" },
+  { id: "internet", label: "Internet", group: "Casa", hint: "Internet, streaming, teléfono", icon: "wifi", tone: "blue" },
+  { id: "cleaning", label: "Limpieza", group: "Casa", hint: "Aseo, lavandería, hogar", icon: "spray-bottle", tone: "primary" },
+  { id: "fun", label: "Plan", group: "Salidas", hint: "Fiesta, bar, cine", icon: "glass-cocktail", tone: "due" },
+  { id: "shopping", label: "Compras", group: "Salidas", hint: "Regalos y compras varias", icon: "shopping-outline", tone: "warm" },
+  { id: "sports", label: "Deporte", group: "Salidas", hint: "Cancha, gym, equipo", icon: "soccer", tone: "blue" },
+  { id: "health", label: "Salud", group: "Cuidado", hint: "Consulta, farmacia", icon: "medical-bag", tone: "due" },
+  { id: "pharmacy", label: "Farmacia", group: "Cuidado", hint: "Medicinas y cuidado", icon: "pill", tone: "due" },
+  { id: "kids", label: "Niños", group: "Cuidado", hint: "Escuela, pañales, cuidado", icon: "human-child", tone: "warm" },
+  { id: "pets", label: "Mascotas", group: "Cuidado", hint: "Veterinario, comida", icon: "paw", tone: "warm" },
+  { id: "work", label: "Trabajo", group: "Otros", hint: "Cowork, material, viáticos", icon: "briefcase-outline", tone: "blue" },
+  { id: "other", label: "Otro", group: "Otros", hint: "Clasificar después", icon: "dots-horizontal-circle-outline", tone: "primary" },
 ];
 
 const defaultCategory = expenseCategories[0];
+const categoryGroups = ["Diario", "Viaje", "Casa", "Salidas", "Cuidado", "Otros"] as const;
 
 const splitModes: { id: ExpenseSplitMode; label: string; icon: keyof typeof MaterialCommunityIcons.glyphMap }[] = [
   { id: "equal", label: "Igual", icon: "equal" },
@@ -2500,27 +2513,40 @@ export function MainScreen() {
               </Pressable>
 
               <SelectPanel open={openExpenseMenu === "category"} testID="expense-category-select-panel">
-                <View style={styles.categoryListMenu}>
-                  {expenseCategories.map((category) => {
-                    const selected = category.id === expenseCategoryId;
+                <ScrollView
+                  nestedScrollEnabled
+                  showsVerticalScrollIndicator={false}
+                  style={styles.categoryListScroll}
+                  contentContainerStyle={styles.categoryListMenu}
+                >
+                  {categoryGroups.map((group) => {
+                    const groupCategories = expenseCategories.filter((category) => category.group === group);
                     return (
-                      <SelectOptionRow
-                        accessibilityLabel={`Categoría ${category.label}`}
-                        key={category.id}
-                        leading={<CategoryObject categoryId={category.id} size="small" />}
-                        meta={selected ? "Seleccionada" : "Clasifica el historial"}
-                        onPress={() => {
-                          setExpenseCategoryId(category.id);
-                          setOpenExpenseMenu(null);
-                        }}
-                        role="radio"
-                        selected={selected}
-                        testID={`expense-category-option-${category.id}`}
-                        title={category.label}
-                      />
+                      <View key={group} style={styles.categoryMenuGroup}>
+                        <Text style={styles.categoryMenuGroupLabel}>{group}</Text>
+                        {groupCategories.map((category) => {
+                          const selected = category.id === expenseCategoryId;
+                          return (
+                            <SelectOptionRow
+                              accessibilityLabel={`Categoría ${category.label}`}
+                              key={category.id}
+                              leading={<CategoryObject categoryId={category.id} size="small" />}
+                              meta={selected ? "Seleccionada" : category.hint}
+                              onPress={() => {
+                                setExpenseCategoryId(category.id);
+                                setOpenExpenseMenu(null);
+                              }}
+                              role="radio"
+                              selected={selected}
+                              testID={`expense-category-option-${category.id}`}
+                              title={category.label}
+                            />
+                          );
+                        })}
+                      </View>
                     );
                   })}
-                </View>
+                </ScrollView>
               </SelectPanel>
 
               <MoneyInput
@@ -3512,7 +3538,23 @@ const styles = StyleSheet.create({
   },
   categoryListMenu: {
     gap: spacing.xs,
+    paddingBottom: spacing.xs,
+  },
+  categoryListScroll: {
     maxHeight: 360,
+  },
+  categoryMenuGroup: {
+    gap: spacing.xs,
+    paddingBottom: spacing.xs,
+  },
+  categoryMenuGroupLabel: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 14,
+    paddingHorizontal: spacing.xs,
+    paddingTop: spacing.xs,
+    textTransform: "uppercase",
   },
   categoryMatrix: {
     flexDirection: "row",
