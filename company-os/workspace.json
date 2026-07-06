@@ -4086,7 +4086,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Add local/mock receipt photo placeholder support to expense creation and history display. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0100/**,company-os/workspace.json.",
       "acceptance_target": "Add expense can attach a local/mock receipt placeholder and show it in history without OCR or cloud storage.",
       "required_approval_capability": "design",
@@ -6001,6 +6001,17 @@
       "commits": [
         "89b049b04386f8c50b5f5c1b5132a83a90ee0607"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0100",
+      "work_item_id": "WORK-APP-0100",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started local/mock receipt attachment placeholder support."
     }
   ],
   "evidence_runs": [
