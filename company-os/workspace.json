@@ -4486,11 +4486,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Simplify the Inicio/Home surface, reduce redundant text, modernize the palette to a clean cool-neutral base, and migrate the surface from legacy StyleSheet to the NativeWind reusables system. Keep 'Sin pagos reales' near settlement actions. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0111/**,company-os/workspace.json.",
       "acceptance_target": "Inicio/Home is cleaner, uses fewer redundant labels, presents a modern simplified palette, is fully token-driven, passes typecheck/tests/export, and captures screenshots at 360/390/412 widths.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0111-R1"
     }
   ],
   "attempts": [
@@ -6135,6 +6136,20 @@
       "commits": [
         "76a700ae44a82ebe79702aa2bfa87a352c160a70"
       ]
+    },
+    {
+      "commits": [
+        "c24f8c2"
+      ],
+      "id": "ATTEMPT-APP-0111-R1",
+      "work_item_id": "WORK-APP-0111",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0111",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Refreshed tokens to a cool slate-white + sky-blue palette, simplified HomeMoneyInstrument, and reduced Inicio text density while keeping Sin pagos reales near settlement."
     }
   ],
   "evidence_runs": [
@@ -8215,6 +8230,29 @@
       "status": "passed",
       "summary": "Selected Supabase Money theme revision passed typecheck, tests, Expo config, web export, scope, validate, and refreshed Android-width screenshots.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0111",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0111/technical-report.md",
+        "reports/evidence/WORK-APP-0111/screenshots/inicio-360x740.png",
+        "reports/evidence/WORK-APP-0111/screenshots/inicio-390x844.png",
+        "reports/evidence/WORK-APP-0111/screenshots/inicio-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0111-R1",
+      "work_item_id": "WORK-APP-0111",
+      "attempt_id": "ATTEMPT-APP-0111-R1",
+      "head_sha": "c24f8c2a6e6ca883fb663f047c020636a583307b",
+      "status": "passed",
+      "summary": "Inicio simplification and palette refresh passed typecheck, tests, Expo config, web export, scope, and validate. Screenshots captured at 360/390/412.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -9907,6 +9945,31 @@
       "id": "REVIEW-APP-0108-R2",
       "work_item_id": "WORK-APP-0108",
       "reviewed_head": "76a700ae44a82ebe79702aa2bfa87a352c160a70",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "token diff",
+        "HomeMoneyInstrument diff",
+        "MainScreen Inicio diff",
+        "technical report",
+        "Inicio screenshots",
+        "typecheck",
+        "tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder visual acceptance still required",
+        "splash/icon assets still use old palette",
+        "other tabs remain legacy StyleSheet"
+      ],
+      "id": "REVIEW-APP-0111-R1",
+      "work_item_id": "WORK-APP-0111",
+      "reviewed_head": "c24f8c2a6e6ca883fb663f047c020636a583307b",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -14417,6 +14480,45 @@
       "work_item_id": "WORK-APP-0108",
       "attempt_id": "ATTEMPT-APP-0108-R2",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "actions_taken": [
+        "refreshed palette in tokens.json",
+        "simplified HomeMoneyInstrument",
+        "reduced Inicio text density",
+        "recorded decisions",
+        "captured screenshots"
+      ],
+      "outputs_created": [
+        "src/theme/tokens.json",
+        "src/components/reusables/home-money-instrument.tsx",
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0111/technical-report.md",
+        "reports/evidence/WORK-APP-0111/screenshots"
+      ],
+      "not_done": [
+        "splash and icon asset refresh",
+        "other tab migrations",
+        "full dark mode",
+        "real payments",
+        "production backend",
+        "secrets",
+        "paid services",
+        "deployment",
+        "Play Store submission"
+      ],
+      "sources_used": [
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-OPEN-DESIGN"
+      ],
+      "id": "RECEIPT-APP-0111-R1",
+      "work_item_id": "WORK-APP-0111",
+      "attempt_id": "ATTEMPT-APP-0111-R1",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -15530,6 +15632,14 @@
       "status": "completed",
       "what_happened": "Revised the previous warm palette into the selected cleaner Supabase-like fintech direction with restrained amber warmth.",
       "what_changed": "Theme tokens, decision log, technical report, and Android-width screenshots were refreshed."
+    },
+    {
+      "id": "OUTCOME-APP-0111-R1",
+      "work_item_id": "WORK-APP-0111",
+      "summary": "Inicio simplification and palette refresh is complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Refreshed the palette from a green-washed Supabase-Money look to a clean slate-white + sky-blue palette and reduced the Inicio surface text density.",
+      "what_changed": "tokens.json, HomeMoneyInstrument, MainScreen Inicio render, decisions.md, and new screenshot evidence."
     }
   ]
 }
