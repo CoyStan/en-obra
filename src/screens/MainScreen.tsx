@@ -63,6 +63,8 @@ import {
 type TabId = "groups" | "home" | "balance" | "activity" | "account";
 type ExpenseMenuId = "category" | "payer" | "participants";
 type ExpenseSplitMode = "equal" | "exact" | "shares";
+type ActivityAmountFilter = "all" | "under500" | "mid" | "over2000";
+type ActivityDateFilter = "all" | "week" | "month";
 
 const MONEY_FLOW_TRACK_WIDTH = 120;
 const MONEY_FLOW_DOT_SIZE = 24;
@@ -836,6 +838,11 @@ export function MainScreen() {
   const [openExpenseMenu, setOpenExpenseMenu] = useState<ExpenseMenuId | null>(null);
   const [showActiveMemberSheet, setShowActiveMemberSheet] = useState(false);
   const [showDeleteLocalDataConfirm, setShowDeleteLocalDataConfirm] = useState(false);
+  const [activitySearch, setActivitySearch] = useState("");
+  const [activityPersonFilterId, setActivityPersonFilterId] = useState("all");
+  const [activityCategoryFilterId, setActivityCategoryFilterId] = useState("all");
+  const [activityAmountFilter, setActivityAmountFilter] = useState<ActivityAmountFilter>("all");
+  const [activityDateFilter, setActivityDateFilter] = useState<ActivityDateFilter>("all");
   const [accountName, setAccountName] = useState("");
   const [accountEmail, setAccountEmail] = useState("");
   const [dataControlMessage, setDataControlMessage] = useState("");
@@ -1994,7 +2001,53 @@ export function MainScreen() {
     }
 
     const latestActivity = activity[0];
-    const settlementCount = activity.filter((item) => item.type === "settlement").length;
+    const latestTime = Math.max(...activity.map((item) => new Date(item.createdAt).getTime()));
+    const normalizedSearch = activitySearch.trim().toLowerCase();
+    const filteredActivity = activity.filter((item) => {
+      const category = categoryFor(item.categoryId);
+      const itemDate = new Date(item.createdAt).getTime();
+      const searchText = [
+        item.title,
+        item.subtitle,
+        item.actorName,
+        item.label,
+        category.label,
+        formatMoney(item.amountCents),
+        formatDate(item.createdAt),
+      ].filter(Boolean).join(" ").toLowerCase();
+      const matchesSearch = !normalizedSearch || searchText.includes(normalizedSearch);
+      const matchesPerson = activityPersonFilterId === "all" || selectedMembers.some((member) =>
+        member.id === activityPersonFilterId &&
+        searchText.includes(member.name.toLowerCase()),
+      );
+      const matchesCategory = activityCategoryFilterId === "all" || item.categoryId === activityCategoryFilterId;
+      const matchesAmount =
+        activityAmountFilter === "all" ||
+        (activityAmountFilter === "under500" && item.amountCents > 0 && item.amountCents < 50000) ||
+        (activityAmountFilter === "mid" && item.amountCents >= 50000 && item.amountCents <= 200000) ||
+        (activityAmountFilter === "over2000" && item.amountCents > 200000);
+      const daysAgo = (latestTime - itemDate) / (24 * 60 * 60 * 1000);
+      const matchesDate =
+        activityDateFilter === "all" ||
+        (activityDateFilter === "week" && daysAgo <= 7) ||
+        (activityDateFilter === "month" && daysAgo <= 31);
+      return matchesSearch && matchesPerson && matchesCategory && matchesAmount && matchesDate;
+    });
+    const filtersActive = Boolean(
+      normalizedSearch ||
+      activityPersonFilterId !== "all" ||
+      activityCategoryFilterId !== "all" ||
+      activityAmountFilter !== "all" ||
+      activityDateFilter !== "all",
+    );
+    const settlementCount = filteredActivity.filter((item) => item.type === "settlement").length;
+    const resetActivityFilters = () => {
+      setActivitySearch("");
+      setActivityPersonFilterId("all");
+      setActivityCategoryFilterId("all");
+      setActivityAmountFilter("all");
+      setActivityDateFilter("all");
+    };
 
     return (
       <View style={styles.ledgerStory}>
@@ -2023,7 +2076,7 @@ export function MainScreen() {
           <View style={styles.auditSummaryGrid}>
             <View style={styles.auditSummaryItem}>
               <Text style={styles.ledgerMetricLabel}>Movimientos</Text>
-              <Text style={styles.auditSummaryValue}>{activity.length}</Text>
+              <Text style={styles.auditSummaryValue}>{filteredActivity.length}</Text>
             </View>
             <View style={styles.auditSummaryItem}>
               <Text style={styles.ledgerMetricLabel}>Arreglos</Text>
@@ -2062,8 +2115,124 @@ export function MainScreen() {
           </View>
         </View>
 
+        <View style={styles.activityFilterPanel} testID="activity-filter-panel">
+          <View style={styles.activitySearchRow}>
+            <MaterialCommunityIcons color={colors.mutedInk} name="magnify" size={18} />
+            <TextInput
+              accessibilityLabel="Buscar actividad"
+              onChangeText={setActivitySearch}
+              placeholder="Buscar por persona, categoría o monto"
+              placeholderTextColor={colors.mutedInk}
+              style={styles.activitySearchInput}
+              testID="activity-search-input"
+              value={activitySearch}
+            />
+            {filtersActive ? (
+              <Pressable
+                accessibilityLabel="Limpiar filtros"
+                accessibilityRole="button"
+                hitSlop={6}
+                onPress={resetActivityFilters}
+                style={({ pressed }) => [styles.activityFilterClear, pressed && styles.pressed]}
+                testID="activity-clear-filters"
+              >
+                <MaterialCommunityIcons color={colors.primaryDark} name="close" size={16} />
+              </Pressable>
+            ) : null}
+          </View>
+
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.activityFilterChips}>
+            {(["all", ...selectedMembers.map((member) => member.id)] as string[]).map((id) => {
+              const member = id === "all" ? null : findMember(selectedMembers, id);
+              const selected = activityPersonFilterId === id;
+              return (
+                <Pressable
+                  accessibilityLabel={id === "all" ? "Todas las personas" : `Filtrar por ${member?.name ?? "persona"}`}
+                  accessibilityRole="button"
+                  key={id}
+                  onPress={() => setActivityPersonFilterId(id)}
+                  style={({ pressed }) => [styles.activityFilterChip, selected && styles.activityFilterChipActive, pressed && styles.pressed]}
+                  testID={`activity-person-filter-${id}`}
+                >
+                  <Text style={[styles.activityFilterChipText, selected && styles.activityFilterChipTextActive]}>
+                    {id === "all" ? "Todos" : member?.name ?? "Persona"}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.activityFilterChips}>
+            {[
+              { id: "all", label: "Categorías" },
+              ...expenseCategories.map((category) => ({ id: category.id, label: category.label })),
+            ].map((option) => {
+              const selected = activityCategoryFilterId === option.id;
+              return (
+                <Pressable
+                  accessibilityLabel={`Filtrar ${option.label}`}
+                  accessibilityRole="button"
+                  key={option.id}
+                  onPress={() => setActivityCategoryFilterId(option.id)}
+                  style={({ pressed }) => [styles.activityFilterChip, selected && styles.activityFilterChipActive, pressed && styles.pressed]}
+                  testID={`activity-category-filter-${option.id}`}
+                >
+                  <Text style={[styles.activityFilterChipText, selected && styles.activityFilterChipTextActive]}>{option.label}</Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+
+          <View style={styles.activityFilterChipsWrap}>
+            {[
+              { id: "all", label: "Cualquier monto" },
+              { id: "under500", label: "< MXN 500" },
+              { id: "mid", label: "500-2,000" },
+              { id: "over2000", label: "> MXN 2,000" },
+            ].map((option) => {
+              const selected = activityAmountFilter === option.id;
+              return (
+                <Pressable
+                  accessibilityLabel={`Filtrar monto ${option.label}`}
+                  accessibilityRole="button"
+                  key={option.id}
+                  onPress={() => setActivityAmountFilter(option.id as ActivityAmountFilter)}
+                  style={({ pressed }) => [styles.activityFilterChip, selected && styles.activityFilterChipActive, pressed && styles.pressed]}
+                >
+                  <Text style={[styles.activityFilterChipText, selected && styles.activityFilterChipTextActive]}>{option.label}</Text>
+                </Pressable>
+              );
+            })}
+            {[
+              { id: "all", label: "Todas las fechas" },
+              { id: "week", label: "7 días" },
+              { id: "month", label: "31 días" },
+            ].map((option) => {
+              const selected = activityDateFilter === option.id;
+              return (
+                <Pressable
+                  accessibilityLabel={`Filtrar fecha ${option.label}`}
+                  accessibilityRole="button"
+                  key={option.id}
+                  onPress={() => setActivityDateFilter(option.id as ActivityDateFilter)}
+                  style={({ pressed }) => [styles.activityFilterChip, selected && styles.activityFilterChipActive, pressed && styles.pressed]}
+                >
+                  <Text style={[styles.activityFilterChipText, selected && styles.activityFilterChipTextActive]}>{option.label}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+
         <View style={styles.ledgerTimeline}>
-          {groupActivityByDate(activity).map((section) => (
+          {filteredActivity.length === 0 ? (
+            <EmptyState
+              action={<ActionButton icon="close" label="Limpiar filtros" onPress={resetActivityFilters} tone="secondary" />}
+              body="Prueba otra persona, categoría, monto o fecha."
+              icon="filter-off-outline"
+              title="Sin resultados"
+            />
+          ) : groupActivityByDate(filteredActivity).map((section) => (
             <View key={section.dateKey} style={styles.ledgerDayCard}>
               <View style={styles.ledgerDayHeader}>
                 <View>
@@ -4879,6 +5048,72 @@ const styles = StyleSheet.create({
   },
   activityExpense: {
     backgroundColor: colors.warmWash,
+  },
+  activityFilterChips: {
+    gap: spacing.xs,
+    paddingRight: spacing.sm,
+  },
+  activityFilterChipsWrap: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.xs,
+  },
+  activityFilterChip: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: 999,
+    borderWidth: 1,
+    minHeight: 34,
+    paddingHorizontal: spacing.sm,
+    justifyContent: "center",
+  },
+  activityFilterChipActive: {
+    backgroundColor: colors.surfaceTinted,
+    borderColor: colors.primary,
+  },
+  activityFilterChipText: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "800",
+    lineHeight: 15,
+  },
+  activityFilterChipTextActive: {
+    color: colors.primaryDark,
+  },
+  activityFilterClear: {
+    alignItems: "center",
+    borderRadius: 14,
+    height: 28,
+    justifyContent: "center",
+    width: 28,
+  },
+  activityFilterPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  activitySearchInput: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: typography.small,
+    fontWeight: "700",
+    minHeight: 36,
+    padding: 0,
+  },
+  activitySearchRow: {
+    alignItems: "center",
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 44,
+    paddingHorizontal: spacing.sm,
   },
   activityRail: {
     alignItems: "center",

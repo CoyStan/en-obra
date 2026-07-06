@@ -726,3 +726,14 @@ without asking users to think like accountants. Grouping common categories such
 as comida, súper, propina, gasolina, hospedaje, servicios, farmacia, niños, and
 mascotas keeps the menu scannable while covering real household, trip, and event
 use cases.
+
+### Keep Activity Search Local And Forgiving
+
+Decision: Activity search and filters should be local, instant, and forgiving:
+free-text search plus chips for person, category, amount range, and relative
+date window.
+
+Rationale: History is useful only if users can find a charge without learning a
+reporting tool. A compact filter panel supports common questions such as
+“¿qué pagó Ana?”, “¿cuáles fueron comidas?”, and “¿qué gastos grandes hubo?”
+without backend search, analytics, saved filters, or heavy table UI.
