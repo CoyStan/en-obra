@@ -1,0 +1,27 @@
+{
+  "url": "http://127.0.0.1:49738/",
+  "checkedAt": "2026-07-06T06:27:56.593Z",
+  "results": [
+    {
+      "viewport": "360x740",
+      "createVisible": true,
+      "joinVisible": true,
+      "localCueVisible": true,
+      "joinedAsada": true
+    },
+    {
+      "viewport": "390x844",
+      "createVisible": true,
+      "joinVisible": true,
+      "localCueVisible": true,
+      "joinedAsada": true
+    },
+    {
+      "viewport": "412x915",
+      "createVisible": true,
+      "joinVisible": true,
+      "localCueVisible": true,
+      "joinedAsada": true
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import type {
   AppData,
   Expense,
   Group,
+  GroupInvite,
   GroupMember,
   Settlement,
   SettlementSuggestion,
@@ -34,6 +35,11 @@ export type AddExpenseMutationInput = {
   note?: string;
 };
 
+export type JoinGroupMutationInput = {
+  inviteCode: string;
+  actorUserId?: string;
+};
+
 const avatarColors = ["#229ED9", "#168AC0", "#4F9BC7", "#6B7C93", "#3B82B8", "#7C8DA1"];
 
 function currentTime(context?: MutationContext) {
@@ -50,6 +56,17 @@ function pickAvatarColor(index: number) {
 
 function defaultActorUserId(data: AppData) {
   return resolveActorUserId(data);
+}
+
+function localInviteCode(groupName: string, groupId: string) {
+  const readableName = groupName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toUpperCase()
+    .slice(0, 12);
+  return `CC-${readableName || groupId.toUpperCase()}`;
 }
 
 function activityEvent(
@@ -89,6 +106,7 @@ export function createGroupMutation(
   const groupId = makeId(context, "group");
   const actorUserId = defaultActorUserId(current);
   const ownerMemberId = makeId(context, "member");
+  const inviteId = makeId(context, "invite");
   const ownerUser = current.users?.find((user) => user.id === actorUserId);
   const ownerMember: GroupMember | null = ownerUser
     ? {
@@ -112,6 +130,15 @@ export function createGroupMutation(
     updatedAt: createdAt,
     memberIds: ownerMember ? [ownerMember.id] : [],
   };
+  const invite: GroupInvite = {
+    id: inviteId,
+    groupId,
+    code: localInviteCode(group.name, groupId),
+    label: "Liga local del grupo",
+    status: "active",
+    createdByUserId: actorUserId,
+    createdAt,
+  };
   const event = activityEvent(
     context,
     groupId,
@@ -129,6 +156,7 @@ export function createGroupMutation(
       ...current,
       activityEvents: [event, ...(current.activityEvents ?? [])],
       groups: [group, ...current.groups],
+      groupInvites: [invite, ...(current.groupInvites ?? [])],
       groupMembers: ownerMember ? [...(current.groupMembers ?? []), ownerMember] : current.groupMembers,
       members: ownerMember
         ? [
@@ -139,6 +167,8 @@ export function createGroupMutation(
               name: ownerMember.displayNameSnapshot,
               avatarColor: ownerUser?.avatarColor ?? pickAvatarColor(current.members.length),
               role: ownerMember.role,
+              status: ownerMember.status,
+              joinSource: ownerMember.joinSource,
               joinedAt: ownerMember.joinedAt,
             },
           ]
@@ -159,7 +189,120 @@ export function createGroupMutation(
               }),
             ]
           : []),
+        createSyncOutboxItem({ operation: "create", entityType: "group_invite", entityId: invite.id, payload: invite, createdAt }),
         createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt }),
+      ],
+    },
+  };
+}
+
+export function joinGroupByInviteMutation(
+  current: AppData,
+  input: JoinGroupMutationInput,
+  context?: MutationContext,
+): MutationResult {
+  const code = input.inviteCode.trim().toUpperCase();
+  if (!code) {
+    return { ok: false, error: "Escribe el código de invitación.", data: current };
+  }
+
+  const invite = (current.groupInvites ?? []).find((item) => item.code.toUpperCase() === code);
+  if (!invite || invite.status !== "active") {
+    return { ok: false, error: "No encontramos una invitación local activa.", data: current };
+  }
+
+  const group = current.groups.find((item) => item.id === invite.groupId);
+  if (!group) {
+    return { ok: false, error: "La invitación no tiene grupo local disponible.", data: current };
+  }
+
+  const joinedAt = currentTime(context);
+  const actorUserId = resolveActorUserId(current, input.actorUserId);
+  const actorUser = current.users?.find((user) => user.id === actorUserId);
+  if (!actorUser) {
+    return { ok: false, error: "Crea un perfil local antes de unirte.", data: current };
+  }
+
+  const existingMember = (current.groupMembers ?? []).find(
+    (member) => member.groupId === group.id && member.userId === actorUser.id && !member.leftAt,
+  );
+  if (existingMember) {
+    return {
+      ok: true,
+      data: {
+        ...current,
+        selectedGroupId: group.id,
+        selectedUserId: actorUser.id,
+      },
+    };
+  }
+
+  const memberId = makeId(context, "member");
+  const member: GroupMember = {
+    id: memberId,
+    groupId: group.id,
+    userId: actorUser.id,
+    displayNameSnapshot: actorUser.displayName,
+    role: "member",
+    status: "active",
+    joinSource: "invite",
+    invitedByUserId: invite.createdByUserId,
+    inviteId: invite.id,
+    joinedAt,
+  };
+  const updatedInvite: GroupInvite = {
+    ...invite,
+    lastUsedAt: joinedAt,
+  };
+  const event = activityEvent(
+    context,
+    group.id,
+    actorUser.id,
+    "member_joined",
+    "member",
+    member.id,
+    `${actorUser.displayName} se unió al grupo`,
+    joinedAt,
+  );
+
+  return {
+    ok: true,
+    data: {
+      ...current,
+      activityEvents: [event, ...(current.activityEvents ?? [])],
+      groupInvites: (current.groupInvites ?? []).map((item) => item.id === updatedInvite.id ? updatedInvite : item),
+      groupMembers: [...(current.groupMembers ?? []), member],
+      members: [
+        ...current.members,
+        {
+          id: member.id,
+          userId: member.userId,
+          name: member.displayNameSnapshot,
+          avatarColor: actorUser.avatarColor,
+          role: member.role,
+          status: member.status,
+          joinSource: member.joinSource,
+          joinedAt: member.joinedAt,
+        },
+      ],
+      groups: current.groups.map((item) =>
+        item.id === group.id
+          ? { ...item, memberIds: [...item.memberIds, member.id], updatedAt: joinedAt }
+          : item,
+      ),
+      selectedGroupId: group.id,
+      selectedUserId: actorUser.id,
+      syncOutbox: [
+        ...(current.syncOutbox ?? []),
+        createSyncOutboxItem({ operation: "update", entityType: "group_invite", entityId: updatedInvite.id, payload: updatedInvite, createdAt: joinedAt }),
+        createSyncOutboxItem({
+          operation: "create",
+          entityType: "group_member",
+          entityId: member.id,
+          payload: member,
+          createdAt: joinedAt,
+        }),
+        createSyncOutboxItem({ operation: "create", entityType: "activity_event", entityId: event.id, payload: event, createdAt: joinedAt }),
       ],
     },
   };
@@ -203,6 +346,8 @@ export function addMemberMutation(
     name: groupMember.displayNameSnapshot,
     avatarColor: user.avatarColor,
     role: groupMember.role,
+    status: groupMember.status,
+    joinSource: groupMember.joinSource,
     joinedAt: groupMember.joinedAt,
   };
   const event = activityEvent(

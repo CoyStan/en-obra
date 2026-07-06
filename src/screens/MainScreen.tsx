@@ -738,6 +738,7 @@ export function MainScreen() {
     data,
     error,
     isLoading,
+    joinGroupByInvite,
     markSettlementPaid,
     resetDemo,
     selectGroup,
@@ -747,10 +748,12 @@ export function MainScreen() {
 
   const [activeTab, setActiveTab] = useState<TabId>("groups");
   const [showGroupForm, setShowGroupForm] = useState(false);
+  const [groupFormMode, setGroupFormMode] = useState<"create" | "join">("create");
   const [showMemberForm, setShowMemberForm] = useState(false);
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [groupDescription, setGroupDescription] = useState("");
+  const [groupInviteCode, setGroupInviteCode] = useState("");
   const [memberName, setMemberName] = useState("");
   const [expenseTitle, setExpenseTitle] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
@@ -872,6 +875,7 @@ export function MainScreen() {
   const openGroupWorkspace = (groupId: string) => {
     selectGroup(groupId);
     setShowGroupForm(false);
+    setGroupFormMode("create");
     setShowExpenseForm(false);
     setPendingSettlement(null);
     setActiveTab(firstGroupWorkspaceTab);
@@ -976,6 +980,18 @@ export function MainScreen() {
     setGroupName("");
     setGroupDescription("");
     setShowGroupForm(false);
+    setGroupFormMode("create");
+  };
+
+  const submitGroupInvite = () => {
+    const joined = joinGroupByInvite(groupInviteCode, activeActorUserId);
+    if (!joined) {
+      return;
+    }
+    setGroupInviteCode("");
+    setShowGroupForm(false);
+    setGroupFormMode("create");
+    setActiveTab(firstGroupWorkspaceTab);
   };
 
   const submitMember = () => {
@@ -1382,31 +1398,92 @@ export function MainScreen() {
           <ActionButton
             icon={showGroupForm ? "close" : "plus"}
             label={showGroupForm ? "Cerrar" : "Nuevo"}
-            onPress={() => setShowGroupForm((current) => !current)}
+            onPress={() => {
+              setShowGroupForm((current) => !current);
+              setGroupFormMode("create");
+            }}
             tone="secondary"
           />
         </View>
 
         {showGroupForm ? (
           <View style={styles.groupLobbyForm}>
-            <Field
-              label="Nombre del grupo"
-              onChangeText={setGroupName}
-              placeholder="Ej. Viaje a Guadalajara"
-              value={groupName}
-            />
-            <Field
-              label="Contexto"
-              onChangeText={setGroupDescription}
-              placeholder="Comidas, rides y hospedaje"
-              value={groupDescription}
-            />
-            <ActionButton
-              disabled={!groupName.trim()}
-              icon="check"
-              label="Crear grupo"
-              onPress={submitGroup}
-            />
+            <View style={styles.groupFlowTabs}>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityState={{ selected: groupFormMode === "create" }}
+                onPress={() => setGroupFormMode("create")}
+                style={[styles.groupFlowTab, groupFormMode === "create" && styles.groupFlowTabActive]}
+              >
+                <MaterialCommunityIcons
+                  color={groupFormMode === "create" ? colors.primaryDark : colors.mutedInk}
+                  name="plus-circle-outline"
+                  size={17}
+                />
+                <Text style={[styles.groupFlowTabText, groupFormMode === "create" && styles.groupFlowTabTextActive]}>
+                  Crear
+                </Text>
+              </Pressable>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityState={{ selected: groupFormMode === "join" }}
+                onPress={() => setGroupFormMode("join")}
+                style={[styles.groupFlowTab, groupFormMode === "join" && styles.groupFlowTabActive]}
+              >
+                <MaterialCommunityIcons
+                  color={groupFormMode === "join" ? colors.primaryDark : colors.mutedInk}
+                  name="link-variant"
+                  size={17}
+                />
+                <Text style={[styles.groupFlowTabText, groupFormMode === "join" && styles.groupFlowTabTextActive]}>
+                  Unirme
+                </Text>
+              </Pressable>
+            </View>
+
+            {groupFormMode === "create" ? (
+              <>
+                <Field
+                  label="Nombre del grupo"
+                  onChangeText={setGroupName}
+                  placeholder="Ej. Viaje a Guadalajara"
+                  value={groupName}
+                />
+                <Field
+                  label="Contexto"
+                  onChangeText={setGroupDescription}
+                  placeholder="Comidas, rides y hospedaje"
+                  value={groupDescription}
+                />
+                <ActionButton
+                  disabled={!groupName.trim()}
+                  icon="check"
+                  label="Crear grupo"
+                  onPress={submitGroup}
+                />
+              </>
+            ) : (
+              <>
+                <View style={styles.groupJoinCue}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="cellphone-link" size={18} />
+                  <Text style={styles.groupJoinCueText}>
+                    Usa un código local demo. No crea una liga real ni sincroniza con backend.
+                  </Text>
+                </View>
+                <Field
+                  label="Código de invitación"
+                  onChangeText={(value) => setGroupInviteCode(value.toUpperCase())}
+                  placeholder="Ej. CC-ASADA-MTY"
+                  value={groupInviteCode}
+                />
+                <ActionButton
+                  disabled={!groupInviteCode.trim()}
+                  icon="login"
+                  label="Unirme al grupo"
+                  onPress={submitGroupInvite}
+                />
+              </>
+            )}
           </View>
         ) : null}
 
@@ -4791,6 +4868,55 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     gap: spacing.md,
     padding: spacing.md,
+  },
+  groupFlowTab: {
+    alignItems: "center",
+    borderRadius: radius.md,
+    flex: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    justifyContent: "center",
+    minHeight: 42,
+    paddingHorizontal: spacing.sm,
+  },
+  groupFlowTabActive: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderWidth: 1,
+  },
+  groupFlowTabs: {
+    backgroundColor: colors.surfaceStrong,
+    borderRadius: radius.lg,
+    flexDirection: "row",
+    gap: spacing.xs,
+    padding: spacing.xs,
+  },
+  groupFlowTabText: {
+    color: colors.mutedInk,
+    fontSize: typography.small,
+    fontWeight: "800",
+    lineHeight: 18,
+  },
+  groupFlowTabTextActive: {
+    color: colors.primaryDark,
+    fontWeight: "900",
+  },
+  groupJoinCue: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderColor: "rgba(8, 127, 106, 0.14)",
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    padding: spacing.sm,
+  },
+  groupJoinCueText: {
+    color: colors.primaryDark,
+    flex: 1,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 16,
   },
   groupLobbyHero: {
     backgroundColor: colors.surface,

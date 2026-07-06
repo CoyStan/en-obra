@@ -3,6 +3,7 @@ import {
   addExpenseMutation,
   addMemberMutation,
   createGroupMutation,
+  joinGroupByInviteMutation,
   markSettlementPaidMutation,
   type MutationContext,
 } from "../backend/appMutations";
@@ -42,18 +43,77 @@ describe("backend app mutations", () => {
       createdByUserId: "user-ana",
     });
     expect(result.data.selectedGroupId).toBe(group.id);
+    expect(result.data.groupInvites?.[0]).toMatchObject({
+      groupId: group.id,
+      status: "active",
+      createdByUserId: "user-ana",
+    });
     expect(result.data.groupMembers?.some((member) => member.groupId === group.id && member.role === "owner")).toBe(true);
     expect(result.data.activityEvents?.[0]).toMatchObject({
       eventType: "group_created",
       entityType: "group",
       entityId: group.id,
     });
-    expect(result.data.syncOutbox?.map((item) => item.entityType).slice(-3)).toEqual([
+    expect(result.data.syncOutbox?.map((item) => item.entityType).slice(-4)).toEqual([
       "group",
+      "group_member",
+      "group_invite",
+      "activity_event",
+    ]);
+    expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
+  it("joins a local group from an active invite code", () => {
+    const data = cloneData();
+    const result = joinGroupByInviteMutation(
+      { ...data, selectedUserId: "user-ana" },
+      { inviteCode: " cc-asada-mty " },
+      deterministicContext(),
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.data.selectedGroupId).toBe("group-asada");
+    expect(result.data.groupMembers?.some((member) =>
+      member.id === "member-test-1" &&
+      member.groupId === "group-asada" &&
+      member.userId === "user-ana" &&
+      member.joinSource === "invite" &&
+      member.inviteId === "invite-asada",
+    )).toBe(true);
+    expect(result.data.groups.find((group) => group.id === "group-asada")?.memberIds).toContain("member-test-1");
+    expect(result.data.groupInvites?.find((invite) => invite.id === "invite-asada")?.lastUsedAt).toBe("2026-06-20T12:00:00Z");
+    expect(result.data.syncOutbox?.map((item) => item.entityType).slice(-3)).toEqual([
+      "group_invite",
       "group_member",
       "activity_event",
     ]);
     expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
+  it("selects an existing group when the invite user is already a member", () => {
+    const data = cloneData();
+    const result = joinGroupByInviteMutation(
+      { ...data, selectedGroupId: "group-roma", selectedUserId: "user-ana" },
+      { inviteCode: "CC-OAXACA-2026" },
+      deterministicContext(),
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.data.selectedGroupId).toBe("group-oaxaca");
+    expect(result.data.groupMembers).toHaveLength(data.groupMembers?.length ?? 0);
+    expect(result.data.syncOutbox).toEqual(data.syncOutbox);
+  });
+
+  it("rejects unknown local invite codes", () => {
+    const data = cloneData();
+    const result = joinGroupByInviteMutation(data, { inviteCode: "NOPE" }, deterministicContext());
+
+    expect(result.ok).toBe(false);
+    expect(result.data).toBe(data);
   });
 
   it("rejects invalid group input without changing data", () => {

@@ -74,6 +74,7 @@ export function auditAppDataIntegrity(input: AppData): IntegrityIssue[] {
   const userIds = new Set((data.users ?? []).filter((user) => !user.deletedAt).map((user) => user.id));
   const groupIds = new Set(data.groups.filter((group) => !group.archivedAt).map((group) => group.id));
   const memberIds = new Set((data.groupMembers ?? []).filter((member) => !member.leftAt).map((member) => member.id));
+  const inviteIds = new Set((data.groupInvites ?? []).filter((invite) => invite.status === "active").map((invite) => invite.id));
   const expenseIds = new Set(data.expenses.filter((expense) => !expense.deletedAt).map((expense) => expense.id));
 
   if (!groupIds.has(data.selectedGroupId)) {
@@ -101,6 +102,21 @@ export function auditAppDataIntegrity(input: AppData): IntegrityIssue[] {
     }
     if (!userIds.has(member.userId)) {
       issues.push(issue("group_member_user_missing", "fatal", "Group member references a missing user.", member.id));
+    }
+    if (member.invitedByUserId && !userIds.has(member.invitedByUserId)) {
+      issues.push(issue("group_member_inviter_missing", "repairable", "Group member references a missing inviter.", member.id));
+    }
+    if (member.inviteId && !inviteIds.has(member.inviteId)) {
+      issues.push(issue("group_member_invite_missing", "repairable", "Group member references a missing invite.", member.id));
+    }
+  }
+
+  for (const invite of data.groupInvites ?? []) {
+    if (!groupIds.has(invite.groupId)) {
+      issues.push(issue("group_invite_group_missing", "repairable", "Invite references a missing group.", invite.id));
+    }
+    if (!userIds.has(invite.createdByUserId)) {
+      issues.push(issue("group_invite_creator_missing", "repairable", "Invite creator does not exist.", invite.id));
     }
   }
 
@@ -202,6 +218,10 @@ export function auditAndRepairAppData(input: AppData): IntegrityResult {
     (member) => validGroupIds.has(member.groupId) && validUserIds.has(member.userId),
   );
   const validMemberIds = new Set(groupMembers.filter((member) => !member.leftAt).map((member) => member.id));
+  const groupInvites = (normalized.groupInvites ?? []).filter(
+    (invite) => validGroupIds.has(invite.groupId) && validUserIds.has(invite.createdByUserId),
+  );
+  const validInviteIds = new Set(groupInvites.map((invite) => invite.id));
 
   const expenses: Expense[] = [];
   const expenseParticipants: ExpenseParticipant[] = [];
@@ -276,6 +296,9 @@ export function auditAndRepairAppData(input: AppData): IntegrityResult {
     if (event.entityType === "member") {
       return validMemberIds.has(event.entityId);
     }
+    if (event.entityType === "group_invite") {
+      return validInviteIds.has(event.entityId);
+    }
     return validGroupIds.has(event.entityId);
   });
 
@@ -292,6 +315,7 @@ export function auditAndRepairAppData(input: AppData): IntegrityResult {
     ...normalized,
     users,
     groups: repairedGroups,
+    groupInvites,
     groupMembers,
     members: groupMembers.map((member) => {
       const user = users.find((item) => item.id === member.userId);
@@ -301,6 +325,8 @@ export function auditAndRepairAppData(input: AppData): IntegrityResult {
         name: member.displayNameSnapshot || user?.displayName || "Integrante",
         avatarColor: user?.avatarColor ?? "#0E7C66",
         role: member.role,
+        status: member.status,
+        joinSource: member.joinSource,
         joinedAt: member.joinedAt,
         leftAt: member.leftAt,
       };

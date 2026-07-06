@@ -3,6 +3,7 @@ import {
   addExpenseMutation,
   addMemberMutation,
   createGroupMutation,
+  joinGroupByInviteMutation,
   markSettlementPaidMutation,
 } from "../backend/appMutations";
 import { calculateGroupSummary, getGroupMembers } from "../domain/balances";
@@ -89,6 +90,20 @@ export function useAppData() {
     return true;
   }, [data]);
 
+  const joinGroupByInvite = useCallback((inviteCode: string, actorUserId?: string) => {
+    const result = joinGroupByInviteMutation(data, { inviteCode, actorUserId });
+    if (!result.ok) {
+      setError(result.error);
+      return false;
+    }
+    setData(result.data);
+    persistData(result.data).catch(() => {
+      setError("No se pudo guardar el cambio localmente.");
+    });
+    setError(null);
+    return true;
+  }, [data]);
+
   const addMember = useCallback((groupId: string, name: string) => {
     const result = addMemberMutation(data, groupId, name);
     if (!result.ok) {
@@ -150,6 +165,7 @@ export function useAppData() {
     data,
     error,
     isLoading,
+    joinGroupByInvite,
     markSettlementPaid,
     resetDemo,
     selectGroup,
