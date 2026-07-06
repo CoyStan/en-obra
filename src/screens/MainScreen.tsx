@@ -826,6 +826,8 @@ export function MainScreen() {
   const [dataControlMessage, setDataControlMessage] = useState("");
   const [dataControlTone, setDataControlTone] = useState<"success" | "error">("success");
   const [pendingSettlement, setPendingSettlement] = useState<SettlementSuggestion | null>(null);
+  const [settlementBankAlias, setSettlementBankAlias] = useState("");
+  const [settlementClabeReference, setSettlementClabeReference] = useState("");
   const [feedback, setFeedback] = useState<{ message: string; tone: "success" | "neutral" | "due" } | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
   const moneyFlowProgress = useRef(new Animated.Value(0)).current;
@@ -1261,9 +1263,20 @@ export function MainScreen() {
     if (!selectedGroup || !pendingSettlement) {
       return;
     }
-    markSettlementPaid(selectedGroup.id, pendingSettlement, activeActorUserId);
+    markSettlementPaid(selectedGroup.id, pendingSettlement, activeActorUserId, {
+      localBankAlias: settlementBankAlias,
+      localClabeReference: settlementClabeReference,
+    });
     setPendingSettlement(null);
+    setSettlementBankAlias("");
+    setSettlementClabeReference("");
     setFeedback({ message: "Arreglo marcado como pagado en el registro local.", tone: "success" });
+  };
+
+  const closeSettlementConfirmation = () => {
+    setPendingSettlement(null);
+    setSettlementBankAlias("");
+    setSettlementClabeReference("");
   };
 
   const resetLocalDemo = () => {
@@ -2830,82 +2843,123 @@ export function MainScreen() {
     return (
       <Modal
         animationType="fade"
-        onRequestClose={() => setPendingSettlement(null)}
+        onRequestClose={closeSettlementConfirmation}
         transparent
         visible={Boolean(pendingSettlement)}
       >
-        <View style={styles.confirmOverlay}>
-          <View style={[styles.confirmCard, styles.settlementAgreementCard]}>
-            <View style={styles.settlementAgreementHeader}>
-              <View style={styles.confirmIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="handshake-outline" size={20} />
-              </View>
-              <View style={styles.settlementAgreementTitleWrap}>
-                <Text style={styles.confirmEyebrow}>Arreglo fuera de la app</Text>
-                <Text style={styles.confirmTitle}>{perspective?.confirmTitle ?? "Confirmar arreglo local"}</Text>
-              </View>
-            </View>
-
-            {pendingSettlement ? (
-              <View style={[styles.settlementAgreementRoute, compact && styles.settlementAgreementRouteCompact]}>
-                <View style={styles.settlementAgreementPerson}>
-                  <Avatar color={from?.avatarColor ?? colors.due} label={from?.name ?? "A"} />
-                  <Text numberOfLines={1} style={styles.settlementAgreementPersonName}>{from?.name ?? "Integrante"}</Text>
-                  <Text style={styles.settlementAgreementRole}>paga</Text>
+        <View style={[styles.confirmOverlay, styles.settlementOverlay]}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            style={styles.settlementSheetKeyboard}
+          >
+            <View style={[styles.confirmCard, styles.settlementAgreementCard]}>
+              <View style={styles.settlementSheetHandle} />
+              <View style={styles.settlementAgreementHeader}>
+                <View style={styles.confirmIcon}>
+                  <MaterialCommunityIcons color={colors.primaryDark} name="handshake-outline" size={20} />
                 </View>
-                <View style={[styles.settlementAgreementMiddle, compact && styles.settlementAgreementMiddleCompact]}>
-                  <Text adjustsFontSizeToFit minimumFontScale={0.62} numberOfLines={1} style={[styles.settlementAgreementAmount, compact && styles.settlementAgreementAmountCompact]}>
-                    {formatMoney(pendingSettlement.amountCents)}
-                  </Text>
-                  <View style={styles.settlementAgreementTrack}>
-                    <View style={styles.settlementAgreementDot}>
-                      <MaterialCommunityIcons color={colors.surface} name="cash-check" size={13} />
+                <View style={styles.settlementAgreementTitleWrap}>
+                  <Text style={styles.confirmEyebrow}>Arreglo fuera de la app</Text>
+                  <Text style={styles.confirmTitle}>{perspective?.confirmTitle ?? "Confirmar arreglo local"}</Text>
+                </View>
+              </View>
+
+              <ScrollView
+                contentContainerStyle={styles.settlementAgreementScroll}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
+              >
+                {pendingSettlement ? (
+                  <View style={styles.settlementAgreementRoute}>
+                    <View style={styles.settlementAgreementPerson}>
+                      <Avatar color={from?.avatarColor ?? colors.due} label={from?.name ?? "A"} />
+                      <View style={styles.settlementAgreementPersonCopy}>
+                        <Text numberOfLines={1} style={styles.settlementAgreementPersonName}>{from?.name ?? "Integrante"}</Text>
+                        <Text style={styles.settlementAgreementRole}>paga</Text>
+                      </View>
+                    </View>
+                    <View style={styles.settlementAgreementMiddle}>
+                      <MaterialCommunityIcons color={colors.primaryDark} name="arrow-right" size={18} />
+                      <Text adjustsFontSizeToFit minimumFontScale={0.72} numberOfLines={1} style={styles.settlementAgreementAmount}>
+                        {formatMoney(pendingSettlement.amountCents)}
+                      </Text>
+                    </View>
+                    <View style={styles.settlementAgreementPerson}>
+                      <Avatar color={to?.avatarColor ?? colors.primary} label={to?.name ?? "B"} />
+                      <View style={styles.settlementAgreementPersonCopy}>
+                        <Text numberOfLines={1} style={styles.settlementAgreementPersonName}>{to?.name ?? "Integrante"}</Text>
+                        <Text style={styles.settlementAgreementRole}>recibe</Text>
+                      </View>
                     </View>
                   </View>
-                  <Text style={styles.settlementAgreementRouteLabel}>fuera de Cuentas Claras</Text>
+                ) : null}
+
+                <View style={styles.settlementAgreementBoundary}>
+                  <View style={styles.settlementBoundaryIcon}>
+                    <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={18} />
+                  </View>
+                  <View style={styles.settlementBoundaryCopy}>
+                    <Text style={styles.settlementBoundaryTitle}>Solo registro local</Text>
+                    <Text style={styles.settlementBoundaryText}>
+                      {perspective?.confirmBody ??
+                        "Esto marca el arreglo como pagado en Cuentas Claras. No mueve dinero ni inicia pagos reales."}
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.settlementAgreementPerson}>
-                  <Avatar color={to?.avatarColor ?? colors.primary} label={to?.name ?? "B"} />
-                  <Text numberOfLines={1} style={styles.settlementAgreementPersonName}>{to?.name ?? "Integrante"}</Text>
-                  <Text style={styles.settlementAgreementRole}>recibe</Text>
+
+                <View style={styles.settlementHelperBox} testID="settlement-helper-box">
+                  <View style={styles.settlementHelperHeader}>
+                    <View style={styles.settlementHelperIcon}>
+                      <MaterialCommunityIcons color={colors.primaryDark} name="bank-outline" size={17} />
+                    </View>
+                    <View style={styles.settlementHelperCopy}>
+                      <Text style={styles.settlementHelperTitle}>Referencia SPEI opcional</Text>
+                      <Text style={styles.settlementHelperText}>Nota local: no valida CLABE ni inicia pagos.</Text>
+                    </View>
+                  </View>
+                  <View style={styles.settlementHelperFields}>
+                    <TextField
+                      helper="Ej. BBVA Ana o cuenta de renta."
+                      label="Alias o banco"
+                      onChangeText={setSettlementBankAlias}
+                      placeholder="Opcional"
+                      testID="settlement-bank-alias-input"
+                      value={settlementBankAlias}
+                    />
+                    <TextField
+                      helper="Visible solo en este demo local."
+                      label="CLABE o referencia"
+                      onChangeText={setSettlementClabeReference}
+                      placeholder="Opcional"
+                      testID="settlement-clabe-reference-input"
+                      value={settlementClabeReference}
+                    />
+                  </View>
                 </View>
-              </View>
-            ) : null}
 
-            <View style={styles.settlementAgreementBoundary}>
-              <View style={styles.settlementBoundaryIcon}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={19} />
-              </View>
-              <View style={styles.settlementBoundaryCopy}>
-                <Text style={styles.settlementBoundaryTitle}>Cuentas Claras solo guarda el acuerdo</Text>
-                <Text style={styles.settlementBoundaryText}>
-                  {perspective?.confirmBody ??
-                    "Esto solo marca el arreglo como pagado en Cuentas Claras. No mueve dinero ni inicia pagos reales."}
-                </Text>
+                <View style={styles.settlementAgreementEffect}>
+                  <View style={styles.settlementEffectItem}>
+                    <MaterialCommunityIcons color={colors.due} name="clock-outline" size={18} />
+                    <Text style={styles.settlementEffectText}>Antes: pendiente</Text>
+                  </View>
+                  <MaterialCommunityIcons color={colors.mutedInk} name="arrow-right" size={16} />
+                  <View style={styles.settlementEffectItem}>
+                    <MaterialCommunityIcons color={colors.primary} name="check-circle-outline" size={18} />
+                    <Text style={styles.settlementEffectText}>Después: registrado local</Text>
+                  </View>
+                </View>
+              </ScrollView>
+
+              <View style={styles.sheetActions}>
+                <ActionButton icon="close" label="Cancelar" onPress={closeSettlementConfirmation} tone="ghost" />
+                <ActionButton
+                  icon="check"
+                  label={perspective?.actionLabel ?? "Registrar local"}
+                  onPress={confirmSettlementPaid}
+                />
               </View>
             </View>
-
-            <View style={styles.settlementAgreementEffect}>
-              <View style={styles.settlementEffectItem}>
-                <MaterialCommunityIcons color={colors.due} name="clock-outline" size={18} />
-                <Text style={styles.settlementEffectText}>Antes: pendiente en balance</Text>
-              </View>
-              <MaterialCommunityIcons color={colors.mutedInk} name="arrow-right" size={16} />
-              <View style={styles.settlementEffectItem}>
-                <MaterialCommunityIcons color={colors.primary} name="check-circle-outline" size={18} />
-                <Text style={styles.settlementEffectText}>Después: registrado local</Text>
-              </View>
-            </View>
-
-            <View style={styles.sheetActions}>
-              <ActionButton icon="close" label="Cancelar" onPress={() => setPendingSettlement(null)} tone="ghost" />
-              <ActionButton
-                icon="check"
-                label={perspective?.actionLabel ?? "Registrar local"}
-                onPress={confirmSettlementPaid}
-              />
-            </View>
-          </View>
+          </KeyboardAvoidingView>
         </View>
       </Modal>
     );
@@ -6464,6 +6518,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+  settlementOverlay: {
+    justifyContent: "flex-end",
+    paddingHorizontal: spacing.sm,
+    paddingTop: spacing.lg,
+  },
+  settlementSheetKeyboard: {
+    maxHeight: "92%",
+    width: "100%",
+  },
   confirmPerson: {
     color: colors.ink,
     fontSize: typography.small,
@@ -6487,50 +6550,42 @@ const styles = StyleSheet.create({
   },
   settlementAgreementAmount: {
     color: colors.primaryDark,
-    fontSize: typography.heading,
+    fontSize: typography.small,
     fontVariant: ["tabular-nums"],
     fontWeight: "900",
-    lineHeight: 22,
-    textAlign: "center",
-  },
-  settlementAgreementAmountCompact: {
-    fontSize: typography.body,
-    lineHeight: 20,
+    lineHeight: 17,
+    textAlign: "right",
   },
   settlementAgreementBoundary: {
     alignItems: "flex-start",
     backgroundColor: colors.successWash,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     flexDirection: "row",
     gap: spacing.sm,
-    padding: spacing.md,
+    padding: spacing.sm,
     width: "100%",
   },
   settlementAgreementCard: {
     alignItems: "stretch",
-    borderRadius: radius.lg,
-    gap: spacing.md,
-  },
-  settlementAgreementDot: {
-    alignItems: "center",
-    alignSelf: "center",
-    backgroundColor: colors.primary,
-    borderColor: colors.surface,
-    borderRadius: 13,
-    borderWidth: 2,
-    height: 26,
-    justifyContent: "center",
-    marginTop: -10,
-    width: 26,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderRadius: 24,
+    gap: spacing.sm,
+    margin: 0,
+    maxHeight: "100%",
+    maxWidth: 520,
+    paddingBottom: spacing.sm,
+    width: "100%",
   },
   settlementAgreementEffect: {
     alignItems: "center",
     backgroundColor: colors.canvas,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     flexDirection: "row",
     gap: spacing.sm,
     justifyContent: "space-between",
-    padding: spacing.sm,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
     width: "100%",
   },
   settlementAgreementHeader: {
@@ -6538,26 +6593,77 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.sm,
   },
-  settlementAgreementMiddle: {
-    flex: 1,
-    gap: spacing.xs,
-    minWidth: 0,
+  settlementAgreementScroll: {
+    gap: spacing.sm,
+    paddingBottom: spacing.xs,
   },
-  settlementAgreementMiddleCompact: {
+  settlementHelperBox: {
+    backgroundColor: colors.canvas,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.sm,
     width: "100%",
   },
-  settlementAgreementPerson: {
-    alignItems: "center",
-    gap: spacing.xs,
-    minWidth: 64,
+  settlementHelperCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
   },
-  settlementAgreementPersonName: {
+  settlementHelperFields: {
+    gap: spacing.xs,
+  },
+  settlementHelperHeader: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  settlementHelperIcon: {
+    alignItems: "center",
+    backgroundColor: colors.successWash,
+    borderRadius: 16,
+    height: 32,
+    justifyContent: "center",
+    width: 32,
+  },
+  settlementHelperText: {
+    color: colors.mutedInk,
+    fontSize: typography.micro,
+    fontWeight: "700",
+    lineHeight: 15,
+  },
+  settlementHelperTitle: {
     color: colors.ink,
     fontSize: typography.small,
     fontWeight: "900",
     lineHeight: 17,
-    maxWidth: 76,
-    textAlign: "center",
+  },
+  settlementAgreementMiddle: {
+    alignItems: "center",
+    flex: 1.3,
+    flexDirection: "row",
+    gap: spacing.xs,
+    justifyContent: "flex-end",
+    minWidth: 0,
+  },
+  settlementAgreementPerson: {
+    alignItems: "center",
+    flex: 0.85,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minWidth: 0,
+  },
+  settlementAgreementPersonCopy: {
+    flex: 1,
+    gap: 1,
+    minWidth: 0,
+  },
+  settlementAgreementPersonName: {
+    color: colors.ink,
+    fontSize: typography.micro,
+    fontWeight: "900",
+    lineHeight: 15,
   },
   settlementAgreementRole: {
     color: colors.mutedInk,
@@ -6568,32 +6674,24 @@ const styles = StyleSheet.create({
   settlementAgreementRoute: {
     alignItems: "center",
     backgroundColor: colors.surfaceTinted,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     flexDirection: "row",
     gap: spacing.sm,
-    padding: spacing.md,
+    padding: spacing.sm,
     width: "100%",
-  },
-  settlementAgreementRouteCompact: {
-    flexDirection: "column",
-    justifyContent: "space-around",
-  },
-  settlementAgreementRouteLabel: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "800",
-    lineHeight: 15,
-    textAlign: "center",
   },
   settlementAgreementTitleWrap: {
     flex: 1,
     gap: 1,
     minWidth: 0,
   },
-  settlementAgreementTrack: {
+  settlementSheetHandle: {
+    alignSelf: "center",
     backgroundColor: colors.border,
     borderRadius: 999,
-    height: 6,
+    height: 4,
+    marginBottom: spacing.xs,
+    width: 42,
   },
   settlementBoundaryCopy: {
     flex: 1,
@@ -6603,16 +6701,16 @@ const styles = StyleSheet.create({
   settlementBoundaryIcon: {
     alignItems: "center",
     backgroundColor: colors.surface,
-    borderRadius: 18,
-    height: 36,
+    borderRadius: 16,
+    height: 32,
     justifyContent: "center",
-    width: 36,
+    width: 32,
   },
   settlementBoundaryText: {
     color: colors.mutedInk,
-    fontSize: typography.small,
+    fontSize: typography.micro,
     fontWeight: "600",
-    lineHeight: 18,
+    lineHeight: 15,
   },
   settlementBoundaryTitle: {
     color: colors.ink,

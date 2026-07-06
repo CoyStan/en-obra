@@ -399,6 +399,10 @@ describe("backend app mutations", () => {
         currency: "MXN",
       },
       "user-diego",
+      {
+        localBankAlias: "  BBVA Ana  ",
+        localClabeReference: " CLABE demo terminación 1234 ",
+      },
       deterministicContext(),
     );
 
@@ -407,14 +411,45 @@ describe("backend app mutations", () => {
 
     expect(result.data.settlements[0]).toMatchObject({
       id: "settlement-test-1",
+      localBankAlias: "BBVA Ana",
+      localClabeReference: "CLABE demo terminación 1234",
       status: "paid",
       recordedByUserId: "user-diego",
-      note: "Registro local de pago externo.",
+      note: "Registro local de pago externo con nota de referencia.",
     });
     expect(result.data.syncOutbox?.map((item) => item.entityType).slice(-2)).toEqual([
       "settlement",
       "activity_event",
     ]);
     expect(auditAppDataIntegrity(result.data)).toEqual([]);
+  });
+
+  it("does not store empty settlement helper fields", () => {
+    const data = cloneData();
+    const result = markSettlementPaidMutation(
+      data,
+      "group-oaxaca",
+      {
+        fromMemberId: "member-oaxaca-diego",
+        toMemberId: "member-oaxaca-ana",
+        amountCents: 168810,
+        currency: "MXN",
+      },
+      "user-diego",
+      {
+        localBankAlias: " ",
+        localClabeReference: "",
+      },
+      deterministicContext(),
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.data.settlements[0]).toMatchObject({
+      localBankAlias: undefined,
+      localClabeReference: undefined,
+      note: "Registro local de pago externo.",
+    });
   });
 });

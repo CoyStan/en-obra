@@ -38,6 +38,11 @@ export type AddExpenseMutationInput = {
 
 export type UpdateExpenseMutationInput = AddExpenseMutationInput;
 
+export type SettlementHelperInput = {
+  localBankAlias?: string;
+  localClabeReference?: string;
+};
+
 export type JoinGroupMutationInput = {
   inviteCode: string;
   actorUserId?: string;
@@ -756,10 +761,13 @@ export function markSettlementPaidMutation(
   groupId: string,
   suggestion: SettlementSuggestion,
   actorUserId?: string,
+  helper?: SettlementHelperInput,
   context?: MutationContext,
 ): MutationResult {
   const createdAt = currentTime(context);
   const resolvedActorUserId = resolveActorUserId(current, actorUserId);
+  const localBankAlias = helper?.localBankAlias?.trim();
+  const localClabeReference = helper?.localClabeReference?.trim();
   const settlement: Settlement = {
     id: makeId(context, "settlement"),
     groupId,
@@ -771,7 +779,11 @@ export function markSettlementPaidMutation(
     recordedByUserId: resolvedActorUserId,
     recordedAt: createdAt,
     createdAt,
-    note: "Registro local de pago externo.",
+    note: localBankAlias || localClabeReference
+      ? "Registro local de pago externo con nota de referencia."
+      : "Registro local de pago externo.",
+    localBankAlias: localBankAlias || undefined,
+    localClabeReference: localClabeReference || undefined,
   };
   const event = activityEvent(
     context,

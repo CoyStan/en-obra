@@ -8,6 +8,7 @@ import {
   markSettlementPaidMutation,
   removeMemberMutation,
   renameMemberMutation,
+  type SettlementHelperInput,
   updateExpenseMutation,
 } from "../backend/appMutations";
 import { calculateGroupSummary, getGroupMembers } from "../domain/balances";
@@ -194,8 +195,13 @@ export function useAppData() {
     return true;
   }, [data]);
 
-  const markSettlementPaid = useCallback((groupId: string, suggestion: SettlementSuggestion, actorUserId?: string) => {
-    const result = markSettlementPaidMutation(data, groupId, suggestion, actorUserId);
+  const markSettlementPaid = useCallback((
+    groupId: string,
+    suggestion: SettlementSuggestion,
+    actorUserId?: string,
+    helper?: SettlementHelperInput,
+  ) => {
+    const result = markSettlementPaidMutation(data, groupId, suggestion, actorUserId, helper);
     if (!result.ok) {
       setError(result.error);
       return;

@@ -678,3 +678,16 @@ Rationale: Reminder copy is useful immediately, but external sharing can imply
 production messaging, payments, permissions, or privacy choices. A local text
 adapter gives the app a safe contract to review and replace later without
 secrets, paid APIs, production backend behavior, or real payment processing.
+
+### Keep SPEI/CLABE Helper As Local Settlement Notes
+
+Decision: The settlement confirmation flow may collect an optional bank alias
+and CLABE/reference note, but the app stores those values only as local
+settlement metadata.
+
+Rationale: Mexico/LATAM users often coordinate SPEI or bank-transfer details
+outside an expense app, so a lightweight helper makes the local settlement record
+more useful. The helper must not validate CLABE, copy values to the clipboard,
+initiate transfers, call external services, store secrets, or imply real payment
+processing. It is a replaceable local adapter surface for a future production
+payment or sharing architecture.

@@ -103,6 +103,8 @@ export type Settlement = {
   recordedByUserId?: string;
   recordedAt?: string;
   note?: string;
+  localBankAlias?: string;
+  localClabeReference?: string;
   createdAt: string;
 };
 
