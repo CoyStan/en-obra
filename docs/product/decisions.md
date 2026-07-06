@@ -776,3 +776,31 @@ adding a web-only dependency. The selected direction is closer to Supabase's
 clean product feel than to a beige finance notebook, so it should feel lighter,
 more premium, and more technical without losing the Mexico/LATAM trust cues or
 MXN financial clarity.
+
+## 2026-07-06
+
+### Simplify the Palette to a Cool Neutral Base with Sky Primary
+
+Decision: Refresh `src/theme/tokens.json` to a clean slate-white canvas, white
+surfaces, a single sky-blue primary action color, reduced warm accents, and
+clear red owed states. Update the NativeWind token bridge to match.
+
+Rationale: The Supabase-Money palette left the app feeling one-note green and
+generic. A cool neutral base with a crisp sky-blue primary feels more modern and
+premium, keeps color reserved for action and money state, and still supports the
+Android-first LATAM finance context.
+
+### Reduce Text Density on the Inicio Surface
+
+Decision: Remove redundant labels from the Home/Inicio surface: drop the
+"Grupo activo" kicker, the group member strip header, the activity "Historial"
+kicker, the Home activity "Demo" reset control, and the "Perfil local" / "Demo
+local" identity meta. Keep "Sin pagos reales" inside the money instrument near
+settlement context and simplify settlement captions to "Solo registro" / "Todo
+en paz".
+
+Rationale: The first viewport was cluttered with explanatory copy and local-demo
+disclaimers that competed with the balance and next action. The remaining copy
+should be scannable: who you are, what the group is, your balance, the next
+route, and the primary action. Settlement and local-only honesty remain
+visible but compact.

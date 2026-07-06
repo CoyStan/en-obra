@@ -4455,6 +4455,42 @@
       "acceptance_target": "Internal testing readiness docs identify demo-only boundaries, Play checklist, screenshot evidence, and founder-only gates.",
       "required_approval_capability": "design",
       "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0111/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-OPEN-DESIGN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0111",
+      "title": "Premium UI simplification and modern palette refresh \u2014 Inicio surface",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "active",
+      "scope": "Simplify the Inicio/Home surface, reduce redundant text, modernize the palette to a clean cool-neutral base, and migrate the surface from legacy StyleSheet to the NativeWind reusables system. Keep 'Sin pagos reales' near settlement actions. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0111/**,company-os/workspace.json.",
+      "acceptance_target": "Inicio/Home is cleaner, uses fewer redundant labels, presents a modern simplified palette, is fully token-driven, passes typecheck/tests/export, and captures screenshots at 360/390/412 widths.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
     }
   ],
   "attempts": [

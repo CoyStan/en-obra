@@ -918,7 +918,6 @@ export function MainScreen() {
     : account.profile
       ? `Tú eres ${account.profile.displayName}`
       : "Elige tu persona";
-  const identityMeta = account.profile && account.mode === "signed-in" ? "Perfil local" : "Demo local";
   const activeTabConfig = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
   const workspaceSectionLabel = activeTabConfig.groupScoped ? activeTabConfig.label : "Grupos";
   const workspaceHint = selectedGroup
@@ -1365,9 +1364,6 @@ export function MainScreen() {
           ? `${personalSettlementFrom?.name ?? "Alguien"} te paga`
           : "Acuerdo del grupo"
       : "Grupo en paz";
-    const routeCaption = personalSettlement
-      ? "Acuerdo externo · solo registro local"
-      : "No hay pagos pendientes";
     const nextActionLabel = personalSettlement
       ? personalSettlement.fromMemberId === activeGroupMember?.id
         ? "Registrar arreglo"
@@ -1395,16 +1391,11 @@ export function MainScreen() {
             >
               <GroupObject group={selectedGroup} size="large" />
               <View style={styles.odCommandGroupCopy}>
-                <Text numberOfLines={1} style={styles.odCommandKicker}>Grupo activo</Text>
                 <Text numberOfLines={1} style={styles.odCommandTitle}>{selectedGroup.name}</Text>
                 <Text numberOfLines={1} style={styles.odCommandMeta}>{selectedMembers.length} integrantes · MXN</Text>
               </View>
-              <MaterialCommunityIcons color={colors.primaryDark} name="swap-horizontal" size={18} />
+              <MaterialCommunityIcons color={colors.primaryDark} name="chevron-right" size={18} />
             </Pressable>
-            <View style={styles.commandTrustChip}>
-              <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={14} />
-              <Text style={styles.odCommandTrustText}>Sin pagos reales</Text>
-            </View>
           </View>
 
           <HomeMoneyInstrument
@@ -1422,32 +1413,27 @@ export function MainScreen() {
               ) : (
                 <View style={styles.instrumentPeaceLine}>
                   <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={20} />
-                  <Text style={styles.instrumentPeaceText}>Todo en paz · no hay arreglos pendientes</Text>
+                  <Text style={styles.instrumentPeaceText}>Todo en paz</Text>
                 </View>
               )
             }
             identity={{
               avatarColor: displayMember?.avatarColor ?? colors.primary,
               label: displayMember?.name ?? "Elige persona",
-              meta: identityMeta,
               onPress: openIdentity,
             }}
             openLabel={`Abierto ${formatMoney(activeGroupSummary.openBalanceCents)}`}
             openPercent={openPercent}
             routeAmount={personalSettlement ? formatMoney(personalSettlement.amountCents) : "$0.00"}
-            routeCaption={personalSettlement ? personalCue : routeCaption}
+            routeCaption={personalSettlement ? personalCue : undefined}
             routeTitle={routeTitle}
-            spentLabel={`Gastado ${formatMoney(activeGroupSummary.totalSpentCents)}`}
+            spentLabel={`Total ${formatMoney(activeGroupSummary.totalSpentCents)}`}
             stateLabel={personalBalanceState.label}
             testID="inicio-money-instrument"
             tone={personalBalanceState.tone}
           />
 
           <View style={styles.peopleStrip}>
-            <View style={styles.peopleStripHeader}>
-              <Text style={styles.peopleStripTitle}>Personas del grupo</Text>
-              <Text style={styles.peopleStripMeta}>{hiddenMemberCount ? `+${hiddenMemberCount}` : "Todos"}</Text>
-            </View>
             <View style={styles.peopleStripRow}>
               {visibleMembers.map((member) => (
                 <Pressable
@@ -1488,7 +1474,7 @@ export function MainScreen() {
             </View>
             <View style={styles.actionDockCopy}>
               <Text style={styles.actionDockLabel}>{nextActionLabel}</Text>
-              <Text style={styles.actionDockMeta}>{personalSettlement ? "Registro local, no pago real" : "Dividir en partes iguales"}</Text>
+              <Text style={styles.actionDockMeta}>{personalSettlement ? "Solo registro" : "Dividir gasto"}</Text>
             </View>
             <MaterialCommunityIcons color={colors.surface} name="arrow-right" size={18} />
           </Pressable>
@@ -1543,20 +1529,7 @@ export function MainScreen() {
 
         <View style={styles.activityStream}>
           <View style={styles.activityStreamHeader}>
-            <View>
-              <Text style={styles.activityStreamKicker}>Historial</Text>
-              <Text style={styles.activityStreamTitle}>Últimos movimientos</Text>
-            </View>
-            <Pressable
-              accessibilityLabel="Reiniciar datos demo"
-              accessibilityRole="button"
-              hitSlop={4}
-              onPress={resetDemo}
-              style={({ pressed }) => [styles.activityStreamReset, pressed && styles.pressed]}
-            >
-              <MaterialCommunityIcons color={colors.primaryDark} name="restore" size={15} />
-              <Text style={styles.activityStreamResetText}>Demo</Text>
-            </Pressable>
+            <Text style={styles.activityStreamTitle}>Movimientos</Text>
           </View>
           {activity.length === 0 ? (
             <EmptyState
@@ -4015,11 +3988,6 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontWeight: "800",
   },
-  identityMeta: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "600",
-  },
   identityPill: {
     alignItems: "center",
     backgroundColor: colors.surfaceStrong,
@@ -4461,13 +4429,6 @@ const styles = StyleSheet.create({
     gap: 1,
     minWidth: 0,
   },
-  odCommandKicker: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-    textTransform: "uppercase",
-  },
   odCommandTitle: {
     color: colors.ink,
     fontSize: typography.body,
@@ -4519,24 +4480,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     gap: spacing.xs,
     padding: spacing.sm,
-  },
-  peopleStripHeader: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  peopleStripTitle: {
-    color: colors.ink,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-    textTransform: "uppercase",
-  },
-  peopleStripMeta: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "800",
-    lineHeight: 14,
   },
   peopleStripRow: {
     flexDirection: "row",
@@ -5178,29 +5121,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: spacing.md,
     paddingBottom: spacing.xs,
-  },
-  activityStreamKicker: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-    textTransform: "uppercase",
-  },
-  activityStreamReset: {
-    alignItems: "center",
-    backgroundColor: colors.canvas,
-    borderColor: colors.border,
-    borderRadius: 999,
-    borderWidth: 1,
-    flexDirection: "row",
-    gap: spacing.xs,
-    minHeight: 32,
-    paddingHorizontal: spacing.sm,
-  },
-  activityStreamResetText: {
-    color: colors.primaryDark,
-    fontSize: typography.micro,
-    fontWeight: "900",
   },
   activityStreamTitle: {
     color: colors.ink,
