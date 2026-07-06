@@ -296,31 +296,31 @@ function settlementPerspective(
 
   if (isActivePayer) {
     return {
-      actionLabel: "Registrar pago",
+      actionLabel: "Solo marcar pagado",
       badge: "Pago pendiente",
       confirmBody:
-        "Confirma si ya pagaste fuera de la app. No se mueve dinero.",
-      confirmTitle: `¿Registrar pago a ${toName}?`,
+        "Confirma solo si ya pagaste por fuera. Cuentas Claras no envía dinero ni hace transferencias.",
+      confirmTitle: `¿Marcar pago a ${toName}?`,
       title: `Tú pagas a ${toName}`,
     };
   }
 
   if (isActiveReceiver) {
     return {
-      actionLabel: "Marcar recibido",
+      actionLabel: "Solo marcar recibido",
       badge: "Por recibir",
       confirmBody:
-        "Confirma si ya recibiste el pago fuera de la app. Solo actualiza el registro local.",
+        "Confirma solo si ya recibiste el pago por fuera. Cuentas Claras solo actualiza el registro local.",
       confirmTitle: `¿Marcar como recibido de ${fromName}?`,
       title: `${fromName} te paga`,
     };
   }
 
   return {
-    actionLabel: "Registrar acuerdo",
+    actionLabel: "Registrar local",
     badge: "Grupo",
     confirmBody:
-      "Confirma si el grupo ya liquidó fuera de la app. No se mueve dinero.",
+      "Confirma solo si el grupo ya liquidó por fuera. No se mueve dinero dentro de la app.",
     confirmTitle: "Confirmar registro local",
     title: `Vista de grupo: ${fromName} paga a ${toName}`,
   };
@@ -1263,6 +1263,9 @@ export function MainScreen() {
     if (!selectedGroup || !pendingSettlement) {
       return;
     }
+    const from = findMember(data.members, pendingSettlement.fromMemberId);
+    const to = findMember(data.members, pendingSettlement.toMemberId);
+    const perspective = settlementPerspective(pendingSettlement, displayMemberId, from, to);
     markSettlementPaid(selectedGroup.id, pendingSettlement, activeActorUserId, {
       localBankAlias: settlementBankAlias,
       localClabeReference: settlementClabeReference,
@@ -1270,7 +1273,10 @@ export function MainScreen() {
     setPendingSettlement(null);
     setSettlementBankAlias("");
     setSettlementClabeReference("");
-    setFeedback({ message: "Arreglo marcado como pagado en el registro local.", tone: "success" });
+    setFeedback({
+      message: `${perspective.title}: ${formatMoney(pendingSettlement.amountCents)} registrado localmente. Sin pagos reales.`,
+      tone: "success",
+    });
   };
 
   const closeSettlementConfirmation = () => {
@@ -1870,7 +1876,7 @@ export function MainScreen() {
                     onPress={() => setPendingSettlement(primaryRoute)}
                     testID="balance-settlement-register-button"
                   >
-                    Registrar
+                    Marcar local
                   </ReusableButton>
                 </View>
               </>

@@ -691,3 +691,14 @@ more useful. The helper must not validate CLABE, copy values to the clipboard,
 initiate transfers, call external services, store secrets, or imply real payment
 processing. It is a replaceable local adapter surface for a future production
 payment or sharing architecture.
+
+### Use Explicit Local Verbs In Settlement Confirmation
+
+Decision: Settlement actions should use verbs such as `Marcar local`,
+`Solo marcar pagado`, and `Solo marcar recibido` instead of generic payment
+verbs.
+
+Rationale: The settlement flow is useful only if users understand that the app
+is recording an agreement that happened outside Cuentas Claras. Button labels,
+confirmation copy, and success feedback should reinforce that no money moved in
+the app, while still feeling calm and action-oriented.
