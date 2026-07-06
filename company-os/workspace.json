@@ -4374,7 +4374,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "active",
       "scope": "Harden light/dark themes, contrast, tokens, and brand personality. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0108/**,company-os/workspace.json.",
       "acceptance_target": "Light/dark themes pass contrast-oriented review, keep brand personality, and avoid raw ad hoc colors.",
       "required_approval_capability": "design",
@@ -6071,6 +6071,17 @@
       "commits": [
         "0003b4358900ffee42f366ae96568137a45d19ff"
       ]
+    },
+    {
+      "id": "ATTEMPT-APP-0108",
+      "work_item_id": "WORK-APP-0108",
+      "actor": "PALARI-DESIGN",
+      "status": "active",
+      "branch": "main",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "gpt-5-codex",
+      "cleanliness": "clean",
+      "result": "Started tweakcn-inspired theme hardening for Cuentas Claras."
     }
   ],
   "evidence_runs": [
