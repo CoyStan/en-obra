@@ -3794,6 +3794,661 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0092"
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0093/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0093",
+      "title": "Add-expense UX simplification",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Simplify add-expense UX with fewer taps, progressive disclosure, list/dropdown selections, and less card-heavy layout. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0093/**,company-os/workspace.json.",
+      "acceptance_target": "Add expense takes fewer taps, uses progressive disclosure, avoids card-heavy layout, preserves validation, and passes tests/screenshots.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0094/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0094",
+      "title": "Participant split editor",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Add participant split editing for exact amounts and share units using clear list/dropdown patterns. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0094/**,company-os/workspace.json.",
+      "acceptance_target": "Users can edit exact amounts/shares in a clear list/dropdown pattern with validation and cent rounding; tests and screenshots pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0095/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0095",
+      "title": "Edit/delete expense with audit events",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Support local edit/delete expense flows with audit events and recalculated balances. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0095/**,company-os/workspace.json.",
+      "acceptance_target": "Existing local expenses can be edited/deleted with history entries, recalculated balances, data integrity tests, and no production backend.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/domain/**",
+        "src/state/**",
+        "src/backend/**",
+        "src/__tests__/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0096/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0096",
+      "title": "Settlement simplification engine",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Improve settlement route simplification and simple Spanish explanations. Allowed paths: src/domain/**,src/state/**,src/backend/**,src/__tests__/**,docs/product/decisions.md,reports/evidence/WORK-APP-0096/**,company-os/workspace.json.",
+      "acceptance_target": "Settlement engine produces minimal routes, explains them in simple Spanish, preserves integer cents, and passes tests.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0097/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0097",
+      "title": "WhatsApp-style share/reminder mock",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Generate local share/reminder Spanish text for group summaries, individual debts, and settlement reminders. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0097/**,company-os/workspace.json.",
+      "acceptance_target": "App generates shareable Spanish text without external services, secrets, or real messaging integrations; tests/screenshots pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0098/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0098",
+      "title": "SPEI/CLABE helper mock",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Add optional local-only settlement note fields for bank alias or CLABE placeholder without processing payments. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0098/**,company-os/workspace.json.",
+      "acceptance_target": "Settlement helper stores/displays optional mock SPEI/CLABE notes, clearly says no real payments, and avoids secrets/payment processing.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0099/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0099",
+      "title": "Settlement confirmation polish",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Polish mark-paid flow so it is lighter, clearer, and explicitly local/no-real-payment. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0099/**,company-os/workspace.json.",
+      "acceptance_target": "Mark-paid flow is visually lighter, confirms impact clearly, remains local-only, and passes tests/screenshots.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0100/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0100",
+      "title": "Receipt attachment local mock",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Add local/mock receipt photo placeholder support to expense creation and history display. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0100/**,company-os/workspace.json.",
+      "acceptance_target": "Add expense can attach a local/mock receipt placeholder and show it in history without OCR or cloud storage.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0101/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0101",
+      "title": "Category system expansion",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Expand categories for common Mexico/LATAM use cases with cleaner dropdown/list selection. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0101/**,company-os/workspace.json.",
+      "acceptance_target": "Categories cover common Mexico/LATAM use cases and use a clean dropdown/list selection with tests/screenshots.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0102/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0102",
+      "title": "Search and filters",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Add local search/filtering for activity and expenses by person, category, amount, and date. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0102/**,company-os/workspace.json.",
+      "acceptance_target": "Activity/expenses can be searched and filtered by person, category, amount, and date with accessible empty states.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0103/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0103",
+      "title": "CSV/PDF-ready export mock",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Generate local export summaries as text and CSV-ready data without paid services. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0103/**,company-os/workspace.json.",
+      "acceptance_target": "Local export summary produces text/CSV-ready data and demo evidence without paid PDF services or external APIs.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0104/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0104",
+      "title": "App IA simplification",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Restructure navigation around Groups -> Group Home -> Expenses/Balances/Activity/Profile with fewer competing panels. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0104/**,company-os/workspace.json.",
+      "acceptance_target": "Navigation follows the selected group mental model, reduces competing panels, and screenshots pass Android sizes.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0105/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0105",
+      "title": "Home answer-first redesign",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Redesign first viewport to show answer and next action with less copy and fewer cards. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0105/**,company-os/workspace.json.",
+      "acceptance_target": "First viewport shows personal balance, who owes whom, and next action with reduced copy/cards and verified screenshots.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0106/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0106",
+      "title": "Add-expense full-screen redesign",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Make the add-expense composer native, fast, list-driven, and less visually heavy. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0106/**,company-os/workspace.json.",
+      "acceptance_target": "Composer feels native, fast, list-driven, supports keyboard behavior, and passes Android-size screenshots.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0107/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0107",
+      "title": "Balance and settlement redesign",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Redesign balance screen around who owes whom, right-aligned money, and one clear settlement action. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0107/**,company-os/workspace.json.",
+      "acceptance_target": "Balance screen prioritizes who owes whom, right-aligns money, has one clear settlement action, and passes screenshots.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0108/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0108",
+      "title": "Dark mode and theme hardening",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Harden light/dark themes, contrast, tokens, and brand personality. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0108/**,company-os/workspace.json.",
+      "acceptance_target": "Light/dark themes pass contrast-oriented review, keep brand personality, and avoid raw ad hoc colors.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "docs/**",
+        "reports/evidence/WORK-APP-0109/**",
+        "app.json",
+        "eas.json",
+        "package.json",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0109",
+      "title": "Native Android verification pass",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Run or attempt native Android/emulator/device checks and document evidence or blockers. Allowed paths: docs/**,reports/evidence/WORK-APP-0109/**,app.json,eas.json,package.json,company-os/workspace.json.",
+      "acceptance_target": "Android verification is run or reasonably attempted, blockers are documented, and screenshots/evidence are captured where available.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
+    },
+    {
+      "allowed_resources": [
+        "docs/**",
+        "reports/evidence/WORK-APP-0110/**",
+        "app.json",
+        "eas.json",
+        "package.json",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0110",
+      "title": "Internal testing readiness refresh",
+      "goal": "GOAL-PREMIUM-MVP",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "proposed",
+      "scope": "Refresh Play/internal testing checklist, demo-only boundaries, screenshots, and remaining human gates. Allowed paths: docs/**,reports/evidence/WORK-APP-0110/**,app.json,eas.json,package.json,company-os/workspace.json.",
+      "acceptance_target": "Internal testing readiness docs identify demo-only boundaries, Play checklist, screenshot evidence, and founder-only gates.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1
     }
   ],
   "attempts": [
