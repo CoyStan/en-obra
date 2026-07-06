@@ -3,6 +3,7 @@ import type {
   ActivityEvent,
   AppData,
   Expense,
+  GroupInvite,
   GroupMember,
   Member,
   Settlement,
@@ -25,18 +26,18 @@ const users: User[] = [
 const userById = new Map(users.map((user) => [user.id, user]));
 
 const groupMembers: GroupMember[] = [
-  { id: "member-oaxaca-ana", groupId: "group-oaxaca", userId: "user-ana", displayNameSnapshot: "Ana", role: "owner", joinedAt: "2026-05-28T14:00:00Z" },
-  { id: "member-oaxaca-luis", groupId: "group-oaxaca", userId: "user-luis", displayNameSnapshot: "Luis", role: "member", joinedAt: "2026-05-28T14:00:00Z" },
-  { id: "member-oaxaca-maru", groupId: "group-oaxaca", userId: "user-maru", displayNameSnapshot: "Maru", role: "member", joinedAt: "2026-05-28T14:00:00Z" },
-  { id: "member-oaxaca-diego", groupId: "group-oaxaca", userId: "user-diego", displayNameSnapshot: "Diego", role: "member", joinedAt: "2026-05-28T14:00:00Z" },
-  { id: "member-oaxaca-sofia", groupId: "group-oaxaca", userId: "user-sofia", displayNameSnapshot: "Sofía", role: "member", joinedAt: "2026-05-28T14:00:00Z" },
-  { id: "member-roma-ana", groupId: "group-roma", userId: "user-ana", displayNameSnapshot: "Ana", role: "owner", joinedAt: "2026-06-01T12:00:00Z" },
-  { id: "member-roma-fer", groupId: "group-roma", userId: "user-fer", displayNameSnapshot: "Fer", role: "member", joinedAt: "2026-06-01T12:00:00Z" },
-  { id: "member-roma-paola", groupId: "group-roma", userId: "user-paola", displayNameSnapshot: "Paola", role: "member", joinedAt: "2026-06-01T12:00:00Z" },
-  { id: "member-asada-luis", groupId: "group-asada", userId: "user-luis", displayNameSnapshot: "Luis", role: "owner", joinedAt: "2026-06-02T12:00:00Z" },
-  { id: "member-asada-diego", groupId: "group-asada", userId: "user-diego", displayNameSnapshot: "Diego", role: "member", joinedAt: "2026-06-02T12:00:00Z" },
-  { id: "member-asada-rene", groupId: "group-asada", userId: "user-rene", displayNameSnapshot: "René", role: "member", joinedAt: "2026-06-02T12:00:00Z" },
-  { id: "member-asada-sofia", groupId: "group-asada", userId: "user-sofia", displayNameSnapshot: "Sofía", role: "member", joinedAt: "2026-06-02T12:00:00Z" },
+  { id: "member-oaxaca-ana", groupId: "group-oaxaca", userId: "user-ana", displayNameSnapshot: "Ana", role: "owner", status: "active", joinSource: "seed", joinedAt: "2026-05-28T14:00:00Z" },
+  { id: "member-oaxaca-luis", groupId: "group-oaxaca", userId: "user-luis", displayNameSnapshot: "Luis", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-ana", inviteId: "invite-oaxaca", joinedAt: "2026-05-28T14:05:00Z" },
+  { id: "member-oaxaca-maru", groupId: "group-oaxaca", userId: "user-maru", displayNameSnapshot: "Maru", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-ana", inviteId: "invite-oaxaca", joinedAt: "2026-05-28T14:07:00Z" },
+  { id: "member-oaxaca-diego", groupId: "group-oaxaca", userId: "user-diego", displayNameSnapshot: "Diego", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-ana", inviteId: "invite-oaxaca", joinedAt: "2026-05-28T14:09:00Z" },
+  { id: "member-oaxaca-sofia", groupId: "group-oaxaca", userId: "user-sofia", displayNameSnapshot: "Sofía", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-ana", inviteId: "invite-oaxaca", joinedAt: "2026-05-28T14:11:00Z" },
+  { id: "member-roma-ana", groupId: "group-roma", userId: "user-ana", displayNameSnapshot: "Ana", role: "owner", status: "active", joinSource: "created", joinedAt: "2026-06-01T12:00:00Z" },
+  { id: "member-roma-fer", groupId: "group-roma", userId: "user-fer", displayNameSnapshot: "Fer", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-ana", inviteId: "invite-roma", joinedAt: "2026-06-01T12:15:00Z" },
+  { id: "member-roma-paola", groupId: "group-roma", userId: "user-paola", displayNameSnapshot: "Paola", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-ana", inviteId: "invite-roma", joinedAt: "2026-06-01T12:18:00Z" },
+  { id: "member-asada-luis", groupId: "group-asada", userId: "user-luis", displayNameSnapshot: "Luis", role: "owner", status: "active", joinSource: "created", joinedAt: "2026-06-02T12:00:00Z" },
+  { id: "member-asada-diego", groupId: "group-asada", userId: "user-diego", displayNameSnapshot: "Diego", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-luis", inviteId: "invite-asada", joinedAt: "2026-06-02T12:20:00Z" },
+  { id: "member-asada-rene", groupId: "group-asada", userId: "user-rene", displayNameSnapshot: "René", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-luis", inviteId: "invite-asada", joinedAt: "2026-06-02T12:22:00Z" },
+  { id: "member-asada-sofia", groupId: "group-asada", userId: "user-sofia", displayNameSnapshot: "Sofía", role: "member", status: "active", joinSource: "invite", invitedByUserId: "user-luis", inviteId: "invite-asada", joinedAt: "2026-06-02T12:24:00Z" },
 ];
 
 const members: Member[] = groupMembers.map((member) => ({
@@ -45,9 +46,44 @@ const members: Member[] = groupMembers.map((member) => ({
   name: member.displayNameSnapshot,
   avatarColor: userById.get(member.userId)?.avatarColor ?? "#0E7C66",
   role: member.role,
+  status: member.status,
+  joinSource: member.joinSource,
   joinedAt: member.joinedAt,
   leftAt: member.leftAt,
 }));
+
+const groupInvites: GroupInvite[] = [
+  {
+    id: "invite-oaxaca",
+    groupId: "group-oaxaca",
+    code: "CC-OAXACA-2026",
+    label: "Liga local para el viaje",
+    status: "active",
+    createdByUserId: "user-ana",
+    createdAt: "2026-05-28T14:02:00Z",
+    lastUsedAt: "2026-05-28T14:11:00Z",
+  },
+  {
+    id: "invite-roma",
+    groupId: "group-roma",
+    code: "CC-ROMA-NORTE",
+    label: "Liga local del depa",
+    status: "active",
+    createdByUserId: "user-ana",
+    createdAt: "2026-06-01T12:05:00Z",
+    lastUsedAt: "2026-06-01T12:18:00Z",
+  },
+  {
+    id: "invite-asada",
+    groupId: "group-asada",
+    code: "CC-ASADA-MTY",
+    label: "Liga local de la asada",
+    status: "active",
+    createdByUserId: "user-luis",
+    createdAt: "2026-06-02T12:10:00Z",
+    lastUsedAt: "2026-06-02T12:24:00Z",
+  },
+];
 
 const expenses: Expense[] = [
   {
@@ -146,6 +182,28 @@ const settlements: Settlement[] = [
 ];
 
 const activityEvents: ActivityEvent[] = [
+  ...groupInvites.map((invite) => ({
+    id: `activity-${invite.id}`,
+    groupId: invite.groupId,
+    actorUserId: invite.createdByUserId,
+    eventType: "group_invite_created" as const,
+    entityType: "group_invite" as const,
+    entityId: invite.id,
+    summary: `Se creó ${invite.label}`,
+    createdAt: invite.createdAt,
+  })),
+  ...groupMembers
+    .filter((member) => member.joinSource === "invite")
+    .map((member) => ({
+      id: `activity-joined-${member.id}`,
+      groupId: member.groupId,
+      actorUserId: member.userId,
+      eventType: "member_joined" as const,
+      entityType: "member" as const,
+      entityId: member.id,
+      summary: `${member.displayNameSnapshot} se unió al grupo`,
+      createdAt: member.joinedAt,
+    })),
   ...expenses.map((expense) => ({
     id: `activity-${expense.id}`,
     groupId: expense.groupId,
@@ -174,6 +232,7 @@ export const demoData: AppData = {
   selectedGroupId: "group-oaxaca",
   users,
   members,
+  groupInvites,
   groupMembers,
   groups: [
     {

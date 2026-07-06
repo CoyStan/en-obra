@@ -11,6 +11,7 @@
     "users",
     "groups",
     "group_members",
+    "group_invites",
     "expenses",
     "expense_participants",
     "settlements",
@@ -18,10 +19,10 @@
     "sync_outbox"
   ],
   "checksums": {
-    "schemaSql": "fnv1a32:153b4aad",
-    "seedSql": "fnv1a32:93e2272c",
-    "gate": "fnv1a32:32b5c17b",
-    "manifestBody": "fnv1a32:354074e7"
+    "schemaSql": "fnv1a32:2e79ce14",
+    "seedSql": "fnv1a32:3859c1a9",
+    "gate": "fnv1a32:5e000e9f",
+    "manifestBody": "fnv1a32:20cedb71"
   },
   "requiredCapabilities": [
     "sql-schema",

@@ -14,6 +14,7 @@ describe("SQL backend dataset foundation", () => {
       "users",
       "groups",
       "group_members",
+      "group_invites",
       "expenses",
       "expense_participants",
       "settlements",
@@ -25,7 +26,9 @@ describe("SQL backend dataset foundation", () => {
 
     expect(schema).toContain("PRAGMA foreign_keys = ON;");
     expect(schema).toContain("CREATE TABLE IF NOT EXISTS users");
+    expect(schema).toContain("CREATE TABLE IF NOT EXISTS group_invites");
     expect(schema).toContain("CREATE TABLE IF NOT EXISTS sync_outbox");
+    expect(schema).toContain("join_source TEXT NOT NULL DEFAULT 'seed'");
     expect(schema).toContain("amount_cents INTEGER NOT NULL CHECK");
     expect(schema).toContain("share_cents INTEGER NOT NULL CHECK");
     expect(schema).toContain("currency_code TEXT NOT NULL DEFAULT 'MXN'");
@@ -37,6 +40,7 @@ describe("SQL backend dataset foundation", () => {
     expect(dataset.users).toHaveLength(demoData.users?.length ?? 0);
     expect(dataset.groups).toHaveLength(demoData.groups.length);
     expect(dataset.group_members).toHaveLength(demoData.groupMembers?.length ?? 0);
+    expect(dataset.group_invites).toHaveLength(demoData.groupInvites?.length ?? 0);
     expect(dataset.expenses).toHaveLength(demoData.expenses.length);
     expect(dataset.expense_participants).toHaveLength(demoData.expenseParticipants?.length ?? 0);
     expect(dataset.settlements).toHaveLength(demoData.settlements.length);
@@ -53,6 +57,7 @@ describe("SQL backend dataset foundation", () => {
     const userIds = ids(dataset.users);
     const groupIds = ids(dataset.groups);
     const memberIds = ids(dataset.group_members);
+    const inviteIds = ids(dataset.group_invites);
     const expenseIds = ids(dataset.expenses);
 
     for (const group of dataset.groups) {
@@ -64,6 +69,20 @@ describe("SQL backend dataset foundation", () => {
     for (const member of dataset.group_members) {
       expect(groupIds.has(member.group_id)).toBe(true);
       expect(userIds.has(member.user_id)).toBe(true);
+      expect(["active", "invited", "left"]).toContain(member.status);
+      expect(["seed", "created", "manual", "invite"]).toContain(member.join_source);
+      if (member.invited_by_user_id) {
+        expect(userIds.has(member.invited_by_user_id)).toBe(true);
+      }
+      if (member.invite_id) {
+        expect(inviteIds.has(member.invite_id)).toBe(true);
+      }
+    }
+
+    for (const invite of dataset.group_invites) {
+      expect(groupIds.has(invite.group_id)).toBe(true);
+      expect(userIds.has(invite.created_by_user_id)).toBe(true);
+      expect(invite.status).toBe("active");
     }
 
     for (const expense of dataset.expenses) {
@@ -104,6 +123,7 @@ describe("SQL backend dataset foundation", () => {
     expect(inserts).toEqual(secondRun);
     expect(inserts[0]).toMatch(/^INSERT INTO app_metadata/);
     expect(inserts.some((statement) => statement.includes("INSERT INTO expense_participants"))).toBe(true);
+    expect(inserts.some((statement) => statement.includes("INSERT INTO group_invites"))).toBe(true);
     expect(inserts.join("\n")).toContain("Sofía");
   });
 

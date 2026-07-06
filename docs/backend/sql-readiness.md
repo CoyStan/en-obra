@@ -20,6 +20,7 @@ The SQL contract lives in `src/backend/sqlSchema.ts` and covers:
 - `users`
 - `groups`
 - `group_members`
+- `group_invites`
 - `expenses`
 - `expense_participants`
 - `settlements`
@@ -38,8 +39,9 @@ MVP. Settlements are local records of external payments and do not move money.
 - a snapshot containing schema SQL plus seed SQL
 
 The seed uses the realistic Mexico/LATAM demo groups already present in the
-app. It includes users, group memberships, expense participants, activity
-events, and an empty `sync_outbox` ready for future backend operations.
+app. It includes users, group memberships, local invite metadata, expense
+participants, activity events, and an empty `sync_outbox` ready for future
+backend operations.
 
 Committed backend handoff artifacts:
 

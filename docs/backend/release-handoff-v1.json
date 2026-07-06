@@ -455,10 +455,10 @@
   ],
   "evidence": [
     "0 demo integrity issues",
+    "10 SQL tables",
     "3 groups",
     "5 expenses",
     "8 users",
-    "9 SQL tables",
     "SQL_SCHEMA_VERSION=1",
     "app.json",
     "docs/backend/play-preflight-v1.json",

@@ -97,6 +97,8 @@ export function createGroupMutation(
         userId: ownerUser.id,
         displayNameSnapshot: ownerUser.displayName,
         role: "owner",
+        status: "active",
+        joinSource: "created",
         joinedAt: createdAt,
       }
     : null;
@@ -191,6 +193,8 @@ export function addMemberMutation(
     userId,
     displayNameSnapshot: validation.value.name,
     role: "member",
+    status: "active",
+    joinSource: "manual",
     joinedAt: createdAt,
   };
   const member = {

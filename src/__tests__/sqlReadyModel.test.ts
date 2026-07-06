@@ -8,10 +8,20 @@ describe("SQL-ready local model", () => {
   it("ships demo data with users, group members, participants, activity, and outbox", () => {
     expect(demoData.version).toBe(2);
     expect(demoData.users?.length).toBeGreaterThanOrEqual(4);
+    expect(demoData.groupInvites?.length).toBeGreaterThanOrEqual(3);
     expect(demoData.groupMembers?.length).toBeGreaterThanOrEqual(8);
     expect(demoData.expenseParticipants?.length).toBeGreaterThan(0);
     expect(demoData.activityEvents?.length).toBeGreaterThan(0);
     expect(demoData.syncOutbox).toEqual([]);
+
+    for (const member of demoData.groupMembers ?? []) {
+      expect(member.status).toBe("active");
+      expect(["seed", "created", "manual", "invite"]).toContain(member.joinSource);
+      if (member.joinSource === "invite") {
+        expect(member.inviteId).toMatch(/^invite-/);
+        expect(member.invitedByUserId).toMatch(/^user-/);
+      }
+    }
 
     for (const expense of demoData.expenses) {
       const shares = demoData.expenseParticipants?.filter((share) => share.expenseId === expense.id) ?? [];
@@ -65,6 +75,11 @@ describe("SQL-ready local model", () => {
     expect(normalized.version).toBe(2);
     expect(normalized.users?.map((user) => user.displayName)).toEqual(["Ana", "Luis"]);
     expect(normalized.groupMembers?.map((member) => member.groupId)).toEqual(["group-demo", "group-demo"]);
+    expect(normalized.groupInvites?.[0]).toMatchObject({
+      groupId: "group-demo",
+      status: "active",
+    });
+    expect(normalized.groupMembers?.map((member) => member.status)).toEqual(["active", "active"]);
     expect(normalized.expenseParticipants?.reduce((sum, share) => sum + share.shareCents, 0)).toBe(10001);
     expect(normalized.groups[0].currencyCode).toBe("MXN");
     expect(normalized.expenses[0].paidByMemberId).toBe("member-ana");

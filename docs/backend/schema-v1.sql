@@ -33,9 +33,25 @@ CREATE TABLE IF NOT EXISTS group_members (
   user_id TEXT NOT NULL REFERENCES users(id),
   display_name_snapshot TEXT NOT NULL,
   role TEXT NOT NULL CHECK (role IN ('owner', 'member')),
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'invited', 'left')),
+  join_source TEXT NOT NULL DEFAULT 'seed' CHECK (join_source IN ('seed', 'created', 'manual', 'invite')),
+  invited_by_user_id TEXT REFERENCES users(id),
+  invite_id TEXT,
   joined_at TEXT NOT NULL,
   left_at TEXT,
   UNIQUE (group_id, user_id, joined_at)
+);
+
+CREATE TABLE IF NOT EXISTS group_invites (
+  id TEXT PRIMARY KEY,
+  group_id TEXT NOT NULL REFERENCES groups(id),
+  code TEXT NOT NULL UNIQUE,
+  label TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('active', 'revoked', 'expired')),
+  created_by_user_id TEXT NOT NULL REFERENCES users(id),
+  created_at TEXT NOT NULL,
+  expires_at TEXT,
+  last_used_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS expenses (
@@ -84,8 +100,8 @@ CREATE TABLE IF NOT EXISTS activity_events (
   id TEXT PRIMARY KEY,
   group_id TEXT NOT NULL REFERENCES groups(id),
   actor_user_id TEXT NOT NULL REFERENCES users(id),
-  event_type TEXT NOT NULL CHECK (event_type IN ('expense_created', 'settlement_recorded', 'member_added', 'group_created')),
-  entity_type TEXT NOT NULL CHECK (entity_type IN ('expense', 'settlement', 'member', 'group')),
+  event_type TEXT NOT NULL CHECK (event_type IN ('expense_created', 'settlement_recorded', 'member_added', 'member_joined', 'group_created', 'group_invite_created')),
+  entity_type TEXT NOT NULL CHECK (entity_type IN ('expense', 'settlement', 'member', 'group', 'group_invite')),
   entity_id TEXT NOT NULL,
   summary TEXT NOT NULL,
   created_at TEXT NOT NULL
@@ -94,7 +110,7 @@ CREATE TABLE IF NOT EXISTS activity_events (
 CREATE TABLE IF NOT EXISTS sync_outbox (
   id TEXT PRIMARY KEY,
   operation TEXT NOT NULL CHECK (operation IN ('create', 'update', 'delete', 'snapshot')),
-  entity_type TEXT NOT NULL CHECK (entity_type IN ('user', 'group', 'group_member', 'expense', 'expense_participant', 'settlement', 'activity_event')),
+  entity_type TEXT NOT NULL CHECK (entity_type IN ('user', 'group', 'group_member', 'group_invite', 'expense', 'expense_participant', 'settlement', 'activity_event')),
   entity_id TEXT NOT NULL,
   payload_json TEXT NOT NULL,
   status TEXT NOT NULL CHECK (status IN ('pending', 'sent', 'failed')),
@@ -108,6 +124,10 @@ CREATE INDEX idx_groups_created_by_user_id ON groups(created_by_user_id);
 CREATE INDEX idx_group_members_group_id ON group_members(group_id);
 
 CREATE INDEX idx_group_members_user_id ON group_members(user_id);
+
+CREATE INDEX idx_group_invites_group_id ON group_invites(group_id);
+
+CREATE INDEX idx_group_invites_status ON group_invites(status);
 
 CREATE INDEX idx_expenses_group_id_created_at ON expenses(group_id, created_at DESC);
 

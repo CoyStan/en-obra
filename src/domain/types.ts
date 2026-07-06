@@ -1,5 +1,9 @@
 export type CurrencyCode = "MXN";
 
+export type GroupMemberRole = "owner" | "member";
+export type GroupMemberStatus = "active" | "invited" | "left";
+export type GroupJoinSource = "seed" | "created" | "manual" | "invite";
+
 export type User = {
   id: string;
   displayName: string;
@@ -27,7 +31,9 @@ export type Member = {
   userId?: string;
   name: string;
   avatarColor: string;
-  role?: "owner" | "member";
+  role?: GroupMemberRole;
+  status?: GroupMemberStatus;
+  joinSource?: GroupJoinSource;
   joinedAt: string;
   leftAt?: string;
 };
@@ -37,9 +43,25 @@ export type GroupMember = {
   groupId: string;
   userId: string;
   displayNameSnapshot: string;
-  role: "owner" | "member";
+  role: GroupMemberRole;
+  status: GroupMemberStatus;
+  joinSource: GroupJoinSource;
+  invitedByUserId?: string;
+  inviteId?: string;
   joinedAt: string;
   leftAt?: string;
+};
+
+export type GroupInvite = {
+  id: string;
+  groupId: string;
+  code: string;
+  label: string;
+  status: "active" | "revoked" | "expired";
+  createdByUserId: string;
+  createdAt: string;
+  expiresAt?: string;
+  lastUsedAt?: string;
 };
 
 export type Expense = {
@@ -87,6 +109,7 @@ export type AppData = {
   version: 1 | 2;
   users?: User[];
   groups: Group[];
+  groupInvites?: GroupInvite[];
   groupMembers?: GroupMember[];
   members: Member[];
   expenses: Expense[];
@@ -136,8 +159,14 @@ export type ActivityEvent = {
   id: string;
   groupId: string;
   actorUserId: string;
-  eventType: "expense_created" | "settlement_recorded" | "member_added" | "group_created";
-  entityType: "expense" | "settlement" | "member" | "group";
+  eventType:
+    | "expense_created"
+    | "settlement_recorded"
+    | "member_added"
+    | "member_joined"
+    | "group_created"
+    | "group_invite_created";
+  entityType: "expense" | "settlement" | "member" | "group" | "group_invite";
   entityId: string;
   summary: string;
   createdAt: string;
@@ -146,7 +175,15 @@ export type ActivityEvent = {
 export type SyncOutboxItem = {
   id: string;
   operation: "create" | "update" | "delete" | "snapshot";
-  entityType: "user" | "group" | "group_member" | "expense" | "expense_participant" | "settlement" | "activity_event";
+  entityType:
+    | "user"
+    | "group"
+    | "group_member"
+    | "group_invite"
+    | "expense"
+    | "expense_participant"
+    | "settlement"
+    | "activity_event";
   entityId: string;
   payloadJson: string;
   status: "pending" | "sent" | "failed";

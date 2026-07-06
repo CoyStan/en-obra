@@ -1,5 +1,5 @@
 import { splitEqual } from "./money";
-import type { AppData, GroupMember, Member, User } from "./types";
+import type { AppData, GroupInvite, GroupMember, Member, User } from "./types";
 
 function userIdForMember(memberId: string) {
   return `user-${memberId.replace(/^member-/, "")}`;
@@ -31,22 +31,49 @@ function legacyGroupMembers(data: AppData, users: User[]): GroupMember[] {
         if (!member || !userId || !validUsers.has(userId)) {
           return null;
         }
-        return {
+        const groupMember: GroupMember = {
           id: member.id,
           groupId: group.id,
           userId,
           displayNameSnapshot: member.name,
           role: index === 0 ? "owner" as const : "member" as const,
+          status: member.leftAt ? "left" as const : "active" as const,
+          joinSource: "seed" as const,
           joinedAt: member.joinedAt,
+          leftAt: member.leftAt,
         };
+        return groupMember;
       })
       .filter((member): member is GroupMember => Boolean(member)),
   );
 }
 
+function normalizeGroupMember(member: GroupMember): GroupMember {
+  return {
+    ...member,
+    status: member.leftAt ? "left" : member.status ?? "active",
+    joinSource: member.joinSource ?? "seed",
+  };
+}
+
+function legacyGroupInvites(data: AppData, users: User[]): GroupInvite[] {
+  return data.groups.map((group) => ({
+    id: `invite-${group.id}`,
+    groupId: group.id,
+    code: group.id.replace(/^group-/, "CC-").toUpperCase(),
+    label: "Invitación local demo",
+    status: "active",
+    createdByUserId: group.createdByUserId ?? users[0]?.id ?? "user-local-demo",
+    createdAt: group.createdAt,
+  }));
+}
+
 export function normalizeAppData(data: AppData): AppData {
   const users = data.users?.length ? data.users : legacyUsers(data.members);
-  const groupMembers = data.groupMembers?.length ? data.groupMembers : legacyGroupMembers(data, users);
+  const groupMembers = data.groupMembers?.length
+    ? data.groupMembers.map(normalizeGroupMember)
+    : legacyGroupMembers(data, users);
+  const groupInvites = data.groupInvites?.length ? data.groupInvites : legacyGroupInvites(data, users);
   const expenseParticipants = data.expenseParticipants?.length
     ? data.expenseParticipants
     : data.expenses.flatMap((expense) =>
@@ -64,6 +91,7 @@ export function normalizeAppData(data: AppData): AppData {
     ...data,
     version: 2,
     users,
+    groupInvites,
     groupMembers,
     expenseParticipants,
     activityEvents: data.activityEvents ?? [],

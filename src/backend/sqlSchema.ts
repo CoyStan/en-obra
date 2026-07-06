@@ -56,6 +56,10 @@ export const SQL_TABLES: SqlTable[] = [
       { name: "user_id", definition: "TEXT NOT NULL", references: "users(id)" },
       { name: "display_name_snapshot", definition: "TEXT NOT NULL" },
       { name: "role", definition: "TEXT NOT NULL CHECK (role IN ('owner', 'member'))" },
+      { name: "status", definition: "TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'invited', 'left'))" },
+      { name: "join_source", definition: "TEXT NOT NULL DEFAULT 'seed' CHECK (join_source IN ('seed', 'created', 'manual', 'invite'))" },
+      { name: "invited_by_user_id", definition: "TEXT", references: "users(id)" },
+      { name: "invite_id", definition: "TEXT" },
       { name: "joined_at", definition: "TEXT NOT NULL" },
       { name: "left_at", definition: "TEXT" },
     ],
@@ -63,6 +67,24 @@ export const SQL_TABLES: SqlTable[] = [
     indexes: [
       "CREATE INDEX idx_group_members_group_id ON group_members(group_id);",
       "CREATE INDEX idx_group_members_user_id ON group_members(user_id);",
+    ],
+  },
+  {
+    name: "group_invites",
+    columns: [
+      { name: "id", definition: "TEXT PRIMARY KEY" },
+      { name: "group_id", definition: "TEXT NOT NULL", references: "groups(id)" },
+      { name: "code", definition: "TEXT NOT NULL UNIQUE" },
+      { name: "label", definition: "TEXT NOT NULL" },
+      { name: "status", definition: "TEXT NOT NULL CHECK (status IN ('active', 'revoked', 'expired'))" },
+      { name: "created_by_user_id", definition: "TEXT NOT NULL", references: "users(id)" },
+      { name: "created_at", definition: "TEXT NOT NULL" },
+      { name: "expires_at", definition: "TEXT" },
+      { name: "last_used_at", definition: "TEXT" },
+    ],
+    indexes: [
+      "CREATE INDEX idx_group_invites_group_id ON group_invites(group_id);",
+      "CREATE INDEX idx_group_invites_status ON group_invites(status);",
     ],
   },
   {
@@ -134,9 +156,9 @@ export const SQL_TABLES: SqlTable[] = [
       {
         name: "event_type",
         definition:
-          "TEXT NOT NULL CHECK (event_type IN ('expense_created', 'settlement_recorded', 'member_added', 'group_created'))",
+          "TEXT NOT NULL CHECK (event_type IN ('expense_created', 'settlement_recorded', 'member_added', 'member_joined', 'group_created', 'group_invite_created'))",
       },
-      { name: "entity_type", definition: "TEXT NOT NULL CHECK (entity_type IN ('expense', 'settlement', 'member', 'group'))" },
+      { name: "entity_type", definition: "TEXT NOT NULL CHECK (entity_type IN ('expense', 'settlement', 'member', 'group', 'group_invite'))" },
       { name: "entity_id", definition: "TEXT NOT NULL" },
       { name: "summary", definition: "TEXT NOT NULL" },
       { name: "created_at", definition: "TEXT NOT NULL" },
@@ -151,7 +173,7 @@ export const SQL_TABLES: SqlTable[] = [
       {
         name: "entity_type",
         definition:
-          "TEXT NOT NULL CHECK (entity_type IN ('user', 'group', 'group_member', 'expense', 'expense_participant', 'settlement', 'activity_event'))",
+          "TEXT NOT NULL CHECK (entity_type IN ('user', 'group', 'group_member', 'group_invite', 'expense', 'expense_participant', 'settlement', 'activity_event'))",
       },
       { name: "entity_id", definition: "TEXT NOT NULL" },
       { name: "payload_json", definition: "TEXT NOT NULL" },

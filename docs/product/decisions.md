@@ -594,3 +594,15 @@ Claras still behaves like a single-device demo. Building provider-neutral
 local/mock collaboration and split capabilities closes real product gaps without
 crossing hard boundaries around production auth, sync, payments, secrets, paid
 services, legal commitments, or Play submission.
+
+### Add Local Invite Metadata Before Production Sync
+
+Decision: Extend the local SQL-ready model with `groupInvites`, membership
+status, join source, inviter metadata, and invite-linked activity events before
+building the create/join UI.
+
+Rationale: The app needs to feel collaborative without claiming real-time
+backend sync. Local invite metadata gives the next tickets a concrete contract
+for mock join flows and later provider replacement, while keeping all data on
+device and avoiding secrets, paid services, production auth, and production
+backend decisions.
