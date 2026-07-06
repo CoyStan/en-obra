@@ -4158,7 +4158,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "active",
+      "status": "in-review",
       "scope": "Add local search/filtering for activity and expenses by person, category, amount, and date. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0102/**,company-os/workspace.json.",
       "acceptance_target": "Activity/expenses can be searched and filtered by person, category, amount, and date with accessible empty states.",
       "required_approval_capability": "design",
@@ -6034,12 +6034,15 @@
       "id": "ATTEMPT-APP-0102",
       "work_item_id": "WORK-APP-0102",
       "actor": "PALARI-DESIGN",
-      "status": "active",
+      "status": "completed",
       "branch": "main",
       "workspace_path": "/home/quetza/projects/cuentas-claras",
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
-      "result": "Started local search and filters for activity/expenses."
+      "result": "Added local activity search and filters for person, category, amount, and date with empty state evidence.",
+      "commits": [
+        "18cb592d62aa2be2d3ab9dcf86a1d03ac5e1c919"
+      ]
     }
   ],
   "evidence_runs": [
@@ -7983,6 +7986,33 @@
       "status": "passed",
       "summary": "Category expansion passed typecheck, focused tests, full tests, Expo config, web export, scope, validate, and Android-width picker screenshots.",
       "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test -- src/__tests__/balances.test.ts src/__tests__/appMutations.test.ts",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0102",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0102/technical-report.md",
+        "reports/evidence/WORK-APP-0102/screenshots/activity-filters-360x740.png",
+        "reports/evidence/WORK-APP-0102/screenshots/activity-filters-390x844.png",
+        "reports/evidence/WORK-APP-0102/screenshots/activity-filters-412x915.png",
+        "reports/evidence/WORK-APP-0102/screenshots/activity-filters-empty-360x740.png",
+        "reports/evidence/WORK-APP-0102/screenshots/activity-filters-empty-390x844.png",
+        "reports/evidence/WORK-APP-0102/screenshots/activity-filters-empty-412x915.png"
+      ],
+      "id": "EVIDENCE-APP-0102",
+      "work_item_id": "WORK-APP-0102",
+      "attempt_id": "ATTEMPT-APP-0102",
+      "head_sha": "18cb592d62aa2be2d3ab9dcf86a1d03ac5e1c919",
+      "status": "passed",
+      "summary": "Search/filter work passed typecheck, focused tests, full tests, Expo config, web export, scope, validate, and Android-width filter/empty-state screenshots.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -9557,6 +9587,30 @@
       "id": "REVIEW-APP-0101",
       "work_item_id": "WORK-APP-0101",
       "reviewed_head": "878e54153180dd3c71aac586e59796b3bf72ccac",
+      "reviewer": "gpt-5-codex-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "implementation diff",
+        "technical report",
+        "screenshots",
+        "typecheck",
+        "focused tests",
+        "full tests",
+        "Expo config",
+        "web export",
+        "scope check",
+        "Company OS validate"
+      ],
+      "residual_risks": [
+        "founder acceptance still required",
+        "filters are local in-memory",
+        "backend search remains future work"
+      ],
+      "id": "REVIEW-APP-0102",
+      "work_item_id": "WORK-APP-0102",
+      "reviewed_head": "18cb592d62aa2be2d3ab9dcf86a1d03ac5e1c919",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
     }
@@ -13879,6 +13933,47 @@
       "work_item_id": "WORK-APP-0101",
       "attempt_id": "ATTEMPT-APP-0101",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-OPEN-DESIGN",
+        "SOURCE-PREMIUM-VISUAL-GOAL",
+        "SOURCE-DESIGN-SYSTEM",
+        "SOURCE-VISUAL-DIRECTION",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "added activity search input",
+        "added person filter chips",
+        "added category filter chips",
+        "added amount filter chips",
+        "added date filter chips",
+        "added filtered summary counts",
+        "added no-results state",
+        "captured filter screenshots",
+        "captured empty-state screenshots",
+        "updated decision log"
+      ],
+      "outputs_created": [
+        "src/screens/MainScreen.tsx",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0102/technical-report.md",
+        "reports/evidence/WORK-APP-0102/screenshots"
+      ],
+      "not_done": [
+        "backend search",
+        "saved filters",
+        "analytics",
+        "production sync",
+        "secrets",
+        "paid services",
+        "legal decisions",
+        "Play submission"
+      ],
+      "id": "RECEIPT-APP-0102",
+      "work_item_id": "WORK-APP-0102",
+      "attempt_id": "ATTEMPT-APP-0102",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -14952,6 +15047,14 @@
       "status": "completed",
       "what_happened": "Expanded and grouped the expense category picker for common Mexico/LATAM shared-expense use cases.",
       "what_changed": "Category taxonomy, grouped picker rendering, menu scrolling, decisions, and evidence changed."
+    },
+    {
+      "id": "OUTCOME-APP-0102",
+      "work_item_id": "WORK-APP-0102",
+      "summary": "Search and filters are complete and accept-ready.",
+      "status": "completed",
+      "what_happened": "Added local activity search and filters by person, category, amount, and date.",
+      "what_changed": "Activity screen state, filtering logic, filter UI, no-results state, decisions, and evidence changed."
     }
   ]
 }
