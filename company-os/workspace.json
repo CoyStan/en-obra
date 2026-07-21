@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "name": "Cuenta Obra Company OS",
+  "name": "En Obra Company OS",
   "goals": [
     {
       "id": "GOAL-MIGRATION-0001",
@@ -26,7 +26,7 @@
     },
     {
       "id": "GOAL-PREMIUM-MVP",
-      "title": "[Historical] Make Cuentas Claras a premium Android-first LATAM finance app",
+      "title": "[Historical] Cuentas Claras expense-split premium MVP",
       "owner": "HUMAN-FOUNDER",
       "status": "completed",
       "priority": "high",
@@ -70,7 +70,7 @@
         "PALARI-RELEASE"
       ],
       "id": "GOAL-CUENTA-OBRA",
-      "title": "Ship Cuenta Obra as the provider work-and-material tracker",
+      "title": "En Obra pilot",
       "owner": "HUMAN-FOUNDER",
       "status": "active",
       "priority": "high",
@@ -211,7 +211,7 @@
     },
     {
       "id": "PALARI-DESIGN",
-      "name": "Clara Dise\u00f1o",
+      "name": "Clara Diseño",
       "role": "Android product design partner",
       "scope": "Drive the clean premium Android UI direction while preserving app content and usability.",
       "allowed_inputs": [
@@ -250,7 +250,7 @@
     },
     {
       "id": "PALARI-ENGINEERING",
-      "name": "Clara Ingenier\u00eda",
+      "name": "Clara Ingeniería",
       "role": "React Native implementation partner",
       "scope": "Implement bounded app changes with local-first adapters, tests, and Android verification.",
       "allowed_inputs": [
@@ -4609,7 +4609,7 @@
         "play-store-submission"
       ],
       "id": "WORK-APP-0111",
-      "title": "Premium UI simplification and modern palette refresh \u2014 Inicio surface",
+      "title": "Premium UI simplification and modern palette refresh — Inicio surface",
       "goal": "GOAL-PREMIUM-MVP",
       "palari": "PALARI-DESIGN",
       "risk": "R3",
@@ -17230,7 +17230,7 @@
       "id": "DECISION-UI-0002",
       "question": "Should Cuenta Obra chrome follow Palari Labs colors from the token bridge?",
       "status": "decided",
-      "context": "Founder approved the Palari Labs \u2194 Cuenta Obra token bridge and asked to execute it.",
+      "context": "Founder approved the Palari Labs ↔ Cuenta Obra token bridge and asked to execute it.",
       "recommendation": "Yes: paint kit token slots with lab values; keep forest* as aliases; no marketing chrome in field UI.",
       "safe_default": "Keep previous forest personality until founder decides.",
       "required_human": "HUMAN-FOUNDER",
@@ -17979,7 +17979,7 @@
       "summary": "Activity now reads as a trusted local audit trail and is ready for founder review.",
       "status": "completed",
       "what_happened": "The Activity tab was restructured around group context, local audit status, movement/settlement counts, open amount, latest proof, and daily timeline.",
-      "what_changed": "Activity is less like a plain feed and more like a premium finance bit\u00e1cora while preserving local-first no-real-payments behavior."
+      "what_changed": "Activity is less like a plain feed and more like a premium finance bitácora while preserving local-first no-real-payments behavior."
     },
     {
       "id": "OUTCOME-APP-0067",

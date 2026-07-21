@@ -1,0 +1,40 @@
+# En Obra Android smoke (Maestro)
+# Run on a device/emulator with Maestro installed:
+#   maestro test maestro/en-obra-smoke.yaml
+# This flow does NOT send WhatsApp messages; it only opens the handoff screen if reachable.
+# Physical-device evidence is NOT claimed unless this file was executed on a real device.
+
+appId: com.cuentasclaras.app
+---
+- launchApp:
+    clearState: true
+- assertVisible: "En Obra"
+- tapOn: "Crear mi primer trabajo"
+- tapOn: "¿Qué vas a hacer?"
+- inputText: "Jardín piloto"
+- tapOn: "¿Para quién?"
+- inputText: "Cliente Demo"
+- tapOn: "Empezar trabajo"
+- assertVisible: "Agregar primer material"
+- tapOn: "Agregar primer material"
+- tapOn:
+    id: ".*nombre.*|Nombre del material|¿Qué material.*"
+- inputText: "Tierra negra"
+- tapOn: "Guardar material"
+- assertVisible: "Tierra negra"
+- tapOn: "Tierra negra"
+# Optional supplier path varies by build; continue status change
+- tapOn: "Por pedir"
+- tapOn: "Pedido"
+- tapOn: "Guardar"
+- assertVisible: "Tierra negra"
+- pressKey: Home
+- launchApp
+- assertVisible: "Tierra negra"
+- tapOn: "Pedido"
+- tapOn: "Recibido"
+- tapOn: "Guardar"
+- assertVisible: "Recibido"
+# Client WhatsApp handoff — confirm sheet then cancel inside WhatsApp if opened
+- tapOn: "Vista cliente"
+- tapOn: "WhatsApp"

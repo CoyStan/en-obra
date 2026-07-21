@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { trackerDemoData } from "../tracker/demoData";
 import { attentionMaterialCount, deliveryMeta, nextMaterialForAction, projectDescriptor } from "../tracker/presentation";
+import type { V1Material } from "../tracker/v1types";
 import type { Material } from "../tracker/types";
 import { createProjectRecord, createSupplierRecord, parsePriceCents, updateMaterialDetailsRecord, updateMaterialStatusRecord, updateProjectRecord, updateSupplierRecord } from "../tracker/workflow";
 
-const baseMaterial: Material = {
+import type { V1Project as V1Proj, V1Supplier as V1Supp } from "../tracker/v1types";
+
+// Hybrid fixture: satisfies both V1Material (for workflow fns) and Material v2 (for presentation fns).
+const baseMaterial: V1Material & Material = {
   id: "material-1",
   projectId: "project-1",
   supplierId: "supplier-1",
@@ -13,11 +17,12 @@ const baseMaterial: Material = {
   priceCents: 48000,
   status: "ordered",
   paymentStatus: "deposit_paid",
+  statusChangedAt: "2026-07-18T09:00:00Z",
   createdAt: "2026-07-18T09:00:00Z",
   updatedAt: "2026-07-18T09:00:00Z",
 };
 
-const baseProject = {
+const baseProject: V1Proj = {
   id: "project-1",
   name: "Jardín frontal",
   clientName: "Camila",
@@ -27,7 +32,7 @@ const baseProject = {
   startedOn: "2026-07-18",
 };
 
-const baseSupplier = {
+const baseSupplier: V1Supp = {
   id: "supplier-1",
   name: "Vivero del barrio",
   category: "Plantas",
@@ -138,6 +143,7 @@ describe("tracker workflow", () => {
       address: "",
       service: "Limpieza final",
       startedOn: "2026-07-18",
+      lifecycle: "active" as const,
     })).toBe("Limpieza final");
   });
 
@@ -218,7 +224,7 @@ describe("tracker workflow", () => {
     expect(trackerDemoData.projects).toHaveLength(7);
     expect(trackerDemoData.suppliers).toHaveLength(9);
     expect(trackerDemoData.materials).toHaveLength(36);
-    expect(camilaMaterials.some((material) => deliveryMeta(material, "2026-07-18").state === "late")).toBe(true);
+    expect(camilaMaterials.some((material) => deliveryMeta(material as unknown as Material, "2026-07-18").state === "late")).toBe(true);
     expect(camilaMaterials.some((material) => material.supplierId === "supplier-pending")).toBe(true);
     expect(trackerDemoData.materials.some((material) => material.projectId === "project-elena")).toBe(false);
     expect(mateoMaterials).toHaveLength(4);

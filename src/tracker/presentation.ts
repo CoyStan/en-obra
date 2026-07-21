@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { urgency } from "../domain/en-obra/status";
 import { isIsoDate, todayIsoDate } from "./dates";
 import { trackerColors as color } from "./theme";
 import type { Material, MaterialStatus, Project, Supplier, TrackerTab } from "./types";
@@ -7,9 +8,8 @@ type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
 
 export const trackerTabs: { id: TrackerTab; label: string; icon: IconName }[] = [
   { id: "home", label: "Hoy", icon: "home-variant-outline" },
-  { id: "materials", label: "Materiales", icon: "package-variant-closed" },
+  { id: "jobs", label: "Mis trabajos", icon: "briefcase-variant-outline" },
   { id: "suppliers", label: "Proveedores", icon: "store-outline" },
-  { id: "client", label: "Vista cliente", icon: "account-eye-outline" },
 ];
 
 export const statusMeta: Record<
@@ -44,22 +44,6 @@ export const statusMeta: Record<
     color: color.success,
     wash: color.successWash,
   },
-};
-
-export const paymentMeta: Record<
-  Material["paymentStatus"],
-  { label: string; icon: IconName; color: string; wash: string }
-> = {
-  pending: { label: "Pago pendiente", icon: "cash-clock", color: color.sun, wash: color.sunWash },
-  deposit_paid: { label: "Anticipo registrado", icon: "cash-fast", color: color.blue, wash: color.blueWash },
-  paid: { label: "Pago registrado", icon: "cash-check", color: color.success, wash: color.successWash },
-};
-
-/** @deprecated Prefer paymentMeta[status].label */
-export const paymentLabel: Record<Material["paymentStatus"], string> = {
-  pending: paymentMeta.pending.label,
-  deposit_paid: paymentMeta.deposit_paid.label,
-  paid: paymentMeta.paid.label,
 };
 
 export type DeliveryState = "late" | "waiting" | "today" | "scheduled" | "to_order" | "complete";
@@ -100,7 +84,14 @@ export function deliveryMeta(material: Material, today = todayIsoDate()): Delive
   }
   if (material.status === "ordered") {
     if (!material.expectedOn) {
-      return { state: "waiting", label: "Esperando fecha", color: color.sun, wash: color.sunWash, icon: "calendar-question", priority: 1 };
+      return {
+        state: "waiting",
+        label: "Esperando fecha",
+        color: color.sun,
+        wash: color.sunWash,
+        icon: "calendar-question",
+        priority: 1,
+      };
     }
     if (isBeforeToday(material.expectedOn, today)) {
       return {
@@ -113,7 +104,14 @@ export function deliveryMeta(material: Material, today = todayIsoDate()): Delive
       };
     }
     if (material.expectedOn === today) {
-      return { state: "today", label: "Llega hoy", color: color.sun, wash: color.sunWash, icon: "truck-fast-outline", priority: 2 };
+      return {
+        state: "today",
+        label: "Llega hoy",
+        color: color.sun,
+        wash: color.sunWash,
+        icon: "truck-fast-outline",
+        priority: 2,
+      };
     }
     return {
       state: "scheduled",
@@ -124,8 +122,16 @@ export function deliveryMeta(material: Material, today = todayIsoDate()): Delive
       priority: 4,
     };
   }
+  // to_order
   if (!material.expectedOn) {
-    return { state: "to_order", label: "Pendiente de pedir", color: color.clay, wash: color.clayWash, icon: "cart-plus", priority: 3 };
+    return {
+      state: "to_order",
+      label: "Pendiente de pedir",
+      color: color.clay,
+      wash: color.clayWash,
+      icon: "cart-plus",
+      priority: 3,
+    };
   }
   if (isBeforeToday(material.expectedOn, today)) {
     return {
@@ -138,7 +144,14 @@ export function deliveryMeta(material: Material, today = todayIsoDate()): Delive
     };
   }
   if (material.expectedOn === today) {
-    return { state: "today", label: "Pedir hoy", color: color.sun, wash: color.sunWash, icon: "cart-arrow-down", priority: 2 };
+    return {
+      state: "today",
+      label: "Pedir hoy",
+      color: color.sun,
+      wash: color.sunWash,
+      icon: "cart-arrow-down",
+      priority: 2,
+    };
   }
   return {
     state: "to_order",
@@ -148,6 +161,23 @@ export function deliveryMeta(material: Material, today = todayIsoDate()): Delive
     icon: "cart-outline",
     priority: 3,
   };
+}
+
+const URGENCY_PRIORITY: Record<ReturnType<typeof urgency>, number> = {
+  late: 0,
+  today: 1,
+  waiting: 2,
+  normal: 3,
+  complete: 4,
+};
+
+/** Sort materials by urgency for the "Hoy" view. */
+export function sortByUrgency(materials: Material[], today = todayIsoDate()) {
+  return [...materials].sort((a, b) => {
+    const diff = URGENCY_PRIORITY[urgency(a, today)] - URGENCY_PRIORITY[urgency(b, today)];
+    if (diff !== 0) return diff;
+    return a.updatedAt < b.updatedAt ? 1 : -1;
+  });
 }
 
 export function nextMaterialForAction(materials: Material[], today = todayIsoDate()) {
@@ -182,10 +212,13 @@ export function formatTrackerDate(value?: string) {
   if (!year || !month || !day) {
     return value;
   }
-  return new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "short" }).format(new Date(year, month - 1, day));
+  return new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "short" }).format(
+    new Date(year, month - 1, day),
+  );
 }
 
-export function supplierFor(suppliers: Supplier[], supplierId: string) {
+export function supplierFor(suppliers: Supplier[], supplierId?: string) {
+  if (!supplierId) return undefined;
   return suppliers.find((supplier) => supplier.id === supplierId);
 }
 
@@ -194,5 +227,7 @@ export function projectDescriptor(project: Project) {
 }
 
 export function readyMaterialCount(materials: Material[]) {
-  return materials.filter((material) => material.status === "received" || material.status === "installed").length;
+  return materials.filter(
+    (material) => material.status === "received" || material.status === "installed",
+  ).length;
 }

@@ -1,5 +1,5 @@
 import { isIsoDate } from "./dates";
-import type { Material, MaterialStatus, Project, Supplier, SupplierPaymentStatus, TrackerData } from "./types";
+import type { MaterialStatus, SupplierPaymentStatus, TrackerData, V1Material as Material, V1Project as Project, V1Supplier as Supplier } from "./v1types";
 
 const materialStatuses = new Set<MaterialStatus>(["to_order", "ordered", "received", "installed"]);
 const paymentStatuses = new Set<SupplierPaymentStatus>(["pending", "deposit_paid", "paid"]);

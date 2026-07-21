@@ -1,19 +1,25 @@
 import { toast } from "sonner";
 import {
+  AlertTriangleIcon,
   BriefcaseBusinessIcon,
   CircleCheckIcon,
+  DownloadIcon,
   EyeIcon,
   HardHatIcon,
   HomeIcon,
+  InfoIcon,
   MessageCircleIcon,
   PackageIcon,
+  PhoneIcon,
   PlusIcon,
+  RefreshCwIcon,
   StoreIcon,
   UserPlusIcon,
   UsersIcon,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import type { Material, MaterialStatus, Project, Supplier } from "../../src/tracker/types";
+import type { Material, MaterialStatus, Project, Supplier } from "../../src/domain/en-obra";
+import { formatPhoneDisplay, isValidPhoneForWhatsApp } from "../../src/domain/en-obra";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -56,6 +62,7 @@ import {
   SidebarProvider,
   SidebarSeparator,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -63,7 +70,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { DatePicker } from "@/dashboard/date-picker";
 import { MaterialsDataTable } from "@/dashboard/materials-data-table";
-import { ThemeSwitcher } from "@/dashboard/theme-switcher";
+import { applyDashboardTheme, getThemeById } from "@/dashboard/themes";
 import {
   attentionState,
   openWhatsApp,
@@ -93,6 +100,73 @@ function tryOpenWhatsApp(phone: string | undefined, text: string, missingMessage
   }
 }
 
+/** Always-visible demo disclaimer banner. */
+function DemoBanner() {
+  return (
+    <div
+      aria-live="polite"
+      className="flex items-center justify-center gap-2 border-b bg-secondary/60 px-4 py-2 text-xs text-secondary-foreground"
+      role="status"
+    >
+      <InfoIcon aria-hidden className="size-3.5 shrink-0" />
+      Demo local · los datos solo viven en este navegador.
+    </div>
+  );
+}
+
+/** Recovery banner shown when localStorage data is corrupt. */
+function StorageRecoveryBanner({
+  reason,
+  onRetry,
+  onExport,
+  onReset,
+}: {
+  reason?: string;
+  onRetry: () => void;
+  onExport: () => void;
+  onReset?: () => void;
+}) {
+  return (
+    <div
+      aria-live="assertive"
+      className="flex flex-col gap-3 border-b bg-destructive/10 px-4 py-3 text-sm"
+      role="alert"
+    >
+      <div className="flex items-start gap-2">
+        <AlertTriangleIcon aria-hidden className="mt-0.5 size-4 shrink-0 text-destructive" />
+        <div className="flex flex-col gap-1">
+          <span className="font-semibold text-destructive">Datos no legibles en este navegador</span>
+          {reason ? <span className="text-muted-foreground">{reason}</span> : null}
+          <span className="text-muted-foreground">Se muestran datos demo. Tus datos reales no se borran automáticamente.</span>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button onClick={onRetry} size="sm" variant="outline">
+          <RefreshCwIcon data-icon="inline-start" />
+          Reintentar
+        </Button>
+        <Button onClick={onExport} size="sm" variant="outline">
+          <DownloadIcon data-icon="inline-start" />
+          Exportar respaldo
+        </Button>
+        {onReset ? (
+          <Button
+            onClick={() => {
+              if (window.confirm("¿Borrar datos del navegador y restaurar demo? Descarga un respaldo primero.")) {
+                onReset();
+              }
+            }}
+            size="sm"
+            variant="ghost"
+          >
+            Restaurar demo (DEV)
+          </Button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function MaterialsWorkspace({
   materials,
   project,
@@ -104,8 +178,13 @@ function MaterialsWorkspace({
   suppliers: Supplier[];
   onEditMaterial: (material: Material) => void;
 }) {
+  const jobSuppliers = useMemo(() => {
+    const ids = new Set(materials.map((m) => m.supplierId).filter(Boolean));
+    return suppliers.filter((s) => ids.has(s.id));
+  }, [materials, suppliers]);
+
   const lastNote =
-    suppliers.find((supplier) => supplier.lastContactNote)?.lastContactNote ??
+    jobSuppliers.find((supplier) => supplier.lastContactNote)?.lastContactNote ??
     `${project.clientName.split(" ")[0]}: ¿Ya llegó el material?`;
 
   return (
@@ -148,7 +227,7 @@ function MaterialsWorkspace({
         onEdit={onEditMaterial}
         project={project}
         projects={[project]}
-        suppliers={suppliers}
+        suppliers={jobSuppliers}
       />
     </div>
   );
@@ -171,13 +250,12 @@ function Overview({
   const attentionItems = materials.filter((material) =>
     ["late", "today", "waiting"].includes(attentionState(material)),
   );
-  const pendingPayments = materials.filter((material) => material.paymentStatus !== "paid").length;
   const activeJobs = new Set(materials.map((material) => material.projectId)).size;
   const nextItems = [...attentionItems].sort((left, right) => (left.updatedAt < right.updatedAt ? 1 : -1));
 
   return (
     <div className="flex flex-col gap-6">
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <Card>
           <CardHeader>
             <CardDescription>Materiales listos</CardDescription>
@@ -197,13 +275,6 @@ function Overview({
           <CardContent className="text-sm text-muted-foreground">
             Atrasados, sin fecha o con entrega para hoy · {activeJobs} trabajo{activeJobs === 1 ? "" : "s"}.
           </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Pagos por revisar</CardDescription>
-            <CardTitle className="text-2xl">{pendingPayments}</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">Registro simple; no procesa pagos.</CardContent>
         </Card>
         <Card>
           <CardHeader>
@@ -284,6 +355,7 @@ function SupplierTable({
               const jobNames = projects
                 .filter((project) => jobIds.has(project.id))
                 .map((project) => project.name);
+              const hasPhone = isValidPhoneForWhatsApp(supplier.phone);
               return (
                 <TableRow key={supplier.id}>
                   <TableCell>
@@ -292,7 +364,9 @@ function SupplierTable({
                       {supplier.category ? <Badge variant="secondary">{supplier.category}</Badge> : null}
                     </div>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">{supplier.phone || "Sin WhatsApp"}</TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {hasPhone ? formatPhoneDisplay(supplier.phone) : <span className="text-muted-foreground italic">Sin WhatsApp</span>}
+                  </TableCell>
                   <TableCell className="hidden max-w-md lg:table-cell">
                     <span className="line-clamp-2 text-muted-foreground">{supplier.lastContactNote}</span>
                   </TableCell>
@@ -307,6 +381,7 @@ function SupplierTable({
                   <TableCell className="text-right">
                     <Button
                       aria-label={`WhatsApp ${supplier.name}`}
+                      disabled={!hasPhone}
                       onClick={() =>
                         tryOpenWhatsApp(
                           supplier.phone,
@@ -340,6 +415,14 @@ function WhatsAppPanel({
   materials: Material[];
 }) {
   const late = materials.filter((material) => attentionState(material) === "late");
+
+  const jobSuppliers = useMemo(() => {
+    const ids = new Set(materials.map((m) => m.supplierId).filter(Boolean));
+    return suppliers.filter((s) => ids.has(s.id));
+  }, [materials, suppliers]);
+
+  const clientHasPhone = isValidPhoneForWhatsApp(project.clientPhone);
+
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
       <Card>
@@ -354,6 +437,7 @@ function WhatsAppPanel({
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           <Button
+            disabled={!clientHasPhone}
             onClick={() =>
               tryOpenWhatsApp(
                 project.clientPhone,
@@ -365,23 +449,44 @@ function WhatsAppPanel({
           >
             <MessageCircleIcon data-icon="inline-start" />
             Cliente · {project.clientName}
+            {!clientHasPhone ? (
+              <Badge className="ml-auto" variant="secondary">
+                <PhoneIcon className="mr-1 size-3" />
+                Sin teléfono
+              </Badge>
+            ) : null}
           </Button>
-          {suppliers.slice(0, 6).map((supplier) => (
-            <Button
-              key={supplier.id}
-              onClick={() =>
-                tryOpenWhatsApp(
-                  supplier.phone,
-                  `Hola, te escribo por materiales de ${project.name}.`,
-                  "Este proveedor no tiene WhatsApp guardado.",
-                )
-              }
-              variant="outline"
-            >
-              <StoreIcon data-icon="inline-start" />
-              {supplier.name}
-            </Button>
-          ))}
+          {jobSuppliers.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No hay proveedores vinculados a materiales de este trabajo aún.
+            </p>
+          ) : null}
+          {jobSuppliers.slice(0, 6).map((supplier) => {
+            const hasPhone = isValidPhoneForWhatsApp(supplier.phone);
+            return (
+              <Button
+                key={supplier.id}
+                disabled={!hasPhone}
+                onClick={() =>
+                  tryOpenWhatsApp(
+                    supplier.phone,
+                    `Hola, te escribo por materiales de ${project.name}.`,
+                    "Este proveedor no tiene WhatsApp guardado.",
+                  )
+                }
+                variant="outline"
+              >
+                <StoreIcon data-icon="inline-start" />
+                {supplier.name}
+                {!hasPhone ? (
+                  <Badge className="ml-auto" variant="secondary">
+                    <PhoneIcon className="mr-1 size-3" />
+                    Sin teléfono
+                  </Badge>
+                ) : null}
+              </Button>
+            );
+          })}
         </CardContent>
         {late.length ? (
           <CardFooter className="text-sm text-muted-foreground">
@@ -525,18 +630,19 @@ function StatusSheet({
 
 function NewMaterialSheet({
   open,
+  activeProjectName,
   suppliers,
   onOpenChange,
   onSave,
 }: {
   open: boolean;
+  activeProjectName?: string;
   suppliers: Supplier[];
   onOpenChange: (open: boolean) => void;
-  onSave: (input: { expectedOn?: string; name: string; price: string; quantity: string; supplierId: string }) => boolean;
+  onSave: (input: { expectedOn?: string; name: string; quantity: string; supplierId: string }) => boolean;
 }) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
   const [supplierId, setSupplierId] = useState("");
   const [expectedOn, setExpectedOn] = useState<string | undefined>();
 
@@ -549,19 +655,22 @@ function NewMaterialSheet({
       <SheetContent side="right">
         <SheetHeader>
           <SheetTitle>Nuevo material</SheetTitle>
-          <SheetDescription>Solo lo necesario para no perder el pedido.</SheetDescription>
+          <SheetDescription>
+            {activeProjectName
+              ? `Se agregará a "${activeProjectName}".`
+              : "Solo lo necesario para no perder el pedido."}
+          </SheetDescription>
         </SheetHeader>
         <form
           className="flex min-h-0 flex-1 flex-col gap-5 overflow-auto p-4"
           onSubmit={(event) => {
             event.preventDefault();
-            if (!onSave({ expectedOn, name, price, quantity, supplierId })) {
+            if (!onSave({ expectedOn, name, quantity, supplierId })) {
               toast.error("Escribe el material, cantidad y proveedor.");
               return;
             }
             setName("");
             setQuantity("");
-            setPrice("");
             setExpectedOn(undefined);
             onOpenChange(false);
             toast.success("Material agregado al trabajo.");
@@ -575,10 +684,6 @@ function NewMaterialSheet({
             <Field>
               <FieldLabel htmlFor="material-quantity">Cantidad</FieldLabel>
               <Input id="material-quantity" onChange={(event) => setQuantity(event.target.value)} placeholder="Ej. 18 piezas" value={quantity} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="material-price">Monto (opcional)</FieldLabel>
-              <Input id="material-price" inputMode="decimal" onChange={(event) => setPrice(event.target.value)} placeholder="Ej. 2,850" value={price} />
             </Field>
             <Field>
               <FieldLabel htmlFor="material-supplier">Proveedor</FieldLabel>
@@ -750,6 +855,39 @@ function NewSupplierSheet({
   );
 }
 
+/** Nav button that closes mobile sidebar after navigation. */
+function NavButton({
+  isActive,
+  tooltip,
+  className,
+  onClick,
+  children,
+}: {
+  isActive?: boolean;
+  tooltip: string;
+  className?: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  const { setOpenMobile } = useSidebar();
+
+  const handleClick = () => {
+    onClick();
+    setOpenMobile(false);
+  };
+
+  return (
+    <SidebarMenuButton
+      className={className}
+      isActive={isActive}
+      onClick={handleClick}
+      tooltip={tooltip}
+    >
+      {children}
+    </SidebarMenuButton>
+  );
+}
+
 function App() {
   const {
     activeProject,
@@ -757,15 +895,23 @@ function App() {
     addProject,
     addSupplier,
     allMaterials,
+    corruptReason,
     data,
+    exportCorruptBackup,
     materials,
     resetDemo,
+    retryLoad,
     selectProject,
+    storageStatus,
     updateMaterialStatus,
   } = useDashboardData();
   const [view, setView] = useState<DashboardView>("home");
   const [form, setForm] = useState<FormKind>(null);
   const [editingMaterial, setEditingMaterial] = useState<Material>();
+
+  useEffect(() => {
+    applyDashboardTheme(getThemeById("cream"));
+  }, []);
 
   const globalAttentionCount = useMemo(
     () => allMaterials.filter((material) => ["late", "today", "waiting"].includes(attentionState(material))).length,
@@ -775,6 +921,8 @@ function App() {
     () => materials.filter((material) => ["late", "today", "waiting"].includes(attentionState(material))).length,
     [materials],
   );
+
+  const navigate = (next: DashboardView) => setView(next);
 
   const openProject = (projectId: string) => {
     selectProject(projectId);
@@ -832,27 +980,27 @@ function App() {
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton
+                    <NavButton
                       isActive={view === "home"}
-                      onClick={() => setView("home")}
+                      onClick={() => navigate("home")}
                       tooltip="Hoy"
                     >
                       <HomeIcon />
                       <span>Hoy</span>
-                    </SidebarMenuButton>
+                    </NavButton>
                     {globalAttentionCount ? (
                       <SidebarMenuBadge>{globalAttentionCount}</SidebarMenuBadge>
                     ) : null}
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton
+                    <NavButton
                       isActive={view === "suppliers"}
-                      onClick={() => setView("suppliers")}
+                      onClick={() => navigate("suppliers")}
                       tooltip="Proveedores"
                     >
                       <UsersIcon />
                       <span>Proveedores</span>
-                    </SidebarMenuButton>
+                    </NavButton>
                   </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
@@ -863,7 +1011,7 @@ function App() {
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton
+                    <NavButton
                       className="h-auto py-2"
                       isActive={inJobWorkspace}
                       onClick={() => openProject(activeProject.id)}
@@ -876,7 +1024,7 @@ function App() {
                           {activeProject.clientName}
                         </span>
                       </span>
-                    </SidebarMenuButton>
+                    </NavButton>
                     {inJobWorkspace ? (
                       <SidebarMenuSub>
                         {jobNavItems.map((item) => {
@@ -886,7 +1034,7 @@ function App() {
                               <SidebarMenuSubButton
                                 isActive={view === item.id}
                                 render={<button type="button" />}
-                                onClick={() => setView(item.id)}
+                                onClick={() => navigate(item.id)}
                               >
                                 <Icon />
                                 <span>{item.label}</span>
@@ -903,7 +1051,7 @@ function App() {
                           <SidebarMenuSubButton
                             isActive={view === "client"}
                             render={<button type="button" />}
-                            onClick={() => setView("client")}
+                            onClick={() => navigate("client")}
                           >
                             <EyeIcon />
                             <span>Así lo ve {activeProject.clientName.split(" ")[0]}</span>
@@ -922,7 +1070,7 @@ function App() {
                 <SidebarMenu>
                   {otherProjects.map((project) => (
                     <SidebarMenuItem key={project.id}>
-                      <SidebarMenuButton
+                      <NavButton
                         className="h-auto py-2"
                         onClick={() => openProject(project.id)}
                         tooltip={`${project.name} · ${project.clientName}`}
@@ -932,7 +1080,7 @@ function App() {
                           <span className="truncate">{project.name}</span>
                           <span className="truncate text-xs text-muted-foreground">{project.clientName}</span>
                         </span>
-                      </SidebarMenuButton>
+                      </NavButton>
                     </SidebarMenuItem>
                   ))}
                 </SidebarMenu>
@@ -941,40 +1089,37 @@ function App() {
           </SidebarContent>
           <SidebarFooter className="shrink-0 gap-1 border-t border-sidebar-border">
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  onClick={() => toast.message("Mejorar plan estará disponible pronto.")}
-                  tooltip="Plan Básico · hasta 2 proyectos"
-                >
-                  <HardHatIcon />
-                  <span className="flex min-w-0 flex-col items-start gap-0.5 group-data-[collapsible=icon]:hidden">
-                    <span className="truncate">Plan Básico</span>
-                    <span className="truncate text-xs font-normal text-muted-foreground">
-                      Mejorar plan
-                    </span>
-                  </span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  onClick={() => {
-                    resetDemo();
-                    toast.success("Demo restaurado.");
-                  }}
-                  tooltip="Restaurar demo"
-                >
-                  <CircleCheckIcon />
-                  <span>Restaurar demo</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {import.meta.env.DEV ? (
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    onClick={() => {
+                      resetDemo();
+                      toast.success("Demo restaurado.");
+                    }}
+                    tooltip="Restaurar demo"
+                  >
+                    <CircleCheckIcon />
+                    <span>Restaurar demo</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ) : null}
             </SidebarMenu>
           </SidebarFooter>
         </Sidebar>
 
         <SidebarInset>
+          <DemoBanner />
+          {storageStatus === "corrupt" ? (
+            <StorageRecoveryBanner
+              onExport={exportCorruptBackup}
+              onReset={import.meta.env.DEV ? resetDemo : undefined}
+              onRetry={retryLoad}
+              reason={corruptReason}
+            />
+          ) : null}
           <header className="flex min-h-16 flex-col gap-3 border-b px-4 py-4 lg:flex-row lg:items-start lg:justify-between lg:px-6">
             <div className="flex min-w-0 items-start gap-2">
-              <SidebarTrigger className="mt-1" />
+              <SidebarTrigger aria-label="Abrir o cerrar menú lateral" className="mt-1" />
               <div className="flex min-w-0 flex-col gap-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <h1 className="truncate text-2xl font-semibold tracking-tight">{headerTitle}</h1>
@@ -984,7 +1129,6 @@ function App() {
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <ThemeSwitcher />
               <Button onClick={() => setForm("project")} size="sm" variant="outline">
                 <PlusIcon data-icon="inline-start" />
                 Trabajo
@@ -1041,8 +1185,9 @@ function App() {
         }}
       />
       <NewMaterialSheet
+        activeProjectName={activeProject.name}
         onOpenChange={(open) => setForm(open ? "material" : null)}
-        onSave={addMaterial}
+        onSave={(input) => addMaterial({ ...input, projectId: activeProject.id })}
         open={form === "material"}
         suppliers={data.suppliers}
       />

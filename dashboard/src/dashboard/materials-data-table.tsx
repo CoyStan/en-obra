@@ -25,7 +25,8 @@ import {
   ArrowUpDownIcon,
 } from "lucide-react";
 import { useMemo, useState } from "react";
-import type { Material, Project, Supplier } from "../../../src/tracker/types";
+import type { Material, Project, Supplier } from "../../../src/domain/en-obra";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -56,7 +57,6 @@ import {
   estadoChip,
   materialInitial,
   openWhatsApp,
-  paymentLabels,
   statusLabel,
   supplierFor,
 } from "@/dashboard/model";
@@ -72,17 +72,6 @@ type MaterialsDataTableProps = {
   onEdit: (material: Material) => void;
   onOpenProject?: (projectId: string) => void;
 };
-
-function formatMoney(cents: number) {
-  if (!cents) {
-    return "—";
-  }
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: "MXN",
-    maximumFractionDigits: 0,
-  }).format(cents / 100);
-}
 
 function entregaToneClass(material: Material) {
   const state = attentionState(material);
@@ -129,6 +118,7 @@ export function MaterialsDataTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const isMobile = useIsMobile();
 
   const projectById = useMemo(() => {
     const map = new Map(projects.map((entry) => [entry.id, entry]));
@@ -264,23 +254,6 @@ export function MaterialsDataTable({
           },
         },
         {
-          id: "payment",
-          accessorFn: (row) => row.priceCents,
-          header: ({ column }) => (
-            <SortableHeader
-              label="Pago"
-              onSort={() => column.toggleSorting(column.getIsSorted() === "asc")}
-              sorted={column.getIsSorted()}
-            />
-          ),
-          cell: ({ row }) => (
-            <div className="flex flex-col gap-0.5">
-              <span className="font-medium">{formatMoney(row.original.priceCents)}</span>
-              <span className="text-xs text-muted-foreground">{paymentLabels[row.original.paymentStatus]}</span>
-            </div>
-          ),
-        },
-        {
           id: "estado",
           accessorFn: (row) => estadoChip(row).label,
           header: ({ column }) => (
@@ -401,6 +374,7 @@ export function MaterialsDataTable({
       <CardContent className="flex flex-col gap-4 pt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <Input
+            aria-label="Buscar material o proveedor"
             className="max-w-sm"
             onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
             placeholder="Buscar material o proveedor…"
@@ -437,7 +411,10 @@ export function MaterialsDataTable({
               </SelectContent>
             </Select>
             <DropdownMenu>
-              <DropdownMenuTrigger render={<Button size="sm" variant="outline" />}>
+              <DropdownMenuTrigger
+                className="hidden md:inline-flex"
+                render={<Button size="sm" variant="outline" />}
+              >
                 <Columns3Icon data-icon="inline-start" />
                 Columnas
                 <ChevronDownIcon data-icon="inline-end" />
@@ -456,15 +433,13 @@ export function MaterialsDataTable({
                           ? "Proveedor"
                           : column.id === "delivery"
                             ? "Entrega"
-                            : column.id === "payment"
-                              ? "Pago"
-                              : column.id === "estado"
-                                ? "Estado"
-                                : column.id === "name"
-                                  ? "Material"
-                                  : column.id === "project"
-                                    ? "Trabajo"
-                                    : column.id;
+                            : column.id === "estado"
+                              ? "Estado"
+                              : column.id === "name"
+                                ? "Material"
+                                : column.id === "project"
+                                  ? "Trabajo"
+                                  : column.id;
                       return (
                         <DropdownMenuItem
                           key={column.id}
@@ -481,40 +456,90 @@ export function MaterialsDataTable({
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-[1.25rem] bg-card shadow-soft">
-          <Table>
-            <TableHeader className="sticky top-0 z-10 bg-secondary/50">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+        {isMobile ? (
+          <div className="flex flex-col gap-3">
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => {
+                const material = row.original;
+                const supplier = supplierFor(suppliers, material.supplierId);
+                const chip = estadoChip(material);
+                const job = projects.find((item) => item.id === material.projectId);
+                return (
+                  <button
+                    key={row.id}
+                    className="min-h-11 rounded-[1.25rem] bg-card p-4 text-left shadow-soft"
+                    onClick={() => onEdit(material)}
+                    type="button"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold text-foreground">{material.name}</p>
+                        <p className={`mt-1 text-sm ${entregaToneClass(material)}`}>
+                          {deliverySubLabel(material)}
+                        </p>
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          {supplier?.name ?? "Proveedor por definir"}
+                          {showProjectColumn && job ? ` · ${job.name}` : ""}
+                        </p>
+                      </div>
+                      <Badge variant={chip.variant}>{chip.label}</Badge>
+                    </div>
+                  </button>
+                );
+              })
+            ) : (
+              <p className="rounded-[1.25rem] bg-card p-6 text-center text-sm text-muted-foreground shadow-soft">
+                No hay resultados con ese filtro.
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-[1.25rem] bg-card shadow-soft">
+            <Table>
+              <TableHeader className="sticky top-0 z-10 bg-secondary/50">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        aria-sort={
+                          header.column.getIsSorted() === "asc"
+                            ? "ascending"
+                            : header.column.getIsSorted() === "desc"
+                              ? "descending"
+                              : header.column.getCanSort()
+                                ? "none"
+                                : undefined
+                        }
+                        key={header.id}
+                      >
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell className="h-24 text-center" colSpan={columns.length}>
-                    No hay resultados con ese filtro.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell className="h-24 text-center" colSpan={columns.length}>
+                      No hay resultados con ese filtro.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        )}
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className={`flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${isMobile ? "hidden" : ""}`}>
           <p className="text-sm text-muted-foreground">
             {table.getFilteredRowModel().rows.length} de {items.length} materiales
           </p>
@@ -528,7 +553,7 @@ export function MaterialsDataTable({
               onValueChange={(value) => table.setPageSize(Number(value ?? 10))}
               value={String(table.getState().pagination.pageSize)}
             >
-              <SelectTrigger className="w-[90px]" size="sm">
+              <SelectTrigger aria-label="Materiales por página" className="min-h-11 w-[90px]" size="sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -544,6 +569,8 @@ export function MaterialsDataTable({
             </span>
             <div className="flex items-center gap-1">
               <Button
+                aria-label="Primera página"
+                className="min-h-11 min-w-11"
                 disabled={!table.getCanPreviousPage()}
                 onClick={() => table.setPageIndex(0)}
                 size="icon-sm"
@@ -552,6 +579,8 @@ export function MaterialsDataTable({
                 <ChevronsLeftIcon />
               </Button>
               <Button
+                aria-label="Página anterior"
+                className="min-h-11 min-w-11"
                 disabled={!table.getCanPreviousPage()}
                 onClick={() => table.previousPage()}
                 size="icon-sm"
@@ -560,6 +589,8 @@ export function MaterialsDataTable({
                 <ChevronLeftIcon />
               </Button>
               <Button
+                aria-label="Página siguiente"
+                className="min-h-11 min-w-11"
                 disabled={!table.getCanNextPage()}
                 onClick={() => table.nextPage()}
                 size="icon-sm"
@@ -568,6 +599,8 @@ export function MaterialsDataTable({
                 <ChevronRightIcon />
               </Button>
               <Button
+                aria-label="Última página"
+                className="min-h-11 min-w-11"
                 disabled={!table.getCanNextPage()}
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 size="icon-sm"
@@ -585,11 +618,12 @@ export function MaterialsDataTable({
           <span>
             {showProjectColumn
               ? "Tip: abre un trabajo para avisar a ese cliente, o usa las acciones de cada fila."
-              : "Tip: confirma entregas y pagos por WhatsApp para tener todo en orden."}
+              : "Tip: confirma entregas por WhatsApp. El cliente solo ve información permitida."}
           </span>
         </p>
         {tipProject && !showProjectColumn ? (
           <Button
+            className="min-h-11"
             onClick={() =>
               tryOpenWhatsApp(
                 tipProject.clientPhone,

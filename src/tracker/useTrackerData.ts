@@ -13,7 +13,7 @@ import type {
   ProjectUpdateInput,
   SupplierUpdateInput,
   TrackerData,
-} from "./types";
+} from "./v1types";
 import {
   createProjectRecord,
   createSupplierRecord,
@@ -34,6 +34,10 @@ function isLegacyDemoData(data: TrackerData) {
     && data.projects.every((project) => legacyDemoProjectIds.has(project.id));
 }
 
+/**
+ * @deprecated Prefer `useEnObraStore` (schema v2 persistence). Kept until
+ * `TrackerScreen` finishes migrating off tracker v1 storage.
+ */
 export function useTrackerData() {
   const [data, setData] = useState<TrackerData>(() => cloneTrackerDemoData());
   const [isLoading, setIsLoading] = useState(true);

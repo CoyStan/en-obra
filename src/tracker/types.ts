@@ -1,101 +1,28 @@
-export type MaterialStatus = "to_order" | "ordered" | "received" | "installed";
-export type SupplierPaymentStatus = "pending" | "deposit_paid" | "paid";
-export type TrackerTab = "home" | "materials" | "suppliers" | "client";
+// Canonical tracker types for schema v2 — re-exported from domain/en-obra.
+// Components should import from here, not directly from domain.
 
-export type Supplier = {
-  id: string;
-  name: string;
-  category: string;
-  phone: string;
-  lastContactAt: string;
-  lastContactNote: string;
-};
+export type {
+  Material,
+  MaterialStatus,
+  Project,
+  ProjectLifecycle,
+  Supplier,
+  TrackerDataV2,
+  DatasetKind,
+} from "../domain/en-obra/types";
 
-export type Material = {
-  id: string;
-  projectId: string;
-  supplierId: string;
-  name: string;
-  quantity: string;
-  priceCents: number;
-  status: MaterialStatus;
-  paymentStatus: SupplierPaymentStatus;
-  expectedOn?: string;
-  receivedOn?: string;
-  proofNote?: string;
-  createdAt: string;
-  updatedAt: string;
-};
+export type { NewMaterialInput, MaterialDetailsUpdateInput } from "../domain/en-obra/materials";
+export type { NewProjectInput, ProjectUpdateInput } from "../domain/en-obra/projects";
 
-export type Project = {
-  id: string;
-  name: string;
-  clientName: string;
-  clientPhone: string;
-  address: string;
-  service: string;
-  startedOn: string;
-};
+// Store-level supplier input types (defined in store to avoid circular deps)
+export type { NewSupplierInput, SupplierUpdateInput, RegisterContactInput } from "./useEnObraStore";
 
-export type TrackerData = {
-  version: 1;
-  demoRevision?: number;
-  activeProjectId: string;
-  projects: Project[];
-  suppliers: Supplier[];
-  materials: Material[];
-};
+/** Bottom-tab identifiers for the mobile UI. */
+export type TrackerTab = "home" | "jobs" | "suppliers";
 
-export type NewMaterialInput = {
-  name: string;
-  quantity: string;
-  supplierId: string;
-  price: string;
-  expectedOn?: string;
-};
-
+/** Shape used by MaterialStatusComposer → parent → store.changeMaterialStatus. */
 export type MaterialStatusUpdateInput = {
   expectedOn?: string;
-  status: MaterialStatus;
+  status: "to_order" | "ordered" | "received" | "installed";
   receivedOn?: string;
-};
-
-export type NewProjectInput = {
-  name: string;
-  clientName: string;
-  clientPhone?: string;
-  address?: string;
-};
-
-export type NewSupplierInput = {
-  name: string;
-  phone?: string;
-  category?: string;
-  lastContactNote?: string;
-};
-
-export type MaterialDetailsUpdateInput = {
-  name: string;
-  quantity: string;
-  supplierId: string;
-  expectedOn?: string;
-};
-
-export type ProjectUpdateInput = {
-  name: string;
-  clientName: string;
-  clientPhone?: string;
-  address?: string;
-};
-
-export type SupplierUpdateInput = {
-  name: string;
-  phone?: string;
-  category?: string;
-  lastContactNote?: string;
-};
-
-export type GoogleDriveEvidencePlan = {
-  mode: "not_connected" | "connected";
-  folderName?: string;
 };

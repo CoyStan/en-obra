@@ -1,56 +1,134 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer } from "react";
 import type {
   MaterialStatus,
   Project,
+  StorageEnvelope,
   Supplier,
-  TrackerData,
-} from "../../../src/tracker/types";
-import { cloneDemoData, isoFromDate } from "./model";
+  TrackerDataV2,
+} from "../../../src/domain/en-obra";
+import {
+  applyStatusChange,
+  createDemoData,
+  createMaterialRecord,
+  createProjectRecord,
+  loadFromUnknown,
+  migrateV1ToV2,
+} from "../../../src/domain/en-obra";
+import { isoFromDate } from "./model";
 
-const storageKey = "cuenta-obra-dashboard-v1";
+const STORAGE_KEY = "cuenta-obra-dashboard-v2";
+const CORRUPT_BACKUP_KEY = "cuenta-obra-dashboard-corrupt-backup";
 
-type NewMaterial = {
-  expectedOn?: string;
-  name: string;
-  price: string;
-  quantity: string;
-  supplierId: string;
-};
+export type StorageStatus = "ok" | "corrupt" | "v1migrated";
 
-type StatusUpdate = {
-  expectedOn?: string;
-  receivedOn?: string;
-  status: MaterialStatus;
+type State = {
+  data: TrackerDataV2;
+  storageStatus: StorageStatus;
+  corruptReason?: string;
 };
 
 function nextId(prefix: string) {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
-function parseMoneyCents(value: string) {
-  const normalized = value.replace(/[^0-9.,]/g, "").replace(",", ".");
-  const parsed = Number.parseFloat(normalized);
-  return Number.isFinite(parsed) ? Math.round(parsed * 100) : 0;
+function buildEnvelope(data: TrackerDataV2): StorageEnvelope {
+  return {
+    datasetKind: "demo",
+    schemaVersion: 2,
+    data,
+    writtenAt: new Date().toISOString(),
+  };
 }
 
-function loadData() {
+function tryLoad(): { state: State; rawForBackup?: string } {
+  let raw: string | null = null;
   try {
-    const stored = window.localStorage.getItem(storageKey);
-    if (stored) {
-      return JSON.parse(stored) as TrackerData;
-    }
+    raw = window.localStorage.getItem(STORAGE_KEY);
   } catch {
-    // The dashboard remains usable with its rich demo data.
+    return { state: { data: createDemoData(new Date()), storageStatus: "ok" } };
   }
-  return cloneDemoData();
+
+  if (!raw) {
+    return { state: { data: createDemoData(new Date()), storageStatus: "ok" } };
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return {
+      state: { data: createDemoData(new Date()), storageStatus: "corrupt", corruptReason: "El almacenamiento no es JSON válido." },
+      rawForBackup: raw,
+    };
+  }
+
+  const result = loadFromUnknown(parsed);
+
+  if (result.kind === "v2") {
+    return { state: { data: result.envelope.data, storageStatus: "ok" } };
+  }
+
+  if (result.kind === "v1") {
+    try {
+      const migrated = migrateV1ToV2(result.data);
+      return { state: { data: migrated, storageStatus: "v1migrated" } };
+    } catch {
+      return {
+        state: { data: createDemoData(new Date()), storageStatus: "corrupt", corruptReason: "Fallo al migrar datos anteriores." },
+        rawForBackup: raw,
+      };
+    }
+  }
+
+  return {
+    state: { data: createDemoData(new Date()), storageStatus: "corrupt", corruptReason: result.reason },
+    rawForBackup: raw,
+  };
+}
+
+type Action =
+  | { type: "SET_DATA"; data: TrackerDataV2 }
+  | { type: "RECOVER"; data: TrackerDataV2 };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "SET_DATA":
+      return { ...state, data: action.data, storageStatus: state.storageStatus === "corrupt" ? "ok" : state.storageStatus };
+    case "RECOVER":
+      return { data: action.data, storageStatus: "ok", corruptReason: undefined };
+    default:
+      return state;
+  }
+}
+
+export function loadDashboardState(): State {
+  const { state, rawForBackup } = tryLoad();
+  if (rawForBackup) {
+    try {
+      window.localStorage.setItem(CORRUPT_BACKUP_KEY, rawForBackup);
+    } catch {
+      // ignore
+    }
+  }
+  return state;
 }
 
 export function useDashboardData() {
-  const [data, setData] = useState<TrackerData>(loadData);
+  const [state, dispatch] = useReducer(reducer, undefined, loadDashboardState);
+  const { data, storageStatus, corruptReason } = state;
 
   useEffect(() => {
-    window.localStorage.setItem(storageKey, JSON.stringify(data));
-  }, [data]);
+    if (storageStatus === "corrupt") return;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(buildEnvelope(data)));
+    } catch {
+      // ignore (private mode or quota)
+    }
+  }, [data, storageStatus]);
+
+  const setData = useCallback((updater: (current: TrackerDataV2) => TrackerDataV2) => {
+    dispatch({ type: "SET_DATA", data: updater(state.data) });
+  }, [state.data]);
 
   const activeProject = useMemo(
     () => data.projects.find((project) => project.id === data.activeProjectId) ?? data.projects[0],
@@ -64,97 +142,110 @@ export function useDashboardData() {
 
   const selectProject = useCallback((projectId: string) => {
     setData((current) => ({ ...current, activeProjectId: projectId }));
-  }, []);
+  }, [setData]);
 
-  const updateMaterialStatus = useCallback((materialId: string, update: StatusUpdate) => {
+  const updateMaterialStatus = useCallback((materialId: string, update: { status: MaterialStatus; expectedOn?: string; receivedOn?: string }) => {
     const now = new Date().toISOString();
-    const today = isoFromDate(new Date());
     setData((current) => ({
       ...current,
       materials: current.materials.map((material) => {
-        if (material.id !== materialId) {
-          return material;
-        }
-        const received = update.status === "received" || update.status === "installed";
-        const receivedOn = received ? update.receivedOn ?? material.receivedOn ?? today : undefined;
-        return {
-          ...material,
-          expectedOn: update.status === "ordered" ? update.expectedOn : material.expectedOn,
-          proofNote: received
-            ? material.proofNote ?? (update.status === "installed" ? "Material usado en el trabajo." : "Recepción confirmada por el proveedor.")
-            : undefined,
-          receivedOn,
-          status: update.status,
-          updatedAt: now,
-        };
+        if (material.id !== materialId) return material;
+        return applyStatusChange(material, update.status, {
+          expectedOn: update.expectedOn,
+          receivedOn: update.receivedOn,
+          now,
+        });
       }),
     }));
-  }, []);
+  }, [setData]);
 
-  const addMaterial = useCallback((input: NewMaterial) => {
-    if (!activeProject || !input.name.trim() || !input.quantity.trim() || !input.supplierId) {
+  const addMaterial = useCallback((input: { name: string; quantity?: string; supplierId?: string; expectedOn?: string; projectId?: string }) => {
+    const targetProjectId = input.projectId ?? activeProject?.id;
+    if (!targetProjectId || !input.name.trim()) {
       return false;
     }
     const now = new Date().toISOString();
+    const material = createMaterialRecord(
+      { name: input.name.trim(), quantity: input.quantity?.trim() || undefined, supplierId: input.supplierId || undefined, expectedOn: input.expectedOn },
+      nextId("material"),
+      targetProjectId,
+      now,
+    );
     setData((current) => ({
       ...current,
-      materials: [{
-        id: nextId("material"),
-        projectId: activeProject.id,
-        supplierId: input.supplierId,
-        name: input.name.trim(),
-        quantity: input.quantity.trim(),
-        priceCents: parseMoneyCents(input.price),
-        status: "to_order",
-        paymentStatus: "pending",
-        expectedOn: input.expectedOn,
-        createdAt: now,
-        updatedAt: now,
-      }, ...current.materials],
+      materials: [material, ...current.materials],
     }));
     return true;
-  }, [activeProject]);
+  }, [activeProject?.id, setData]);
 
   const addProject = useCallback((input: Pick<Project, "name" | "clientName" | "clientPhone" | "address">) => {
     if (!input.name.trim() || !input.clientName.trim()) {
       return false;
     }
     const id = nextId("project");
-    const project: Project = {
+    const project = createProjectRecord(
+      { name: input.name, clientName: input.clientName, clientPhone: input.clientPhone, address: input.address },
       id,
-      name: input.name.trim(),
-      clientName: input.clientName.trim(),
-      clientPhone: input.clientPhone.trim(),
-      address: input.address.trim(),
-      service: "Trabajo en curso",
-      startedOn: isoFromDate(new Date()),
-    };
+      new Date(),
+    );
     setData((current) => ({
       ...current,
       activeProjectId: id,
       projects: [project, ...current.projects],
     }));
     return true;
-  }, []);
+  }, [setData]);
 
   const addSupplier = useCallback((input: Pick<Supplier, "name" | "category" | "phone">) => {
     if (!input.name.trim()) {
       return false;
     }
+    const now = new Date().toISOString();
     const supplier: Supplier = {
       id: nextId("supplier"),
       name: input.name.trim(),
       category: input.category.trim() || "Materiales y trabajo",
       phone: input.phone.replace(/\D/g, ""),
-      lastContactAt: new Date().toISOString(),
+      createdAt: now,
+      updatedAt: now,
+      lastContactAt: now,
       lastContactNote: "Proveedor agregado al trabajo.",
     };
     setData((current) => ({ ...current, suppliers: [supplier, ...current.suppliers] }));
     return true;
-  }, []);
+  }, [setData]);
 
   const resetDemo = useCallback(() => {
-    setData(cloneDemoData());
+    if (!import.meta.env.DEV) return;
+    const fresh = createDemoData(new Date());
+    dispatch({ type: "RECOVER", data: fresh });
+  }, []);
+
+  const exportCorruptBackup = useCallback(() => {
+    try {
+      const raw = window.localStorage.getItem(CORRUPT_BACKUP_KEY) ?? "{}";
+      const blob = new Blob([raw], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `en-obra-backup-${isoFromDate(new Date())}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const retryLoad = useCallback(() => {
+    const { state: fresh, rawForBackup } = tryLoad();
+    if (rawForBackup) {
+      try {
+        window.localStorage.setItem(CORRUPT_BACKUP_KEY, rawForBackup);
+      } catch {
+        // ignore
+      }
+    }
+    dispatch({ type: "RECOVER", data: fresh.data });
   }, []);
 
   return {
@@ -163,10 +254,14 @@ export function useDashboardData() {
     addProject,
     addSupplier,
     allMaterials,
+    corruptReason,
     data,
+    exportCorruptBackup,
     materials,
     resetDemo,
+    retryLoad,
     selectProject,
+    storageStatus,
     updateMaterialStatus,
   };
 }

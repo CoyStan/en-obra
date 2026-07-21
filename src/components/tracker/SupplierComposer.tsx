@@ -16,7 +16,6 @@ export function SupplierComposer({ onClose, onSave, onUpdate, supplier, visible 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [category, setCategory] = useState("");
-  const [lastContactNote, setLastContactNote] = useState("");
   const [error, setError] = useState<string | null>(null);
   const saveLock = useRef(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -27,12 +26,10 @@ export function SupplierComposer({ onClose, onSave, onUpdate, supplier, visible 
         setName(supplier.name);
         setPhone(supplier.phone);
         setCategory(supplier.category);
-        setLastContactNote(supplier.lastContactNote);
       } else {
         setName("");
         setPhone("");
         setCategory("");
-        setLastContactNote("");
       }
       saveLock.current = false;
       setIsSaving(false);
@@ -43,11 +40,12 @@ export function SupplierComposer({ onClose, onSave, onUpdate, supplier, visible 
     setError(null);
     onClose();
   };
+
   const save = () => {
     if (saveLock.current) return;
     saveLock.current = true;
     setIsSaving(true);
-    const input = { name, phone, category, lastContactNote: lastContactNote || undefined };
+    const input = { name, phone: phone || undefined, category: category || undefined };
     if (isEdit && onUpdate) {
       if (!onUpdate(input)) {
         setError("Escribe al menos el nombre del proveedor.");
@@ -55,17 +53,19 @@ export function SupplierComposer({ onClose, onSave, onUpdate, supplier, visible 
         setIsSaving(false);
         return;
       }
-    } else if (!onSave(input)) {
-      setError("Escribe al menos el nombre del proveedor.");
-      saveLock.current = false;
-      setIsSaving(false);
-      return;
+    } else {
+      const id = onSave(input);
+      if (!id) {
+        setError("Escribe al menos el nombre del proveedor.");
+        saveLock.current = false;
+        setIsSaving(false);
+        return;
+      }
     }
     if (!isEdit) {
       setName("");
       setPhone("");
       setCategory("");
-      setLastContactNote("");
     }
     setError(null);
     onClose();
@@ -76,15 +76,24 @@ export function SupplierComposer({ onClose, onSave, onUpdate, supplier, visible 
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <SheetHeader
           onClose={close}
-          subtitle={isEdit ? "Actualiza el contacto y el último acuerdo." : "Guarda el contacto. El acuerdo queda en WhatsApp."}
+          subtitle={
+            isEdit
+              ? "Actualiza nombre, teléfono o categoría."
+              : "Solo el nombre es obligatorio. El número permite escribirle desde aquí."
+          }
           title={isEdit ? "Editar proveedor" : "Nuevo proveedor"}
         />
         <ScrollView keyboardShouldPersistTaps="handled">
           <SheetContent>
             <Field label="Nombre">
-              <Input autoComplete="organization" onChangeText={setName} placeholder="Ej. Vivero del barrio…" value={name} />
+              <Input
+                autoComplete="organization"
+                onChangeText={setName}
+                placeholder="Ej. Vivero del barrio…"
+                value={name}
+              />
             </Field>
-            <Field description="Opcional" label="WhatsApp">
+            <Field description="Opcional — +52 para México" label="WhatsApp">
               <Input
                 autoComplete="tel"
                 keyboardType="phone-pad"
@@ -94,21 +103,18 @@ export function SupplierComposer({ onClose, onSave, onUpdate, supplier, visible 
               />
             </Field>
             <Field description="Opcional" label="¿Qué te vende?">
-              <Input autoComplete="off" onChangeText={setCategory} placeholder="Ej. Plantas y tierra…" value={category} />
+              <Input
+                autoComplete="off"
+                onChangeText={setCategory}
+                placeholder="Ej. Plantas y tierra…"
+                value={category}
+              />
             </Field>
-            {isEdit ? (
-              <Field description="Opcional" label="Último acuerdo / nota">
-                <Input
-                  autoComplete="off"
-                  multiline
-                  numberOfLines={3}
-                  onChangeText={setLastContactNote}
-                  placeholder="Ej. Entrega el jueves por la mañana…"
-                  value={lastContactNote}
-                />
-              </Field>
+            {error ? (
+              <Text accessibilityLiveRegion="polite" className="text-sm font-bold text-destructive">
+                {error}
+              </Text>
             ) : null}
-            {error ? <Text accessibilityLiveRegion="polite" className="text-sm font-bold text-destructive">{error}</Text> : null}
           </SheetContent>
         </ScrollView>
         <SheetFooter>

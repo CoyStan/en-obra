@@ -1,32 +1,30 @@
-# React + TypeScript + Vite
+# En Obra dashboard (internal)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This Vite + React workspace is an **internal design and demo shell** for En Obra
+UI patterns (shadcn-style tables, sheets, and status flows). It is **not** the
+canonical mobile app.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+From the repo root (npm workspaces):
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm ci
+npm run dev:dashboard
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Or from this folder:
+
+```bash
+npm run dev -- --host 0.0.0.0 --port 8081
+```
+
+## Verify
+
+```bash
+npm run build --workspace dashboard
+npm run lint --workspace dashboard
+```
+
+The Expo app at the repo root is the pilot product surface. See
+[docs/product/en-obra-pilot.md](../docs/product/en-obra-pilot.md).

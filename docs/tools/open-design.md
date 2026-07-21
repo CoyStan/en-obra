@@ -1,3 +1,7 @@
+# Open Design (legacy Cuentas Claras tooling note)
+
+Historical helper for the archived expense-split product. Active product is En Obra — see docs/product/en-obra-pilot.md.
+
 # Open Design Integration
 
 Open Design is used as a design accelerator for Cuentas Claras, not as a runtime dependency of the Expo app.

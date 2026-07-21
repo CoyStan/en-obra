@@ -27,6 +27,6 @@ describe("tracker storage normalization", () => {
     expect(normalized?.repaired).toBe(true);
     expect(normalized?.data.activeProjectId).toBe(normalized?.data.projects[0].id);
     expect(normalized?.data.materials).toHaveLength(35);
-    expect(normalized?.data.materials.some((material) => material.expectedOn === "2026-02-31")).toBe(false);
+    expect(normalized?.data.materials.some((m: { expectedOn?: string }) => m.expectedOn === "2026-02-31")).toBe(false);
   });
 });

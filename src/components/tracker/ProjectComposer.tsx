@@ -43,11 +43,17 @@ export function ProjectComposer({ onClose, onSave, onUpdate, project, visible }:
     setError(null);
     onClose();
   };
+
   const save = () => {
     if (saveLock.current) return;
     saveLock.current = true;
     setIsSaving(true);
-    const input = { name, clientName, clientPhone, address };
+    const input: NewProjectInput = {
+      name,
+      clientName,
+      clientPhone: clientPhone || undefined,
+      address: address || undefined,
+    };
     const saved = isEdit && onUpdate ? onUpdate(input) : onSave(input);
     if (!saved) {
       setError("Escribe el trabajo y el nombre del cliente.");
@@ -70,18 +76,32 @@ export function ProjectComposer({ onClose, onSave, onUpdate, project, visible }:
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <SheetHeader
           onClose={close}
-          subtitle={isEdit ? "Actualiza los datos del trabajo activo." : "Primero lo importante. Lo demás puede esperar."}
+          subtitle={
+            isEdit
+              ? "Actualiza los datos del trabajo activo."
+              : "Primero lo importante. Lo demás puede esperar."
+          }
           title={isEdit ? "Editar trabajo" : "Nuevo trabajo"}
         />
         <ScrollView keyboardShouldPersistTaps="handled">
           <SheetContent>
             <Field label="¿Qué vas a hacer?">
-              <Input autoComplete="off" onChangeText={setName} placeholder="Ej. Arreglar el jardín…" value={name} />
+              <Input
+                autoComplete="off"
+                onChangeText={setName}
+                placeholder="Ej. Arreglar el jardín…"
+                value={name}
+              />
             </Field>
             <Field label="¿Para quién?">
-              <Input autoComplete="off" onChangeText={setClientName} placeholder="Ej. Camila…" value={clientName} />
+              <Input
+                autoComplete="off"
+                onChangeText={setClientName}
+                placeholder="Ej. Camila…"
+                value={clientName}
+              />
             </Field>
-            <Field description="Opcional" label="WhatsApp del cliente">
+            <Field description="Opcional — +52 para México" label="WhatsApp del cliente">
               <Input
                 autoComplete="tel"
                 keyboardType="phone-pad"
@@ -91,13 +111,27 @@ export function ProjectComposer({ onClose, onSave, onUpdate, project, visible }:
               />
             </Field>
             <Field description="Opcional" label="¿Dónde será?">
-              <Input autoComplete="street-address" onChangeText={setAddress} placeholder="Ej. Roma Sur…" value={address} />
+              <Input
+                autoComplete="street-address"
+                onChangeText={setAddress}
+                placeholder="Ej. Roma Sur…"
+                value={address}
+              />
             </Field>
-            {error ? <Text accessibilityLiveRegion="polite" className="text-sm font-bold text-destructive">{error}</Text> : null}
+            {error ? (
+              <Text accessibilityLiveRegion="polite" className="text-sm font-bold text-destructive">
+                {error}
+              </Text>
+            ) : null}
           </SheetContent>
         </ScrollView>
         <SheetFooter>
-          <Button className="flex-1" disabled={isSaving} icon={isEdit ? "content-save-outline" : "play"} onPress={save}>
+          <Button
+            className="flex-1"
+            disabled={isSaving}
+            icon={isEdit ? "content-save-outline" : "play"}
+            onPress={save}
+          >
             {isSaving ? "Guardando…" : isEdit ? "Guardar cambios" : "Empezar trabajo"}
           </Button>
         </SheetFooter>

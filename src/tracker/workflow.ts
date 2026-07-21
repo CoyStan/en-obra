@@ -1,5 +1,5 @@
 import { isIsoDate, todayIsoDate } from "./dates";
-import type { Material, MaterialStatusUpdateInput, NewProjectInput, NewSupplierInput, Project, Supplier } from "./types";
+import type { V1Material as Material, MaterialStatusUpdateInput, NewProjectInput, NewSupplierInput, V1Project as Project, V1Supplier as Supplier } from "./v1types";
 
 export function parsePriceCents(value: string) {
   const compact = value.replace(/[^0-9.,]/g, "");

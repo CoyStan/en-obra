@@ -1,4 +1,4 @@
-import type { TrackerData } from "./types";
+import type { TrackerData } from "./v1types";
 
 export const trackerDemoData: TrackerData = {
   version: 1,

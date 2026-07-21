@@ -1,11 +1,5 @@
-import { trackerDemoData } from "../../../src/tracker/demoData";
-import type {
-  Material,
-  MaterialStatus,
-  Project,
-  Supplier,
-  TrackerData,
-} from "../../../src/tracker/types";
+import type { Material, MaterialStatus, Project, Supplier } from "../../../src/domain/en-obra";
+import { urgency, waMeUrl } from "../../../src/domain/en-obra";
 
 export type DashboardView = "home" | "materials" | "suppliers" | "client" | "whatsapp";
 
@@ -20,19 +14,7 @@ export const statusOptions: Array<{
   { value: "installed", label: "Usado", description: "Ya se utilizó en el trabajo." },
 ];
 
-export const paymentLabels = {
-  pending: "Pendiente",
-  deposit_paid: "Anticipo",
-  paid: "Pagado",
-} as const;
-
 export type BadgeVariant = "default" | "secondary" | "destructive" | "outline" | "ghost";
-
-const demoToday = "2026-07-18";
-
-export function cloneDemoData(): TrackerData {
-  return JSON.parse(JSON.stringify(trackerDemoData)) as TrackerData;
-}
 
 export function formatDate(value?: string) {
   if (!value) {
@@ -70,7 +52,7 @@ export function statusLabel(status: MaterialStatus) {
   return statusOptions.find((option) => option.value === status)?.label ?? "Sin estado";
 }
 
-export function deliveryLabel(material: Material, today = demoToday) {
+export function deliveryLabel(material: Material, today = isoFromDate(new Date())) {
   if (material.status === "installed") {
     return "Usado en el trabajo";
   }
@@ -113,7 +95,7 @@ export function deliveryDateLine(material: Material) {
 }
 
 /** Secondary line under the date in Entrega. */
-export function deliverySubLabel(material: Material, today = demoToday) {
+export function deliverySubLabel(material: Material, today = isoFromDate(new Date())) {
   const state = attentionState(material, today);
   if (state === "late") return "Atrasado";
   if (state === "complete") {
@@ -126,24 +108,12 @@ export function deliverySubLabel(material: Material, today = demoToday) {
   return "Programado";
 }
 
-export function attentionState(material: Material, today = demoToday) {
-  if (material.status === "installed" || material.status === "received") {
-    return "complete";
-  }
-  if (!material.expectedOn) {
-    return material.status === "ordered" ? "waiting" : "normal";
-  }
-  if (material.expectedOn < today) {
-    return "late";
-  }
-  if (material.expectedOn === today) {
-    return "today";
-  }
-  return "normal";
+export function attentionState(material: Material, today = isoFromDate(new Date())) {
+  return urgency(material, today);
 }
 
 /** Estado chip: late overrides status so the table matches the mockup. */
-export function estadoChip(material: Material, today = demoToday): { label: string; variant: BadgeVariant } {
+export function estadoChip(material: Material, today = isoFromDate(new Date())): { label: string; variant: BadgeVariant } {
   if (attentionState(material, today) === "late") {
     return { label: "Atrasado", variant: "destructive" };
   }
@@ -160,12 +130,7 @@ export function estadoChip(material: Material, today = demoToday): { label: stri
 }
 
 export function whatsAppHref(phone: string | undefined, text: string) {
-  const digits = (phone ?? "").replace(/\D/g, "");
-  if (!digits) {
-    return undefined;
-  }
-  const withCountry = digits.length === 10 ? `52${digits}` : digits;
-  return `https://wa.me/${withCountry}?text=${encodeURIComponent(text)}`;
+  return waMeUrl(phone ?? "", text);
 }
 
 export function openWhatsApp(phone: string | undefined, text: string) {
@@ -177,7 +142,7 @@ export function openWhatsApp(phone: string | undefined, text: string) {
   return true;
 }
 
-export function supplierFor(suppliers: Supplier[], supplierId: string) {
+export function supplierFor(suppliers: Supplier[], supplierId?: string) {
   return suppliers.find((supplier) => supplier.id === supplierId);
 }
 

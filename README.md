@@ -1,30 +1,43 @@
 # En Obra
 
-**En Obra** (formerly Cuenta Obra) is an Android-first, Spanish-first tracker for
-very small service businesses in Mexico/LATAM. A provider records the materials
-for a job, keeps a simple supplier log, and previews the safe update the
-provider can send the client about what has been ordered and received.
+**En Obra** is an Android-first, Spanish-first tracker for very small service
+businesses in Mexico/LATAM. A provider records materials for a job, keeps a
+simple supplier log, and previews the safe update they can send a client about
+what has been ordered and received.
 
-The current MVP is local-first. It includes demo project data, quick work/client
-and supplier setup, material status tracking, supplier contact handoff to
-WhatsApp, and a client-safe progress preview. It never processes payments or
-shows internal costs. A real client link needs the authenticated backend listed
-in the launch contract. There are no production backend secrets or paid service
-dependencies in the repo.
+The current **pilot** is local-first and free: data stays on-device, there is no
+cloud account, and WhatsApp is the handoff path for client updates. The internal
+Vite dashboard is a design/demo surface — **Expo is the canonical app**.
 
-## App Development
+Canonical pilot contract: [docs/product/en-obra-pilot.md](docs/product/en-obra-pilot.md)
+
+## Setup
 
 ```bash
-npm install
+npm ci
 npm run typecheck
+npm run lint
 npm test
-npx expo config --type public
-npx expo start
+npm run verify
+```
+
+## Development
+
+```bash
+npm start                 # Expo dev server (canonical)
+npm run dev:android       # Expo on Android
+npm run dev:expo-web      # Expo web
+npm run dev:dashboard     # internal dashboard at 0.0.0.0:8081
+```
+
+## Release checks
+
+```bash
+npm run pilot:android:check        # local pilot readiness (should pass)
+npm run production:android:check   # lists production blockers (expected exit 1)
 ```
 
 ## Company OS
-
-This repo uses Palari Company OS for product and engineering governance.
 
 ```bash
 ./bin/company-os validate
@@ -33,16 +46,6 @@ This repo uses Palari Company OS for product and engineering governance.
 ./bin/company-os state
 ```
 
-The workspace lives at:
+Workspace: `company-os/workspace.json`
 
-```text
-company-os/workspace.json
-```
-
-Legacy Palari Orchestrator tickets and evidence were archived under:
-
-```text
-docs/legacy/palari-orchestrator/
-```
-
-Do not use the old CUE ticket/worktree workflow for new work.
+Legacy Cuentas Claras expense-split docs: `docs/legacy/cuentas-claras/`

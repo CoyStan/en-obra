@@ -1,5 +1,4 @@
-import type { CurrencyCode } from "./types";
-export { splitEqual } from "./splits";
+export type CurrencyCode = "MXN";
 
 const pesoFormatter = new Intl.NumberFormat("es-MX", {
   currency: "MXN",
