@@ -14,7 +14,7 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
   return (
     <TextInput
       className={cn(
-        "min-h-[48px] rounded-ccMd border border-border bg-canvas px-ccMd text-ccBody font-semibold text-ink",
+        "min-h-[44px] rounded-lg border border-input bg-background px-3 text-base text-foreground",
         className,
       )}
       placeholderTextColor={placeholderTextColor}

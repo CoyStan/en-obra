@@ -1,141 +1,78 @@
-# Cuentas Claras Visual Direction
+# Cuenta Obra Visual Direction
+
+Updated: 2026-07-21  
+Status: active (Vemos dialect)
+
+Related: `docs/superpowers/plans/2026-07-21-vemos-feeling-transition.md`,
+`docs/product/ui-component-system.md`, [palari-vemos](https://github.com/CoyStan/palari-vemos).
 
 ## Chosen Direction
 
-Founder preference: combine the strongest product pick from generated concepts:
+Cuenta Obra keeps its **work / materials** product. The visual dialect is
+**Vemos**: warm, calm Palari Labs field UI — not a cold admin dashboard and not
+the rejected indigo marketing chrome.
 
-- Style 1 base: trustworthy fintech minimal.
-- Style 2 warmth: Mexico/LATAM cues through agave, terracotta, and marigold
-  accents.
-- Style 3 structure: Android-native Material-style hierarchy, bottom
-  navigation, segmented controls, chips, and one obvious primary action.
+Borrow feeling, not product:
 
-The app should feel like a real consumer finance utility for Mexico/LATAM, not
-a generic dashboard and not a decorative travel app.
+- Warm off-white canvas, teal action, soft coral warmth
+- Soft teal-tinted shadows on primary surfaces; borders for inputs/secondary
+- Generous whitespace; one lifted focus card per view
+- Pill primary CTAs; Quicksand-class type
+
+Do not borrow Vemos calendar/friends flows, English lifestyle copy, or emoji icons.
 
 ## Product Feeling
 
-- Calm, precise, and money-safe.
-- Spanish-first and locally familiar without folklore or kitsch.
-- Android-native: thumb-friendly, predictable, and compact.
-- Balance-first: users immediately know who owes, who receives, and what to do.
-- Local/demo honest: "Sin pagos reales" and "Datos en este dispositivo" stay
-  near settlement actions.
+- Calm and specific for one- or two-person service work in Mexico/LATAM
+- Spanish-first; no CRM jargon
+- Thumb-friendly; one clear next action
+- Materials and client preview stay trustworthy and share-safe
 
-## Palette
+## Palette (Vemos)
 
-Use a cool slate-white fintech base with warm accents in small doses.
-
-- Ink: `#0E1B22`
-- Muted ink: `#5A6B75`
-- Canvas: `#F4F6F8`
-- Surface: `#FFFFFF`
-- Surface strong: `#F0F3F6`
-- Surface tinted: `#E8EFF1`
-- Primary agave: `#0E7C66`
-- Primary deep: `#0A5A4A`
-- Android indigo accent: `#2A4FD4`
-- Warm terracotta: `#B85A3D`
-- Warm marigold: `#D98E21`
-- Due rose: `#B23A48`
-- Border: `#DCE3E8`
+| Role | Hex | Token |
+| --- | --- | --- |
+| Canvas | `#FAF8F5` | `background` / `canvas` |
+| Surface | `#FFFFFF` | `card` / `surface` |
+| Ink | `#2A2C31` | `foreground` / `ink` |
+| Muted | `#6B7280` | `mutedForeground` |
+| Border (warm) | `#EBE5DF` | `border` |
+| Primary teal | `#147A78` | `primary` |
+| Primary pressed | `#0F6261` | `primaryDark` |
+| Soft teal | `#E7F5F4` | `secondary` / `forestWash` |
+| Coral warmth | `#F28C78` | `terracotta` / accent family |
+| Soft coral | `#FFF0EC` | `accent` / `warmWash` |
+| Success | `#15803D` | `success` |
+| Danger | `#B42318` | `destructive` / `due` |
 
 Rules:
 
-- Use agave/teal for primary navigation, receive states, and trustworthy
-  confirmation.
-- Use Android indigo only for selected interactive emphasis or small
-  affordances, never as the whole brand.
-- Use terracotta for debt and local context accents only when it improves
-  scanning.
-- Use marigold for tiny secondary icons/chips, not large panels.
-- Keep warning/debt color distinct from decorative warmth.
-
-## First Viewport
-
-The first Android viewport must show:
-
-- App name and compact utility actions.
-- Active group name, description, and member count.
-- A large but contained balance module with "Te deben" and "Debes" or
-  equivalent positive/negative scan labels.
-- Quick actions for adding an expense, adding/inviting an integrante, and
-  local settlement.
-- A settlement suggestion or "todo en paz" state.
-- Activity preview begins before the fold on common 390x844 or 412x915 screens.
-
-Avoid a marketing headline. The app experience itself is the first screen.
+- Teal for primary actions, nav emphasis, trustworthy confirmation
+- Coral only for warmth and sparse accents — never as the only status cue or as owed/error
+- Status washes (late / today / waiting / paid) stay semantic and labeled
+- Shadows carry card lift; do not rely on harsh hairline rings for primary content
 
 ## Layout Grammar
 
-- Root canvas is cool neutral, almost white.
-- Cards use 8 px radius, 1 px hairline borders, and restrained shadow only when
-  needed for native depth.
-- Do not nest cards inside cards. Use divider rows inside a single section when
-  grouping related data.
-- Use compact section headers with icon + text when it clarifies scanning.
-- Keep primary actions in a horizontal action rail or Material-style FAB
-  pattern; avoid scattering large buttons.
-- Bottom navigation remains persistent and Android-native.
-- Use segmented controls for views inside the selected group when space allows.
-- Use chips for members, split mode, local/offline status, and selected filters.
-
-## Component Targets
-
-### Active Group Module
-
-- Group title and member count are prominent.
-- Show short description or context.
-- Member avatars/chips sit near group identity.
-- MXN/local status is a small chip, not a banner.
-
-### Balance Module
-
-- Two-column scan: receive vs pay.
-- Amounts use tabular numerals and MXN labels.
-- Positive/negative states use color plus text labels.
-- Include a short local trust note near settlement areas, not long explanation.
-
-### Quick Action Rail
-
-- `Agregar gasto` is primary.
-- `Integrante` and `Liquidar localmente` are secondary.
-- Settlement actions must say or sit beside `Sin pagos reales`.
-
-### Settlement Card
-
-- Plain Spanish: `Luis le debe a Ana`.
-- Amount is visually dominant.
-- Route direction is obvious through arrow icon and copy.
-- `Marcar como pagado` opens the existing local confirmation flow.
-
-### Activity Preview
-
-- Rows show icon, concept, payer, equal split cue, date, and amount.
-- Recent activity should feel like an audit trail, not a social feed.
+- Root canvas is warm off-white
+- Cards ~20px radius; controls ~14px; primary CTAs prefer pills
+- Prefer soft shadow over hard border on content cards
+- Do not nest cards inside cards
+- One `shadowLift` focus region per view (e.g. attention table on Hoy)
+- Keep Cuenta Obra IA: Hoy global · Proveedores shared · Trabajo activo + client preview
 
 ## Anti-Goals
 
-- No photo-heavy design that depends on remote images.
-- No beige/brown full-theme palette.
-- No large hero headline.
-- No bank/payment implication.
-- No hidden "Sin pagos reales" disclaimer.
-- No large decorative pattern blocks.
-- No one-note blue dashboard.
+- Cool hospital slate / emerald-as-default chrome
+- Indigo marketing paint (`#2E2A7B`) as product primary
+- Dense bento dashboards, floating metric pills, fake activity
+- Copying Vemos When/Friends screens into Cuenta Obra
+- Folklore kitsch or full beige/brown themes
 
 ## Close-Resemblance Checklist
 
-A future visual implementation is close to the selected direction when:
-
-- The first screen visually resembles the Style 1 balance-first hierarchy.
-- Warm Style 2 accents are visible but secondary.
-- Android-native Style 3 patterns are clear in navigation, chips, controls, and
-  action placement.
-- A small mobile viewport shows active group, balance, actions, and settlement
-  before activity begins.
-- The page reads as finance/trust first, local/Mexico warmth second, demo
-  honesty always.
-- Text remains readable at 360 px and 412 px wide screenshots.
-- No generated-reference concept has to be copied literally; the real app must
-  remain data-driven and usable.
+- First glance: warm canvas + teal, not cool slate green
+- Still a materials/work tool, not a social calendar
+- Active trabajo + client name remain obvious
+- Tables stay usable; warmth is chrome, not feature removal
+- Founder can say: “This feels like Vemos, but it’s Cuenta Obra.”

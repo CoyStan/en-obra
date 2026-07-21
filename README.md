@@ -1,12 +1,16 @@
-# Cuentas Claras
+# En Obra
 
-Cuentas Claras is an Android-first, Spanish-first expense sharing app for
-Mexico/LATAM. It is built with Expo, React Native, and TypeScript.
+**En Obra** (formerly Cuenta Obra) is an Android-first, Spanish-first tracker for
+very small service businesses in Mexico/LATAM. A provider records the materials
+for a job, keeps a simple supplier log, and previews the safe update the
+provider can send the client about what has been ordered and received.
 
-The app is local-first for the current MVP: demo users, groups, shared expenses,
-balances, and settlement language are local/mock behavior. There are no real
-payments, no production backend secrets, and no paid service dependencies in the
-repo.
+The current MVP is local-first. It includes demo project data, quick work/client
+and supplier setup, material status tracking, supplier contact handoff to
+WhatsApp, and a client-safe progress preview. It never processes payments or
+shows internal costs. A real client link needs the authenticated backend listed
+in the launch contract. There are no production backend secrets or paid service
+dependencies in the repo.
 
 ## App Development
 

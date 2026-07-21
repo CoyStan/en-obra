@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "name": "Cuentas Claras Company OS",
+  "name": "Cuenta Obra Company OS",
   "goals": [
     {
       "id": "GOAL-MIGRATION-0001",
       "title": "Replace the old Palari Orchestrator workflow with Company OS",
       "owner": "HUMAN-FOUNDER",
-      "status": "active",
+      "status": "completed",
       "priority": "high",
       "success_criteria": [
         "Old ticket/worktree workflow is archived rather than used for new product work",
@@ -26,9 +26,9 @@
     },
     {
       "id": "GOAL-PREMIUM-MVP",
-      "title": "Make Cuentas Claras a premium Android-first LATAM finance app",
+      "title": "[Historical] Make Cuentas Claras a premium Android-first LATAM finance app",
       "owner": "HUMAN-FOUNDER",
-      "status": "active",
+      "status": "completed",
       "priority": "high",
       "success_criteria": [
         "The app feels cleaner, lighter, and more professional than the current MVP",
@@ -50,6 +50,42 @@
       ],
       "linked_decisions": [
         "DECISION-PRODUCT-0001"
+      ]
+    },
+    {
+      "success_criteria": [
+        "Provider can start a job",
+        "track materials",
+        "and preview a client-safe update locally",
+        "UI uses the preferred shadcn/dashboard element language adapted for Expo",
+        "Spanish-first Android-first experience for solo LATAM service providers",
+        "No real payments",
+        "secrets",
+        "or production backend without founder approval"
+      ],
+      "linked_palaris": [
+        "PALARI-PRODUCT",
+        "PALARI-DESIGN",
+        "PALARI-ENGINEERING",
+        "PALARI-RELEASE"
+      ],
+      "id": "GOAL-CUENTA-OBRA",
+      "title": "Ship Cuenta Obra as the provider work-and-material tracker",
+      "owner": "HUMAN-FOUNDER",
+      "status": "active",
+      "priority": "high",
+      "linked_decisions": [
+        "DECISION-PRODUCT-0002",
+        "DECISION-UI-0001"
+      ],
+      "linked_work": [
+        "WORK-APP-0112",
+        "WORK-APP-0113",
+        "WORK-APP-0114",
+        "WORK-APP-0115",
+        "WORK-APP-0116",
+        "WORK-APP-0117",
+        "WORK-APP-0118"
       ]
     }
   ],
@@ -554,6 +590,86 @@
       "provider": "github",
       "uri": "https://github.com/nexu-io/open-design",
       "access_mode": "read"
+    },
+    {
+      "id": "SOURCE-CUENTA-OBRA-DIRECTION",
+      "label": "Cuenta Obra provider-first product direction",
+      "kind": "note",
+      "provider": "repo",
+      "uri": "docs/product/cuenta-obra-provider-direction.md",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "2026-07-18"
+    },
+    {
+      "id": "SOURCE-CUENTA-OBRA-LAUNCH",
+      "label": "Cuenta Obra launch contract",
+      "kind": "note",
+      "provider": "repo",
+      "uri": "docs/product/cuenta-obra-launch-contract.md",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "2026-07-18"
+    },
+    {
+      "id": "SOURCE-CUENTA-OBRA-CHECKLIST",
+      "label": "Cuenta Obra engineering checklist",
+      "kind": "note",
+      "provider": "repo",
+      "uri": "docs/product/cuenta-obra-engineering-checklist.md",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "2026-07-18"
+    },
+    {
+      "id": "SOURCE-CUENTA-OBRA-CONCEPTS",
+      "label": "Cuenta Obra concept visuals",
+      "kind": "note",
+      "provider": "repo",
+      "uri": "docs/product/cuenta-obra-concepts",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "2026-07-18"
+    },
+    {
+      "id": "SOURCE-PREFERRED-UI-KIT",
+      "label": "Preferred shadcn/dashboard UI element kit",
+      "kind": "note",
+      "provider": "repo",
+      "uri": "dashboard/src/components/ui",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "base-nova-2026-07-18"
+    },
+    {
+      "id": "SOURCE-TRACKER-APP",
+      "label": "Cuenta Obra tracker app surfaces",
+      "kind": "note",
+      "provider": "repo",
+      "uri": "src/screens/TrackerScreen.tsx",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "work-app-0107-dirty"
+    },
+    {
+      "id": "SOURCE-CUENTA-OBRA-UI-PATH",
+      "label": "Cuenta Obra better UI path",
+      "kind": "note",
+      "provider": "repo",
+      "uri": "docs/product/cuenta-obra-ui-path.md",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "2026-07-18"
+    },
+    {
+      "id": "SOURCE-CUENTA-OBRA-UI-PLAN",
+      "label": "Cuenta Obra UI reconstruction plan",
+      "kind": "note",
+      "provider": "repo",
+      "uri": "docs/product/cuenta-obra-ui-reconstruction-plan.md",
+      "access_mode": "read",
+      "owner_human": "HUMAN-FOUNDER",
+      "last_seen_revision": "WORK-APP-0112"
     }
   ],
   "work_items": [
@@ -564,7 +680,7 @@
       "palari": "PALARI-OPS",
       "risk": "R2",
       "intensity": "standard",
-      "status": "active",
+      "status": "closed",
       "scope": "Archive old Palari Orchestrator artifacts, install the new Company OS CLI and workspace, map useful docs as sources, and verify the app still passes existing checks.",
       "allowed_resources": [
         "company-os",
@@ -1244,7 +1360,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Make the first-viewport personal balance card less oversized, show cents, and place the amount on the right where horizontal space is available.",
       "acceptance_target": "The personal balance block feels calmer and more finance-native, with decimal cents visible and no oversized centered amount.",
       "required_approval_capability": "design",
@@ -2027,7 +2143,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, reports/evidence, company-os. Sources: premium visual goal, design system, visual direction, decisions. Actions: local_write, local_validation. Clarify that Groups selects the active group and that Activity, Balance, and Profile follow that active group. Preserve existing content, local demo behavior, and no-real-payments language. Forbidden: real payments, production backend, secrets, paid services, removing group functionality.",
       "acceptance_target": "Groups stays a stable tab label, group selection opens the group workspace, group-scoped tabs are clearly tied to the selected group, and verification passes.",
       "required_approval_capability": "design",
@@ -2240,7 +2356,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, src/components/ui.tsx, docs/product/**, reports/evidence/WORK-APP-0051/**, metro.config.js, company-os/workspace.json. Use public Mobbin finance-pattern benchmarking and Material Android structure to make the app feel lighter, more professional, more visual, and less card-heavy without removing core content. Forbidden: real payments, production backend, secrets, paid services, legal decisions, destructive cleanup.",
       "acceptance_target": "The first group workspace and balance/activity surfaces read like a premium mobile finance app: lighter canvas, clearer hierarchy, fewer heavy boxes, stronger money-flow object, obvious active group/user/MXN/no-real-payments cues, and readable Android widths.",
       "required_approval_capability": "design",
@@ -2282,7 +2398,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, src/components/ui.tsx, docs/product/**, reports/evidence/WORK-APP-0052/**, company-os/workspace.json. Rebuild the add-expense sheet into a premium mobile finance composer: amount/category first, active payer identity, participant review, split preview, local trust cue, and compact animated selectors. Preserve behavior and local-first model. Forbidden: real payments, backend/provider decisions, secrets, paid services, legal decisions, destructive cleanup.",
       "acceptance_target": "Add-expense no longer feels like a long settings form: it reads as a guided finance composer with a clear amount object, compact payer/participant rows, readable split preview, Spanish-first low-cognitive-load copy, and Android-width screenshot evidence.",
       "required_approval_capability": "design",
@@ -2318,7 +2434,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, src/components/ui.tsx, docs/product/**, reports/evidence/WORK-APP-0053/**, company-os/workspace.json. Rebuild the Balance tab into a premium settlement cockpit: route-first debt map, compact settlement ladder, member ledger, MXN totals, local-only trust cues, and clear actions. Preserve behavior and local-first model. Forbidden: real payments, backend/provider decisions, secrets, paid services, legal decisions, destructive cleanup.",
       "acceptance_target": "Balance tab no longer feels like stacked generic cards; it shows a high-confidence money control room with debt routes, settlement actions, member ledger, readable Android widths, and screenshot evidence.",
       "required_approval_capability": "design",
@@ -2356,7 +2472,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, src/components/ui.tsx, docs/product/**, reports/evidence/WORK-APP-0054/**, company-os/workspace.json. Rebuild Perfil into a premium identity and trust center: local account identity, group persona selection, local-only privacy/security status, data controls, and no-real-payments cues. Preserve behavior and local-first model. Forbidden: real auth provider decisions, production backend, real payments, secrets, paid services, legal decisions, destructive cleanup.",
       "acceptance_target": "Profile tab no longer feels like admin settings; it presents identity, selected group persona, local data safety, and demo controls in a polished mobile account center with Android-width screenshot evidence.",
       "required_approval_capability": "design",
@@ -2392,7 +2508,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, src/components/ui.tsx, docs/product/**, reports/evidence/WORK-APP-0055/**, company-os/workspace.json. Replace the same-old tab/card feeling with a more ambitious Android money workspace: stronger app shell, selected group cockpit, action dock, visual money objects, clearer activity/balance/profile relationships, lighter surfaces, and lower cognitive load. Preserve local-first behavior, Spanish copy, multi-user identity, MXN, no-real-payments boundary, tests, and existing data model. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "The app no longer feels like a styled dashboard; the first viewport and core navigation feel like a premium consumer money workspace with clear identity, group, personal balance, next action, settlement cue, and no-real-payments cue across Android widths.",
       "required_approval_capability": "design",
@@ -2427,7 +2543,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0056/**, company-os/workspace.json. Redesign Grupos into a premium workspace switcher/lobby: active group spotlight, local identity cue, group comparison list, clear enter action, lighter card weight, and create-group affordance. Preserve group creation, selected group behavior, local-first model, Spanish copy, MXN, and no-real-payments boundary. Forbidden: production backend, real payments, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "The Grupos tab feels like an intentional workspace switcher, not a generic list; users can quickly see the active group, compare groups, enter the workspace, and create a group with low cognitive load on Android widths.",
       "required_approval_capability": "design",
@@ -2462,7 +2578,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0057/**, company-os/workspace.json. Redesign the add-expense sheet into a guided receipt-capture flow: receipt object, step rail, payer/participant route, split preview dock, clearer save state, low cognitive load, Android-first touch targets, Spanish copy, MXN, local-first and no-real-payments cues. Preserve existing add expense behavior and equal split logic. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Adding an expense feels like a premium guided capture flow rather than a generic form; users can understand category, amount, payer, participants, split preview, local/demo boundary, and save action on Android widths.",
       "required_approval_capability": "design",
@@ -2497,7 +2613,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0058/**, company-os/workspace.json. Replace the simple expense split preview list with a premium visual split-impact object: show total amount, participant count, equal-share logic, per-person share bars/chips, payer distinction, and local/no-real-payments save boundary. Preserve current add-expense behavior, equal split math, Spanish copy, MXN, and accessibility. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Before saving a gasto, users can visually understand how the receipt amount becomes each participant share and who paid, without reading a dense list or accounting explanation.",
       "required_approval_capability": "design",
@@ -2533,7 +2649,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0059/**, company-os/workspace.json. Redesign settlement confirmation into a premium external-pay agreement flow: visual payer-to-receiver route, MXN amount, outside-the-app boundary, local record effect, before/after agreement language, clear cancel/record actions, Android-first screenshot evidence. Preserve mark settlement paid behavior and avoid real payment language. Forbidden: real payments, payment rails, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Marking a settlement as paid feels like recording an outside-the-app agreement, not initiating a payment; users can see who pays whom, amount, local-only effect, and no-real-payments boundary before confirming.",
       "required_approval_capability": "design",
@@ -2568,7 +2684,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0060/**, company-os/workspace.json. Redesign Activity history into a premium ledger story: selected group summary, timeline proof surface, grouped day cards, richer expense/settlement rows, local/demo proof cues, clear MXN amounts, Android-first screenshots. Preserve activity data, reset demo, local-first behavior, Spanish copy, no real payments, and accessibility. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Activity no longer feels like a plain feed; it reads as a trustworthy ledger story where users can scan what happened, when, who acted, amount, and whether it was a local settlement proof.",
       "required_approval_capability": "design",
@@ -2603,7 +2719,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0061/**, company-os/workspace.json. Add a dedicated Inicio command-center tab so the money room is not overloaded into Activity. Update tab model, group selection destination, top actions, bottom nav labels, and screenshots. Preserve Activity as ledger story, Balance, Perfil, selected-group scoping, local-first behavior, MXN, Spanish copy, and no-real-payments cues. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "After selecting a group, users land on Inicio as a dedicated money command center; Actividad remains a separate ledger tab, reducing navigation ambiguity and making the app feel more like a real premium product.",
       "required_approval_capability": "design",
@@ -2640,7 +2756,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: docs/product/**, docs/tools/**, tools/open-design/**, reports/evidence/WORK-APP-0062/**, bin/open-design*, company-os/workspace.json. Install or configure Open Design as an external design accelerator for Cuentas Claras without adding runtime app dependencies. Document how to use Open Design for mobile finance design critique/prototypes, especially stripe/fintech design systems and mobile-app skills. Forbidden: app source changes, real payments, production backend, secrets, paid services, destructive cleanup.",
       "acceptance_target": "Repo has a clear, repeatable Open Design setup/use workflow and evidence showing whether Open Design can be invoked locally for Cuentas Claras design planning.",
       "required_approval_capability": "design",
@@ -2676,7 +2792,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0063/**, company-os/workspace.json. Use Open Design Stripe/Wise/Revolut/Expo guidance to restructure Inicio into a lighter, visual, action-led Android money room with clearer active user, group, balance, who owes whom, next action, MXN, and Sin pagos reales. Preserve local-first behavior, existing data model, tabs, Activity, Balance, Profile, and no-real-payments constraints. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Inicio first viewport feels substantially more premium and visual: less card/text wall, clearer money object, obvious next action, visible multi-user/group context, and Android-width screenshot evidence at 360/390/412.",
       "required_approval_capability": "design",
@@ -2712,7 +2828,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0064/**, company-os/workspace.json. Use Open Design finance/mobile guidance to restructure Balance into a clearer settlement map: group/open amount, route visualization, local-settlement CTA, member ledger using horizontal space and decimals, and no-real-payments trust cue. Preserve local-first behavior, existing settlement logic, tabs, Inicio, Activity, Profile, and no-real-payments constraints. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Balance screen feels more like a premium finance settlement map than a stacked dashboard, with clear who-owes-whom route, decimal MXN amounts, aligned member ledger, and Android-width screenshot evidence at 360/390/412.",
       "required_approval_capability": "design",
@@ -2747,7 +2863,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, docs/product/**, reports/evidence/WORK-APP-0065/**, company-os/workspace.json. Refine the add-expense sheet so category, payer, and participant choices behave as smooth compact dropdown/list selectors rather than card grids. Preserve existing local-first expense logic, equal splits, MXN, no-real-payments copy, and demo behavior. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Add-expense category selection uses the same clean dropdown-list language as payer/participants, with Android-width evidence and passing checks.",
       "required_approval_capability": "design",
@@ -2783,7 +2899,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0066/**, company-os/workspace.json. Use Open Design finance/mobile guidance to restructure Activity into a premium local audit trail: group context, event counts, latest proof, daily sections, stronger no-real-payments settlement proof cues, and reduced text-wall density. Preserve local-first behavior, existing activity data, tabs, Inicio, Balance, Profile, and no-real-payments constraints. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Activity screen feels like a trusted finance audit trail, not a plain feed, with visible group context, event summary, daily timeline, settlement proof cues, and Android-width screenshot evidence at 360/390/412.",
       "required_approval_capability": "design",
@@ -2819,7 +2935,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Allowed paths: src/screens/MainScreen.tsx, src/theme/theme.ts, docs/product/**, reports/evidence/WORK-APP-0067/**, company-os/workspace.json. Use Open Design finance/mobile guidance to refine Grupos into a lighter premium workspace switcher: active group object, clear balance/status preview, compact group list, MXN/no-real-payments trust cues, and group selection controlling scoped tabs. Preserve local-first behavior, create-group form, existing data model, tabs, and no-real-payments constraints. Forbidden: real payments, production backend, secrets, paid services, legal/payment decisions, destructive cleanup.",
       "acceptance_target": "Grupos feels like a polished shared-money workspace switcher rather than a card-heavy lobby, with active group preview, compact group rows, clear next action, and Android-width screenshot evidence at 360/390/412.",
       "required_approval_capability": "design",
@@ -2854,7 +2970,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Redesign the Perfil tab into a premium identity and trust center using Open Design fintech/mobile patterns. Allowed paths: src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0068/**, company-os/workspace.json.",
       "acceptance_target": "Perfil shows active local user, selected group persona, member identity switcher, local-only trust cues, and data controls in a lighter premium Android-first structure without real payments, backend, secrets, or paid services.",
       "required_approval_capability": "design",
@@ -2889,7 +3005,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "high",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Redesign the add-expense sheet into a premium receipt-to-route composer using Open Design fintech/mobile patterns. Allowed paths: src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0069/**, company-os/workspace.json.",
       "acceptance_target": "Add expense opens as a lighter Android-first composer with a visual receipt object, compact category amount concept fields, payer and participant dropdown/list selectors, split preview, local-only trust cue, and no real payments/backend/secrets.",
       "required_approval_capability": "design",
@@ -2928,7 +3044,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Create the UI library adoption decision record and architecture note for NativeWind, React Native Reusables, RN Primitives, gluestack-ui fallback criteria, and Tamagui deferral. Allowed paths: docs/product/nativewind-reusables-premium-ui-workplan.md, docs/product/codex-autonomy-goal-nativewind-reusables.md, docs/product/ui-library-adoption.md, docs/product/decisions.md, reports/evidence/WORK-APP-0070/**, company-os/workspace.json.",
       "acceptance_target": "Docs explain the NativeWind/Reusables/RN Primitives decision, gluestack/Tamagui fallback criteria, no-big-bang strangler migration rule, verification commands, and boundaries; Company OS validates; app checks still pass.",
       "required_approval_capability": "design",
@@ -2974,7 +3090,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Install and wire NativeWind for Expo/React Native Web, add a minimal className proof component, and keep the app checks green. Allowed paths: package.json, package-lock.json, babel.config.js, metro.config.js, app.json, App.tsx, global.css, nativewind-env.d.ts, tailwind.config.js, src/components/nativewind/**, docs/product/decisions.md, reports/evidence/WORK-APP-0071/**, company-os/workspace.json.",
       "acceptance_target": "NativeWind is installed and configured for Expo web/native; a tiny proof component renders using className without replacing production screens; typecheck, tests, Expo config, export:web, Company OS scope, and Company OS validate pass.",
       "required_approval_capability": "design",
@@ -3013,7 +3129,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Bridge Cuentas Claras theme tokens into Tailwind/NativeWind without inventing a duplicate palette. Allowed paths: src/theme/theme.ts, src/theme/tokens.json, tailwind.config.js, docs/product/decisions.md, reports/evidence/WORK-APP-0072/**, company-os/workspace.json.",
       "acceptance_target": "Tailwind config exposes Cuentas Claras color, radius, spacing, and type tokens from a shared token source used by src/theme/theme.ts; no separate palette is invented; typecheck, tests, Expo config, export:web, Company OS scope, and Company OS validate pass.",
       "required_approval_capability": "design",
@@ -3054,7 +3170,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Add a small copy-owned React Native Reusables-style primitive spike using NativeWind tokens. Allowed paths: package.json, package-lock.json, src/components/reusables/**, src/components/nativewind/**, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0073/**, company-os/workspace.json.",
       "acceptance_target": "Copy-owned Button/Card/Input-style primitives exist, use NativeWind token classes, include a tiny proof component rendered without changing visible production UI, and checks pass. RN Primitives are evaluated/used only if they add value without broad architecture churn.",
       "required_approval_capability": "design",
@@ -3093,7 +3209,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Define the Cuentas Claras UI component ownership guide for NativeWind/Reusables migration. Allowed paths: docs/product/ui-component-system.md, docs/product/ui-library-adoption.md, docs/product/nativewind-reusables-premium-ui-workplan.md, docs/product/decisions.md, reports/evidence/WORK-APP-0074/**, company-os/workspace.json.",
       "acceptance_target": "docs/product/ui-component-system.md defines component paths, naming, token rules, migration rules, allowed primitive sources, verification requirements, and anti-drift rules for future agents; app checks and Company OS gates pass.",
       "required_approval_capability": "design",
@@ -3130,7 +3246,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Migrate one small visible production surface to the NativeWind/Reusables component system as a proof. Target: shared Pill component in src/components/ui.tsx. Allowed paths: src/components/ui.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0075/**, company-os/workspace.json.",
       "acceptance_target": "A small visible production surface uses NativeWind token classes, app behavior is preserved, screenshots at 360x740 390x844 412x915 show the app still renders cleanly, and all checks pass.",
       "required_approval_capability": "design",
@@ -3169,7 +3285,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Build premium reusable Button, IconButton, Pill, Avatar, and Amount primitives using NativeWind tokens while preserving app behavior. Allowed paths: src/components/reusables/**, src/components/nativewind/**, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0076/**, company-os/workspace.json.",
       "acceptance_target": "Reusable Button, IconButton, Pill, Avatar, and Amount primitives exist, use NativeWind token classes, support Android touch targets and tokenized variants, are exercised by a hidden proof component, and checks pass.",
       "required_approval_capability": "design",
@@ -3208,7 +3324,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Build premium reusable Card/Surface/ListRow patterns using NativeWind tokens while preserving app behavior. Allowed paths: src/components/reusables/**, src/components/nativewind/**, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0077/**, company-os/workspace.json.",
       "acceptance_target": "Reusable money-card, person-row, group-row, and audit-row patterns exist, use NativeWind token classes, reduce repeated local styling, are exercised by a hidden proof component, and checks pass.",
       "required_approval_capability": "design",
@@ -3248,7 +3364,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Build premium reusable sheet/dropdown/select primitives and migrate add-expense category, payer, participants, and active member selectors to list-style controls while preserving app behavior. Allowed paths: src/components/reusables/**, src/components/nativewind/**, src/screens/MainScreen.tsx, App.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0078/**, company-os/workspace.json.",
       "acceptance_target": "Category, payer, participants, and active member selection use accessible list/sheet-style primitives instead of oversized cards/chips where applicable; primitives are tokenized, support smooth open/close feedback, are exercised by proof/evidence, and checks pass.",
       "required_approval_capability": "design",
@@ -3286,7 +3402,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Build premium reusable form/input primitives and migrate the add-expense amount, title, note, validation/helper states while preserving app behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0079/**, company-os/workspace.json.",
       "acceptance_target": "Amount, text, note, decimal keyboard, validation, helper, and error states have reusable tokenized primitives; add-expense composer uses them where practical; checks and runtime evidence pass.",
       "required_approval_capability": "design",
@@ -3324,7 +3440,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Build a premium reusable motion/feedback layer and wire lightweight status feedback to local save and settlement actions while preserving app behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0080/**, company-os/workspace.json.",
       "acceptance_target": "Press/open/save/settlement feedback has tokenized reusable components or behavior; local save and settlement actions show clear non-payment status feedback; checks and runtime evidence pass.",
       "required_approval_capability": "design",
@@ -3362,7 +3478,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Migrate the workspace shell and bottom navigation toward a lighter Android-native NativeWind/Reusables structure while preserving app behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0081/**, company-os/workspace.json.",
       "acceptance_target": "Group-first navigation feels coherent, lighter, and Android-native across 360/390/412 widths; persistent shell exposes app identity, selected group context, and no-real-payments trust cue without clutter; checks and screenshots pass.",
       "required_approval_capability": "design",
@@ -3400,7 +3516,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Migrate the Inicio balance/route/next-action money instrument toward the NativeWind/Reusables component system while preserving app behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0082/**, company-os/workspace.json.",
       "acceptance_target": "First viewport clearly shows active user, group, personal balance, route, next action, MXN, and Sin pagos reales using new tokenized components; screenshots at 360/390/412 pass; app checks pass.",
       "required_approval_capability": "design",
@@ -3438,7 +3554,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Migrate the add-expense composer surface to the NativeWind/Reusables component system while preserving category, payer, participants, equal split, note, save, and validation behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0083/**, company-os/workspace.json.",
       "acceptance_target": "Receipt composer uses new sheet/section/select/input/money components; category, payer, and participants remain dropdown/list selectors; equal split preview and local save remain clear; screenshots at 360/390/412 and checks pass.",
       "required_approval_capability": "design",
@@ -3476,7 +3592,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Migrate the Balance settlement map and member ledger toward the NativeWind/Reusables component system while preserving settlement and balance behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0084/**, company-os/workspace.json.",
       "acceptance_target": "Settlement map and member ledger use the new visual system, decimals, right-side money rails, and cleaner spacing; local settlement action remains clear with Sin pagos reales; screenshots at 360/390/412 and checks pass.",
       "required_approval_capability": "design",
@@ -3514,7 +3630,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Migrate Activity and Perfil surfaces toward the NativeWind/Reusables component system while preserving activity, account, identity, and local data behavior. Allowed paths: src/components/reusables/**, src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0085/**, company-os/workspace.json.",
       "acceptance_target": "Activity trail and identity/profile surfaces use the new component system; local trust cues remain obvious; account and active-member switching still work; screenshots at 360/390/412 and checks pass.",
       "required_approval_capability": "design",
@@ -3551,7 +3667,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Remove unused legacy styles only for surfaces already migrated to NativeWind/Reusables and capture bundle/export evidence. Allowed paths: src/screens/MainScreen.tsx, docs/product/decisions.md, reports/evidence/WORK-APP-0086/**, company-os/workspace.json.",
       "acceptance_target": "Unused migrated-surface styles are removed without behavior regressions; bundle/export remains healthy; typecheck, tests, Expo config, export, scope, and validate pass.",
       "required_approval_capability": "design",
@@ -3587,7 +3703,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Capture final premium UI evidence across major flows after NativeWind/Reusables migration and summarize remaining founder-only decisions. Allowed paths: reports/evidence/WORK-APP-0087/**, docs/product/decisions.md, company-os/workspace.json.",
       "acceptance_target": "Screenshots at 360x740, 390x844, and 412x915 cover major flows; checks pass; evidence packet lists what works, demo-only boundaries, limitations, and remaining founder-only decisions.",
       "required_approval_capability": "design",
@@ -3625,7 +3741,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R1",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Document the Tricount gap PRD, user journeys, information architecture, and low-cognitive-load UX rules for the next product phase. Allowed paths: docs/product/tricount-gap-premium-product-plan.md, docs/product/tricount-gap-prd-ux-brief.md, docs/product/decisions.md, reports/evidence/WORK-APP-0088/**, company-os/workspace.json.",
       "acceptance_target": "Documents target gaps, user journeys, information architecture, and low-cognitive-load rules; Company OS evidence/report exists; checks pass.",
       "required_approval_capability": "design",
@@ -3666,7 +3782,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "closed",
       "scope": "Extend the local SQL-ready model for multi-user group membership, local invite metadata, join state, generated backend SQL artifacts, and replaceable sync seams without production backend. Allowed paths: src/domain/**, src/data/demoData.ts, src/backend/**, src/__tests__/**, docs/backend/**, docs/product/decisions.md, reports/evidence/WORK-APP-0089/**, company-os/workspace.json.",
       "acceptance_target": "Local model supports users, groups, memberships, active identity, group roles, invite metadata, and join state without production backend; SQL dataset/schema/tests pass; Company OS evidence exists.",
       "required_approval_capability": "design",
@@ -3706,7 +3822,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Add local create/join group flows on top of the invite/membership model. Allowed paths: src/backend/**, src/state/**, src/screens/MainScreen.tsx, src/__tests__/**, docs/product/decisions.md, reports/evidence/WORK-APP-0090/**, company-os/workspace.json.",
       "acceptance_target": "User can create a group or enter a mocked invite/join flow; selected group scopes all tabs; no production backend or real invite link claims; screenshots at 360/390/412 and checks pass.",
       "required_approval_capability": "design",
@@ -3746,7 +3862,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Add safe local member management: add/edit/remove-guard members, active identity support, and balance consistency. Allowed paths: src/backend/**, src/state/**, src/screens/MainScreen.tsx, src/__tests__/**, docs/product/decisions.md, reports/evidence/WORK-APP-0091/**, company-os/workspace.json.",
       "acceptance_target": "Users can add/edit/remove-safe local members, choose active identity, and balance consistency is protected; screenshots at 360/390/412 and checks pass.",
       "required_approval_capability": "design",
@@ -3788,7 +3904,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Upgrade the local split engine to support equal, exact amount, shares, and include/exclude participants using integer cents. Allowed paths: src/domain/**, src/backend/**, src/data/demoData.ts, src/state/**, src/__tests__/**, docs/backend/**, docs/product/decisions.md, reports/evidence/WORK-APP-0092/**, company-os/workspace.json.",
       "acceptance_target": "Split engine supports equal, exact amount, shares, and include/exclude participants with integer cents; mutations persist share method rows; SQL/backend artifacts and tests pass; no UI-heavy editor work beyond existing equal flow.",
       "required_approval_capability": "design",
@@ -3825,7 +3941,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Simplify add-expense UX with fewer taps, progressive disclosure, list/dropdown selections, and less card-heavy layout. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0093/**,company-os/workspace.json.",
       "acceptance_target": "Add expense takes fewer taps, uses progressive disclosure, avoids card-heavy layout, preserves validation, and passes tests/screenshots.",
       "required_approval_capability": "design",
@@ -3862,7 +3978,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Add participant split editing for exact amounts and share units using clear list/dropdown patterns. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0094/**,company-os/workspace.json.",
       "acceptance_target": "Users can edit exact amounts/shares in a clear list/dropdown pattern with validation and cent rounding; tests and screenshots pass.",
       "required_approval_capability": "design",
@@ -3899,7 +4015,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Support local edit/delete expense flows with audit events and recalculated balances. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0095/**,company-os/workspace.json.",
       "acceptance_target": "Existing local expenses can be edited/deleted with history entries, recalculated balances, data integrity tests, and no production backend.",
       "required_approval_capability": "design",
@@ -3939,7 +4055,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Improve settlement route simplification and simple Spanish explanations. Allowed paths: src/domain/**,src/state/**,src/backend/**,src/__tests__/**,docs/product/decisions.md,reports/evidence/WORK-APP-0096/**,company-os/workspace.json.",
       "acceptance_target": "Settlement engine produces minimal routes, explains them in simple Spanish, preserves integer cents, and passes tests.",
       "required_approval_capability": "design",
@@ -3976,7 +4092,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Generate local share/reminder Spanish text for group summaries, individual debts, and settlement reminders. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0097/**,company-os/workspace.json.",
       "acceptance_target": "App generates shareable Spanish text without external services, secrets, or real messaging integrations; tests/screenshots pass.",
       "required_approval_capability": "design",
@@ -4013,7 +4129,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Add optional local-only settlement note fields for bank alias or CLABE placeholder without processing payments. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0098/**,company-os/workspace.json.",
       "acceptance_target": "Settlement helper stores/displays optional mock SPEI/CLABE notes, clearly says no real payments, and avoids secrets/payment processing.",
       "required_approval_capability": "design",
@@ -4050,11 +4166,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Polish mark-paid flow so it is lighter, clearer, and explicitly local/no-real-payment. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0099/**,company-os/workspace.json.",
       "acceptance_target": "Mark-paid flow is visually lighter, confirms impact clearly, remains local-only, and passes tests/screenshots.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0099"
     },
     {
       "allowed_resources": [
@@ -4086,11 +4203,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Add local/mock receipt photo placeholder support to expense creation and history display. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0100/**,company-os/workspace.json.",
       "acceptance_target": "Add expense can attach a local/mock receipt placeholder and show it in history without OCR or cloud storage.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0100"
     },
     {
       "allowed_resources": [
@@ -4122,11 +4240,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Expand categories for common Mexico/LATAM use cases with cleaner dropdown/list selection. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0101/**,company-os/workspace.json.",
       "acceptance_target": "Categories cover common Mexico/LATAM use cases and use a clean dropdown/list selection with tests/screenshots.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0101"
     },
     {
       "allowed_resources": [
@@ -4158,11 +4277,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Add local search/filtering for activity and expenses by person, category, amount, and date. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0102/**,company-os/workspace.json.",
       "acceptance_target": "Activity/expenses can be searched and filtered by person, category, amount, and date with accessible empty states.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0102"
     },
     {
       "allowed_resources": [
@@ -4194,11 +4314,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "closed",
       "scope": "Generate local export summaries as text and CSV-ready data without paid services. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0103/**,company-os/workspace.json.",
       "acceptance_target": "Local export summary produces text/CSV-ready data and demo evidence without paid PDF services or external APIs.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0103-SUPERSEDED"
     },
     {
       "allowed_resources": [
@@ -4230,11 +4351,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Restructure navigation around Groups -> Group Home -> Expenses/Balances/Activity/Profile with fewer competing panels. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0104/**,company-os/workspace.json.",
       "acceptance_target": "Navigation follows the selected group mental model, reduces competing panels, and screenshots pass Android sizes.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0104"
     },
     {
       "allowed_resources": [
@@ -4266,11 +4388,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Redesign first viewport to show answer and next action with less copy and fewer cards. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0105/**,company-os/workspace.json.",
       "acceptance_target": "First viewport shows personal balance, who owes whom, and next action with reduced copy/cards and verified screenshots.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0105"
     },
     {
       "allowed_resources": [
@@ -4339,7 +4462,7 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Redesign balance screen around who owes whom, right-aligned money, and one clear settlement action. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0107/**,company-os/workspace.json.",
       "acceptance_target": "Balance screen prioritizes who owes whom, right-aligns money, has one clear settlement action, and passes screenshots.",
       "required_approval_capability": "design",
@@ -4376,11 +4499,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R3",
       "intensity": "standard",
-      "status": "in-review",
+      "status": "completed",
       "scope": "Harden light/dark themes, contrast, tokens, and brand personality. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0108/**,company-os/workspace.json.",
       "acceptance_target": "Light/dark themes pass contrast-oriented review, keep brand personality, and avoid raw ad hoc colors.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0108-R2"
     },
     {
       "allowed_resources": [
@@ -4414,11 +4538,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "closed",
       "scope": "Run or attempt native Android/emulator/device checks and document evidence or blockers. Allowed paths: docs/**,reports/evidence/WORK-APP-0109/**,app.json,eas.json,package.json,company-os/workspace.json.",
       "acceptance_target": "Android verification is run or reasonably attempted, blockers are documented, and screenshots/evidence are captured where available.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0109-SUPERSEDED"
     },
     {
       "allowed_resources": [
@@ -4452,11 +4577,12 @@
       "palari": "PALARI-DESIGN",
       "risk": "R2",
       "intensity": "standard",
-      "status": "proposed",
+      "status": "closed",
       "scope": "Refresh Play/internal testing checklist, demo-only boundaries, screenshots, and remaining human gates. Allowed paths: docs/**,reports/evidence/WORK-APP-0110/**,app.json,eas.json,package.json,company-os/workspace.json.",
       "acceptance_target": "Internal testing readiness docs identify demo-only boundaries, Play checklist, screenshot evidence, and founder-only gates.",
       "required_approval_capability": "design",
-      "required_approval_count": 1
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0110-SUPERSEDED"
     },
     {
       "allowed_resources": [
@@ -4494,6 +4620,423 @@
       "required_approval_capability": "design",
       "required_approval_count": 1,
       "current_attempt": "ATTEMPT-APP-0111-R1"
+    },
+    {
+      "allowed_resources": [
+        "docs/product/**",
+        "company-os/workspace.json",
+        "reports/evidence/WORK-APP-0112/**"
+      ],
+      "allowed_sources": [
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-CUENTA-OBRA-LAUNCH",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PATH",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission",
+        "expense-split-feature-work"
+      ],
+      "id": "WORK-APP-0112",
+      "title": "Cuenta Obra UI reconstruction plan from preferred kit",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "closed",
+      "scope": "Write the Cuenta Obra better-UI path: map dashboard/shadcn base-nova elements to Expo/NativeWind owned components, and declare that incompatible legacy surfaces are rebuilt into the preferred kit language. Allowed paths: docs/product/**,company-os/workspace.json,reports/evidence/WORK-APP-0112/**.",
+      "acceptance_target": "Docs list preferred kit inventory, Expo adaptation rules, reconstruction order for tracker surfaces, and explicit rule that preferred elements win over legacy StyleSheet/reusables.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0112-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/tracker/**",
+        "src/theme/**",
+        "tailwind.config.js",
+        "global.css",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0113/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-CUENTA-OBRA-LAUNCH",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PATH",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission",
+        "expense-split-feature-work"
+      ],
+      "id": "WORK-APP-0113",
+      "title": "Align Cuenta Obra tokens with preferred kit variables",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "closed",
+      "scope": "Bridge preferred kit CSS variables/tokens into the Expo tracker theme/NativeWind config so Cuenta Obra colors, radius, and type match the preferred kit. Allowed paths: src/tracker/**,src/theme/**,tailwind.config.js,global.css,docs/product/decisions.md,reports/evidence/WORK-APP-0113/**,company-os/workspace.json.",
+      "acceptance_target": "Tracker/NativeWind tokens mirror preferred kit semantics; typecheck/tests/export pass; screenshots show coherent palette.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0113-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/components/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0114/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-CUENTA-OBRA-LAUNCH",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PATH",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission",
+        "expense-split-feature-work"
+      ],
+      "id": "WORK-APP-0114",
+      "title": "Build Cuenta Obra primitives from preferred kit",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "closed",
+      "scope": "Create/adapt owned Expo primitives matching preferred kit Button, Card, Input, Badge, Sheet, Tabs, Select, and related field controls for Cuenta Obra. Allowed paths: src/components/**,docs/product/decisions.md,reports/evidence/WORK-APP-0114/**,company-os/workspace.json.",
+      "acceptance_target": "Preferred-kit-equivalent primitives exist under owned paths, are usable from TrackerScreen, and pass typecheck/tests/export.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0114-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/TrackerScreen.tsx",
+        "src/components/**",
+        "src/tracker/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0115/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-CUENTA-OBRA-LAUNCH",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PATH",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission",
+        "expense-split-feature-work"
+      ],
+      "id": "WORK-APP-0115",
+      "title": "Reconstruct Tracker home next-move surface",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "completed",
+      "scope": "Rebuild the Cuenta Obra home/next physical move surface using preferred-kit primitives. Preserve tracker behavior. Allowed paths: src/screens/TrackerScreen.tsx,src/components/**,src/tracker/**,docs/product/decisions.md,reports/evidence/WORK-APP-0115/**,company-os/workspace.json.",
+      "acceptance_target": "Home answers what to move today with preferred elements; Android-width screenshots; typecheck/tests/export/scope/validate pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0115-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker/**",
+        "src/components/**",
+        "src/tracker/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0116/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-CUENTA-OBRA-LAUNCH",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PATH",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission",
+        "expense-split-feature-work"
+      ],
+      "id": "WORK-APP-0116",
+      "title": "Reconstruct materials and status composer",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "completed",
+      "scope": "Rebuild materials list and MaterialStatusComposer/DatePicker flows onto preferred-kit primitives while preserving status/date rules. Allowed paths: src/screens/TrackerScreen.tsx,src/components/tracker/**,src/components/**,src/tracker/**,docs/product/decisions.md,reports/evidence/WORK-APP-0116/**,company-os/workspace.json.",
+      "acceptance_target": "Material status choices and date picker remain explicit; UI matches preferred kit; checks and screenshots pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0116-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker/**",
+        "src/components/**",
+        "src/tracker/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0117/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-CUENTA-OBRA-LAUNCH",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PATH",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission",
+        "expense-split-feature-work"
+      ],
+      "id": "WORK-APP-0117",
+      "title": "Reconstruct project setup and desktop workspace",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "completed",
+      "scope": "Rebuild ProjectComposer, SupplierComposer, ProjectSwitcher, and DesktopWorkspace onto preferred-kit primitives. Allowed paths: src/screens/TrackerScreen.tsx,src/components/tracker/**,src/components/**,src/tracker/**,docs/product/decisions.md,reports/evidence/WORK-APP-0117/**,company-os/workspace.json.",
+      "acceptance_target": "Setup and desktop surfaces use preferred elements; behavior preserved; checks and screenshots pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0117-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/screens/TrackerScreen.tsx",
+        "src/components/**",
+        "src/tracker/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0118/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-CUENTA-OBRA-LAUNCH",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PATH",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission",
+        "expense-split-feature-work"
+      ],
+      "id": "WORK-APP-0118",
+      "title": "Reconstruct client-safe progress preview",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "completed",
+      "scope": "Rebuild the client-safe progress preview with preferred-kit primitives and keep costs/supplier internals private. Allowed paths: src/screens/TrackerScreen.tsx,src/components/**,src/tracker/**,docs/product/decisions.md,reports/evidence/WORK-APP-0118/**,company-os/workspace.json.",
+      "acceptance_target": "Client preview is calm, preferred-kit styled, and never exposes internal costs/supplier contact; checks and screenshots pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0118-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/**",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0119/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0119",
+      "title": "Tracker interaction honesty and edit paths",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R3",
+      "intensity": "standard",
+      "status": "completed",
+      "scope": "Make every visible Tracker control open a real flow or stop looking interactive. Add edit for materials, projects, and suppliers. Allowed paths: src/**,docs/product/decisions.md,reports/evidence/WORK-APP-0119/**,company-os/workspace.json.",
+      "acceptance_target": "Vista previa opens client tab; materials/projects/suppliers can be edited; supplier note is editable; no decorative control looks tappable; typecheck/tests/export/scope/validate pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0119-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/theme/**",
+        "src/tracker/**",
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker/**",
+        "src/components/reusables/**",
+        "tailwind.config.js",
+        "global.css",
+        "dashboard/src/index.css",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0120/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0120",
+      "title": "Cuenta Obra color personality on preferred kit",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Restore Cuenta Obra forest color personality on preferred-kit tokens, Expo reusables (reliable style colors), tracker hardcodes, and dashboard CSS variables so the change is visible in both Expo and dashboard. Allowed paths include dashboard/src/index.css.",
+      "acceptance_target": "Primary/actions use Cuenta Obra color; kit structure preserved; typecheck/tests/export pass.",
+      "required_approval_capability": "design",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0120-R1"
+    },
+    {
+      "allowed_resources": [
+        "src/theme/**",
+        "global.css",
+        "dashboard/src/index.css",
+        "docs/product/ui-component-system.md",
+        "docs/product/decisions.md",
+        "docs/product/cuenta-obra-ui-reconstruction-plan.md",
+        "reports/evidence/WORK-APP-0121/**",
+        "company-os/workspace.json"
+      ],
+      "allowed_sources": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "forbidden_actions": [
+        "real-payments",
+        "production-backend",
+        "secrets",
+        "paid-services",
+        "legal-payment-decisions",
+        "destructive-cleanup",
+        "production-deployment",
+        "play-store-submission"
+      ],
+      "id": "WORK-APP-0121",
+      "title": "Cuenta Obra adopts Palari Labs token personality",
+      "goal": "GOAL-CUENTA-OBRA",
+      "palari": "PALARI-DESIGN",
+      "risk": "R2",
+      "intensity": "standard",
+      "status": "in-review",
+      "scope": "Execute Palari Labs token bridge: paint tokens.json, global.css, dashboard/src/index.css with warm paper / indigo / teal / coral. Update ui-component-system bridge and decisions. Keep kit structure; forest* stay aliases. No marketing type/orbs/avatars.",
+      "acceptance_target": "Chrome reads as Palari Labs via tokens only; typecheck/tests pass; bridge docs mark lab as current.",
+      "required_approval_count": 1,
+      "current_attempt": "ATTEMPT-APP-0121-R1"
     }
   ],
   "attempts": [
@@ -6181,6 +6724,185 @@
       "model_or_worker": "gpt-5-codex",
       "cleanliness": "clean",
       "result": "Simplified the Balance hero, settlement map, settlement card, member ledger, and settlement confirmation dialog by removing redundant text and duplicate safety disclaimers."
+    },
+    {
+      "result": "Superseded by Cuenta Obra product pivot.",
+      "cleanliness": "clean",
+      "model_or_worker": "founder-decision",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ],
+      "id": "ATTEMPT-APP-0103-SUPERSEDED",
+      "work_item_id": "WORK-APP-0103",
+      "actor": "HUMAN-FOUNDER",
+      "status": "completed",
+      "branch": "work-app-0107"
+    },
+    {
+      "result": "Superseded by Cuenta Obra product pivot.",
+      "cleanliness": "clean",
+      "model_or_worker": "founder-decision",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ],
+      "id": "ATTEMPT-APP-0109-SUPERSEDED",
+      "work_item_id": "WORK-APP-0109",
+      "actor": "HUMAN-FOUNDER",
+      "status": "completed",
+      "branch": "work-app-0107"
+    },
+    {
+      "result": "Superseded by Cuenta Obra product pivot.",
+      "cleanliness": "clean",
+      "model_or_worker": "founder-decision",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ],
+      "id": "ATTEMPT-APP-0110-SUPERSEDED",
+      "work_item_id": "WORK-APP-0110",
+      "actor": "HUMAN-FOUNDER",
+      "status": "completed",
+      "branch": "work-app-0107"
+    },
+    {
+      "result": "Wrote preferred-kit reconstruction plan, element map, adaptation rules, and surface order for WORK-APP-0113..0118.",
+      "id": "ATTEMPT-APP-0112-R1",
+      "work_item_id": "WORK-APP-0112",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty-docs",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "result": "Bridged preferred kit tokens into theme, tracker, NativeWind, and global CSS.",
+      "id": "ATTEMPT-APP-0113-R1",
+      "work_item_id": "WORK-APP-0113",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "result": "Built preferred-kit Button/Card/Input/Badge/Field/Sheet/Tabs/Separator/Progress primitives.",
+      "id": "ATTEMPT-APP-0114-R1",
+      "work_item_id": "WORK-APP-0114",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "result": "Reconstructed Tracker home/next-move onto Card, Button, Badge, Progress.",
+      "id": "ATTEMPT-APP-0115-R1",
+      "work_item_id": "WORK-APP-0115",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "result": "Reconstructed materials list and MaterialStatusComposer onto Sheet/Badge/Progress.",
+      "id": "ATTEMPT-APP-0116-R1",
+      "work_item_id": "WORK-APP-0116",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "result": "Reconstructed project/supplier composers, switcher, and DesktopWorkspace onto preferred kit.",
+      "id": "ATTEMPT-APP-0117-R1",
+      "work_item_id": "WORK-APP-0117",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "result": "Reconstructed client-safe progress preview onto Card/Badge/Progress without private fields.",
+      "id": "ATTEMPT-APP-0118-R1",
+      "work_item_id": "WORK-APP-0118",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "result": "Fixed fake interactions; added material/project/supplier edit paths.",
+      "id": "ATTEMPT-APP-0119-R1",
+      "work_item_id": "WORK-APP-0119",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "result": "Forest primary and status washes restored on preferred-kit tokens; tracker hardcodes mapped to token classes.",
+      "id": "ATTEMPT-APP-0120-R1",
+      "work_item_id": "WORK-APP-0120",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ]
+    },
+    {
+      "commits": [
+        "59dc8e99a7130c1da5a9e5dbc845bb904348524e"
+      ],
+      "id": "ATTEMPT-APP-0121-R1",
+      "work_item_id": "WORK-APP-0121",
+      "actor": "PALARI-DESIGN",
+      "status": "completed",
+      "branch": "work-app-0107",
+      "workspace_path": "/home/quetza/projects/cuentas-claras",
+      "model_or_worker": "composer",
+      "cleanliness": "dirty",
+      "result": "Palari Labs token personality painted on preferred-kit slots; forest* aliases remapped; bridge docs updated."
     }
   ],
   "evidence_runs": [
@@ -8330,6 +9052,270 @@
       "status": "passed",
       "summary": "Balance and settlement simplification passed typecheck, tests, Expo config, web export, scope, and validate. Screenshots captured at 360/390/412.",
       "freshness": "fresh"
+    },
+    {
+      "summary": "Closed as superseded by Cuenta Obra product pivot; no implementation.",
+      "commands": [
+        "./bin/company-os validate"
+      ],
+      "artifacts": [],
+      "id": "EVIDENCE-APP-0103-SUPERSEDED",
+      "work_item_id": "WORK-APP-0103",
+      "attempt_id": "ATTEMPT-APP-0103-SUPERSEDED",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Closed as superseded by Cuenta Obra product pivot; no implementation.",
+      "commands": [
+        "./bin/company-os validate"
+      ],
+      "artifacts": [],
+      "id": "EVIDENCE-APP-0109-SUPERSEDED",
+      "work_item_id": "WORK-APP-0109",
+      "attempt_id": "ATTEMPT-APP-0109-SUPERSEDED",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Closed as superseded by Cuenta Obra product pivot; no implementation.",
+      "commands": [
+        "./bin/company-os validate"
+      ],
+      "artifacts": [],
+      "id": "EVIDENCE-APP-0110-SUPERSEDED",
+      "work_item_id": "WORK-APP-0110",
+      "attempt_id": "ATTEMPT-APP-0110-SUPERSEDED",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Reconstruction plan docs list preferred kit inventory, Expo adaptation rules, tracker surface order, and preferred-elements-win rule. Scope and validate passed.",
+      "commands": [
+        "./bin/company-os scope WORK-APP-0112",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0112/technical-report.md",
+        "docs/product/cuenta-obra-ui-reconstruction-plan.md",
+        "docs/product/cuenta-obra-ui-path.md",
+        "docs/product/ui-component-system.md"
+      ],
+      "id": "EVIDENCE-APP-0112-R1",
+      "work_item_id": "WORK-APP-0112",
+      "attempt_id": "ATTEMPT-APP-0112-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Preferred kit token bridge passed typecheck, tests, Expo config, web export, scope, and validate.",
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0113",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "src/theme/tokens.json",
+        "src/tracker/theme.ts",
+        "tailwind.config.js",
+        "global.css",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0113/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0113-R1",
+      "work_item_id": "WORK-APP-0113",
+      "attempt_id": "ATTEMPT-APP-0113-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Preferred-kit primitives passed typecheck, tests, Expo config, web export, scope, validate.",
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0114",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "src/components/reusables",
+        "reports/evidence/WORK-APP-0114/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0114-R1",
+      "work_item_id": "WORK-APP-0114",
+      "attempt_id": "ATTEMPT-APP-0114-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Tracker home next-move reconstruction passed typecheck, tests, Expo config, web export, scope, validate.",
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0115",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "src/screens/TrackerScreen.tsx",
+        "reports/evidence/WORK-APP-0115/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0115-R1",
+      "work_item_id": "WORK-APP-0115",
+      "attempt_id": "ATTEMPT-APP-0115-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Materials and status composer reconstruction passed verification gates.",
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0116",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker/MaterialStatusComposer.tsx",
+        "src/components/tracker/DatePickerField.tsx",
+        "reports/evidence/WORK-APP-0116/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0116-R1",
+      "work_item_id": "WORK-APP-0116",
+      "attempt_id": "ATTEMPT-APP-0116-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Setup and desktop workspace reconstruction passed verification gates.",
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0117",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "src/components/tracker/ProjectComposer.tsx",
+        "src/components/tracker/SupplierComposer.tsx",
+        "src/components/tracker/ProjectSwitcher.tsx",
+        "src/components/tracker/DesktopWorkspace.tsx",
+        "reports/evidence/WORK-APP-0117/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0117-R1",
+      "work_item_id": "WORK-APP-0117",
+      "attempt_id": "ATTEMPT-APP-0117-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Client-safe preview reconstruction passed verification gates; private fields remain hidden.",
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0118",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "src/screens/TrackerScreen.tsx",
+        "reports/evidence/WORK-APP-0118/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0118-R1",
+      "work_item_id": "WORK-APP-0118",
+      "attempt_id": "ATTEMPT-APP-0118-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Interaction honesty and edit paths passed typecheck and 184 tests.",
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "./bin/company-os scope WORK-APP-0119",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "reports/evidence/WORK-APP-0119/technical-report.md",
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker",
+        "src/tracker"
+      ],
+      "id": "EVIDENCE-APP-0119-R1",
+      "work_item_id": "WORK-APP-0119",
+      "attempt_id": "ATTEMPT-APP-0119-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "summary": "Cuenta Obra forest color personality passed typecheck, 184 tests, Expo config, web export, scope, validate.",
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0120",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "src/theme/tokens.json",
+        "global.css",
+        "tailwind.config.js",
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker",
+        "reports/evidence/WORK-APP-0120/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0120-R1",
+      "work_item_id": "WORK-APP-0120",
+      "attempt_id": "ATTEMPT-APP-0120-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "freshness": "fresh"
+    },
+    {
+      "commands": [
+        "npm run typecheck",
+        "npm test",
+        "npx expo config --type public",
+        "npm run export:web",
+        "./bin/company-os scope WORK-APP-0121",
+        "./bin/company-os validate"
+      ],
+      "artifacts": [
+        "src/theme/tokens.json",
+        "global.css",
+        "dashboard/src/index.css",
+        "docs/product/ui-component-system.md",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0121/technical-report.md"
+      ],
+      "id": "EVIDENCE-APP-0121-R1",
+      "work_item_id": "WORK-APP-0121",
+      "attempt_id": "ATTEMPT-APP-0121-R1",
+      "head_sha": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "status": "passed",
+      "summary": "Palari Labs token bridge execution: typecheck pass, 184 tests pass, Expo config, dashboard export:web, scope WORK-APP-0121 allowed, validate passed.",
+      "freshness": "fresh"
     }
   ],
   "review_verdicts": [
@@ -10101,6 +11087,265 @@
       "reviewed_head": "20e198e6950123a8fe1c7ae33155b05afbf34990",
       "reviewer": "gpt-5-codex-fresh-context",
       "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "migration-docs",
+        "company-os-validate"
+      ],
+      "residual_risks": [
+        "none"
+      ],
+      "id": "REVIEW-MIGRATION-0001",
+      "work_item_id": "WORK-MIGRATION-0001",
+      "reviewed_head": "9aa71eb370d8",
+      "reviewer": "HUMAN-FOUNDER",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "product-pivot-supersession"
+      ],
+      "residual_risks": [
+        "none"
+      ],
+      "id": "REVIEW-APP-0103-SUPERSEDED",
+      "work_item_id": "WORK-APP-0103",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "HUMAN-FOUNDER",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "product-pivot-supersession"
+      ],
+      "residual_risks": [
+        "none"
+      ],
+      "id": "REVIEW-APP-0109-SUPERSEDED",
+      "work_item_id": "WORK-APP-0109",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "HUMAN-FOUNDER",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "product-pivot-supersession"
+      ],
+      "residual_risks": [
+        "none"
+      ],
+      "id": "REVIEW-APP-0110-SUPERSEDED",
+      "work_item_id": "WORK-APP-0110",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "HUMAN-FOUNDER",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "reconstruction-plan",
+        "ui-path-index",
+        "ui-component-authority",
+        "decisions-log",
+        "scope-check",
+        "validate"
+      ],
+      "residual_risks": [
+        "founder-may-want-token-values-tuned-in-0113",
+        "dashboard-kit-may-evolve"
+      ],
+      "id": "REVIEW-APP-0112-R1",
+      "work_item_id": "WORK-APP-0112",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "diff",
+        "technical-report",
+        "typecheck",
+        "tests",
+        "expo-config",
+        "export-web",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "bundle-human-accept-pending",
+        "visual-screenshots-deferred-to-surface-tickets"
+      ],
+      "id": "REVIEW-APP-0113-R1",
+      "work_item_id": "WORK-APP-0113",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "primitives",
+        "typecheck",
+        "tests",
+        "export",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "bundle-human-accept-pending",
+        "tracker-surfaces-still-stylesheet"
+      ],
+      "id": "REVIEW-APP-0114-R1",
+      "work_item_id": "WORK-APP-0114",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "surface-diff",
+        "technical-report",
+        "typecheck",
+        "tests",
+        "expo-config",
+        "export-web",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "bundle-human-accept-pending",
+        "screenshots-deferred"
+      ],
+      "id": "REVIEW-APP-0115-R1",
+      "work_item_id": "WORK-APP-0115",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "surface-diff",
+        "technical-report",
+        "typecheck",
+        "tests",
+        "expo-config",
+        "export-web",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "bundle-human-accept-pending",
+        "screenshots-deferred"
+      ],
+      "id": "REVIEW-APP-0116-R1",
+      "work_item_id": "WORK-APP-0116",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "surface-diff",
+        "technical-report",
+        "typecheck",
+        "tests",
+        "expo-config",
+        "export-web",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "bundle-human-accept-pending",
+        "screenshots-deferred"
+      ],
+      "id": "REVIEW-APP-0117-R1",
+      "work_item_id": "WORK-APP-0117",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "surface-diff",
+        "technical-report",
+        "typecheck",
+        "tests",
+        "expo-config",
+        "export-web",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "bundle-human-accept-pending",
+        "screenshots-deferred"
+      ],
+      "id": "REVIEW-APP-0118-R1",
+      "work_item_id": "WORK-APP-0118",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "qa-matrix",
+        "edit-flows",
+        "typecheck",
+        "tests",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "no-delete-yet",
+        "payment-status-still-internal-only",
+        "color-ticket-0120-pending"
+      ],
+      "id": "REVIEW-APP-0119-R1",
+      "work_item_id": "WORK-APP-0119",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "tokens",
+        "tailwind",
+        "tracker-hardcodes",
+        "typecheck",
+        "tests",
+        "export",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "founder-visual-accept",
+        "splash-icon-assets-may-still-differ"
+      ],
+      "id": "REVIEW-APP-0120-R1",
+      "work_item_id": "WORK-APP-0120",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
+    },
+    {
+      "checks_inspected": [
+        "tokens",
+        "global-css",
+        "dashboard-css",
+        "bridge-docs",
+        "typecheck",
+        "tests",
+        "export",
+        "scope",
+        "validate"
+      ],
+      "residual_risks": [
+        "founder-visual-accept",
+        "splash-icon-still-old-green"
+      ],
+      "id": "REVIEW-APP-0121-R1",
+      "work_item_id": "WORK-APP-0121",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "reviewer": "composer-fresh-context",
+      "verdict": "accept-ready"
     }
   ],
   "human_decisions": [
@@ -10777,6 +12022,822 @@
       "quorum_status": "met",
       "evidence_reference": "EVIDENCE-APP-0106-R1",
       "review_reference": "REVIEW-APP-0106-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0051-ACCEPT",
+      "work_item_id": "WORK-APP-0051",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "39b0aaba3c1d94d8b44ab81a6712080d0e5f8fcb",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0051",
+      "review_reference": "REVIEW-APP-0051"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0052-ACCEPT",
+      "work_item_id": "WORK-APP-0052",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "cec480f38561a8d57dfae0f9ef2647007451bc55",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0052",
+      "review_reference": "REVIEW-APP-0052"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0053-ACCEPT",
+      "work_item_id": "WORK-APP-0053",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "2709f0cf048339d3046439378eb04885c50c1340",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0053",
+      "review_reference": "REVIEW-APP-0053"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0054-ACCEPT",
+      "work_item_id": "WORK-APP-0054",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "b03b695bcb37e50556e9e93d91eb68d351e9b9ab",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0054",
+      "review_reference": "REVIEW-APP-0054"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0055-ACCEPT",
+      "work_item_id": "WORK-APP-0055",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "57b794580d3642d21b24766ca81c013e9be08ae5",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0055",
+      "review_reference": "REVIEW-APP-0055"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0056-ACCEPT",
+      "work_item_id": "WORK-APP-0056",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "e7e6dd84524bfbc8884a17a780f95a7af5c063aa",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0056",
+      "review_reference": "REVIEW-APP-0056"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0057-ACCEPT",
+      "work_item_id": "WORK-APP-0057",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "dc05440fc303872bb97a84cb78214704208733cf",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0057",
+      "review_reference": "REVIEW-APP-0057"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0058-ACCEPT",
+      "work_item_id": "WORK-APP-0058",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "208970972fbfb07c7335dc621e038973708f85e7",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0058",
+      "review_reference": "REVIEW-APP-0058"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0059-ACCEPT",
+      "work_item_id": "WORK-APP-0059",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "615fe0cc8487f6db802a9aea0125eb49a43a5e0a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0059",
+      "review_reference": "REVIEW-APP-0059"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0060-ACCEPT",
+      "work_item_id": "WORK-APP-0060",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "c86c35eb3f66dc26833b129d0ca50101da9d2683",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0060",
+      "review_reference": "REVIEW-APP-0060"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0061-ACCEPT",
+      "work_item_id": "WORK-APP-0061",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "a52f983",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0061",
+      "review_reference": "REVIEW-APP-0061"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0062-ACCEPT",
+      "work_item_id": "WORK-APP-0062",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "4392819",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0062",
+      "review_reference": "REVIEW-APP-0062"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0063-ACCEPT",
+      "work_item_id": "WORK-APP-0063",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "fc699bb",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0063",
+      "review_reference": "REVIEW-APP-0063"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0064-ACCEPT",
+      "work_item_id": "WORK-APP-0064",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "1e61981",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0064",
+      "review_reference": "REVIEW-APP-0064"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0065-ACCEPT",
+      "work_item_id": "WORK-APP-0065",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "ae02cac",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0065",
+      "review_reference": "REVIEW-APP-0065"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0066-ACCEPT",
+      "work_item_id": "WORK-APP-0066",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "c16845b",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0066",
+      "review_reference": "REVIEW-APP-0066"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0067-ACCEPT",
+      "work_item_id": "WORK-APP-0067",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "153dfa4",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0067",
+      "review_reference": "REVIEW-APP-0067"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0068-ACCEPT",
+      "work_item_id": "WORK-APP-0068",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "99bc3ab",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0068",
+      "review_reference": "REVIEW-APP-0068"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0069-ACCEPT",
+      "work_item_id": "WORK-APP-0069",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "0a41656",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0069",
+      "review_reference": "REVIEW-APP-0069"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0070-ACCEPT",
+      "work_item_id": "WORK-APP-0070",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "b541ff2",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0070",
+      "review_reference": "REVIEW-APP-0070"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0071-ACCEPT",
+      "work_item_id": "WORK-APP-0071",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "2af8d38",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0071",
+      "review_reference": "REVIEW-APP-0071"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0072-ACCEPT",
+      "work_item_id": "WORK-APP-0072",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "b402472",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0072",
+      "review_reference": "REVIEW-APP-0072"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0073-ACCEPT",
+      "work_item_id": "WORK-APP-0073",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "67494c7",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0073",
+      "review_reference": "REVIEW-APP-0073"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0074-ACCEPT",
+      "work_item_id": "WORK-APP-0074",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "6cc94cc",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0074",
+      "review_reference": "REVIEW-APP-0074"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0075-ACCEPT",
+      "work_item_id": "WORK-APP-0075",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "9ff4894",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0075",
+      "review_reference": "REVIEW-APP-0075"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0076-ACCEPT",
+      "work_item_id": "WORK-APP-0076",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "cec9dedfcb8ba812128d3f41a03e68b900ef7e4a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0076",
+      "review_reference": "REVIEW-APP-0076"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0077-ACCEPT",
+      "work_item_id": "WORK-APP-0077",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "ad38d541ae3d5e9039645f4fa467e787b1a225bf",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0077",
+      "review_reference": "REVIEW-APP-0077"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0078-ACCEPT",
+      "work_item_id": "WORK-APP-0078",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "955b516f519b5d54fa7ef9236b2921564b0f49fe",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0078",
+      "review_reference": "REVIEW-APP-0078"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0079-ACCEPT",
+      "work_item_id": "WORK-APP-0079",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "066f947ecddaf6e65723ceed043234a1aba36656",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0079",
+      "review_reference": "REVIEW-APP-0079"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0080-ACCEPT",
+      "work_item_id": "WORK-APP-0080",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "01e4228933241ceec733a1f6c82016a788132c88",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0080",
+      "review_reference": "REVIEW-APP-0080"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0081-ACCEPT",
+      "work_item_id": "WORK-APP-0081",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "e0e89cac570ae1db8cedb57f1ebee360abb47f53",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0081",
+      "review_reference": "REVIEW-APP-0081"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0082-ACCEPT",
+      "work_item_id": "WORK-APP-0082",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "9f5f5ea031adf0ba60b152523797a9faff762e0b",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0082",
+      "review_reference": "REVIEW-APP-0082"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0083-ACCEPT",
+      "work_item_id": "WORK-APP-0083",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "5a763a135e6aa447acda95fc3cc3a40fa27275e4",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0083",
+      "review_reference": "REVIEW-APP-0083"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0084-ACCEPT",
+      "work_item_id": "WORK-APP-0084",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "e996fa609c1ce918bc5b02213b386aafc92bba72",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0084",
+      "review_reference": "REVIEW-APP-0084"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0085-ACCEPT",
+      "work_item_id": "WORK-APP-0085",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "1d523b94bf29e494188b68798c45f9be24880f7a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0085",
+      "review_reference": "REVIEW-APP-0085"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0086-ACCEPT",
+      "work_item_id": "WORK-APP-0086",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "ced9045eeb56965f4c1d187a77a316b688c13c0c",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0086",
+      "review_reference": "REVIEW-APP-0086"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0087-ACCEPT",
+      "work_item_id": "WORK-APP-0087",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "5f56389089a6875c701a90040e4dba23dd80a282",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0087",
+      "review_reference": "REVIEW-APP-0087"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0088-ACCEPT",
+      "work_item_id": "WORK-APP-0088",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "bcf1e550255c215adc36105dbb165dfd8ac16785",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0088",
+      "review_reference": "REVIEW-APP-0088"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0089-ACCEPT",
+      "work_item_id": "WORK-APP-0089",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "33344719df02f68cf85b31cea421407f1dc72914",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0089",
+      "review_reference": "REVIEW-APP-0089"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0090-ACCEPT",
+      "work_item_id": "WORK-APP-0090",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "8c3f0de419a315c27d048f49e5a0612cc660de13",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0090",
+      "review_reference": "REVIEW-APP-0090"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0091-ACCEPT",
+      "work_item_id": "WORK-APP-0091",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "57e106c366feec48514846b7180a6e76bef160ba",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0091",
+      "review_reference": "REVIEW-APP-0091"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0092-ACCEPT",
+      "work_item_id": "WORK-APP-0092",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "f317f83de135a837a5b9583dfef0ce4d91602404",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0092",
+      "review_reference": "REVIEW-APP-0092"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0093-ACCEPT",
+      "work_item_id": "WORK-APP-0093",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "afa7138edb6c51f8520c7b9895cac05c0e278d63",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0093",
+      "review_reference": "REVIEW-APP-0093"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0094-ACCEPT",
+      "work_item_id": "WORK-APP-0094",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "a8a5924c3cb49933751558f93e583ec77fffb5bf",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0094",
+      "review_reference": "REVIEW-APP-0094"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0095-ACCEPT",
+      "work_item_id": "WORK-APP-0095",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "1037f39c785d66e7fd69c84f1e65829983ca5c65",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0095",
+      "review_reference": "REVIEW-APP-0095"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0096-ACCEPT",
+      "work_item_id": "WORK-APP-0096",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "a0da472392947f6314d7034c0cff2cc7a6f69a54",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0096",
+      "review_reference": "REVIEW-APP-0096"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0097-ACCEPT",
+      "work_item_id": "WORK-APP-0097",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "1a4d39444a5abb93eab8a6dfb56734926799e85e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0097",
+      "review_reference": "REVIEW-APP-0097"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0098-ACCEPT",
+      "work_item_id": "WORK-APP-0098",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "9aa24ed99b1810bfadd9671c31cb4ab4b3d0c9f5",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0098",
+      "review_reference": "REVIEW-APP-0098"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0099-ACCEPT",
+      "work_item_id": "WORK-APP-0099",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "89b049b04386f8c50b5f5c1b5132a83a90ee0607",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0099",
+      "review_reference": "REVIEW-APP-0099"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0100-ACCEPT",
+      "work_item_id": "WORK-APP-0100",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "f68431049ccbb5d4dd0957852f523a2d522be9fe",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0100",
+      "review_reference": "REVIEW-APP-0100"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0101-ACCEPT",
+      "work_item_id": "WORK-APP-0101",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "878e54153180dd3c71aac586e59796b3bf72ccac",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0101",
+      "review_reference": "REVIEW-APP-0101"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0102-ACCEPT",
+      "work_item_id": "WORK-APP-0102",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "18cb592d62aa2be2d3ab9dcf86a1d03ac5e1c919",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0102",
+      "review_reference": "REVIEW-APP-0102"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0104-ACCEPT",
+      "work_item_id": "WORK-APP-0104",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "88ddc7a7760d78d211bd562205fcafb06356b57a",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0104",
+      "review_reference": "REVIEW-APP-0104"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0105-ACCEPT",
+      "work_item_id": "WORK-APP-0105",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "0003b4358900ffee42f366ae96568137a45d19ff",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0105",
+      "review_reference": "REVIEW-APP-0105"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0107-ACCEPT",
+      "work_item_id": "WORK-APP-0107",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "20e198e6950123a8fe1c7ae33155b05afbf34990",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0107-R1",
+      "review_reference": "REVIEW-APP-0107-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0108-ACCEPT",
+      "work_item_id": "WORK-APP-0108",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "76a700ae44a82ebe79702aa2bfa87a352c160a70",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0108-R2",
+      "review_reference": "REVIEW-APP-0108-R2"
+    },
+    {
+      "id": "HUMAN-DECISION-MIGRATION-0001-ACCEPT",
+      "work_item_id": "WORK-MIGRATION-0001",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "9aa71eb370d8",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-MIGRATION-0001",
+      "review_reference": "REVIEW-MIGRATION-0001"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0103-SUPERSEDED",
+      "work_item_id": "WORK-APP-0103",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0103-SUPERSEDED",
+      "review_reference": "REVIEW-APP-0103-SUPERSEDED"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0109-SUPERSEDED",
+      "work_item_id": "WORK-APP-0109",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0109-SUPERSEDED",
+      "review_reference": "REVIEW-APP-0109-SUPERSEDED"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0110-SUPERSEDED",
+      "work_item_id": "WORK-APP-0110",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0110-SUPERSEDED",
+      "review_reference": "REVIEW-APP-0110-SUPERSEDED"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0112-R1",
+      "work_item_id": "WORK-APP-0112",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0112-R1",
+      "review_reference": "REVIEW-APP-0112-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0113-BUNDLE",
+      "work_item_id": "WORK-APP-0113",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0113-R1",
+      "review_reference": "REVIEW-APP-0113-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0114-BUNDLE",
+      "work_item_id": "WORK-APP-0114",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0114-R1",
+      "review_reference": "REVIEW-APP-0114-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0115-BUNDLE",
+      "work_item_id": "WORK-APP-0115",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0115-R1",
+      "review_reference": "REVIEW-APP-0115-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0116-BUNDLE",
+      "work_item_id": "WORK-APP-0116",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0116-R1",
+      "review_reference": "REVIEW-APP-0116-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0117-BUNDLE",
+      "work_item_id": "WORK-APP-0117",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0117-R1",
+      "review_reference": "REVIEW-APP-0117-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0118-BUNDLE",
+      "work_item_id": "WORK-APP-0118",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0118-R1",
+      "review_reference": "REVIEW-APP-0118-R1"
+    },
+    {
+      "id": "HUMAN-DECISION-APP-0119-R1",
+      "work_item_id": "WORK-APP-0119",
+      "human_id": "HUMAN-FOUNDER",
+      "reviewed_head": "59dc8e99a7130c1da5a9e5dbc845bb904348524e",
+      "decision": "accepted",
+      "status": "accepted",
+      "acceptance_mode": "explicit",
+      "quorum_status": "met",
+      "evidence_reference": "EVIDENCE-APP-0119-R1",
+      "review_reference": "REVIEW-APP-0119-R1"
     }
   ],
   "receipts": [
@@ -14747,6 +16808,339 @@
       "work_item_id": "WORK-APP-0107",
       "attempt_id": "ATTEMPT-APP-0107-R1",
       "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "closed-as-superseded-by-cuenta-obra"
+      ],
+      "outputs_created": [],
+      "not_done": [
+        "expense-split-feature"
+      ],
+      "id": "RECEIPT-APP-0103-SUPERSEDED",
+      "work_item_id": "WORK-APP-0103",
+      "attempt_id": "ATTEMPT-APP-0103-SUPERSEDED",
+      "actor": "HUMAN-FOUNDER"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "closed-as-superseded-by-cuenta-obra"
+      ],
+      "outputs_created": [],
+      "not_done": [
+        "expense-split-feature"
+      ],
+      "id": "RECEIPT-APP-0109-SUPERSEDED",
+      "work_item_id": "WORK-APP-0109",
+      "attempt_id": "ATTEMPT-APP-0109-SUPERSEDED",
+      "actor": "HUMAN-FOUNDER"
+    },
+    {
+      "sources_used": [
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "closed-as-superseded-by-cuenta-obra"
+      ],
+      "outputs_created": [],
+      "not_done": [
+        "expense-split-feature"
+      ],
+      "id": "RECEIPT-APP-0110-SUPERSEDED",
+      "work_item_id": "WORK-APP-0110",
+      "attempt_id": "ATTEMPT-APP-0110-SUPERSEDED",
+      "actor": "HUMAN-FOUNDER"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "actions_taken": [
+        "inventoried-preferred-kit",
+        "wrote-adaptation-rules",
+        "mapped-tracker-surfaces",
+        "updated-ui-authority",
+        "recorded-decision-log"
+      ],
+      "outputs_created": [
+        "docs/product/cuenta-obra-ui-reconstruction-plan.md",
+        "docs/product/cuenta-obra-ui-path.md",
+        "docs/product/ui-component-system.md",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0112/technical-report.md"
+      ],
+      "not_done": [
+        "token-bridge",
+        "primitive-rewrite",
+        "tracker-surface-reconstruction",
+        "real-payments",
+        "production-backend"
+      ],
+      "id": "RECEIPT-APP-0112-R1",
+      "work_item_id": "WORK-APP-0112",
+      "attempt_id": "ATTEMPT-APP-0112-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "actions_taken": [
+        "implemented-scoped-work",
+        "ran-verification",
+        "recorded-evidence"
+      ],
+      "outputs_created": [
+        "src/theme/tokens.json",
+        "src/tracker/theme.ts",
+        "tailwind.config.js",
+        "global.css",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0113/technical-report.md"
+      ],
+      "not_done": [
+        "human-bundle-accept",
+        "real-payments",
+        "production-backend"
+      ],
+      "id": "RECEIPT-APP-0113-R1",
+      "work_item_id": "WORK-APP-0113",
+      "attempt_id": "ATTEMPT-APP-0113-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-CUENTA-OBRA-UI-PLAN",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "rewrote-button-card-input",
+        "added-badge-field-sheet-tabs-separator-progress"
+      ],
+      "outputs_created": [
+        "src/components/reusables",
+        "reports/evidence/WORK-APP-0114/technical-report.md"
+      ],
+      "not_done": [
+        "tracker-surface-reconstruction",
+        "human-bundle-accept"
+      ],
+      "id": "RECEIPT-APP-0114-R1",
+      "work_item_id": "WORK-APP-0114",
+      "attempt_id": "ATTEMPT-APP-0114-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-CUENTA-OBRA-UI-PLAN",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "home-hero-card",
+        "next-move-card",
+        "progress-badge"
+      ],
+      "outputs_created": [
+        "src/screens/TrackerScreen.tsx",
+        "reports/evidence/WORK-APP-0115/technical-report.md"
+      ],
+      "not_done": [
+        "screenshots",
+        "human-bundle-accept",
+        "real-payments"
+      ],
+      "id": "RECEIPT-APP-0115-R1",
+      "work_item_id": "WORK-APP-0115",
+      "attempt_id": "ATTEMPT-APP-0115-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-CUENTA-OBRA-UI-PLAN",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "material-rows-badge",
+        "status-sheet",
+        "datepicker-chrome"
+      ],
+      "outputs_created": [
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker/MaterialStatusComposer.tsx",
+        "src/components/tracker/DatePickerField.tsx",
+        "reports/evidence/WORK-APP-0116/technical-report.md"
+      ],
+      "not_done": [
+        "screenshots",
+        "human-bundle-accept",
+        "real-payments"
+      ],
+      "id": "RECEIPT-APP-0116-R1",
+      "work_item_id": "WORK-APP-0116",
+      "attempt_id": "ATTEMPT-APP-0116-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-CUENTA-OBRA-UI-PLAN",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "project-supplier-sheets",
+        "desktop-workspace-kit"
+      ],
+      "outputs_created": [
+        "src/components/tracker/ProjectComposer.tsx",
+        "src/components/tracker/SupplierComposer.tsx",
+        "src/components/tracker/ProjectSwitcher.tsx",
+        "src/components/tracker/DesktopWorkspace.tsx",
+        "reports/evidence/WORK-APP-0117/technical-report.md"
+      ],
+      "not_done": [
+        "screenshots",
+        "human-bundle-accept",
+        "real-payments"
+      ],
+      "id": "RECEIPT-APP-0117-R1",
+      "work_item_id": "WORK-APP-0117",
+      "attempt_id": "ATTEMPT-APP-0117-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-TRACKER-APP",
+        "SOURCE-CUENTA-OBRA-UI-PLAN",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "client-preview-card",
+        "no-cost-leak"
+      ],
+      "outputs_created": [
+        "src/screens/TrackerScreen.tsx",
+        "reports/evidence/WORK-APP-0118/technical-report.md"
+      ],
+      "not_done": [
+        "screenshots",
+        "human-bundle-accept",
+        "real-payments"
+      ],
+      "id": "RECEIPT-APP-0118-R1",
+      "work_item_id": "WORK-APP-0118",
+      "attempt_id": "ATTEMPT-APP-0118-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-TRACKER-APP",
+        "SOURCE-CUENTA-OBRA-CHECKLIST",
+        "SOURCE-DECISIONS"
+      ],
+      "actions_taken": [
+        "qa-audit",
+        "wire-vista-previa",
+        "add-edit-material-project-supplier",
+        "tests"
+      ],
+      "outputs_created": [
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker",
+        "src/tracker",
+        "src/__tests__/trackerWorkflow.test.ts",
+        "reports/evidence/WORK-APP-0119/technical-report.md"
+      ],
+      "not_done": [
+        "delete-flows",
+        "color-personality",
+        "screenshots"
+      ],
+      "id": "RECEIPT-APP-0119-R1",
+      "work_item_id": "WORK-APP-0119",
+      "attempt_id": "ATTEMPT-APP-0119-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-CUENTA-OBRA-DIRECTION",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "actions_taken": [
+        "forest-primary-tokens",
+        "status-washes",
+        "replace-hardcoded-hex",
+        "decision-log"
+      ],
+      "outputs_created": [
+        "src/theme/tokens.json",
+        "global.css",
+        "tailwind.config.js",
+        "src/screens/TrackerScreen.tsx",
+        "src/components/tracker",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0120/technical-report.md"
+      ],
+      "not_done": [
+        "splash-icon-refresh",
+        "screenshots",
+        "dark-mode"
+      ],
+      "id": "RECEIPT-APP-0120-R1",
+      "work_item_id": "WORK-APP-0120",
+      "attempt_id": "ATTEMPT-APP-0120-R1",
+      "actor": "PALARI-DESIGN"
+    },
+    {
+      "sources_used": [
+        "SOURCE-PREFERRED-UI-KIT",
+        "SOURCE-DECISIONS",
+        "SOURCE-CUENTA-OBRA-UI-PLAN"
+      ],
+      "actions_taken": [
+        "palari-labs-token-paint",
+        "alias-forest-to-lab",
+        "bridge-docs-current",
+        "decision-ui-0002"
+      ],
+      "outputs_created": [
+        "src/theme/tokens.json",
+        "global.css",
+        "dashboard/src/index.css",
+        "docs/product/ui-component-system.md",
+        "docs/product/decisions.md",
+        "reports/evidence/WORK-APP-0121/technical-report.md"
+      ],
+      "not_done": [
+        "splash-icon-refresh",
+        "screenshots",
+        "marketing-type-orbs"
+      ],
+      "id": "RECEIPT-APP-0121-R1",
+      "work_item_id": "WORK-APP-0121",
+      "attempt_id": "ATTEMPT-APP-0121-R1",
+      "actor": "PALARI-DESIGN"
     }
   ],
   "decisions": [
@@ -14797,6 +17191,52 @@
       "linked_palari": "PALARI-DESIGN",
       "result": "Restart toward a lighter premium Android finance app with Stripe-like clarity and LATAM warmth.",
       "due_date": "2026-06-20"
+    },
+    {
+      "result": "Cuenta Obra is the active product. Cuentas Claras expense-split premium MVP goal is completed/historical.",
+      "options": [
+        "Continue Cuentas Claras expense-split app",
+        "Pivot fully to Cuenta Obra tracker"
+      ],
+      "id": "DECISION-PRODUCT-0002",
+      "question": "What product should Company OS optimize for going forward?",
+      "status": "decided",
+      "context": "The working tree already mounts TrackerScreen as Cuenta Obra. Historical Cuentas Claras expense-split tickets are accepted/closed. Founder confirmed Cuenta Obra is the new product angle.",
+      "recommendation": "Optimize all new work for Cuenta Obra: provider work/material tracker for small LATAM service businesses. Treat Cuentas Claras expense-split as historical.",
+      "safe_default": "Do not start new expense-split feature tickets. Prefer Cuenta Obra tracker, launch-contract, and provider-direction sources.",
+      "required_human": "HUMAN-FOUNDER",
+      "required_role": "Founder",
+      "linked_goal": "GOAL-CUENTA-OBRA",
+      "linked_palari": "PALARI-PRODUCT"
+    },
+    {
+      "result": "Preferred UI kit wins. Reconstruct existing app into preferred elements when incompatible.",
+      "options": [
+        "Keep legacy StyleSheet/reusables as authority",
+        "Adopt preferred shadcn/dashboard elements and rebuild Expo UI to match"
+      ],
+      "id": "DECISION-UI-0001",
+      "question": "Which UI element kit is the source of truth for Cuenta Obra?",
+      "status": "decided",
+      "context": "Founder prefers the new dashboard/shadcn (base-nova) elements because they look good and are easy to work with. Existing Expo StyleSheet/reusables must adapt to those elements, not the reverse.",
+      "recommendation": "Treat dashboard/src/components/ui (shadcn base-nova) as the preferred element language. Reconstruct Cuenta Obra Expo surfaces into NativeWind-owned equivalents of those elements. Do not force new screens into legacy StyleSheet patterns when they conflict.",
+      "safe_default": "New Cuenta Obra UI work copies/adapts preferred kit patterns into src/components/reusables or tracker-owned components; legacy MainScreen expense UI is not the visual authority.",
+      "required_human": "HUMAN-FOUNDER",
+      "required_role": "Founder",
+      "linked_goal": "GOAL-CUENTA-OBRA",
+      "linked_palari": "PALARI-DESIGN"
+    },
+    {
+      "id": "DECISION-UI-0002",
+      "question": "Should Cuenta Obra chrome follow Palari Labs colors from the token bridge?",
+      "status": "decided",
+      "context": "Founder approved the Palari Labs \u2194 Cuenta Obra token bridge and asked to execute it.",
+      "recommendation": "Yes: paint kit token slots with lab values; keep forest* as aliases; no marketing chrome in field UI.",
+      "safe_default": "Keep previous forest personality until founder decides.",
+      "required_human": "HUMAN-FOUNDER",
+      "linked_goal": "GOAL-CUENTA-OBRA",
+      "linked_work": "WORK-APP-0121",
+      "linked_palari": "PALARI-DESIGN"
     }
   ],
   "outcomes": [
@@ -15884,6 +18324,86 @@
       "status": "completed",
       "what_happened": "Reduced the Balance surface and settlement confirmation dialog to essential information with one safety disclaimer at the action boundary.",
       "what_changed": "MainScreen.tsx balance and settlement render, decisions.md, and new screenshot evidence."
+    },
+    {
+      "id": "OUTCOME-APP-0112-R1",
+      "work_item_id": "WORK-APP-0112",
+      "summary": "Cuenta Obra preferred-kit reconstruction plan is documented and accept-ready.",
+      "status": "completed",
+      "what_happened": "Mapped dashboard/shadcn base-nova elements to Expo owned primitives and ordered tracker reconstruction tickets.",
+      "what_changed": "cuenta-obra-ui-reconstruction-plan.md, cuenta-obra-ui-path.md, ui-component-system.md authority, decisions.md, evidence report."
+    },
+    {
+      "id": "OUTCOME-APP-0113-R1",
+      "work_item_id": "WORK-APP-0113",
+      "summary": "Preferred kit token bridge passed typecheck, tests, Expo config, web export, scope, and validate.",
+      "status": "completed",
+      "what_happened": "Bridged preferred kit tokens into theme, tracker, NativeWind, and global CSS.",
+      "what_changed": "src/theme/tokens.json,src/tracker/theme.ts,tailwind.config.js,global.css,docs/product/decisions.md,reports/evidence/WORK-APP-0113/technical-report.md"
+    },
+    {
+      "id": "OUTCOME-APP-0114-R1",
+      "work_item_id": "WORK-APP-0114",
+      "summary": "Preferred-kit primitives are ready for tracker reconstruction.",
+      "status": "completed",
+      "what_happened": "Owned Expo primitives now mirror preferred kit shapes.",
+      "what_changed": "src/components/reusables/*"
+    },
+    {
+      "id": "OUTCOME-APP-0115-R1",
+      "work_item_id": "WORK-APP-0115",
+      "summary": "Tracker home next-move reconstruction passed typecheck, tests, Expo config, web export, scope, validate.",
+      "status": "completed",
+      "what_happened": "Reconstructed Tracker home/next-move onto Card, Button, Badge, Progress.",
+      "what_changed": "src/screens/TrackerScreen.tsx"
+    },
+    {
+      "id": "OUTCOME-APP-0116-R1",
+      "work_item_id": "WORK-APP-0116",
+      "summary": "Materials and status composer reconstruction passed verification gates.",
+      "status": "completed",
+      "what_happened": "Reconstructed materials list and MaterialStatusComposer onto Sheet/Badge/Progress.",
+      "what_changed": "src/screens/TrackerScreen.tsx,src/components/tracker/MaterialStatusComposer.tsx,src/components/tracker/DatePickerField.tsx"
+    },
+    {
+      "id": "OUTCOME-APP-0117-R1",
+      "work_item_id": "WORK-APP-0117",
+      "summary": "Setup and desktop workspace reconstruction passed verification gates.",
+      "status": "completed",
+      "what_happened": "Reconstructed project/supplier composers, switcher, and DesktopWorkspace onto preferred kit.",
+      "what_changed": "src/components/tracker/ProjectComposer.tsx,src/components/tracker/SupplierComposer.tsx,src/components/tracker/ProjectSwitcher.tsx,src/components/tracker/DesktopWorkspace.tsx"
+    },
+    {
+      "id": "OUTCOME-APP-0118-R1",
+      "work_item_id": "WORK-APP-0118",
+      "summary": "Client-safe preview reconstruction passed verification gates; private fields remain hidden.",
+      "status": "completed",
+      "what_happened": "Reconstructed client-safe progress preview onto Card/Badge/Progress without private fields.",
+      "what_changed": "src/screens/TrackerScreen.tsx"
+    },
+    {
+      "id": "OUTCOME-APP-0119-R1",
+      "work_item_id": "WORK-APP-0119",
+      "summary": "Fake-looking controls now open real edit/tab flows; edit APIs covered by tests.",
+      "status": "completed",
+      "what_happened": "QA found decorative controls and missing edit paths; wired and implemented them.",
+      "what_changed": "TrackerScreen, composers, DesktopWorkspace, workflow updates, tests."
+    },
+    {
+      "id": "OUTCOME-APP-0120-R1",
+      "work_item_id": "WORK-APP-0120",
+      "summary": "Preferred-kit structure now carries Cuenta Obra forest color personality.",
+      "status": "completed",
+      "what_happened": "Replaced monochrome base-nova primary with forest brand tokens and mapped tracker hardcodes.",
+      "what_changed": "tokens.json, global.css, tailwind, TrackerScreen, tracker components, decisions.md"
+    },
+    {
+      "what_happened": "Executed token bridge: warm paper, indigo ink, teal primary, coral due/accent.",
+      "what_changed": "tokens.json, global.css, dashboard index.css, ui-component-system bridge, decisions.md, DECISION-UI-0002",
+      "id": "OUTCOME-APP-0121-R1",
+      "work_item_id": "WORK-APP-0121",
+      "summary": "Cuenta Obra chrome now follows Palari Labs token personality on preferred-kit structure.",
+      "status": "completed"
     }
   ]
 }
