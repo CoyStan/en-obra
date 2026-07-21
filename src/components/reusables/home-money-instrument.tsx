@@ -16,13 +16,13 @@ type HomeMoneyInstrumentProps = {
   identity: {
     avatarColor: string;
     label: string;
-    meta: string;
+    meta?: string;
     onPress: () => void;
   };
   openLabel: string;
   openPercent: DimensionValue;
   routeAmount: string;
-  routeCaption: string;
+  routeCaption?: string;
   routeTitle: string;
   spentLabel: string;
   stateLabel: string;
@@ -51,7 +51,7 @@ export function HomeMoneyInstrument({
   return (
     <View
       className={cn(
-        "gap-ccSm rounded-ccLg border border-border bg-surface p-ccSm",
+        "gap-ccSm rounded-ccLg border border-border bg-surface p-ccMd",
         due && "bg-due-wash",
       )}
       testID={testID}
@@ -62,39 +62,41 @@ export function HomeMoneyInstrument({
             accessibilityHint="Abre perfil o cambia tu integrante del grupo."
             accessibilityLabel={identity.label}
             accessibilityRole="button"
-            className="min-h-[42px] flex-row items-center gap-ccXs rounded-ccMd bg-surface px-ccXs py-ccXs active:bg-surface-strong"
+            className="min-h-[40px] flex-row items-center gap-ccXs rounded-ccMd bg-surface-strong px-ccXs py-ccXs active:opacity-80"
             hitSlop={4}
             onPress={identity.onPress}
           >
             <Avatar color={identity.avatarColor} label={identity.label} />
             <View className="min-w-0 flex-1">
-              <Text className="text-ccSmall font-extrabold text-ink" numberOfLines={1}>
+              <Text className="text-ccSmall font-bold text-ink" numberOfLines={1}>
                 {identity.label}
               </Text>
-              <Text className="text-ccMicro font-semibold text-muted-ink" numberOfLines={1}>
-                {identity.meta}
-              </Text>
+              {identity.meta ? (
+                <Text className="text-ccMicro font-medium text-muted-ink" numberOfLines={1}>
+                  {identity.meta}
+                </Text>
+              ) : null}
             </View>
             <MaterialCommunityIcons color={colors.primaryDark} name="chevron-down" size={18} />
           </Pressable>
           <View>
-            <Text className="text-ccMicro font-bold uppercase text-muted-ink">Tu balance</Text>
-            <Text className={cn("text-ccHeading font-extrabold text-primary-dark", due && "text-due", neutral && "text-ink")}>
+            <Text className="text-ccMicro font-semibold uppercase tracking-wide text-muted-ink">Tu balance</Text>
+            <Text className={cn("text-ccHeading font-bold text-primary-dark", due && "text-due", neutral && "text-ink")}>
               {stateLabel}
             </Text>
           </View>
         </View>
         <View className="max-w-[58%] shrink-0 items-end">
-          <Text className="text-ccMicro font-extrabold text-muted-ink">{currencyLabel}</Text>
+          <Text className="text-ccMicro font-semibold text-muted-ink">{currencyLabel}</Text>
           <Text
             adjustsFontSizeToFit
             className={cn(
-              "text-right text-[36px] font-extrabold text-primary",
-              compact && "text-[32px]",
+              "text-right text-[34px] font-extrabold text-primary",
+              compact && "text-[30px]",
               due && "text-due",
               neutral && "text-ink",
             )}
-            minimumFontScale={0.58}
+            minimumFontScale={0.65}
             numberOfLines={1}
           >
             {amountText}
@@ -105,34 +107,35 @@ export function HomeMoneyInstrument({
       <View className="gap-ccXs rounded-ccMd border border-border bg-surface p-ccXs">
         <View className="flex-row items-start justify-between gap-ccSm">
           <View className="min-w-0 flex-1">
-            <Text className="text-ccMicro font-bold uppercase text-muted-ink">Quién le debe a quién</Text>
-            <Text className="text-ccBody font-extrabold text-ink" numberOfLines={1}>
+            <Text className="text-ccBody font-bold text-ink" numberOfLines={1}>
               {routeTitle}
             </Text>
           </View>
-          <Text className={cn("text-right text-ccSmall font-extrabold text-primary-dark", due && "text-due")}>
+          <Text className={cn("text-right text-ccSmall font-bold text-primary-dark", due && "text-due")}>
             {routeAmount}
           </Text>
         </View>
         {flow}
         <View className="flex-row items-center gap-ccXs">
           <Pill label="Sin pagos reales" tone="neutral" />
-          <Text className="min-w-0 flex-1 text-ccMicro font-semibold text-muted-ink" numberOfLines={2}>
-            {routeCaption}
-          </Text>
+          {routeCaption ? (
+            <Text className="min-w-0 flex-1 text-ccMicro font-medium text-muted-ink" numberOfLines={1}>
+              {routeCaption}
+            </Text>
+          ) : null}
         </View>
       </View>
 
       <View className="gap-ccXs">
         <View className="flex-row items-center justify-between gap-ccSm">
-          <Text className="text-ccMicro font-bold text-muted-ink">{spentLabel}</Text>
-          <Text className={cn("text-right text-ccMicro font-extrabold text-primary", due && "text-due")}>
+          <Text className="text-ccMicro font-semibold text-muted-ink">{spentLabel}</Text>
+          <Text className={cn("text-right text-ccMicro font-bold text-primary", due && "text-due")}>
             {openLabel}
           </Text>
         </View>
-        <View className="h-2 overflow-hidden rounded-[4px] bg-surface-strong">
+        <View className="h-1.5 overflow-hidden rounded-[3px] bg-surface-strong">
           <View
-            className={cn("h-2 rounded-[4px]", due ? "bg-due" : "bg-primary")}
+            className={cn("h-1.5 rounded-[3px]", due ? "bg-due" : "bg-primary")}
             style={{ width: openPercent }}
           />
         </View>

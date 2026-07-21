@@ -1,104 +1,60 @@
-# Borrador de Terminos de Uso
+# Borrador de Términos de Uso de Cuenta Obra
 
-Producto: Cuentas Claras
-Estado: borrador para revision legal y aprobacion humana.
-Fecha del borrador: 2026-06-20
+**Estado:** borrador operativo. No publicar sin revisión legal y aprobación del responsable del producto.
 
-Este documento es un borrador operativo para preparar pruebas internas en
-Android. No es asesoria legal y no debe publicarse como terminos finales hasta
-que una persona autorizada confirme el responsable legal, jurisdiccion, datos de
-contacto, limitaciones aplicables y version publica.
+**Última actualización del borrador:** 2026-07-18
 
-## Uso Del Producto
+## Responsable y contacto
 
-Cuentas Claras permite registrar gastos compartidos en MXN, dividirlos entre
-integrantes de un grupo, revisar balances y marcar arreglos como pagados dentro
-de la app.
-
-La version actual es local-first y de demostracion. Los datos se guardan en el
-dispositivo y no se sincronizan con un backend de produccion.
-
-La version actual puede mostrar identidades demo y preparar registros locales
-con forma compatible con una futura base de datos. Eso no significa que exista
-una cuenta real, colaboracion en vivo o respaldo en la nube.
-
-## Sin Pagos Reales
-
-Cuentas Claras no es banco, institucion financiera, procesador de pagos,
-transmisor de dinero, wallet ni proveedor de SPEI. La app no mueve dinero,
-no cobra tarjetas, no inicia transferencias y no verifica pagos reales.
-
-Cuando una persona toca "Marcar pagado", la app solo registra un cambio local
-para llevar control del grupo. Las personas siguen siendo responsables de
-realizar cualquier pago real por fuera de la app.
-
-## Responsabilidad De La Informacion
-
-La persona usuaria es responsable de capturar datos correctos, contar con
-permiso para guardar nombres o datos de otras personas y revisar los resultados
-antes de tomar decisiones. Los balances son calculos informativos basados en la
-informacion registrada.
-
-## No Asesoria
-
-Cuentas Claras no ofrece asesoria financiera, fiscal, contable, legal ni de
-inversion. La app solo ayuda a organizar gastos compartidos informales.
-
-## Datos Locales Y Perdida De Informacion
-
-En la version actual, los datos se guardan localmente. Si el dispositivo se
-pierde, se borra, se desinstala la app o se limpia el almacenamiento, la
-informacion puede perderse. La sincronizacion en la nube no esta disponible en
-la version actual.
-
-## Uso Aceptable
-
-No se debe usar Cuentas Claras para:
-
-- actividades ilegales o fraudulentas,
-- registrar informacion de terceros sin autorizacion,
-- simular o prometer pagos reales que la app no ejecuta,
-- evadir obligaciones legales, fiscales o contractuales,
-- interferir con la seguridad, estabilidad o funcionamiento del producto.
-
-## Disponibilidad
-
-La app puede cambiar, suspenderse o dejar de estar disponible durante pruebas.
-La version actual no garantiza sincronizacion, soporte continuo, recuperacion de
-datos ni disponibilidad de servicios externos.
-
-## Propiedad Intelectual
-
-El nombre, diseno, codigo, textos y materiales de Cuentas Claras pertenecen a
-sus titulares correspondientes. La persona usuaria conserva la responsabilidad
-sobre la informacion que captura en la app.
-
-## Limitacion De Responsabilidad
-
-Pendiente de revision legal. La version final debe definir las limitaciones,
-exclusiones y garantias aplicables segun jurisdiccion y tipo de distribucion.
-
-## Cambios
-
-Los terminos finales deben actualizarse cuando cambien las funciones del
-producto, se agreguen cuentas reales, backend, sincronizacion, pagos, analitica,
-publicidad, suscripciones o servicios de terceros.
-
-## Contacto
-
-Pendiente de decision humana:
+Pendiente de completar por el propietario del producto:
 
 - Responsable legal:
+- Jurisdicción:
 - Correo de soporte:
-- Jurisdiccion:
-- URL publica de terminos:
+- Dirección o medio de contacto aplicable:
+- URL pública de estos términos:
 
-## Pendiente Antes De Publicar
+## Uso del producto
 
-- Confirmar responsable legal y jurisdiccion.
-- Revisar con asesoria legal.
-- Publicar URL de terminos si se decide incluirla en Play Store o dentro de la
-  app.
-- Alinear estos terminos con la politica de privacidad final.
-- Confirmar que la app mantiene visible "Sin pagos reales" cerca de acciones de
-  liquidacion.
+Cuenta Obra es una herramienta para que prestadores de servicios pequeños organicen trabajos, materiales y proveedores, y compartan un avance limitado con sus clientes.
+
+La persona usuaria es responsable de revisar la información que captura, contar con permiso para registrar datos de clientes o proveedores y confirmar directamente con las partes involucradas cualquier entrega, material o acuerdo.
+
+La persona usuaria no debe utilizar Cuenta Obra para actividades ilegales, fraudulentas, para registrar información de terceros sin autorización, ni para presentar una actualización de la aplicación como prueba legal, factura, contrato, garantía o confirmación bancaria.
+
+## Sin movimiento de dinero
+
+Cuenta Obra no es banco, institución financiera, procesador de pagos, transmisor de dinero, wallet, servicio de SPEI ni plataforma de cobro entre cliente y prestador. La aplicación no inicia pagos a proveedores ni cobra a clientes por los trabajos registrados.
+
+Una futura suscripción a Cuenta Obra, si se ofrece, paga el acceso del prestador al software. No convierte a Cuenta Obra en parte de la relación, precio, calidad o ejecución del servicio que el prestador brinda a su cliente.
+
+## Información de trabajos y proveedores
+
+Los materiales, fechas, notas, teléfonos y avances dependen de lo que capture la persona usuaria. Cuenta Obra no garantiza que una fecha de entrega, inventario, precio, disponibilidad, contacto o actualización sea exacta, completa o vigente. La persona usuaria conserva la responsabilidad de confirmar los acuerdos con sus proveedores y clientes.
+
+## Vista para clientes
+
+Una futura vista o enlace de cliente será de solo lectura y mostrará únicamente la información que el prestador elija compartir del trabajo correspondiente. No debe usarse para exponer costos internos, datos de proveedores ni información de otros clientes.
+
+## Google Drive y comprobantes
+
+Si la persona decide conectar Google Drive en una versión futura, los archivos originales de comprobantes permanecerán en su propia cuenta de Google Drive. Cuenta Obra podrá guardar referencias mínimas a esos archivos para relacionarlos con un trabajo. La persona usuaria mantiene la responsabilidad de permisos, compartición y conservación de sus archivos en Drive.
+
+## Disponibilidad y datos locales del prototipo
+
+La versión actual es local-first y de demostración. Si el dispositivo se pierde, se borra, se desinstala la aplicación o se limpia su almacenamiento, la información local puede perderse. Esta versión no garantiza cuentas reales, sincronización en la nube, recuperación, respaldo, soporte continuo ni disponibilidad de servicios externos.
+
+## Suscripciones y cancelación
+
+Los precios, periodo de prueba, renovación, cancelación, reembolsos y funciones incluidas no están definidos en este prototipo. Antes de cobrar, la versión publicada deberá mostrar de forma clara el precio, moneda, periodo, renovación automática, cómo cancelar, qué ocurre al vencer el acceso y cómo pedir soporte.
+
+## Propiedad intelectual y cambios
+
+El nombre, diseño, código, textos y materiales de Cuenta Obra pertenecen a sus titulares correspondientes. Estos términos pueden cambiar al evolucionar el producto; la versión final deberá indicar una fecha de vigencia y el mecanismo de notificación aplicable.
+
+## Pendiente antes de publicar
+
+- Confirmar responsable legal, jurisdicción, soporte y política de reembolso.
+- Definir limitaciones, garantías, conservación y eliminación con asesoría legal aplicable.
+- Alinear estos términos con la política de privacidad aprobada y el comportamiento real de la aplicación.
+- Publicar una versión aprobada en una URL accesible desde la aplicación y la ficha de la tienda.

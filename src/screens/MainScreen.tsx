@@ -918,7 +918,6 @@ export function MainScreen() {
     : account.profile
       ? `Tú eres ${account.profile.displayName}`
       : "Elige tu persona";
-  const identityMeta = account.profile && account.mode === "signed-in" ? "Perfil local" : "Demo local";
   const activeTabConfig = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
   const workspaceSectionLabel = activeTabConfig.groupScoped ? activeTabConfig.label : "Grupos";
   const workspaceHint = selectedGroup
@@ -1365,9 +1364,6 @@ export function MainScreen() {
           ? `${personalSettlementFrom?.name ?? "Alguien"} te paga`
           : "Acuerdo del grupo"
       : "Grupo en paz";
-    const routeCaption = personalSettlement
-      ? "Acuerdo externo · solo registro local"
-      : "No hay pagos pendientes";
     const nextActionLabel = personalSettlement
       ? personalSettlement.fromMemberId === activeGroupMember?.id
         ? "Registrar arreglo"
@@ -1395,16 +1391,11 @@ export function MainScreen() {
             >
               <GroupObject group={selectedGroup} size="large" />
               <View style={styles.odCommandGroupCopy}>
-                <Text numberOfLines={1} style={styles.odCommandKicker}>Grupo activo</Text>
                 <Text numberOfLines={1} style={styles.odCommandTitle}>{selectedGroup.name}</Text>
                 <Text numberOfLines={1} style={styles.odCommandMeta}>{selectedMembers.length} integrantes · MXN</Text>
               </View>
-              <MaterialCommunityIcons color={colors.primaryDark} name="swap-horizontal" size={18} />
+              <MaterialCommunityIcons color={colors.primaryDark} name="chevron-right" size={18} />
             </Pressable>
-            <View style={styles.commandTrustChip}>
-              <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={14} />
-              <Text style={styles.odCommandTrustText}>Sin pagos reales</Text>
-            </View>
           </View>
 
           <HomeMoneyInstrument
@@ -1422,32 +1413,27 @@ export function MainScreen() {
               ) : (
                 <View style={styles.instrumentPeaceLine}>
                   <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={20} />
-                  <Text style={styles.instrumentPeaceText}>Todo en paz · no hay arreglos pendientes</Text>
+                  <Text style={styles.instrumentPeaceText}>Todo en paz</Text>
                 </View>
               )
             }
             identity={{
               avatarColor: displayMember?.avatarColor ?? colors.primary,
               label: displayMember?.name ?? "Elige persona",
-              meta: identityMeta,
               onPress: openIdentity,
             }}
             openLabel={`Abierto ${formatMoney(activeGroupSummary.openBalanceCents)}`}
             openPercent={openPercent}
             routeAmount={personalSettlement ? formatMoney(personalSettlement.amountCents) : "$0.00"}
-            routeCaption={personalSettlement ? personalCue : routeCaption}
+            routeCaption={personalSettlement ? personalCue : undefined}
             routeTitle={routeTitle}
-            spentLabel={`Gastado ${formatMoney(activeGroupSummary.totalSpentCents)}`}
+            spentLabel={`Total ${formatMoney(activeGroupSummary.totalSpentCents)}`}
             stateLabel={personalBalanceState.label}
             testID="inicio-money-instrument"
             tone={personalBalanceState.tone}
           />
 
           <View style={styles.peopleStrip}>
-            <View style={styles.peopleStripHeader}>
-              <Text style={styles.peopleStripTitle}>Personas del grupo</Text>
-              <Text style={styles.peopleStripMeta}>{hiddenMemberCount ? `+${hiddenMemberCount}` : "Todos"}</Text>
-            </View>
             <View style={styles.peopleStripRow}>
               {visibleMembers.map((member) => (
                 <Pressable
@@ -1488,7 +1474,7 @@ export function MainScreen() {
             </View>
             <View style={styles.actionDockCopy}>
               <Text style={styles.actionDockLabel}>{nextActionLabel}</Text>
-              <Text style={styles.actionDockMeta}>{personalSettlement ? "Registro local, no pago real" : "Dividir en partes iguales"}</Text>
+              <Text style={styles.actionDockMeta}>{personalSettlement ? "Solo registro" : "Dividir gasto"}</Text>
             </View>
             <MaterialCommunityIcons color={colors.surface} name="arrow-right" size={18} />
           </Pressable>
@@ -1543,20 +1529,7 @@ export function MainScreen() {
 
         <View style={styles.activityStream}>
           <View style={styles.activityStreamHeader}>
-            <View>
-              <Text style={styles.activityStreamKicker}>Historial</Text>
-              <Text style={styles.activityStreamTitle}>Últimos movimientos</Text>
-            </View>
-            <Pressable
-              accessibilityLabel="Reiniciar datos demo"
-              accessibilityRole="button"
-              hitSlop={4}
-              onPress={resetDemo}
-              style={({ pressed }) => [styles.activityStreamReset, pressed && styles.pressed]}
-            >
-              <MaterialCommunityIcons color={colors.primaryDark} name="restore" size={15} />
-              <Text style={styles.activityStreamResetText}>Demo</Text>
-            </Pressable>
+            <Text style={styles.activityStreamTitle}>Movimientos</Text>
           </View>
           {activity.length === 0 ? (
             <EmptyState
@@ -1801,14 +1774,9 @@ export function MainScreen() {
             </View>
             <View style={styles.settlementMetaRow}>
               <View style={styles.settlementAmountInline}>
-                <Text style={styles.settlementAmountLabel}>Monto MXN</Text>
                 <Text style={styles.settlementAmountText}>
                   {formatMoney(settlement.amountCents)}
                 </Text>
-              </View>
-              <View style={styles.demoChip}>
-                <MaterialCommunityIcons color={colors.mutedInk} name="shield-alert-outline" size={14} />
-                <Text style={styles.demoOnly}>Sin pagos reales</Text>
               </View>
             </View>
           </View>
@@ -1848,21 +1816,9 @@ export function MainScreen() {
       <View style={styles.tabContent}>
         <View style={styles.balanceMap}>
           <View style={styles.balanceMapHero}>
-            <View style={styles.balanceMapTop}>
-              <View style={styles.balanceMapTitleBlock}>
-                <Text style={styles.balanceMapKicker}>Mapa de balance</Text>
-                <Text numberOfLines={1} style={styles.balanceMapTitle}>{selectedGroup.name}</Text>
-                <Text numberOfLines={1} style={styles.balanceMapMeta}>MXN · {selectedMembers.length} integrantes · arreglo externo</Text>
-              </View>
-              <View style={styles.commandTrustChip}>
-                <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={14} />
-                <Text style={styles.odCommandTrustText}>Sin pagos reales</Text>
-              </View>
-            </View>
-
             <View style={styles.balanceMapAmountRow}>
               <View style={styles.balanceMapStatus}>
-                <Text style={styles.balanceMapStatusLabel}>Abierto</Text>
+                <Text numberOfLines={1} style={styles.balanceMapTitle}>{selectedGroup.name}</Text>
                 <Text style={[styles.balanceMapStatusText, selectedSummary.openBalanceCents ? styles.balanceMapStatusDue : styles.balanceMapStatusOk]}>
                   {openLabel}
                 </Text>
@@ -1879,23 +1835,9 @@ export function MainScreen() {
                 </Text>
               </View>
             </View>
-
-            <View style={styles.balanceMapMetrics}>
-              <View style={styles.balanceMapMetric}>
-                <Text style={styles.balanceMapMetricLabel}>Rutas</Text>
-                <Text style={styles.balanceMapMetricValue}>{selectedSummary.settlements.length}</Text>
-              </View>
-              <View style={styles.balanceMapMetric}>
-                <Text style={styles.balanceMapMetricLabel}>Integrantes</Text>
-                <Text style={styles.balanceMapMetricValue}>{selectedMembers.length}</Text>
-              </View>
-            </View>
           </View>
 
           <ComposerSection
-            badge={primaryRoute ? `${selectedSummary.settlements.length} rutas` : "En paz"}
-            icon={primaryRoute ? "swap-horizontal" : "check-decagram-outline"}
-            meta={primaryRoute ? "Se registra solo si ya se arreglaron fuera de la app." : "No hay pagos pendientes para este grupo."}
             testID="balance-settlement-map-section"
             title={primaryRoute ? "Quién paga ahora" : "Sin rutas pendientes"}
           >
@@ -1915,14 +1857,14 @@ export function MainScreen() {
                     <Text style={styles.settlementMapRouteText}>
                       {settlementPerspective(primaryRoute, displayMemberId, primaryFrom, primaryTo).title}
                     </Text>
-                    <Text style={styles.settlementMapRouteMeta}>Sin pagos reales · registro local</Text>
+                    <Text style={styles.settlementMapRouteMeta}>Sin pagos reales</Text>
                   </View>
                   <ReusableButton
                     icon="check"
                     onPress={() => setPendingSettlement(primaryRoute)}
                     testID="balance-settlement-register-button"
                   >
-                    Marcar local
+                    Marcar
                   </ReusableButton>
                 </View>
               </>
@@ -1931,7 +1873,6 @@ export function MainScreen() {
                 <MaterialCommunityIcons color={colors.primaryDark} name="check-decagram-outline" size={24} />
                 <View style={styles.calmFigureCopy}>
                   <Text style={styles.settlementMapRouteText}>Todo en paz</Text>
-                  <Text style={styles.settlementMapRouteMeta}>No hay pagos pendientes para este grupo.</Text>
                 </View>
               </View>
             )}
@@ -1963,10 +1904,7 @@ export function MainScreen() {
 
           <View style={styles.memberLedgerPanel}>
             <View style={styles.memberLedgerHeader}>
-              <View>
-                <Text style={styles.balanceMapKicker}>Integrantes</Text>
-                <Text style={styles.memberLedgerTitle}>Balance por persona</Text>
-              </View>
+              <Text style={styles.memberLedgerTitle}>Balance por persona</Text>
               <ActionButton
                 icon="account-edit-outline"
                 label="Gestionar"
@@ -2633,11 +2571,7 @@ export function MainScreen() {
         <ScrollView contentContainerStyle={styles.composerSheet} keyboardShouldPersistTaps="handled">
           <View style={styles.sheetHandle} />
           <View style={styles.captureHeader}>
-            <View style={styles.composerTitleBlock}>
-              <Text style={styles.captureKicker}>Captura de recibo</Text>
-              <Text style={styles.captureTitle}>{expenseComposerTitle}</Text>
-              <Text style={styles.captureSubtitle}>{selectedGroup?.name ?? "Grupo"} · MXN</Text>
-            </View>
+            <Text style={styles.captureTitle}>{expenseComposerTitle}</Text>
             <ActionButton
               icon="close"
               label="Cerrar"
@@ -2651,32 +2585,8 @@ export function MainScreen() {
 
           {error ? <Text style={styles.formError}>{error}</Text> : null}
 
-          <View style={styles.captureContextRail}>
-            <View style={styles.captureContextChip}>
-              <MaterialCommunityIcons
-                color={colors.primaryDark}
-                name={selectedGroup ? groupGlyph(selectedGroup) : "account-group-outline"}
-                size={15}
-              />
-              <Text numberOfLines={1} style={styles.captureContextText}>{selectedGroup?.name ?? "Grupo"}</Text>
-            </View>
-            <View style={styles.captureContextChip}>
-              <MaterialCommunityIcons color={colors.primaryDark} name="account-circle-outline" size={15} />
-              <Text numberOfLines={1} style={styles.captureContextText}>
-                {activeGroupMember?.name ?? displayMember?.name ?? "Persona"}
-              </Text>
-            </View>
-            <View style={styles.captureContextChip}>
-              <MaterialCommunityIcons color={colors.primaryDark} name="cash-remove" size={15} />
-              <Text style={styles.captureContextText}>Sin pagos reales</Text>
-            </View>
-          </View>
-
           <ComposerSection
-            badge="Partes iguales"
             className="bg-surface"
-            icon="receipt-text-plus-outline"
-            meta="Monto, pagador y participantes en una sola captura."
             testID="expense-composer-receipt-section"
             title={expenseComposerTitle}
           >
@@ -2739,7 +2649,6 @@ export function MainScreen() {
               </SelectPanel>
 
               <MoneyInput
-                helper="Acepta decimales. Ej. 1480.50"
                 label="Monto MXN"
                 onChangeText={setExpenseAmount}
                 placeholder="0.00"
@@ -2748,7 +2657,6 @@ export function MainScreen() {
               />
 
               <TextField
-                helper="Nombre corto para el historial."
                 label="Concepto"
                 onChangeText={setExpenseTitle}
                 placeholder="Ej. Tacos después del cine"
@@ -2939,18 +2847,10 @@ export function MainScreen() {
                       })}
                     {splitError ? <Text style={styles.splitEditorError}>{splitError}</Text> : null}
                   </View>
-                ) : (
-                  <View style={styles.splitEditorHint}>
-                    <MaterialCommunityIcons color={colors.primaryDark} name="equal" size={16} />
-                    <Text style={styles.splitEditorHintText}>
-                      Se divide igual entre quienes participan.
-                    </Text>
-                  </View>
-                )}
+                ) : null}
               </View>
 
               <NoteField
-                helper="Opcional."
                 label="Nota"
                 onChangeText={setExpenseNote}
                 placeholder="Opcional"
@@ -2959,7 +2859,7 @@ export function MainScreen() {
               />
 
               <Pressable
-                accessibilityLabel={expenseReceiptAttached ? "Quitar recibo local" : "Agregar recibo local de prueba"}
+                accessibilityLabel={expenseReceiptAttached ? "Quitar recibo" : "Agregar recibo"}
                 accessibilityRole="switch"
                 accessibilityState={{ checked: expenseReceiptAttached }}
                 onPress={() => setExpenseReceiptAttached((current) => !current)}
@@ -2980,10 +2880,9 @@ export function MainScreen() {
                 <View style={styles.moneyPathCopy}>
                   <Text style={styles.moneyPathLabel}>Recibo</Text>
                   <Text numberOfLines={1} style={styles.moneyPathValue}>
-                    {expenseReceiptAttached ? "Foto de recibo local" : "Agregar foto simulada"}
+                    {expenseReceiptAttached ? "Agregado" : "Agregar"}
                   </Text>
                 </View>
-                <Pill label={expenseReceiptAttached ? "Local" : "Mock"} tone={expenseReceiptAttached ? "success" : "neutral"} />
               </Pressable>
             </View>
 
@@ -2991,7 +2890,7 @@ export function MainScreen() {
               <View style={styles.splitImpactPanel}>
                 <View style={[styles.splitImpactTop, compact && styles.splitImpactTopCompact]}>
                   <View style={styles.splitImpactTotal}>
-                    <Text style={styles.splitImpactLabel}>Total a dividir</Text>
+                    <Text style={styles.splitImpactLabel}>Total</Text>
                     <Text adjustsFontSizeToFit minimumFontScale={0.72} numberOfLines={1} style={styles.splitImpactAmount}>
                       {formatMoney(expenseAmountCents ?? 0)}
                     </Text>
@@ -3000,9 +2899,9 @@ export function MainScreen() {
                     <MaterialCommunityIcons color={colors.primaryDark} name="equal" size={17} />
                     <Text style={styles.splitImpactRuleText}>
                       {expenseSplitMode === "equal"
-                        ? `${participantShares.length} partes iguales`
+                        ? `${participantShares.length} iguales`
                         : expenseSplitMode === "exact"
-                          ? "Montos exactos"
+                          ? "Exacto"
                           : "Por partes"}
                     </Text>
                   </View>
@@ -3051,7 +2950,6 @@ export function MainScreen() {
                         </View>
                       </View>
                       <View style={styles.sharePreviewAmountBlock}>
-                        <Text style={styles.sharePreviewAmountLabel}>Le toca</Text>
                         <Text style={styles.sharePreviewAmount}>{formatMoney(share.amountCents)}</Text>
                       </View>
                     </View>
@@ -3061,7 +2959,7 @@ export function MainScreen() {
 
                 {participantShares.length > 5 ? (
                   <Text style={styles.splitImpactMore}>
-                    +{participantShares.length - 5} participantes más en el reparto
+                    +{participantShares.length - 5} más
                   </Text>
                 ) : null}
               </View>
@@ -3078,9 +2976,9 @@ export function MainScreen() {
                   {editingExpenseId ? "Actualizar" : "Guardar"}
                 </ReusableButton>
               }
-              body="No cobra ni envía dinero. Solo actualiza balances del grupo."
+              body="Sin pagos reales · solo actualiza balances"
               testID="expense-composer-save-dock"
-              title={editingExpenseId ? "Actualizar gasto local" : "Guardar gasto local"}
+              title={editingExpenseId ? "Actualizar gasto" : "Guardar gasto"}
             />
           </ComposerSection>
         </ScrollView>
@@ -3114,8 +3012,7 @@ export function MainScreen() {
                   <MaterialCommunityIcons color={colors.primaryDark} name="handshake-outline" size={20} />
                 </View>
                 <View style={styles.settlementAgreementTitleWrap}>
-                  <Text style={styles.confirmEyebrow}>Arreglo fuera de la app</Text>
-                  <Text style={styles.confirmTitle}>{perspective?.confirmTitle ?? "Confirmar arreglo local"}</Text>
+                  <Text style={styles.confirmTitle}>{perspective?.confirmTitle ?? "Confirmar arreglo"}</Text>
                 </View>
               </View>
 
@@ -3154,54 +3051,28 @@ export function MainScreen() {
                     <MaterialCommunityIcons color={colors.primaryDark} name="shield-check-outline" size={18} />
                   </View>
                   <View style={styles.settlementBoundaryCopy}>
-                    <Text style={styles.settlementBoundaryTitle}>Solo registro local</Text>
+                    <Text style={styles.settlementBoundaryTitle}>Sin pagos reales</Text>
                     <Text style={styles.settlementBoundaryText}>
-                      {perspective?.confirmBody ??
-                        "Esto marca el arreglo como pagado en Cuentas Claras. No mueve dinero ni inicia pagos reales."}
+                      Marca el arreglo como pagado. No mueve dinero.
                     </Text>
                   </View>
                 </View>
 
-                <View style={styles.settlementHelperBox} testID="settlement-helper-box">
-                  <View style={styles.settlementHelperHeader}>
-                    <View style={styles.settlementHelperIcon}>
-                      <MaterialCommunityIcons color={colors.primaryDark} name="bank-outline" size={17} />
-                    </View>
-                    <View style={styles.settlementHelperCopy}>
-                      <Text style={styles.settlementHelperTitle}>Referencia SPEI opcional</Text>
-                      <Text style={styles.settlementHelperText}>Nota local: no valida CLABE ni inicia pagos.</Text>
-                    </View>
-                  </View>
-                  <View style={styles.settlementHelperFields}>
-                    <TextField
-                      helper="Ej. BBVA Ana o cuenta de renta."
-                      label="Alias o banco"
-                      onChangeText={setSettlementBankAlias}
-                      placeholder="Opcional"
-                      testID="settlement-bank-alias-input"
-                      value={settlementBankAlias}
-                    />
-                    <TextField
-                      helper="Visible solo en este demo local."
-                      label="CLABE o referencia"
-                      onChangeText={setSettlementClabeReference}
-                      placeholder="Opcional"
-                      testID="settlement-clabe-reference-input"
-                      value={settlementClabeReference}
-                    />
-                  </View>
-                </View>
-
-                <View style={styles.settlementAgreementEffect}>
-                  <View style={styles.settlementEffectItem}>
-                    <MaterialCommunityIcons color={colors.due} name="clock-outline" size={18} />
-                    <Text style={styles.settlementEffectText}>Antes: pendiente</Text>
-                  </View>
-                  <MaterialCommunityIcons color={colors.mutedInk} name="arrow-right" size={16} />
-                  <View style={styles.settlementEffectItem}>
-                    <MaterialCommunityIcons color={colors.primary} name="check-circle-outline" size={18} />
-                    <Text style={styles.settlementEffectText}>Después: registrado local</Text>
-                  </View>
+                <View style={styles.settlementHelperFields}>
+                  <TextField
+                    label="Alias o banco"
+                    onChangeText={setSettlementBankAlias}
+                    placeholder="Opcional"
+                    testID="settlement-bank-alias-input"
+                    value={settlementBankAlias}
+                  />
+                  <TextField
+                    label="CLABE o referencia"
+                    onChangeText={setSettlementClabeReference}
+                    placeholder="Opcional"
+                    testID="settlement-clabe-reference-input"
+                    value={settlementClabeReference}
+                  />
                 </View>
               </ScrollView>
 
@@ -3209,7 +3080,7 @@ export function MainScreen() {
                 <ActionButton icon="close" label="Cancelar" onPress={closeSettlementConfirmation} tone="ghost" />
                 <ActionButton
                   icon="check"
-                  label={perspective?.actionLabel ?? "Registrar local"}
+                  label={perspective?.actionLabel ?? "Registrar"}
                   onPress={confirmSettlementPaid}
                 />
               </View>
@@ -3763,45 +3634,11 @@ const styles = StyleSheet.create({
     maxHeight: "92%",
     padding: spacing.md,
   },
-  composerTitleBlock: {
-    flex: 1,
-    gap: spacing.xs,
-    minWidth: 0,
-  },
   captureHeader: {
     alignItems: "flex-start",
     flexDirection: "row",
     gap: spacing.md,
     justifyContent: "space-between",
-  },
-  captureContextChip: {
-    alignItems: "center",
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    flexDirection: "row",
-    gap: spacing.xs,
-    minHeight: 36,
-    paddingHorizontal: spacing.sm,
-  },
-  captureContextRail: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: spacing.sm,
-  },
-  captureContextText: {
-    color: colors.primaryDark,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-  },
-  captureKicker: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-    textTransform: "uppercase",
   },
   captureProgressPill: {
     alignItems: "center",
@@ -3839,12 +3676,6 @@ const styles = StyleSheet.create({
     fontSize: typography.micro,
     fontWeight: "900",
     lineHeight: 14,
-  },
-  captureSubtitle: {
-    color: colors.mutedInk,
-    fontSize: typography.small,
-    fontWeight: "700",
-    lineHeight: 18,
   },
   captureTitle: {
     color: colors.ink,
@@ -4014,11 +3845,6 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: typography.small,
     fontWeight: "800",
-  },
-  identityMeta: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "600",
   },
   identityPill: {
     alignItems: "center",
@@ -4461,13 +4287,6 @@ const styles = StyleSheet.create({
     gap: 1,
     minWidth: 0,
   },
-  odCommandKicker: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-    textTransform: "uppercase",
-  },
   odCommandTitle: {
     color: colors.ink,
     fontSize: typography.body,
@@ -4519,24 +4338,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     gap: spacing.xs,
     padding: spacing.sm,
-  },
-  peopleStripHeader: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  peopleStripTitle: {
-    color: colors.ink,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-    textTransform: "uppercase",
-  },
-  peopleStripMeta: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "800",
-    lineHeight: 14,
   },
   peopleStripRow: {
     flexDirection: "row",
@@ -5178,29 +4979,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: spacing.md,
     paddingBottom: spacing.xs,
-  },
-  activityStreamKicker: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "900",
-    lineHeight: 14,
-    textTransform: "uppercase",
-  },
-  activityStreamReset: {
-    alignItems: "center",
-    backgroundColor: colors.canvas,
-    borderColor: colors.border,
-    borderRadius: 999,
-    borderWidth: 1,
-    flexDirection: "row",
-    gap: spacing.xs,
-    minHeight: 32,
-    paddingHorizontal: spacing.sm,
-  },
-  activityStreamResetText: {
-    color: colors.primaryDark,
-    fontSize: typography.micro,
-    fontWeight: "900",
   },
   activityStreamTitle: {
     color: colors.ink,
@@ -7674,12 +7452,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     gap: 1,
   },
-  sharePreviewAmountLabel: {
-    color: colors.mutedInk,
-    fontSize: typography.micro,
-    fontWeight: "800",
-    lineHeight: 14,
-  },
   sharePreviewBarFill: {
     borderRadius: 999,
     height: 7,
@@ -7802,23 +7574,6 @@ const styles = StyleSheet.create({
   },
   splitEditorError: {
     color: colors.due,
-    fontSize: typography.micro,
-    fontWeight: "800",
-    lineHeight: 15,
-  },
-  splitEditorHint: {
-    alignItems: "center",
-    backgroundColor: colors.successWash,
-    borderRadius: radius.md,
-    flexDirection: "row",
-    gap: spacing.xs,
-    minHeight: 38,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-  },
-  splitEditorHintText: {
-    color: colors.primaryDark,
-    flex: 1,
     fontSize: typography.micro,
     fontWeight: "800",
     lineHeight: 15,

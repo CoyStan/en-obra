@@ -776,3 +776,202 @@ adding a web-only dependency. The selected direction is closer to Supabase's
 clean product feel than to a beige finance notebook, so it should feel lighter,
 more premium, and more technical without losing the Mexico/LATAM trust cues or
 MXN financial clarity.
+
+## 2026-07-06
+
+### Simplify the Palette to a Cool Neutral Base with Sky Primary
+
+Decision: Refresh `src/theme/tokens.json` to a clean slate-white canvas, white
+surfaces, a single sky-blue primary action color, reduced warm accents, and
+clear red owed states. Update the NativeWind token bridge to match.
+
+Rationale: The Supabase-Money palette left the app feeling one-note green and
+generic. A cool neutral base with a crisp sky-blue primary feels more modern and
+premium, keeps color reserved for action and money state, and still supports the
+Android-first LATAM finance context.
+
+### Reduce Text Density on the Inicio Surface
+
+Decision: Remove redundant labels from the Home/Inicio surface: drop the
+"Grupo activo" kicker, the group member strip header, the activity "Historial"
+kicker, the Home activity "Demo" reset control, and the "Perfil local" / "Demo
+local" identity meta. Keep "Sin pagos reales" inside the money instrument near
+settlement context and simplify settlement captions to "Solo registro" / "Todo
+en paz".
+
+Rationale: The first viewport was cluttered with explanatory copy and local-demo
+disclaimers that competed with the balance and next action. The remaining copy
+should be scannable: who you are, what the group is, your balance, the next
+route, and the primary action. Settlement and local-only honesty remain
+visible but compact.
+
+### Simplify the Add-Expense Composer
+
+Decision: Reduce the visual weight and text density of the add-expense composer:
+remove the "Captura de recibo" kicker, the subtitle, the context rail, the
+receipt "Local/Mock" pill, the input helper paragraphs, and the equal-split hint
+sentence. Shorten the split impact labels and the save dock copy. Keep "Sin
+pagos reales" only in the save dock body, which is the action boundary.
+
+Rationale: The composer had become a dense form with multiple explanations of
+the same local-only limitation. The modern, minimal composer should expose only
+the required fields (monto, concepto, pagador, participantes, reparto) and the
+save action. The safety disclaimer remains at the point of saving.
+
+### Simplify the Balance and Settlement Surfaces
+
+Decision: Reduce the Balance surface to a clean hero (group name + open balance
+amount + status label), a single settlement map section with one primary action,
+and a compact member ledger. Remove the "Mapa de balance" kicker, the meta line,
+the trust chip, the metrics row, and the ComposerSection badge/icon/meta. In the
+settlement confirmation dialog, remove the eyebrow, the SPEI helper box header,
+the effect timeline, and the input helper paragraphs. Shorten the boundary text
+to "Sin pagos reales · Marca el arreglo como pagado. No mueve dinero."
+
+Rationale: The Balance surface was explaining the same local-only constraint in
+four different places (hero trust chip, settlement map meta, settlement card demo
+chip, and confirmation dialog boundary). The simplified surface shows the
+balance, who pays whom, and one action. The safety disclaimer stays at the
+settlement confirmation boundary, which is the action point.
+
+## 2026-07-18
+
+### Pivot Product To Cuenta Obra
+
+Decision: Company OS and future app work optimize for **Cuenta Obra**, the
+provider work-and-material tracker. The Cuentas Claras expense-split premium MVP
+goal is historical/completed. Do not start new expense-split feature tickets.
+
+Rationale: The founder confirmed Cuenta Obra is the new product angle. The
+working app already mounts `TrackerScreen`, and launch/provider docs describe
+that product. Closed historical tickets remain as evidence, not as the active
+roadmap.
+
+Company OS: `DECISION-PRODUCT-0002`, goal `GOAL-CUENTA-OBRA`.
+
+### Preferred UI Kit Wins Over Legacy Surfaces
+
+Decision: The preferred UI element kit is `dashboard/src/components/ui`
+(shadcn/ui base-nova). Cuenta Obra Expo/tracker surfaces must be reconstructed
+into that element language (via owned NativeWind/Reusables adaptations). When
+legacy StyleSheet or older reusables conflict with the preferred kit, rebuild
+the old surface into the new elements — do not dilute the preferred kit to match
+legacy patterns.
+
+Rationale: The founder wants these elements because they look good and are easy
+to work with. Compatibility debt is paid by reconstruction toward the preferred
+kit, not by forcing new UI through the old system.
+
+Company OS: `DECISION-UI-0001`. Better UI path: `WORK-APP-0112` …
+`WORK-APP-0118`.
+
+### Cuenta Obra UI Reconstruction Plan Recorded
+
+Decision: Follow `docs/product/cuenta-obra-ui-reconstruction-plan.md` for the
+preferred-kit inventory, Expo adaptation rules, and surface order
+(`WORK-APP-0113` … `WORK-APP-0118`). Update
+`docs/product/ui-component-system.md` authority order to match.
+
+Rationale: Agents need an explicit map from dashboard/shadcn elements to owned
+Expo primitives and tracker surfaces before token/primitive implementation
+starts.
+
+### Preferred Kit Token Bridge
+
+Decision: `src/theme/tokens.json` and NativeWind/`tracker` themes mirror the
+preferred kit light variables (background, foreground, primary, muted, border,
+radius 0.625rem). Legacy expense color keys remain as aliases. Cuenta Obra
+status washes stay as semantic aliases on top of the kit base.
+
+Rationale: `WORK-APP-0113` needs one shared token source so primitives and
+tracker surfaces can adopt preferred-kit styling without a second palette.
+
+### Preferred Kit Tracker Reconstruction Bundle
+
+Decision: `WORK-APP-0113` … `WORK-APP-0118` form one founder accept bundle for
+the preferred-kit token/primitive/tracker reconstruction. Screenshots may follow
+as a short evidence refresh if requested at accept time.
+
+Rationale: The founder asked to continue without per-ticket approval pauses and
+to accept the packed path as a bundle while respecting Company OS evidence and
+review ceremony.
+
+### Cuenta Obra Forest Color Personality On Preferred Kit
+
+Decision: Keep preferred-kit token *structure* (background, foreground, primary,
+muted, border, radius) but paint primary/chrome with Cuenta Obra forest
+(`#145B4E`), soft canvas (`#F4F7F6`), and status washes (clay/sun/blue/success).
+Do not return to monochrome base-nova primary.
+
+Rationale: Founder accepted the kit structure as professional, then asked for
+color. Brand personality belongs in tokens so buttons, cards, and tracker
+surfaces share one forest-led system (`WORK-APP-0120`).
+
+### Palari Labs ↔ Cuenta Obra Token Bridge
+
+Decision: Document allowed Palari Labs ↔ Cuenta Obra personalization in
+`docs/product/ui-component-system.md` (token bridge). Lab marketing
+([palari.io](https://palari.io/)) informs *feel*; app personality stays in kit
+token slots. Agents may restyle only via `tokens.json` + existing semantic
+variants + composition — not by editing primitives for one-off looks or
+copying marketing type/orbs/avatars into field UI.
+
+Rationale: Founder asked how to personalize preferred-kit elements without
+unauthorized edits, and how much Palari Labs brand can reuse while keeping the
+app easy to maintain.
+
+### Cuenta Obra Adopts Palari Labs Token Personality
+
+Decision: Execute the token bridge: paint `src/theme/tokens.json`,
+`global.css`, and `dashboard/src/index.css` with Palari Labs values — warm
+paper `#F7F5F2`, indigo ink `#2E2A7B`, teal primary `#22B8B0`, coral due/accent
+family, gold sun washes. Keep preferred-kit structure and variants unchanged.
+Keep `forest*` keys as **aliases** of the lab primary family so tracker code
+does not need a second palette. Supersedes the forest-as-default product
+personality from `WORK-APP-0120` for chrome colors (kit structure decision
+still stands).
+
+Rationale: Founder approved the bridge and asked to execute it so Cuenta Obra
+reads as a Palari Labs product without hand-editing primitives.
+
+### Revert To Kit-Recommended Emerald / Neutral Chrome
+
+Decision: Founder rejected the Palari Labs indigo/coral product chrome. Paint
+Cuenta Obra with the repo’s documented Supabase-Money / tweakcn emerald on cool
+neutral palette (`#059669` primary, slate canvas/ink, distinct clay/sun/sky/
+success status washes) aligned with preferred-kit `baseColor: neutral`. Enrich
+tracker status/delivery/payment iconography via `presentation.ts` semantic
+maps. Palari marketing colors remain documentation-only on the token bridge.
+
+Rationale: Prefer the color system already recommended by shadcn/tweakcn
+decisions in this repo over marketing-site colors that felt wrong in the field
+app. More icons/colors stay semantic (status/delivery), not one-off hex.
+
+### Cuenta Obra Adopts Vemos Visual Dialect
+
+Decision: Default product chrome follows the **Vemos** dialect from
+[CoyStan/palari-vemos](https://github.com/CoyStan/palari-vemos) (`foundation.ts`
+/ `design-system/vemos/MASTER.md`): warm canvas `#FAF8F5`, Palari teal primary
+`#147A78`, soft coral `#F28C78` as sparse warmth (not marketing indigo), warm
+borders `#EBE5DF`, larger radii (control ~14 / card ~20), soft teal-tinted
+shadows on primary surfaces, Quicksand-class type. Kit structure
+(`dashboard/src/components/ui`) stays; personality lives in tokens + CSS vars.
+Plan: `docs/superpowers/plans/2026-07-21-vemos-feeling-transition.md`.
+
+This supersedes cool emerald/slate as the default chrome. It is **not** a
+return to rejected indigo marketing paint (`#2E2A7B`). Status semantics
+(clay/sun/blue/success/danger) remain distinct from decorative coral.
+
+Rationale: Founder preferred the warm, calm Vemos feeling over the cold
+dashboard emerald look while keeping product IA and preferred-kit structure.
+
+### Product Name: En Obra
+
+Decision: Public product name is **En Obra** (replacing Cuenta Obra in
+user-facing chrome). Internal docs/tickets may still say Cuenta Obra until
+migrated; storage keys (`cuenta-obra-*`) stay for compatibility.
+
+Rationale: Founder chose a short, pan-LatAm Spanish name that is easy to say
+and signals work-in-progress / job site, sibling spirit to Palari’s *So, When?*
+without being a question.
+

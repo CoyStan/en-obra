@@ -1,134 +1,68 @@
-# Borrador de Politica de Privacidad
+# Borrador de Política de Privacidad de Cuenta Obra
 
-Producto: Cuentas Claras
-Estado: borrador para revision legal y aprobacion humana.
-Fecha del borrador: 2026-06-20
+**Estado:** borrador operativo. No publicar sin revisión legal y aprobación del responsable del producto.
 
-Este documento es un borrador operativo para preparar pruebas internas en
-Android. No es asesoria legal y no debe publicarse como politica final hasta que
-una persona autorizada confirme el responsable legal, datos de contacto,
-jurisdiccion, URL publica y respuestas de Google Play Data Safety.
+**Última actualización del borrador:** 2026-07-18
 
 ## Responsable
 
-Pendiente de decision humana:
+Pendiente de completar por el propietario del producto:
 
-- Nombre legal del responsable.
-- Pais o jurisdiccion.
-- Correo de privacidad o soporte.
-- URL publica de esta politica.
+- Nombre legal del responsable:
+- País y jurisdicción:
+- Correo de privacidad:
+- Correo de soporte:
+- URL pública de esta política:
+- URL de solicitud de eliminación de datos:
 
 ## Alcance
 
-Cuentas Claras ayuda a grupos pequenos a registrar gastos compartidos, ver quien
-debe pagar, quien debe recibir y marcar arreglos como pagados. En la version
-actual la app funciona de forma local en el dispositivo.
+Cuenta Obra ayuda a prestadores de servicios pequeños a organizar trabajos, materiales y conversaciones con proveedores, y a compartir con cada cliente un avance de solo lectura.
 
-La app actual no ejecuta pagos reales, transferencias, SPEI, cargos a tarjeta,
-open banking ni servicios financieros regulados. Las acciones de liquidacion
-solo registran estado local dentro de la app.
+Cuenta Obra no procesa pagos entre clientes, prestadores o proveedores; tampoco es banco, procesador de pagos ni asesor financiero, contable, fiscal o legal.
 
-## Datos Que La App Guarda Localmente
+Esta versión es un prototipo local. Guarda datos de demostración en el dispositivo y no ofrece todavía cuentas reales, sincronización en la nube, enlaces públicos para clientes, conexión activa a Google Drive ni suscripciones cobradas.
 
-La version actual puede guardar en el dispositivo:
+## Datos del prototipo actual
 
-- Grupos, nombres de integrantes y descripciones.
-- Gastos, conceptos, montos en MXN, fechas, notas y quien pago.
-- Sugerencias y registros locales de liquidaciones marcadas como pagadas.
-- Historial de actividad derivado de gastos y liquidaciones.
-- Datos de cuenta demo local, como nombre para mostrar y correo capturado por la
-  interfaz demo.
-- Identificadores locales para usuarios demo, membresias de grupo,
-  participantes de gastos y cola local de sincronizacion pendiente. Estos
-  identificadores preparan una arquitectura futura, pero no sincronizan datos en
-  la version actual.
-- Preferencias y estado necesario para restaurar la experiencia local.
+La aplicación puede guardar localmente trabajos, nombres de clientes, teléfonos y direcciones opcionales, proveedores, teléfonos opcionales, categorías, notas de último contacto, materiales, cantidades, estado de pedido/entrega/uso, fechas y notas de recepción.
 
-Estos datos se guardan con almacenamiento local de la app. En la version actual
-no se envian a un backend de Cuentas Claras.
+El prototipo no transmite estos registros a servidores de Cuenta Obra. El almacenamiento local no debe presentarse como respaldo en la nube ni como almacenamiento cifrado. Una persona con acceso al dispositivo, copias de seguridad, herramientas de desarrollo o capturas de pantalla podría ver la información local.
 
-## Datos Que La App No Recopila En La Version Actual
+## Datos que el prototipo no recopila ni transmite
 
-La version actual no recopila ni transmite a servidores de Cuentas Claras:
+La versión actual no recopila ni transmite desde la aplicación ubicación precisa o aproximada, contactos del dispositivo, fotos, videos, recibos, archivos, datos bancarios, tarjetas, CLABE, SPEI, identificadores publicitarios, analítica, publicidad ni rastreo de terceros.
 
-- Ubicacion precisa o aproximada.
-- Contactos del dispositivo.
-- Fotos, archivos o recibos.
-- Informacion bancaria, tarjetas, CLABE, SPEI o credenciales financieras.
-- Identificadores publicitarios.
-- Datos de analitica, publicidad o rastreo de terceros.
+Google Play, el sistema operativo y los servicios de distribución pueden tratar datos técnicos conforme a sus propias políticas. Ese tratamiento no lo define este prototipo local.
 
-Google Play, el sistema operativo o servicios de distribucion pueden procesar
-datos tecnicos conforme a sus propias politicas. Ese procesamiento no lo define
-esta app local.
+## Uso de los datos locales
 
-## Finalidades
+Los registros locales se usan exclusivamente para mostrar el avance de un trabajo, recordar el siguiente material a pedir o recibir, conservar una nota del proveedor y preparar una actualización segura para el cliente.
 
-Los datos locales se usan para:
+## Futuras funciones que requieren actualización antes de activarse
 
-- Calcular balances y sugerencias de pago dentro del grupo.
-- Mostrar historial de gastos y liquidaciones.
-- Mantener datos de demo y cambios locales entre sesiones.
-- Permitir pruebas internas sin backend ni cuentas reales.
+Antes de lanzar cuentas, sincronización, soporte con acceso a datos, analítica, suscripciones o Google Drive, esta política deberá actualizarse para describir identidad de cuenta, autenticación, backend, región, medidas de seguridad, enlaces de clientes, metadatos de comprobantes, facturación, soporte, conservación, exportación, eliminación y copias de seguridad.
 
-## Comparticion
+Las fotos originales de entrega, si la persona conecta Drive en una versión futura, deberán permanecer en una carpeta visible de su propio Google Drive. Cuenta Obra solo guardaría la referencia mínima necesaria para el trabajo, según la política final.
 
-En la version actual Cuentas Claras no comparte datos de usuario con terceros
-desde la app. Si una persona exporta, captura pantalla, comparte el dispositivo
-o copia informacion fuera de la app, esa accion queda fuera del control de
-Cuentas Claras.
+## Conservación y eliminación
 
-## Conservacion Y Eliminacion
+En el prototipo actual, los datos locales permanecen hasta que la persona borra datos de la aplicación o la desinstala. Antes de una versión con cuentas reales, Cuenta Obra debe ofrecer eliminación de cuenta desde la aplicación, una vía pública para solicitarla y un proceso verificable para eliminar datos remotos y revocar enlaces de clientes.
 
-Los datos locales permanecen en el dispositivo hasta que la persona:
-
-- borre los datos de la app desde Android,
-- desinstale la app,
-- use una futura funcion de reinicio o eliminacion local, si se mantiene en el
-  producto,
-- o reemplace los datos con datos demo.
-
-Antes de lanzar cuentas reales o sincronizacion en la nube, Cuentas Claras debe
-ofrecer un flujo de eliminacion de cuenta y datos, ademas de una URL publica de
-solicitud de eliminacion si Google Play la requiere.
+Las fotos originales que estén en Google Drive no deben eliminarse silenciosamente al borrar una cuenta de Cuenta Obra. La política final debe explicar claramente esa diferencia.
 
 ## Seguridad
 
-La version actual evita secretos, backend y pagos reales. Aun asi, los datos
-locales pueden ser visibles para quien tenga acceso al dispositivo, copias de
-seguridad, herramientas de desarrollo o capturas de pantalla. La seguridad final
-depende tambien de las protecciones del dispositivo, como bloqueo de pantalla y
-actualizaciones del sistema.
-
-Antes de habilitar backend, cuentas reales o sincronizacion, se requiere revision
-de seguridad, politica de retencion, proceso de eliminacion y manejo de
-incidentes.
+Antes de lanzar servicios en la nube, Cuenta Obra debe implementar controles de acceso por prestador, transporte cifrado, manejo seguro de secretos, registros operativos minimizados, copias de seguridad, pruebas de restauración y revisión de seguridad. Esta lista no es una afirmación de que esos controles existan hoy.
 
 ## Menores
 
-La app no esta disenada para recopilar datos de menores. La edad minima,
-controles parentales y redaccion final deben definirse antes de publicacion.
+Cuenta Obra no está diseñada para recopilar intencionalmente datos de menores. La edad mínima aplicable debe confirmarse con asesoría legal antes de publicar.
 
-## Cambios A Esta Politica
+## Pendiente antes de publicar
 
-La politica final debe actualizarse cuando cambien las categorias de datos,
-finalidades, terceros, backend, analitica, publicidad, pagos, cuentas reales o
-procesos de eliminacion.
-
-## Contacto
-
-Pendiente de decision humana:
-
-- Correo de privacidad:
-- Correo de soporte:
-- URL de eliminacion de datos:
-
-## Pendiente Antes De Publicar
-
-- Confirmar responsable legal y jurisdiccion.
-- Confirmar correo de privacidad/soporte.
-- Hospedar esta politica en una URL publica.
-- Revisar el texto con asesoria legal.
-- Confirmar respuestas de Google Play Data Safety.
-- Actualizar el documento si se agregan cuentas reales, backend, analitica,
-  publicidad, pagos o servicios de terceros.
+- Confirmar responsable legal, jurisdicción y contactos.
+- Definir infraestructura, conservación, respaldo, eliminación y soporte.
+- Actualizar este texto con cualquier SDK, backend, Drive o facturación real.
+- Revisar con asesoría legal apropiada.
+- Hospedar la política aprobada en una URL pública y alinear Google Play Data Safety con el comportamiento real de la aplicación.

@@ -1,35 +1,42 @@
-# Cuentas Claras UI Component System
+# Cuenta Obra UI Component System
 
-Date: 2026-07-05
-Status: active guide
+Date: 2026-07-05  
+Updated: 2026-07-18  
+Status: active guide (Cuenta Obra)
 Related docs:
 
-- `docs/product/ui-library-adoption.md`
-- `docs/product/nativewind-reusables-premium-ui-workplan.md`
+- `docs/product/cuenta-obra-ui-reconstruction-plan.md` (preferred path)
+- `docs/product/cuenta-obra-ui-path.md`
+- `docs/product/ui-library-adoption.md` (historical NativeWind adoption notes)
+- `docs/product/nativewind-reusables-premium-ui-workplan.md` (historical)
 - `docs/product/design-system.md`
 - `docs/product/visual-direction.md`
+- Palari Labs brand reference: https://palari.io/ (marketing site; not Expo runtime)
 
 ## Purpose
 
-This guide defines how future agents should build UI in Cuentas Claras after
-the NativeWind/Reusables adoption begins. The goal is not to chase a library
-aesthetic. The goal is to make the app more premium, coherent, Android-first,
-and easier for agents to modify without style drift.
+This guide defines how agents should build UI for **Cuenta Obra**. The visual
+authority is the preferred kit in `dashboard/src/components/ui` (shadcn
+base-nova). Expo owns NativeWind adaptations under `src/components/reusables/`.
+When legacy StyleSheet or older reusables conflict with the preferred kit,
+reconstruct the surface into the kit language (`DECISION-UI-0001`).
 
 ## Source Of Truth
 
 Use this order of authority:
 
-1. Product behavior and local-first constraints in the app code.
-2. Product/design decisions in `docs/product/decisions.md`.
-3. Visual direction in `docs/product/design-system.md` and
-   `docs/product/visual-direction.md`.
-4. Shared tokens in `src/theme/tokens.json`.
-5. NativeWind utilities exposed by `tailwind.config.js`.
-6. Component implementations in `src/components/reusables/`.
+1. Product behavior + launch/checklist constraints in app code and Cuenta Obra docs.
+2. `DECISION-PRODUCT-0002`, `DECISION-UI-0001`, and `docs/product/decisions.md`.
+3. `docs/product/cuenta-obra-ui-reconstruction-plan.md`.
+4. Preferred kit reference: `dashboard/src/components/ui` + `dashboard/src/index.css`.
+5. Shared tokens in `src/theme/tokens.json` / `src/tracker/theme.ts` (bridged to kit).
+6. NativeWind utilities in `tailwind.config.js`.
+7. Owned Expo components in `src/components/reusables/` and
+   `src/components/tracker/`.
 
 If these disagree, fix the disagreement in a scoped ticket instead of inventing
-a one-off style.
+a one-off style. Do not treat historical expense-split `MainScreen` StyleSheet
+as visual authority.
 
 ## Current Component Paths
 
@@ -108,6 +115,76 @@ decision.
 Avoid arbitrary pixel classes unless they represent genuine geometry that does
 not belong in the token scale, such as a 1 px divider, a circular avatar size,
 or a fixed icon affordance. Prefer tokens first.
+
+## Palari Labs ↔ Cuenta Obra Token Bridge
+
+Cuenta Obra is a Palari Labs product. Marketing ([palari.io](https://palari.io/))
+and the Vemos app ([palari-vemos](https://github.com/CoyStan/palari-vemos)) set
+lab *feel*; the preferred kit + `tokens.json` set *how* the app is painted.
+Personalize through this bridge — not by editing primitives for one screen.
+
+### Product vs lab identity
+
+| Layer | Authority | Default for Cuenta Obra |
+| --- | --- | --- |
+| Element structure (Button/Card/Badge/Sheet variants, density) | Preferred kit (`dashboard/src/components/ui`) | Unchanged |
+| App chrome colors / radii / shadows | `src/theme/tokens.json` (+ `dashboard/src/index.css`, `global.css`) | **Vemos dialect** (warm canvas + teal `#147A78`) |
+| Lab marketing voice (Fraunces hero, floating dots, Pixar avatars, indigo) | palari.io | Marketing only — **not** app chrome |
+
+Product primary follows Vemos teal on warm paper. Do **not** apply palari.io
+indigo (`#2E2A7B`) as field chrome. Soft coral is warmth only; status washes
+stay semantic (clay / sun / blue / success / danger).
+
+### Allowed mappings (tokens only)
+
+Map brand references into existing kit slots. Do not invent new primitive props
+or visual-only variants (`coralButton`, `navyCard`).
+
+| Kit / token slot | Cuenta Obra (current) | Source |
+| --- | --- | --- |
+| `background` / canvas | `#FAF8F5` warm off-white | Vemos `canvas` |
+| `foreground` / ink | `#2A2C31` | Vemos `ink` |
+| `primary` | `#147A78` teal | Vemos `primary` |
+| `primaryDark` | `#0F6261` | Vemos `primaryPressed` |
+| `secondary` | `#E7F5F4` | Vemos `softTeal` |
+| `accent` | `#FFF0EC` | Vemos `softCoral` |
+| `muted` / `mutedForeground` | `#F3EFEA` / `#6B7280` | warm mute + Vemos muted |
+| `destructive` / due | `#B42318` | Vemos `danger` |
+| `terracotta` / coral | `#F28C78` | Vemos coral (warmth, not owed) |
+| `clay` / sun / statusBlue / success | semantic status | status only |
+| `radius` | `0.875rem` (~14px control) | Vemos control; cards ~20px |
+| `shadow` | teal-tinted soft/lift | Vemos `shadowSoft` / `shadowLift` |
+
+`forest*` keys remain **aliases** of the teal primary family so tracker code
+does not need a second palette.
+
+### Reuse without editing elements
+
+Safe without touching `src/components/reusables/*` internals:
+
+1. Change token values in `tokens.json` and mirror into `dashboard/src/index.css`
+   + NativeWind (`tailwind.config.js` / `global.css`).
+2. Pick existing variants (`default` / `outline` / `secondary` / `ghost` /
+   `destructive` on Button; Badge variants likewise).
+3. Compose screens from Card + Button + Badge + Sheet + Field + Progress.
+4. Use semantic status icons/colors from `src/tracker/presentation.ts`
+   (`statusMeta`, `deliveryMeta`, `paymentMeta`) — do not hardcode hex in rows.
+
+Needs a ticket + decision (not a silent edit):
+
+- Switching product chrome away from Vemos dialect.
+- Adding new kit slots or variants.
+- Marketing-only patterns: Fraunces headlines, floating color orbs, character
+  avatars as chrome, full-bleed gradient CTAs, indigo marketing primary.
+
+### Agent rule
+
+1. Want a different look → edit tokens (or open a ticket for a *semantic* token).
+2. Want a different control look → use an existing variant.
+3. Still stuck → ticket + decision; do not patch a primitive for one screen.
+4. Do not copy palari.io indigo marketing chrome or Vemos product screens into
+   Cuenta Obra; borrow Vemos *feeling* via tokens only unless the founder
+   expands scope.
 
 ## Variant Rules
 
