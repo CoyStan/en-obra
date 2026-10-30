@@ -3,6 +3,7 @@ import { Linking, Platform, ScrollView, Share, useWindowDimensions, View } from 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ClientViewSheet } from "../components/tracker/ClientViewSheet";
 import { DesktopWorkspace } from "../components/tracker/DesktopWorkspace";
+import { DESKTOP_SIDEBAR_WIDTH } from "../components/tracker/desktop/DesktopSidebar";
 import { MaterialComposer, type MaterialDraft } from "../components/tracker/MaterialComposer";
 import { MaterialStatusComposer } from "../components/tracker/MaterialStatusComposer";
 import { AppHeader, BottomTabBar, Snackbar, StatusStrip } from "../components/tracker/MobileChrome";
@@ -485,6 +486,42 @@ export function TrackerScreen() {
     </>
   );
 
+  const statusStrip = (
+    <StatusStrip
+      infoNotice={infoNotice}
+      isDemo={isDemo}
+      onDismissInfo={clearInfoNotice}
+      onLeaveDemo={() => void leaveDemo()}
+    />
+  );
+
+  const renderSnackbars = (bottom: number, left?: number, right?: number) => (
+    <>
+      {notice ? (
+        <Snackbar
+          bottom={bottom}
+          icon="check"
+          left={left}
+          message={notice}
+          onDismiss={() => setNotice(null)}
+          right={right}
+        />
+      ) : null}
+      {deletedMaterial ? (
+        <Snackbar
+          actionLabel="Deshacer"
+          assertive
+          bottom={notice ? bottom + 42 : bottom}
+          icon="trash-can-outline"
+          left={left}
+          message={`"${deletedMaterial.name}" borrado`}
+          onAction={handleUndoDelete}
+          right={right}
+        />
+      ) : null}
+    </>
+  );
+
   // ── Desktop ─────────────────────────────────────────────────────────────────
 
   if (isDesktop && activeProject) {
@@ -492,6 +529,7 @@ export function TrackerScreen() {
       <View className="flex-1" style={{ backgroundColor: color.canvas, paddingTop: insets.top }}>
         <DesktopWorkspace
           activeProject={activeProject}
+          banner={isDemo || infoNotice ? statusStrip : undefined}
           data={data}
           materials={materials}
           onAddMaterial={openNewMaterial}
@@ -504,9 +542,11 @@ export function TrackerScreen() {
           onOpenSupplierWhatsApp={(supplier) => void sendSupplierWhatsApp(supplier)}
           onSelectTab={setTab}
           onSwitchProject={() => setProjectSwitcherOpen(true)}
+          saveState={saveState}
           sortedMaterials={sortedMaterials}
           tab={tab}
         />
+        {renderSnackbars(24, DESKTOP_SIDEBAR_WIDTH + 32, 32)}
         {sheets}
       </View>
     );
@@ -527,23 +567,16 @@ export function TrackerScreen() {
     else openNewMaterial();
   };
 
-  const snackbarBottom = 74 + insets.bottom;
-
   return (
     <View className="flex-1" style={{ backgroundColor: color.canvas }}>
       <View style={{ height: insets.top, backgroundColor: color.canvas }} />
-      <StatusStrip
-        infoNotice={infoNotice}
-        isDemo={isDemo}
-        onDismissInfo={clearInfoNotice}
-        onLeaveDemo={() => void leaveDemo()}
-        saveState={saveState}
-      />
+      {statusStrip}
       <AppHeader
         activeProject={activeProject}
         addLabel={addLabel}
         onAdd={handleAdd}
         onSwitchProject={() => setProjectSwitcherOpen(true)}
+        saveState={saveState}
       />
 
       <ScrollView
@@ -598,19 +631,7 @@ export function TrackerScreen() {
         ) : null}
       </ScrollView>
 
-      {notice ? (
-        <Snackbar bottom={snackbarBottom} icon="check" message={notice} onDismiss={() => setNotice(null)} />
-      ) : null}
-      {deletedMaterial ? (
-        <Snackbar
-          actionLabel="Deshacer"
-          assertive
-          bottom={notice ? snackbarBottom + 42 : snackbarBottom}
-          icon="trash-can-outline"
-          message={`"${deletedMaterial.name}" borrado`}
-          onAction={handleUndoDelete}
-        />
-      ) : null}
+      {renderSnackbars(74 + insets.bottom)}
 
       <BottomTabBar
         bottomInset={insets.bottom}

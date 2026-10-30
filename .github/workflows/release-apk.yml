@@ -1,0 +1,83 @@
+name: Android APK
+
+# Pushing a tag like v0.1.0 builds an installable APK and attaches it to a
+# GitHub Release. Pull requests that touch this file run the build without
+# releasing, so changes to it get tested first.
+on:
+  push:
+    tags:
+      - "v*"
+  pull_request:
+    paths:
+      - .github/workflows/release-apk.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate native Android project
+        run: npx expo prebuild --platform android --no-install
+
+      # The Expo template signs release builds with its debug key. That's fine
+      # for sideloading a demo, not for the Play Store.
+      - name: Build release APK
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
+
+      - name: Name the APK
+        id: apk
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          [[ "$GITHUB_REF" == refs/tags/* ]] || version="$(node -p 'require("./app.json").expo.version')-dev"
+          path="en-obra-${version}.apk"
+          cp android/app/build/outputs/apk/release/app-release.apk "$path"
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+          ls -lh "$path"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.apk.outputs.path }}
+          path: ${{ steps.apk.outputs.path }}
+          retention-days: 14
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "${{ steps.apk.outputs.path }}" \
+            --title "En Obra $GITHUB_REF_NAME" \
+            --notes "Android APK for trying En Obra on a phone.
+
+          **Install:** download the APK on your Android phone, open it, and allow installs from your browser or file manager when Android asks.
+
+          This build is signed with a debug key, so it's for trying the app out, not a Play Store release. Your data stays on the phone.
+
+          Prefer not to install anything? Try the [live demo](https://coystan.github.io/en-obra/?demo) in your browser."

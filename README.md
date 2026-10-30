@@ -10,7 +10,9 @@
 
 <p align="center">
   <a href="https://coystan.github.io/en-obra/?demo"><b>Try the live demo →</b></a>
-  <br><sub>Runs in your browser with sample data. Best on a phone, or a narrow window.</sub>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/CoyStan/en-obra/releases/latest"><b>Download the Android APK</b></a>
+  <br><sub>The demo runs in your browser with sample data. Best on a phone, or a narrow window.</sub>
 </p>
 
 <p align="center">
@@ -132,11 +134,11 @@ npm run web        # opens in the browser; tap "Ver ejemplo"
 On a phone, run `npm start` and scan the QR code with
 [Expo Go](https://expo.dev/go). `npm run android` launches it on an emulator.
 
-To install a real APK, build it with EAS (free account required):
-
-```bash
-npm run build:android:apk
-```
+To install it on an Android phone, download the APK from the
+[latest release](https://github.com/CoyStan/en-obra/releases/latest). It's
+signed with a debug key, so Android will ask you to allow the install. GitHub
+Actions builds it whenever a version tag like `v0.1.0` is pushed. If you have
+an Expo account, `npm run build:android:apk` builds one with EAS instead.
 
 ## Project layout
 
@@ -145,7 +147,8 @@ App.tsx                         entry point
 src/
   screens/TrackerScreen.tsx     state, handlers, phone vs. desktop layout
   screens/tracker/              Hoy, Mis trabajos, job detail, Proveedores, welcome
-  components/tracker/           material row, sheets, mobile chrome, desktop workspace
+  components/tracker/           material row, sheets, header, tab bar, snackbars
+  components/tracker/desktop/   wide-screen sidebar, overview and tables
   components/reusables/         buttons, cards, inputs, sheets (NativeWind)
   domain/en-obra/               pure logic: types, status rules, phone, WhatsApp, demo data
   persistence/                  AsyncStorage repository, envelope, write queue
@@ -176,7 +179,8 @@ and watch the job progress update, preview the client message, undo a delete,
 and create a job that has to survive a page reload.
 
 CI runs all of it on every push and pull request. Each push to `main` also
-deploys the web build to GitHub Pages, which is the live demo above.
+deploys the web build to GitHub Pages, which is the live demo above, and each
+version tag builds the APK for the release page.
 
 ## Tech
 
