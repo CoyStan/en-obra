@@ -1,6 +1,7 @@
 import { formatDisplayDate } from "./dates";
 import { toWaMeDigits } from "./phone";
-import type { MaterialStatus } from "./types";
+import { clientReadyCount } from "./status";
+import type { Material, MaterialStatus, Project } from "./types";
 
 type SupplierMessageInput = {
   jobName: string;
@@ -52,6 +53,18 @@ export function buildClientMessage(input: ClientMessageInput) {
     itemLines.length ? "Materiales recientes:" : "Seguimos confirmando las próximas entregas.",
     ...itemLines,
   ].join("\n");
+}
+
+/** The exact client update text for a job: ready count plus the ready items. */
+export function clientUpdateMessage(project: Project, materials: Material[]) {
+  const ready = materials.filter((m) => m.status === "received" || m.status === "installed");
+  return buildClientMessage({
+    jobName: project.name,
+    clientFirstName: project.clientName.trim().split(/\s+/)[0] || project.clientName,
+    materialsReadyCount: clientReadyCount(materials),
+    materialsTotal: materials.length,
+    items: ready.map((m) => ({ name: m.name, quantity: m.quantity, status: m.status })),
+  });
 }
 
 export function waMeUrl(phoneE164: string, text: string) {

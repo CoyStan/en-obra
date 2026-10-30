@@ -88,6 +88,7 @@ export function ProjectComposer({ onClose, onSave, onUpdate, project, visible }:
             <Field label="¿Qué vas a hacer?">
               <Input
                 autoComplete="off"
+                autoFocus={!isEdit}
                 onChangeText={setName}
                 placeholder="Ej. Arreglar el jardín…"
                 value={name}

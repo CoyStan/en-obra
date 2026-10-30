@@ -28,7 +28,7 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test
+      - name: Unit tests
         run: npm test
 
       - name: Expo doctor
@@ -37,5 +37,34 @@ jobs:
       - name: Android bundle
         run: npx expo export --platform android --output-dir /tmp/en-obra-android
 
-      - name: Web bundle
-        run: npx expo export --platform web --output-dir /tmp/en-obra-web
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Web build
+        run: npm run build:web
+
+      - name: UI tests
+        run: npm run test:e2e
+
+      - name: Upload report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7

@@ -4,7 +4,7 @@ import { createMaterialRecord } from "../../domain/en-obra/materials";
 import { createProjectRecord } from "../../domain/en-obra/projects";
 import { createDemoData } from "../../domain/en-obra/demo";
 import { toClientSnapshot } from "../../domain/en-obra/clientSnapshot";
-import { buildClientMessage, buildSupplierMessage, waMeUrl } from "../../domain/en-obra/whatsapp";
+import { buildClientMessage, buildSupplierMessage, clientUpdateMessage, waMeUrl } from "../../domain/en-obra/whatsapp";
 import { formatPhoneDisplay, isValidPhoneForWhatsApp, normalizePhoneToE164, toWaMeDigits } from "../../domain/en-obra/phone";
 import type { Material } from "../../domain/en-obra/types";
 import {
@@ -225,6 +225,20 @@ describe("en obra core loop", () => {
       items: snap.materials.map((m) => ({ name: m.name, quantity: m.quantity, status: m.status })),
     });
     expect(msg.toLowerCase()).toContain("material");
+  });
+
+  it("client update lists only ready materials and never mentions suppliers", () => {
+    const demo = createDemoData(new Date("2026-11-04T16:30:00Z"));
+    const project = demo.projects[0];
+    const materials = demo.materials.filter((m) => m.projectId === project.id);
+    const msg = clientUpdateMessage(project, materials);
+    expect(msg.startsWith("Hola Camila,")).toBe(true);
+    expect(msg).toContain(`1 de ${materials.length} materiales ya están listos en obra.`);
+    expect(msg).toContain("- Tierra negra (12 costales)");
+    expect(msg).not.toContain("Piedra de río");
+    for (const supplier of demo.suppliers) {
+      expect(msg).not.toContain(supplier.name);
+    }
   });
 
   it("demo data uses non-routable phones", () => {
