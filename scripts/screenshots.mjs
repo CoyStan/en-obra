@@ -1,14 +1,16 @@
-// Regenerates the README screenshots from the web build.
+// Regenerates the README screenshots, hero banner and demo GIF from the web build.
 //
 //   npm run screenshots              # export web build, then capture
 //   npm run screenshots -- --no-build
 //
 // The browser clock is frozen so demo dates ("Llega hoy", "Atrasado") are stable.
+// The GIF needs ffmpeg on the PATH and is skipped without it.
 import { execSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
-import { createServer } from "node:http";
-import { extname, join, resolve } from "node:path";
+import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import { chromium } from "playwright";
+import { serve } from "./serve-web.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const buildDir = join(root, "dist-screens");
@@ -22,36 +24,37 @@ if (!process.argv.includes("--no-build")) {
 }
 mkdirSync(outDir, { recursive: true });
 
-const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".png": "image/png", ".ttf": "font/ttf", ".json": "application/json", ".ico": "image/x-icon" };
-const server = createServer((req, res) => {
-  const path = join(buildDir, decodeURIComponent(new URL(req.url, "http://x").pathname));
-  const file = existsSync(path) && !path.endsWith("/") ? path : join(buildDir, "index.html");
-  res.writeHead(200, { "content-type": types[extname(file)] ?? "application/octet-stream" });
-  res.end(readFileSync(file));
-});
-await new Promise((done) => server.listen(0, "127.0.0.1", done));
-const url = `http://127.0.0.1:${server.address().port}`;
-
+const { server, url } = await serve(buildDir);
 const browser = await chromium.launch(existsSync("/usr/bin/google-chrome") ? { channel: "chrome" } : {});
+const pageOptions = { deviceScaleFactor: 2, locale: "es-MX", timezoneId: "America/Mexico_City" };
 
-async function openApp(viewport, { seeded }) {
-  const page = await browser.newPage({ viewport, deviceScaleFactor: 2, locale: "es-MX", timezoneId: "America/Mexico_City" });
+// Load the built-in demo once and keep it as "user" data, so seeded pages
+// don't carry the "Ejemplo" banner.
+async function loadSeed() {
+  const page = await browser.newPage({ viewport: mobile, ...pageOptions });
   await page.clock.setFixedTime(frozenNow);
-  await page.goto(url, { waitUntil: "networkidle" });
+  await page.goto(`${url}/?demo`, { waitUntil: "networkidle" });
+  await page.getByText("Hoy", { exact: true }).first().waitFor();
+  const envelope = await page.evaluate(() => JSON.parse(localStorage.getItem("en-obra-tracker-demo-v2")));
+  await page.close();
+  return JSON.stringify({ ...envelope, datasetKind: "user" });
+}
+const seed = await loadSeed();
+
+async function preparePage(page, seeded) {
+  await page.clock.setFixedTime(frozenNow);
   if (seeded) {
-    // Load the built-in demo, then store it as the user's own data so the
-    // screenshots don't carry the "Ejemplo" banner.
-    await page.getByText("Ver ejemplo").first().click();
-    await page.waitForTimeout(800);
-    await page.evaluate(() => {
-      const envelope = JSON.parse(localStorage.getItem("en-obra-tracker-demo-v2"));
-      envelope.datasetKind = "user";
-      localStorage.setItem("en-obra-tracker-v2", JSON.stringify(envelope));
-    });
-    await page.reload({ waitUntil: "networkidle" });
+    await page.addInitScript((data) => {
+      if (!localStorage.getItem("en-obra-tracker-v2")) localStorage.setItem("en-obra-tracker-v2", data);
+    }, seed);
   }
+  await page.goto(url, { waitUntil: "networkidle" });
   await page.waitForTimeout(800);
   return page;
+}
+
+async function openApp(viewport, { seeded }) {
+  return preparePage(await browser.newPage({ viewport, ...pageOptions }), seeded);
 }
 
 async function shot(page, name) {
@@ -91,6 +94,49 @@ const wide = await openApp(desktop, { seeded: true });
 await shot(wide, "07-desktop");
 await wide.close();
 
+// Demo GIF: change a status, open the job, show the client update.
+if (process.argv.includes("--no-gif") || !hasFfmpeg()) {
+  console.log("  (skipping demo.gif: ffmpeg not found or --no-gif)");
+} else {
+  const videoDir = join(tmpdir(), "en-obra-video");
+  rmSync(videoDir, { recursive: true, force: true });
+  const recordingStarted = Date.now();
+  const context = await browser.newContext({
+    viewport: mobile,
+    ...pageOptions,
+    deviceScaleFactor: 1,
+    recordVideo: { dir: videoDir, size: mobile },
+  });
+  const page = await preparePage(await context.newPage(), true);
+  const started = Date.now();
+  await page.waitForTimeout(1200);
+  await showTap(page, page.getByLabel("Cambiar estado de Piedra de río").first());
+  await showTap(page, page.getByLabel("Recibido. Ya llegó al trabajo o contigo.").first());
+  await showTap(page, page.getByLabel("Guardar estado Recibido").first());
+  await page.waitForTimeout(1300);
+  await showTap(page, page.getByText("Mis trabajos", { exact: true }).first());
+  await showTap(page, page.getByLabel("Jardín de la casa. Camila Torres").first());
+  await page.waitForTimeout(600);
+  await showTap(page, page.getByLabel("Vista cliente y WhatsApp").first());
+  await page.waitForTimeout(800);
+  await page.mouse.move(206, 500);
+  await page.mouse.wheel(0, 260);
+  await page.waitForTimeout(2600);
+  const video = page.video();
+  // Trim the page load at the start of the recording.
+  const skip = Math.max(0, (started - recordingStarted) / 1000);
+  await context.close();
+  const source = await video.path();
+  const gif = join(outDir, "demo.gif");
+  execSync(
+    `ffmpeg -y -loglevel error -ss ${skip.toFixed(2)} -i "${source}" ` +
+      `-vf "fps=12,scale=360:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=96[p];[b][p]paletteuse=dither=bayer:bayer_scale=4" ` +
+      `"${gif}"`,
+  );
+  rmSync(videoDir, { recursive: true, force: true });
+  console.log("  docs/screenshots/demo.gif");
+}
+
 // Hero banner: three phone frames on a teal backdrop.
 const img = (name) => `data:image/png;base64,${readFileSync(join(outDir, `${name}.png`)).toString("base64")}`;
 const hero = await browser.newPage({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 1 });
@@ -127,3 +173,33 @@ console.log("  docs/screenshots/hero.png");
 
 await browser.close();
 server.close();
+
+function hasFfmpeg() {
+  try {
+    execSync("ffmpeg -version", { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Draws a short ripple where the tap lands so the GIF is easy to follow.
+async function showTap(page, locator) {
+  const box = await locator.boundingBox();
+  if (box) {
+    await page.evaluate(({ x, y }) => {
+      const dot = document.createElement("div");
+      Object.assign(dot.style, {
+        position: "fixed", left: `${x - 22}px`, top: `${y - 22}px`, width: "44px", height: "44px",
+        borderRadius: "50%", background: "rgba(20,122,120,.35)", border: "2px solid rgba(20,122,120,.8)",
+        pointerEvents: "none", zIndex: 99999, transition: "transform .5s ease-out, opacity .5s ease-out",
+      });
+      document.body.appendChild(dot);
+      requestAnimationFrame(() => { dot.style.transform = "scale(1.6)"; dot.style.opacity = "0"; });
+      setTimeout(() => dot.remove(), 600);
+    }, { x: box.x + box.width / 2, y: box.y + box.height / 2 });
+    await page.waitForTimeout(250);
+  }
+  await locator.click();
+  await page.waitForTimeout(900);
+}

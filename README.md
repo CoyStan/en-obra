@@ -9,6 +9,11 @@
 </p>
 
 <p align="center">
+  <a href="https://coystan.github.io/en-obra/?demo"><b>Try the live demo →</b></a>
+  <br><sub>Runs in your browser with sample data. Best on a phone, or a narrow window.</sub>
+</p>
+
+<p align="center">
   <a href="https://github.com/CoyStan/en-obra/actions/workflows/ci.yml"><img src="https://github.com/CoyStan/en-obra/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/Expo-SDK%2057-000020?logo=expo" alt="Expo SDK 57">
   <img src="https://img.shields.io/badge/React%20Native-0.86-61dafb?logo=react&logoColor=black" alt="React Native 0.86">
@@ -36,13 +41,22 @@ tested that.
 > This is a portfolio project. It isn't in the Play Store and nobody is paying
 > for it. The code, tests and design are real, and you're welcome to fork it.
 
+## The core loop in 15 seconds
+
+<p align="center">
+  <img src="docs/screenshots/demo.gif" alt="Marking river stone as received, opening the job, and previewing the client's WhatsApp update" width="300">
+</p>
+
+The river stone arrives, so it gets marked *recibido*. The job's progress moves
+from 1/4 to 2/4, and the client's WhatsApp message updates to match.
+
 ## Screenshots
 
 <table>
   <tr>
-    <td align="center"><img src="docs/screenshots/02-today.png" width="230" alt="Today view"><br><sub><b>Hoy.</b> Everything that needs attention, late items first.</sub></td>
+    <td align="center"><img src="docs/screenshots/02-today.png" width="230" alt="Today view"><br><sub><b>Hoy.</b> What's late, what arrives today, what to order.</sub></td>
     <td align="center"><img src="docs/screenshots/04-job.png" width="230" alt="Job view"><br><sub><b>Trabajo.</b> One job, its client and materials.</sub></td>
-    <td align="center"><img src="docs/screenshots/05-client-update.png" width="230" alt="Client update"><br><sub><b>Vista cliente.</b> What the client sees, with no costs.</sub></td>
+    <td align="center"><img src="docs/screenshots/05-client-update.png" width="230" alt="Client update"><br><sub><b>Vista cliente.</b> The exact WhatsApp message, no costs.</sub></td>
   </tr>
   <tr>
     <td align="center"><img src="docs/screenshots/03-status.png" width="230" alt="Status picker"><br><sub><b>Estado.</b> Por pedir, pedido, recibido, usado.</sub></td>
@@ -68,10 +82,11 @@ tested that.
 - **WhatsApp handoff.** One tap opens WhatsApp with a message already written.
   Suppliers get "¿Puedes confirmar entrega para 5 nov?". Clients get
   "3 de 5 materiales ya están listos en obra".
-- **Client view.** A preview of exactly what the client will read. Prices,
-  supplier notes and internal status never appear in it.
-- **Demo mode.** "Ver ejemplo" loads a sample garden and a paint job. Demo data
-  lives under its own storage key and never mixes with yours.
+- **Client view.** Shows the WhatsApp message word for word before you send
+  it. Prices, supplier notes and internal status never appear in it.
+- **Demo mode.** "Ver ejemplo" (or `?demo` in the web URL) loads a sample
+  garden and a paint job. Demo data lives under its own storage key and never
+  mixes with yours.
 - **Your data is safe on the device.** Saves go through a serialized write queue.
   The app shows "Guardado" only after the write succeeds. If stored data is
   corrupt, the app keeps a copy, locks editing and offers a JSON export
@@ -126,41 +141,49 @@ npm run build:android:apk
 ## Project layout
 
 ```text
-App.tsx                      entry point
+App.tsx                         entry point
 src/
-  screens/TrackerScreen.tsx  phone UI: Hoy, Mis trabajos, Proveedores, sheets
-  components/tracker/        desktop workspace, composers, date picker
-  components/reusables/      buttons, cards, inputs, sheets (NativeWind)
-  domain/en-obra/            pure logic: types, status rules, phone, WhatsApp, demo data
-  persistence/               AsyncStorage repository, envelope, write queue
-  tracker/                   store hook and presentation helpers
-  theme/tokens.json          design tokens shared by Tailwind and RN styles
-maestro/en-obra-smoke.yaml   end-to-end smoke flow for a device or emulator
-scripts/screenshots.mjs      regenerates every image in this README
+  screens/TrackerScreen.tsx     state, handlers, phone vs. desktop layout
+  screens/tracker/              Hoy, Mis trabajos, job detail, Proveedores, welcome
+  components/tracker/           material row, sheets, mobile chrome, desktop workspace
+  components/reusables/         buttons, cards, inputs, sheets (NativeWind)
+  domain/en-obra/               pure logic: types, status rules, phone, WhatsApp, demo data
+  persistence/                  AsyncStorage repository, envelope, write queue
+  tracker/                      store hook and presentation helpers
+  theme/tokens.json             design tokens shared by Tailwind and RN styles
+e2e/                            Playwright UI tests against the web build
+maestro/en-obra-smoke.yaml      smoke flow for a real device or emulator
+scripts/screenshots.mjs         regenerates every image and the GIF in this README
 ```
 
-The domain layer has no React imports, so the tests run in plain Node without
-a simulator.
+The domain layer has no React imports, so its tests run in plain Node without
+a simulator. `TrackerScreen.tsx` owns state and navigation, and every screen
+and sheet is its own component that takes data and callbacks as props.
 
 ## Checks
 
 ```bash
 npm run typecheck   # tsc, strict
 npm run lint        # oxlint
-npm test            # vitest, domain and persistence
+npm test            # vitest: domain and persistence
 npm run verify      # all of the above plus expo-doctor
-npm run screenshots # rebuild docs/screenshots from the web build
+npm run build:web && npm run test:e2e   # Playwright UI tests on a phone viewport
+npm run screenshots # rebuild docs/screenshots and the GIF from the web build
 ```
 
-CI runs typecheck, lint, tests and expo-doctor, then builds the Android and web
-bundles on every push.
+The UI tests open the demo, check that late items sort first, change a status
+and watch the job progress update, preview the client message, undo a delete,
+and create a job that has to survive a page reload.
+
+CI runs all of it on every push and pull request. Each push to `main` also
+deploys the web build to GitHub Pages, which is the live demo above.
 
 ## Tech
 
 [Expo](https://expo.dev) SDK 57, React Native 0.86, React 19,
 [NativeWind](https://www.nativewind.dev) 4 on Tailwind 3, AsyncStorage,
-TypeScript in strict mode, Vitest, oxlint, Playwright for screenshots and
-Maestro for on-device smoke tests.
+TypeScript in strict mode, Vitest, oxlint, Playwright for UI tests and
+screenshots, Maestro for on-device smoke tests, and GitHub Pages for the demo.
 
 ## License
 
