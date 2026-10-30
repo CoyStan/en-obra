@@ -1,0 +1,17 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "moduleResolution": "bundler",
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "App.tsx",
+    "nativewind-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
+}

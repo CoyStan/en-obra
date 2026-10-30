@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens: warm canvas, deep teal, soft coral. Mirrors src/theme/tokens.json. */
+:root {
+  --background: #faf8f5;
+  --foreground: #2a2c31;
+  --card: #ffffff;
+  --card-foreground: #2a2c31;
+  --primary: #147a78;
+  --primary-foreground: #ffffff;
+  --secondary: #e7f5f4;
+  --secondary-foreground: #0f6261;
+  --muted: #f3efea;
+  --muted-foreground: #6b7280;
+  --accent: #fff0ec;
+  --accent-foreground: #c96b5a;
+  --destructive: #b42318;
+  --border: #ebe5df;
+  --input: #ebe5df;
+  --ring: #147a78;
+  --radius: 0.875rem;
+  --forest: #147a78;
+  --forest-dark: #0f6261;
+  --forest-wash: #e7f5f4;
+  --shadow-soft: 0 4px 16px rgba(20, 122, 120, 0.08);
+  --shadow-lift: 0 8px 24px rgba(20, 122, 120, 0.12);
+}

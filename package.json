@@ -1,0 +1,61 @@
+{
+  "name": "en-obra",
+  "version": "0.1.0",
+  "description": "Spanish-first Android app that helps small service providers in Mexico track job materials, suppliers, and send WhatsApp progress updates to clients.",
+  "license": "MIT",
+  "author": "CoyStan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CoyStan/en-obra.git"
+  },
+  "keywords": [
+    "expo",
+    "react-native",
+    "android",
+    "nativewind",
+    "local-first",
+    "whatsapp",
+    "mexico",
+    "spanish"
+  ],
+  "private": true,
+  "main": "expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "web": "expo start --web",
+    "verify": "npm run typecheck && npm run lint && npm test && npx expo-doctor",
+    "build:android:apk": "npx eas-cli@16.28.0 build --platform android --profile preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "oxlint App.tsx src",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~57.0.17",
+    "@expo/vector-icons": "^15.1.1",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-community/datetimepicker": "9.1.0",
+    "expo": "~57.0.9",
+    "expo-font": "~57.0.4",
+    "expo-splash-screen": "~57.0.10",
+    "expo-status-bar": "~57.0.1",
+    "nativewind": "^4.2.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-reanimated": "4.5.1",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-web": "^0.21.2",
+    "react-native-worklets": "0.10.1"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.14",
+    "babel-preset-expo": "~57.0.0",
+    "oxlint": "^1.71.0",
+    "playwright": "^1.61.1",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  }
+}
