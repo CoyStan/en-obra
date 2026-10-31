@@ -7,21 +7,13 @@ import { trackerTabs } from "../../tracker/presentation";
 import { trackerColors as color } from "../../tracker/theme";
 import type { Project, TrackerTab } from "../../tracker/types";
 
-/** Demo banner, save state and one-off info notices, stacked under the status bar. */
-export function StatusStrip({
-  isDemo,
-  saveState,
-  infoNotice,
-  onLeaveDemo,
-  onDismissInfo,
-}: {
-  isDemo: boolean;
-  saveState: SaveState;
-  infoNotice: string | null;
-  onLeaveDemo: () => void;
-  onDismissInfo: () => void;
-}) {
-  // "Guardado" fades after 2 s; "Guardando…" and errors stay until the state changes.
+type SaveStatus = { icon: "cloud-sync-outline" | "cloud-check-outline" | "cloud-alert-outline"; text: string; fg: string; bg: string };
+
+/**
+ * What to show for the current save state, or null when there's nothing to say.
+ * "Guardado" fades after 2 s; "Guardando…" and errors stay until the state changes.
+ */
+function useSaveStatus(saveState: SaveState): SaveStatus | null {
   const [savedVisible, setSavedVisible] = useState(false);
   useEffect(() => {
     if (saveState !== "saved") {
@@ -33,6 +25,48 @@ export function StatusStrip({
     return () => clearTimeout(timer);
   }, [saveState]);
 
+  if (saveState === "saving") {
+    return { icon: "cloud-sync-outline", text: "Guardando…", fg: color.inkMuted, bg: color.surfaceMuted };
+  }
+  if (savedVisible) {
+    return { icon: "cloud-check-outline", text: "Guardado", fg: color.forest, bg: color.forestWash };
+  }
+  if (saveState === "failed") {
+    return { icon: "cloud-alert-outline", text: "Error al guardar", fg: color.destructive, bg: color.clayWash };
+  }
+  return null;
+}
+
+/** Save state as a small pill, for the desktop sidebar. On phones the header shows it. */
+export function SaveBadge({ saveState }: { saveState: SaveState }) {
+  const status = useSaveStatus(saveState);
+  if (!status) return null;
+  return (
+    <View
+      accessibilityLiveRegion="polite"
+      className="flex-row items-center gap-1 rounded-full px-2 py-1"
+      style={{ backgroundColor: status.bg }}
+    >
+      <MaterialCommunityIcons color={status.fg} name={status.icon} size={13} />
+      <Text className="text-[10px] font-bold" style={{ color: status.fg }}>
+        {status.text}
+      </Text>
+    </View>
+  );
+}
+
+/** Demo banner and one-off info notices, stacked under the status bar. */
+export function StatusStrip({
+  isDemo,
+  infoNotice,
+  onLeaveDemo,
+  onDismissInfo,
+}: {
+  isDemo: boolean;
+  infoNotice: string | null;
+  onLeaveDemo: () => void;
+  onDismissInfo: () => void;
+}) {
   return (
     <>
       {isDemo ? (
@@ -53,25 +87,6 @@ export function StatusStrip({
         </View>
       ) : null}
 
-      {saveState === "saving" ? (
-        <View className="mx-4 mb-1 flex-row items-center gap-1.5 rounded-lg bg-muted px-3 py-1.5">
-          <MaterialCommunityIcons color={color.inkMuted} name="cloud-sync-outline" size={14} />
-          <Text className="text-[11px] text-muted-foreground">Guardando…</Text>
-        </View>
-      ) : savedVisible ? (
-        <View className="mx-4 mb-1 flex-row items-center gap-1.5 rounded-lg bg-forest-wash px-3 py-1.5">
-          <MaterialCommunityIcons color={color.forest} name="cloud-check-outline" size={14} />
-          <Text className="text-[11px] font-bold text-forest">Guardado</Text>
-        </View>
-      ) : saveState === "failed" ? (
-        <View className="mx-4 mb-1 flex-row items-center gap-1.5 rounded-lg bg-destructive/10 px-3 py-1.5">
-          <MaterialCommunityIcons color={color.destructive} name="cloud-alert-outline" size={14} />
-          <Text className="text-[11px] font-bold text-destructive">
-            Error al guardar. Tus últimos cambios no se guardaron.
-          </Text>
-        </View>
-      ) : null}
-
       {infoNotice ? (
         <View className="mx-4 mb-1 flex-row items-center gap-2 rounded-xl bg-muted px-3 py-2">
           <MaterialCommunityIcons color={color.inkMuted} name="information-outline" size={15} />
@@ -88,14 +103,19 @@ export function StatusStrip({
 export function AppHeader({
   activeProject,
   addLabel,
+  saveState,
   onSwitchProject,
   onAdd,
 }: {
   activeProject?: Project;
   addLabel: string;
+  saveState: SaveState;
   onSwitchProject: () => void;
   onAdd: () => void;
 }) {
+  // The subtitle line briefly shows the save state instead of the job name,
+  // so saving never shifts the screen.
+  const status = useSaveStatus(saveState);
   return (
     <View className="flex-row items-center justify-between px-4 pb-3 pt-2">
       <Pressable
@@ -110,7 +130,14 @@ export function AppHeader({
         </View>
         <View className="ml-2 min-w-0 flex-1">
           <Text className="text-lg font-extrabold tracking-tight text-foreground">En Obra</Text>
-          {activeProject ? (
+          {status ? (
+            <View accessibilityLiveRegion="polite" className="mt-0.5 flex-row items-center gap-1">
+              <MaterialCommunityIcons color={status.fg} name={status.icon} size={12} />
+              <Text className="text-[11px] font-bold" numberOfLines={1} style={{ color: status.fg }}>
+                {status.text}
+              </Text>
+            </View>
+          ) : activeProject ? (
             <Text className="mt-0.5 text-[11px] font-bold text-muted-foreground" numberOfLines={1}>
               {activeProject.name}
             </Text>
@@ -127,6 +154,8 @@ export function Snackbar({
   icon,
   message,
   bottom,
+  left = 16,
+  right = 16,
   actionLabel,
   onAction,
   onDismiss,
@@ -135,6 +164,8 @@ export function Snackbar({
   icon: "check" | "trash-can-outline";
   message: string;
   bottom: number;
+  left?: number;
+  right?: number;
   actionLabel?: string;
   onAction?: () => void;
   onDismiss?: () => void;
@@ -143,8 +174,8 @@ export function Snackbar({
   return (
     <View
       accessibilityLiveRegion={assertive ? "assertive" : "polite"}
-      className="absolute left-4 right-4 z-[2] flex-row items-center gap-2 rounded-xl px-3 py-2.5"
-      style={{ backgroundColor: color.forestDark, bottom }}
+      className="absolute z-[2] flex-row items-center gap-2 rounded-xl px-3 py-2.5"
+      style={{ backgroundColor: color.forestDark, bottom, left, right }}
     >
       <MaterialCommunityIcons color={color.surface} name={icon} size={16} />
       <Text className="flex-1 text-xs font-bold" style={{ color: color.primaryForeground }}>

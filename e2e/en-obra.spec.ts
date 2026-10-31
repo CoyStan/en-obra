@@ -98,3 +98,13 @@ test("wide screens switch to the desktop workspace", async ({ page }) => {
   await page.goto("/?demo");
   await expect(page.getByText("Control del trabajo")).toBeVisible();
 });
+
+test("desktop confirms status changes like the phone layout does", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/?demo");
+  await page.getByText("Cambiar estado", { exact: true }).click();
+  await page.getByRole("radio", { name: /^Recibido\./ }).click();
+  await page.getByLabel("Guardar estado Recibido").click();
+  await expect(page.getByText("Piedra de río: recibido.")).toBeVisible();
+  await expect(page.getByText("Ejemplo · los datos no se mezclan con los tuyos")).toBeVisible();
+});
